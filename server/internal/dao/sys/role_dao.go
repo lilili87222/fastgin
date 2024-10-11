@@ -9,18 +9,6 @@ import (
 	"strings"
 )
 
-//type IRoleRepository interface {
-//	GetRoles(req *bean.RoleListRequest) ([]sys.Role, int64, error)       // 获取角色列表
-//	GetRolesByIds(roleIds []uint) ([]*sys.Role, error)                   // 根据角色ID获取角色
-//	CreateRole(role *sys.Role) error                                     // 创建角色
-//	UpdateRoleById(roleId uint, role *sys.Role) error                    // 更新角色
-//	GetRoleMenusById(roleId uint) ([]*sys.Menu, error)                   // 获取角色的权限菜单
-//	UpdateRoleMenus(role *sys.Role) error                                // 更新角色的权限菜单
-//	GetRoleApisByRoleKeyword(roleKeyword string) ([]*sys.Api, error)     // 根据角色关键字获取角色的权限接口
-//	UpdateRoleApis(roleKeyword string, reqRolePolicies [][]string) error // 更新角色的权限接口（先全部删除再新增）
-//	BatchDeleteRoleByIds(roleIds []uint) error                           // 删除角色
-//}
-
 type RoleRepository struct {
 }
 

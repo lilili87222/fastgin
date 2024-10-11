@@ -9,11 +9,6 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-//type IOperationLogController interface {
-//	GetOperationLogs(c *gin.Context)             // 获取操作日志列表
-//	BatchDeleteOperationLogByIds(c *gin.Context) //批量删除操作日志
-//}
-
 type OperationLogController struct {
 	operationLogRepository sys.OperationLogRepository
 }

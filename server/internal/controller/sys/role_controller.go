@@ -13,17 +13,6 @@ import (
 	"strconv"
 )
 
-//type IRoleController interface {
-//	GetRoles(c *gin.Context)             // 获取角色列表
-//	CreateRole(c *gin.Context)           // 创建角色
-//	UpdateRoleById(c *gin.Context)       // 更新角色
-//	GetRoleMenusById(c *gin.Context)     // 获取角色的权限菜单
-//	UpdateRoleMenusById(c *gin.Context)  // 更新角色的权限菜单
-//	GetRoleApisById(c *gin.Context)      // 获取角色的权限接口
-//	UpdateRoleApisById(c *gin.Context)   // 更新角色的权限接口
-//	BatchDeleteRoleByIds(c *gin.Context) // 批量删除角色
-//}
-
 type RoleController struct {
 	RoleRepository sys2.RoleRepository
 }

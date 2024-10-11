@@ -5,7 +5,7 @@ import (
 )
 
 // 返回给前端的当前用户信息
-type UserInfoDto2 struct {
+type UserInfoDto struct {
 	ID           uint        `json:"id"`
 	Username     string      `json:"username"`
 	Mobile       string      `json:"mobile"`
@@ -15,8 +15,8 @@ type UserInfoDto2 struct {
 	Roles        []*sys.Role `json:"roles"`
 }
 
-func ToUserInfoDto(user sys.User) UserInfoDto2 {
-	return UserInfoDto2{
+func ToUserInfoDto(user sys.User) UserInfoDto {
+	return UserInfoDto{
 		ID:           user.ID,
 		Username:     user.Username,
 		Mobile:       user.Mobile,
@@ -28,7 +28,7 @@ func ToUserInfoDto(user sys.User) UserInfoDto2 {
 }
 
 // 返回给前端的用户列表
-type UsersDto2 struct {
+type UsersDto struct {
 	ID           uint   `json:"ID"`
 	Username     string `json:"username"`
 	Mobile       string `json:"mobile"`
@@ -40,10 +40,10 @@ type UsersDto2 struct {
 	RoleIds      []uint `json:"roleIds"`
 }
 
-func ToUsersDto(userList []*sys.User) []UsersDto2 {
-	var users []UsersDto2
+func ToUsersDto(userList []*sys.User) []UsersDto {
+	var users []UsersDto
 	for _, user := range userList {
-		userDto := UsersDto2{
+		userDto := UsersDto{
 			ID:           user.ID,
 			Username:     user.Username,
 			Mobile:       user.Mobile,
