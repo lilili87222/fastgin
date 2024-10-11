@@ -26,7 +26,7 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host localhost:8088
+// @host 192.168.123.214:8088
 // @BasePath /api/
 func main() {
 
@@ -63,7 +63,8 @@ func main() {
 	port := config.Conf.System.Port
 
 	srv := &http.Server{
-		Addr:    fmt.Sprintf("%s:%d", host, port),
+		//Addr:    fmt.Sprintf("%s:%d", host, port),
+		Addr:    fmt.Sprintf("%s:%d", "", port),
 		Handler: r,
 	}
 
