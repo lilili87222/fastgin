@@ -1201,7 +1201,7 @@ const docTemplate = `{
         },
         "/api/public/login": {
             "post": {
-                "description": "用户登录获取JWT Token",
+                "description": "用户登录获取JWT Token {\"username\": \"testlog\", \"password\": \"123456\"}",
                 "consumes": [
                     "application/json"
                 ],
@@ -1219,10 +1219,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/bean.RegisterAndLoginRequest"
                         }
                     }
                 ],
@@ -1558,6 +1555,21 @@ const docTemplate = `{
                     "items": {
                         "type": "integer"
                     }
+                }
+            }
+        },
+        "bean.RegisterAndLoginRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },

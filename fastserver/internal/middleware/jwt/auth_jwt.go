@@ -492,11 +492,11 @@ func (mw *GinJWTMiddleware) GetClaimsFromJWT(c *gin.Context) (MapClaims, error) 
 }
 
 // @Summary 用户登录
-// @Description 用户登录获取JWT Token
+// @Description 用户登录获取JWT Token {"username": "testlog", "password": "123456"}
 // @Tags 用户
 // @Accept json
 // @Produce json
-// @Param login body map[string]string true "登录信息" default({"username": "testlog", "password": "123456"})
+// @Param login body bean.RegisterAndLoginRequest true "登录信息" default({"username": "testlog", "password": "123456"})
 // @Success 200 {object} map[string]interface{} "{"code":200,"token":"xxx","expire":"xxx"}"
 // @Failure 401 {object} map[string]interface{} "{"code":401,"message":"Unauthorized"}"
 // @Router /api/public/login [post]

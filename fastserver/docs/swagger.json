@@ -1195,7 +1195,7 @@
         },
         "/api/public/login": {
             "post": {
-                "description": "用户登录获取JWT Token",
+                "description": "用户登录获取JWT Token {\"username\": \"testlog\", \"password\": \"123456\"}",
                 "consumes": [
                     "application/json"
                 ],
@@ -1213,10 +1213,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/bean.RegisterAndLoginRequest"
                         }
                     }
                 ],
@@ -1552,6 +1549,21 @@
                     "items": {
                         "type": "integer"
                     }
+                }
+            }
+        },
+        "bean.RegisterAndLoginRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },

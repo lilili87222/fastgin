@@ -196,6 +196,16 @@ definitions:
           type: integer
         type: array
     type: object
+  bean.RegisterAndLoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
   bean.UpdateApiRequest:
     properties:
       category:
@@ -1108,16 +1118,14 @@ paths:
     post:
       consumes:
       - application/json
-      description: 用户登录获取JWT Token
+      description: '用户登录获取JWT Token {"username": "testlog", "password": "123456"}'
       parameters:
       - description: 登录信息
         in: body
         name: login
         required: true
         schema:
-          additionalProperties:
-            type: string
-          type: object
+          $ref: '#/definitions/bean.RegisterAndLoginRequest'
       produces:
       - application/json
       responses:
