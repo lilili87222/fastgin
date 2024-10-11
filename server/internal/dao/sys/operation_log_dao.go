@@ -8,16 +8,16 @@ import (
 	"strings"
 )
 
-type IOperationLogRepository interface {
-	GetOperationLogs(req *bean.OperationLogListRequest) ([]sys.OperationLog, int64, error)
-	BatchDeleteOperationLogByIds(ids []uint) error
-	SaveOperationLogChannel(olc <-chan *sys.OperationLog) //处理OperationLogChan将日志记录到数据库
-}
+//type IOperationLogRepository interface {
+//	GetOperationLogs(req *bean.OperationLogListRequest) ([]sys.OperationLog, int64, error)
+//	BatchDeleteOperationLogByIds(ids []uint) error
+//	SaveOperationLogChannel(olc <-chan *sys.OperationLog) //处理OperationLogChan将日志记录到数据库
+//}
 
 type OperationLogRepository struct {
 }
 
-func NewOperationLogRepository() IOperationLogRepository {
+func NewOperationLogRepository() OperationLogRepository {
 	return OperationLogRepository{}
 }
 

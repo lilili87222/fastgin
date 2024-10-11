@@ -11,19 +11,11 @@ import (
 	"strconv"
 )
 
-type IApiController interface {
-	GetApis(c *gin.Context)             // 获取接口列表
-	GetApiTree(c *gin.Context)          // 获取接口树(按接口Category字段分类)
-	CreateApi(c *gin.Context)           // 创建接口
-	UpdateApiById(c *gin.Context)       // 更新接口
-	BatchDeleteApiByIds(c *gin.Context) // 批量删除接口
-}
-
 type ApiController struct {
-	ApiRepository sys2.IApiRepository
+	ApiRepository sys2.ApiRepository
 }
 
-func NewApiController() IApiController {
+func NewApiController() ApiController {
 	apiRepository := sys2.NewApiRepository()
 	apiController := ApiController{ApiRepository: apiRepository}
 	return apiController

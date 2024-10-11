@@ -11,22 +11,22 @@ import (
 	"strconv"
 )
 
-type IMenuController interface {
-	GetMenus(c *gin.Context)             // 获取菜单列表
-	GetMenuTree(c *gin.Context)          // 获取菜单树
-	CreateMenu(c *gin.Context)           // 创建菜单
-	UpdateMenuById(c *gin.Context)       // 更新菜单
-	BatchDeleteMenuByIds(c *gin.Context) // 批量删除菜单
-
-	GetUserMenusByUserId(c *gin.Context)    // 获取用户的可访问菜单列表
-	GetUserMenuTreeByUserId(c *gin.Context) // 获取用户的可访问菜单树
-}
+//type IMenuController interface {
+//	GetMenus(c *gin.Context)             // 获取菜单列表
+//	GetMenuTree(c *gin.Context)          // 获取菜单树
+//	CreateMenu(c *gin.Context)           // 创建菜单
+//	UpdateMenuById(c *gin.Context)       // 更新菜单
+//	BatchDeleteMenuByIds(c *gin.Context) // 批量删除菜单
+//
+//	GetUserMenusByUserId(c *gin.Context)    // 获取用户的可访问菜单列表
+//	GetUserMenuTreeByUserId(c *gin.Context) // 获取用户的可访问菜单树
+//}
 
 type MenuController struct {
-	MenuRepository sys2.IMenuRepository
+	MenuRepository sys2.MenuRepository
 }
 
-func NewMenuController() IMenuController {
+func NewMenuController() MenuController {
 	menuRepository := sys2.NewMenuRepository()
 	menuController := MenuController{MenuRepository: menuRepository}
 	return menuController

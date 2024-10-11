@@ -10,16 +10,6 @@ import (
 	"strings"
 )
 
-type IApiRepository interface {
-	GetApis(req *bean.ApiListRequest) ([]*sys.Api, int64, error) // 获取接口列表
-	GetApisById(apiIds []uint) ([]*sys.Api, error)               // 根据接口ID获取接口列表
-	GetApiTree() ([]*ApiTreeDto, error)                          // 获取接口树(按接口Category字段分类)
-	CreateApi(api *sys.Api) error                                // 创建接口
-	UpdateApiById(apiId uint, api *sys.Api) error                // 更新接口
-	BatchDeleteApiByIds(apiIds []uint) error                     // 批量删除接口
-	GetApiDescByPath(path string, method string) (string, error) // 根据接口路径和请求方式获取接口描述
-}
-
 type ApiRepository struct {
 }
 type ApiTreeDto struct {
@@ -29,7 +19,7 @@ type ApiTreeDto struct {
 	Children []*sys.Api `json:"children"`
 }
 
-func NewApiRepository() IApiRepository {
+func NewApiRepository() ApiRepository {
 	return ApiRepository{}
 }
 

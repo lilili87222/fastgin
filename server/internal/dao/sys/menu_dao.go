@@ -6,21 +6,21 @@ import (
 	"github.com/thoas/go-funk"
 )
 
-type IMenuRepository interface {
-	GetMenus() ([]*sys.Menu, error)                   // 获取菜单列表
-	GetMenuTree() ([]*sys.Menu, error)                // 获取菜单树
-	CreateMenu(menu *sys.Menu) error                  // 创建菜单
-	UpdateMenuById(menuId uint, menu *sys.Menu) error // 更新菜单
-	BatchDeleteMenuByIds(menuIds []uint) error        // 批量删除菜单
-
-	GetUserMenusByUserId(userId uint) ([]*sys.Menu, error)    // 根据用户ID获取用户的权限(可访问)菜单列表
-	GetUserMenuTreeByUserId(userId uint) ([]*sys.Menu, error) // 根据用户ID获取用户的权限(可访问)菜单树
-}
+//type IMenuRepository interface {
+//	GetMenus() ([]*sys.Menu, error)                   // 获取菜单列表
+//	GetMenuTree() ([]*sys.Menu, error)                // 获取菜单树
+//	CreateMenu(menu *sys.Menu) error                  // 创建菜单
+//	UpdateMenuById(menuId uint, menu *sys.Menu) error // 更新菜单
+//	BatchDeleteMenuByIds(menuIds []uint) error        // 批量删除菜单
+//
+//	GetUserMenusByUserId(userId uint) ([]*sys.Menu, error)    // 根据用户ID获取用户的权限(可访问)菜单列表
+//	GetUserMenuTreeByUserId(userId uint) ([]*sys.Menu, error) // 根据用户ID获取用户的权限(可访问)菜单树
+//}
 
 type MenuRepository struct {
 }
 
-func NewMenuRepository() IMenuRepository {
+func NewMenuRepository() MenuRepository {
 	return MenuRepository{}
 }
 
