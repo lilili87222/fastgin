@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/api/base/login',
+    url: '/api/public/login',
     method: 'post',
     data
   })
@@ -10,14 +10,14 @@ export function login(data) {
 
 export function refreshToken() {
   return request({
-    url: '/api/base/refreshToken',
+    url: '/api/public/refreshToken',
     method: 'post'
   })
 }
 
 export function logout() {
   return request({
-    url: '/api/base/logout',
+    url: '/api/public/logout',
     method: 'post'
   })
 }

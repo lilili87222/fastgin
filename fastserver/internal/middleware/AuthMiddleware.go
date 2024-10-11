@@ -4,17 +4,22 @@ import (
 	"fastgin/config"
 	"fastgin/internal/bean"
 	"fastgin/internal/controller"
-	sys2 "fastgin/internal/dao/sys"
+	sysdao "fastgin/internal/dao/sys"
+	"fastgin/internal/middleware/jwt"
 	"fastgin/internal/model/sys"
 	util2 "fastgin/internal/util"
 	"fmt"
-	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"time"
 )
 
+var jwtMiddleware *jwt.GinJWTMiddleware
+
 // 初始化jwt中间件
-func InitAuth() (*jwt.GinJWTMiddleware, error) {
+func GetJwtMiddleware() *jwt.GinJWTMiddleware {
+	if jwtMiddleware != nil {
+		return jwtMiddleware
+	}
 	authMiddleware, err := jwt.New(&jwt.GinJWTMiddleware{
 		Realm:           config.Conf.Jwt.Realm,                                 // jwt标识
 		Key:             []byte(config.Conf.Jwt.Key),                           // 服务端密钥
@@ -32,7 +37,12 @@ func InitAuth() (*jwt.GinJWTMiddleware, error) {
 		TokenHeadName:   "Bearer",                                              // header名称
 		TimeFunc:        time.Now,
 	})
-	return authMiddleware, err
+	if err != nil {
+		config.Log.Panicf("初始化JWT中间件失败：%v", err)
+		panic(fmt.Sprintf("初始化JWT中间件失败：%v", err))
+	}
+	jwtMiddleware = authMiddleware
+	return authMiddleware
 }
 
 // 有效载荷处理
@@ -79,7 +89,7 @@ func login(c *gin.Context) (interface{}, error) {
 	}
 
 	// 密码校验
-	userRepository := sys2.NewUserRepository()
+	userRepository := sysdao.NewUserRepository()
 	user, err := userRepository.Login(u)
 	if err != nil {
 		return nil, err

@@ -3,11 +3,11 @@ system:
   # 设定模式(debug/release/test,正式版改为release)
   mode: debug
   # url前缀
-  url-path-prefix: api
+  url-path-prefix: api/auth
   # 程序监听端口
   port: 8088
   # 是否初始化数据(没有初始数据时使用, 已发布正式版改为false)
-  init-data: false
+  init-data: true
   # rsa公钥文件路径(config.yml相对路径, 也可以填绝对路径)
   rsa-public-key: go-web-mini-pub.pem
   # rsa私钥文件路径(config.yml相对路径, 也可以填绝对路径)
