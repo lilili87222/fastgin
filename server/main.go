@@ -3,11 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
-	"go-web-mini/common"
 	"go-web-mini/config"
-	"go-web-mini/middleware"
-	"go-web-mini/repository"
-	"go-web-mini/routes"
+	"go-web-mini/internal/dao/sys"
+	"go-web-mini/internal/middleware"
+	"go-web-mini/internal/routes"
 	"net/http"
 	"os"
 	"os/signal"
@@ -21,23 +20,23 @@ func main() {
 	config.InitConfig()
 
 	// 初始化日志
-	common.InitLogger()
+	config.InitLogger()
 
 	// 初始化数据库(mysql)
-	common.InitMysql()
+	config.InitMysql()
 
 	// 初始化casbin策略管理器
-	common.InitCasbinEnforcer()
+	config.InitCasbinEnforcer()
 
 	// 初始化Validator数据校验
-	common.InitValidate()
+	config.InitValidate()
 
 	// 初始化mysql数据
-	common.InitData()
+	config.InitData()
 
 	// 操作日志中间件处理日志时没有将日志发送到rabbitmq或者kafka中, 而是发送到了channel中
 	// 这里开启3个goroutine处理channel将日志记录到数据库
-	logRepository := repository.NewOperationLogRepository()
+	logRepository := sys.NewOperationLogRepository()
 	for i := 0; i < 3; i++ {
 		go logRepository.SaveOperationLogChannel(middleware.OperationLogChan)
 	}
@@ -57,11 +56,11 @@ func main() {
 	// it won't block the graceful shutdown handling below
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			common.Log.Fatalf("listen: %s\n", err)
+			config.Log.Fatalf("listen: %s\n", err)
 		}
 	}()
 
-	common.Log.Info(fmt.Sprintf("Server is running at %s:%d/%s", host, port, config.Conf.System.UrlPathPrefix))
+	config.Log.Info(fmt.Sprintf("Server is running at %s:%d/%s", host, port, config.Conf.System.UrlPathPrefix))
 
 	// Wait for interrupt signal to gracefully shutdown the server with
 	// a timeout of 5 seconds.
@@ -71,16 +70,16 @@ func main() {
 	// kill -9 is syscall.SIGKILL but can't be catch, so don't need add it
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
-	common.Log.Info("Shutting down server...")
+	config.Log.Info("Shutting down server...")
 
 	// The context is used to inform the server it has 5 seconds to finish
 	// the request it is currently handling
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
-		common.Log.Fatal("Server forced to shutdown:", err)
+		config.Log.Fatal("Server forced to shutdown:", err)
 	}
 
-	common.Log.Info("Server exiting!")
+	config.Log.Info("Server exiting!")
 
 }

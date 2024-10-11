@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
-	"go-web-mini/util"
+	"go-web-mini/internal/util"
 	"go.uber.org/zap/zapcore"
 	"os"
 )
@@ -31,7 +31,7 @@ func InitConfig() {
 		panic(fmt.Errorf("读取应用目录失败:%s \n", err))
 	}
 
-	viper.SetConfigName("config")
+	viper.SetConfigName("application")
 	viper.SetConfigType("yml")
 	viper.AddConfigPath(workDir + "./")
 	// 读取配置信息
