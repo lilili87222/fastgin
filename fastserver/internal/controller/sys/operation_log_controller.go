@@ -35,7 +35,7 @@ func NewOperationLogController() OperationLogController {
 // @Param pageSize query int false "Page size"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /operation_logs [get]
+// @Router /api/auth/operation_logs [get]
 func (oc OperationLogController) GetOperationLogs(c *gin.Context) {
 	var req bean.OperationLogListRequest
 	// 绑定参数
@@ -67,7 +67,7 @@ func (oc OperationLogController) GetOperationLogs(c *gin.Context) {
 // @Param operationLogIds body bean.DeleteOperationLogRequest true "Delete operation log request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /operation_logs/batch_delete [delete]
+// @Router /api/auth/operation_logs/batch_delete [delete]
 func (oc OperationLogController) BatchDeleteOperationLogByIds(c *gin.Context) {
 	var req bean.DeleteOperationLogRequest
 	// 参数绑定

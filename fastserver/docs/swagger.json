@@ -16,9 +16,9 @@
         "version": "1.0"
     },
     "host": "192.168.123.214:8088",
-    "basePath": "/api/",
+    "basePath": "/",
     "paths": {
-        "/api": {
+        "/api/auth/api": {
             "post": {
                 "description": "Create a new API",
                 "consumes": [
@@ -58,7 +58,7 @@
                 }
             }
         },
-        "/api/batch_delete": {
+        "/api/auth/api/batch_delete": {
             "delete": {
                 "description": "Delete multiple APIs by their IDs",
                 "consumes": [
@@ -98,7 +98,7 @@
                 }
             }
         },
-        "/api/tree": {
+        "/api/auth/api/tree": {
             "get": {
                 "description": "Get the API tree categorized by the Category field",
                 "consumes": [
@@ -127,7 +127,7 @@
                 }
             }
         },
-        "/api/{apiId}": {
+        "/api/auth/api/{apiId}": {
             "put": {
                 "description": "Update an existing API by ID",
                 "consumes": [
@@ -174,7 +174,7 @@
                 }
             }
         },
-        "/apis": {
+        "/api/auth/apis": {
             "get": {
                 "description": "Get a list of APIs",
                 "consumes": [
@@ -241,7 +241,7 @@
                 }
             }
         },
-        "/menu": {
+        "/api/auth/menu": {
             "post": {
                 "description": "Create a new menu",
                 "consumes": [
@@ -281,7 +281,7 @@
                 }
             }
         },
-        "/menu/batch_delete": {
+        "/api/auth/menu/batch_delete": {
             "delete": {
                 "description": "Delete multiple menus by their IDs",
                 "consumes": [
@@ -321,7 +321,7 @@
                 }
             }
         },
-        "/menu/tree": {
+        "/api/auth/menu/tree": {
             "get": {
                 "description": "Get the menu tree",
                 "consumes": [
@@ -350,7 +350,7 @@
                 }
             }
         },
-        "/menu/{menuId}": {
+        "/api/auth/menu/{menuId}": {
             "put": {
                 "description": "Update an existing menu by ID",
                 "consumes": [
@@ -397,7 +397,7 @@
                 }
             }
         },
-        "/menus": {
+        "/api/auth/menus": {
             "get": {
                 "description": "Get a list of menus",
                 "consumes": [
@@ -426,7 +426,7 @@
                 }
             }
         },
-        "/operation_logs": {
+        "/api/auth/operation_logs": {
             "get": {
                 "description": "Get a list of operation logs",
                 "consumes": [
@@ -493,7 +493,7 @@
                 }
             }
         },
-        "/operation_logs/batch_delete": {
+        "/api/auth/operation_logs/batch_delete": {
             "delete": {
                 "description": "Delete multiple operation logs by their IDs",
                 "consumes": [
@@ -533,7 +533,7 @@
                 }
             }
         },
-        "/role": {
+        "/api/auth/role": {
             "post": {
                 "description": "Create a new role",
                 "consumes": [
@@ -573,7 +573,7 @@
                 }
             }
         },
-        "/role/batch_delete": {
+        "/api/auth/role/batch_delete": {
             "delete": {
                 "description": "Delete multiple roles by their IDs",
                 "consumes": [
@@ -613,7 +613,7 @@
                 }
             }
         },
-        "/role/{roleId}": {
+        "/api/auth/role/{roleId}": {
             "put": {
                 "description": "Update an existing role by ID",
                 "consumes": [
@@ -660,7 +660,7 @@
                 }
             }
         },
-        "/role/{roleId}/apis": {
+        "/api/auth/role/{roleId}/apis": {
             "get": {
                 "description": "Get the APIs for a role by ID",
                 "consumes": [
@@ -743,7 +743,7 @@
                 }
             }
         },
-        "/role/{roleId}/menus": {
+        "/api/auth/role/{roleId}/menus": {
             "get": {
                 "description": "Get the menus for a role by ID",
                 "consumes": [
@@ -826,7 +826,7 @@
                 }
             }
         },
-        "/roles": {
+        "/api/auth/roles": {
             "get": {
                 "description": "Get a list of roles",
                 "consumes": [
@@ -881,7 +881,7 @@
                 }
             }
         },
-        "/user/batch_delete": {
+        "/api/auth/user/batch_delete": {
             "delete": {
                 "description": "批量删除用户",
                 "consumes": [
@@ -921,7 +921,7 @@
                 }
             }
         },
-        "/user/change_pwd": {
+        "/api/auth/user/change_pwd": {
             "post": {
                 "description": "更新用户登录密码",
                 "consumes": [
@@ -961,7 +961,7 @@
                 }
             }
         },
-        "/user/create": {
+        "/api/auth/user/create": {
             "post": {
                 "description": "创建用户",
                 "consumes": [
@@ -1001,7 +1001,7 @@
                 }
             }
         },
-        "/user/info": {
+        "/api/auth/user/info": {
             "get": {
                 "description": "获取当前登录用户信息",
                 "consumes": [
@@ -1030,7 +1030,7 @@
                 }
             }
         },
-        "/user/list": {
+        "/api/auth/user/list": {
             "post": {
                 "description": "获取用户列表",
                 "consumes": [
@@ -1070,7 +1070,7 @@
                 }
             }
         },
-        "/user/update/{userId}": {
+        "/api/auth/user/update/{userId}": {
             "put": {
                 "description": "更新用户",
                 "consumes": [
@@ -1117,7 +1117,7 @@
                 }
             }
         },
-        "/user/{userId}/menu_tree": {
+        "/api/auth/user/{userId}/menu_tree": {
             "get": {
                 "description": "Get the accessible menu tree for a user by user ID",
                 "consumes": [
@@ -1155,7 +1155,7 @@
                 }
             }
         },
-        "/user/{userId}/menus": {
+        "/api/auth/user/{userId}/menus": {
             "get": {
                 "description": "Get the accessible menus for a user by user ID",
                 "consumes": [
@@ -1188,6 +1188,94 @@
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/controller.ResponseBody"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/public/login": {
+            "post": {
+                "description": "用户登录获取JWT Token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "用户登录",
+                "parameters": [
+                    {
+                        "description": "登录信息",
+                        "name": "login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"token\":\"xxx\",\"expire\":\"xxx\"}",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "{\"code\":401,\"message\":\"Unauthorized\"}",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/public/logout": {
+            "post": {
+                "description": "用户登出",
+                "tags": [
+                    "用户"
+                ],
+                "summary": "登出",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200}",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/public/refreshToken": {
+            "post": {
+                "description": "刷新JWT Token",
+                "tags": [
+                    "用户"
+                ],
+                "summary": "刷新Token",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"token\":\"xxx\",\"expire\":\"xxx\"}",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "{\"code\":401,\"message\":\"Unauthorized\"}",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
                         }
                     }
                 }

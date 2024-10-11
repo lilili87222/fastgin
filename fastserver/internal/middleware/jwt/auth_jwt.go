@@ -491,6 +491,15 @@ func (mw *GinJWTMiddleware) GetClaimsFromJWT(c *gin.Context) (MapClaims, error) 
 	return claims, nil
 }
 
+// @Summary 用户登录
+// @Description 用户登录获取JWT Token
+// @Tags 用户
+// @Accept json
+// @Produce json
+// @Param login body map[string]string true "登录信息" default({"username": "testlog", "password": "123456"})
+// @Success 200 {object} map[string]interface{} "{"code":200,"token":"xxx","expire":"xxx"}"
+// @Failure 401 {object} map[string]interface{} "{"code":401,"message":"Unauthorized"}"
+// @Router /api/public/login [post]
 // LoginHandler can be used by clients to get a jwt token.
 // Payload needs to be json in the form of {"username": "USERNAME", "password": "PASSWORD"}.
 // Reply will be of the form {"token": "TOKEN"}.
@@ -530,6 +539,11 @@ func (mw *GinJWTMiddleware) LoginHandler(c *gin.Context) {
 	mw.LoginResponse(c, http.StatusOK, tokenString, expire)
 }
 
+// @Summary 登出
+// @Description 用户登出
+// @Tags 用户
+// @Success 200 {object} map[string]interface{} "{"code":200}"
+// @Router /api/public/logout [post]
 // LogoutHandler can be used by clients to remove the jwt cookie (if set)
 func (mw *GinJWTMiddleware) LogoutHandler(c *gin.Context) {
 	// delete auth cookie
@@ -563,6 +577,12 @@ func (mw *GinJWTMiddleware) signedString(token *jwt.Token) (string, error) {
 	return tokenString, err
 }
 
+// @Summary 刷新Token
+// @Description 刷新JWT Token
+// @Tags 用户
+// @Success 200 {object} map[string]interface{} "{"code":200,"token":"xxx","expire":"xxx"}"
+// @Failure 401 {object} map[string]interface{} "{"code":401,"message":"Unauthorized"}"
+// @Router /api/public/refreshToken [post]
 // RefreshHandler can be used to refresh a token. The token still needs to be valid on refresh.
 // Shall be put under an endpoint that is using the GinJWTMiddleware.
 // Reply will be of the form {"token": "TOKEN"}.

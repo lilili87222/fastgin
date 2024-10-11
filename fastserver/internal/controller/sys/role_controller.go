@@ -37,7 +37,7 @@ func NewRoleController() RoleController {
 // @Param pageSize query int false "Page size"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /roles [get]
+// @Router /api/auth/roles [get]
 func (rc RoleController) GetRoles(c *gin.Context) {
 	var req bean.RoleListRequest
 	if err := c.ShouldBind(&req); err != nil {
@@ -66,7 +66,7 @@ func (rc RoleController) GetRoles(c *gin.Context) {
 // @Param role body bean.CreateRoleRequest true "Create role request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /role [post]
+// @Router /api/auth/role [post]
 func (rc RoleController) CreateRole(c *gin.Context) {
 	var req bean.CreateRoleRequest
 	if err := c.ShouldBind(&req); err != nil {
@@ -114,7 +114,7 @@ func (rc RoleController) CreateRole(c *gin.Context) {
 // @Param role body bean.CreateRoleRequest true "Update role request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /role/{roleId} [put]
+// @Router /api/auth/role/{roleId} [put]
 func (rc RoleController) UpdateRoleById(c *gin.Context) {
 	var req bean.CreateRoleRequest
 	if err := c.ShouldBind(&req); err != nil {
@@ -213,7 +213,7 @@ func (rc RoleController) UpdateRoleById(c *gin.Context) {
 // @Param roleId path int true "Role ID"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /role/{roleId}/menus [get]
+// @Router /api/auth/role/{roleId}/menus [get]
 func (rc RoleController) GetRoleMenusById(c *gin.Context) {
 	roleId, _ := strconv.Atoi(c.Param("roleId"))
 	if roleId <= 0 {
@@ -238,7 +238,7 @@ func (rc RoleController) GetRoleMenusById(c *gin.Context) {
 // @Param menus body bean.UpdateRoleMenusRequest true "Update role menus request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /role/{roleId}/menus [put]
+// @Router /api/auth/role/{roleId}/menus [put]
 func (rc RoleController) UpdateRoleMenusById(c *gin.Context) {
 	var req bean.UpdateRoleMenusRequest
 	// 参数绑定
@@ -360,7 +360,7 @@ func (rc RoleController) UpdateRoleMenusById(c *gin.Context) {
 // @Param roleId path int true "Role ID"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /role/{roleId}/apis [get]
+// @Router /api/auth/role/{roleId}/apis [get]
 func (rc RoleController) GetRoleApisById(c *gin.Context) {
 	roleId, _ := strconv.Atoi(c.Param("roleId"))
 	if roleId <= 0 {
@@ -395,7 +395,7 @@ func (rc RoleController) GetRoleApisById(c *gin.Context) {
 // @Param apis body bean.UpdateRoleApisRequest true "Update role APIs request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /role/{roleId}/apis [put]
+// @Router /api/auth/role/{roleId}/apis [put]
 func (rc RoleController) UpdateRoleApisById(c *gin.Context) {
 	var req bean.UpdateRoleApisRequest
 	if err := c.ShouldBind(&req); err != nil {
@@ -484,7 +484,7 @@ func (rc RoleController) UpdateRoleApisById(c *gin.Context) {
 // @Param roleIds body bean.DeleteRoleRequest true "Delete role request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /role/batch_delete [delete]
+// @Router /api/auth/role/batch_delete [delete]
 func (rc RoleController) BatchDeleteRoleByIds(c *gin.Context) {
 	var req bean.DeleteRoleRequest
 	if err := c.ShouldBind(&req); err != nil {

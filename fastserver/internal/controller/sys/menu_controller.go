@@ -31,7 +31,7 @@ func NewMenuController() MenuController {
 // @Produce json
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /menus [get]
+// @Router /api/auth/menus [get]
 func (mc MenuController) GetMenus(c *gin.Context) {
 	menus, err := mc.MenuRepository.GetMenus()
 	if err != nil {
@@ -49,7 +49,7 @@ func (mc MenuController) GetMenus(c *gin.Context) {
 // @Produce json
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /menu/tree [get]
+// @Router /api/auth/menu/tree [get]
 func (mc MenuController) GetMenuTree(c *gin.Context) {
 	menuTree, err := mc.MenuRepository.GetMenuTree()
 	if err != nil {
@@ -68,7 +68,7 @@ func (mc MenuController) GetMenuTree(c *gin.Context) {
 // @Param menu body bean.CreateMenuRequest true "Create menu request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /menu [post]
+// @Router /api/auth/menu [post]
 func (mc MenuController) CreateMenu(c *gin.Context) {
 	var req bean.CreateMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
@@ -121,7 +121,7 @@ func (mc MenuController) CreateMenu(c *gin.Context) {
 // @Param menu body bean.UpdateMenuRequest true "Update menu request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /menu/{menuId} [put]
+// @Router /api/auth/menu/{menuId} [put]
 func (mc MenuController) UpdateMenuById(c *gin.Context) {
 	var req bean.UpdateMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
@@ -178,7 +178,7 @@ func (mc MenuController) UpdateMenuById(c *gin.Context) {
 // @Param menuIds body bean.DeleteMenuRequest true "Delete menu request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /menu/batch_delete [delete]
+// @Router /api/auth/menu/batch_delete [delete]
 func (mc MenuController) BatchDeleteMenuByIds(c *gin.Context) {
 	var req bean.DeleteMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
@@ -207,7 +207,7 @@ func (mc MenuController) BatchDeleteMenuByIds(c *gin.Context) {
 // @Param userId path int true "User ID"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /user/{userId}/menus [get]
+// @Router /api/auth/user/{userId}/menus [get]
 func (mc MenuController) GetUserMenusByUserId(c *gin.Context) {
 	userId, _ := strconv.Atoi(c.Param("userId"))
 	if userId <= 0 {
@@ -231,7 +231,7 @@ func (mc MenuController) GetUserMenusByUserId(c *gin.Context) {
 // @Param userId path int true "User ID"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /user/{userId}/menu_tree [get]
+// @Router /api/auth/user/{userId}/menu_tree [get]
 func (mc MenuController) GetUserMenuTreeByUserId(c *gin.Context) {
 	userId, _ := strconv.Atoi(c.Param("userId"))
 	if userId <= 0 {

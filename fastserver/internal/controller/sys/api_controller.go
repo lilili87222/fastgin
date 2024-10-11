@@ -37,7 +37,7 @@ func NewApiController() ApiController {
 // @Param pageSize query int false "Page size"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /apis [get]
+// @Router /api/auth/apis [get]
 func (ac ApiController) GetApis(c *gin.Context) {
 	var req bean.ApiListRequest
 	if err := c.ShouldBind(&req); err != nil {
@@ -68,7 +68,7 @@ func (ac ApiController) GetApis(c *gin.Context) {
 // @Produce json
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /api/tree [get]
+// @Router /api/auth/api/tree [get]
 func (ac ApiController) GetApiTree(c *gin.Context) {
 	tree, err := ac.ApiRepository.GetApiTree()
 	if err != nil {
@@ -89,7 +89,7 @@ func (ac ApiController) GetApiTree(c *gin.Context) {
 // @Param api body bean.CreateApiRequest true "Create API request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /api [post]
+// @Router /api/auth/api [post]
 func (ac ApiController) CreateApi(c *gin.Context) {
 	var req bean.CreateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
@@ -132,7 +132,7 @@ func (ac ApiController) CreateApi(c *gin.Context) {
 // @Param api body bean.UpdateApiRequest true "Update API request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /api/{apiId} [put]
+// @Router /api/auth/api/{apiId} [put]
 func (ac ApiController) UpdateApiById(c *gin.Context) {
 	var req bean.UpdateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
@@ -179,7 +179,7 @@ func (ac ApiController) UpdateApiById(c *gin.Context) {
 // @Param apiIds body bean.DeleteApiRequest true "Delete API request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /api/batch_delete [delete]
+// @Router /api/auth/api/batch_delete [delete]
 func (ac ApiController) BatchDeleteApiByIds(c *gin.Context) {
 	var req bean.DeleteApiRequest
 	if err := c.ShouldBind(&req); err != nil {

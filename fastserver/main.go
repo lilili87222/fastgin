@@ -27,7 +27,7 @@ import (
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
 // @host 192.168.123.214:8088
-// @BasePath /api/
+// @BasePath /
 func main() {
 
 	// 加载配置文件到全局配置结构体

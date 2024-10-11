@@ -32,7 +32,7 @@ func NewUserController() UserController {
 // @Produce json
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /user/info [get]
+// @Router /api/auth/user/info [get]
 func (uc UserController) GetUserInfo(c *gin.Context) {
 	user, err := uc.UserRepository.GetCurrentUser(c)
 	if err != nil {
@@ -54,7 +54,7 @@ func (uc UserController) GetUserInfo(c *gin.Context) {
 // @Param UserListRequest body bean.UserListRequest true "User list request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /user/list [post]
+// @Router /api/auth/user/list [post]
 func (uc UserController) GetUsers(c *gin.Context) {
 	var req bean.UserListRequest
 	// 参数绑定
@@ -87,7 +87,7 @@ func (uc UserController) GetUsers(c *gin.Context) {
 // @Param ChangePwdRequest body bean.ChangePwdRequest true "Change password request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /user/change_pwd [post]
+// @Router /api/auth/user/change_pwd [post]
 func (uc UserController) ChangePwd(c *gin.Context) {
 	var req bean.ChangePwdRequest
 
@@ -150,7 +150,7 @@ func (uc UserController) ChangePwd(c *gin.Context) {
 // @Param CreateUserRequest body bean.CreateUserRequest true "Create user request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /user/create [post]
+// @Router /api/auth/user/create [post]
 func (uc UserController) CreateUser(c *gin.Context) {
 	var req bean.CreateUserRequest
 	// 参数绑定
@@ -248,7 +248,7 @@ func (uc UserController) CreateUser(c *gin.Context) {
 // @Param CreateUserRequest body bean.CreateUserRequest true "Update user request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /user/update/{userId} [put]
+// @Router /api/auth/user/update/{userId} [put]
 func (uc UserController) UpdateUserById(c *gin.Context) {
 	var req bean.CreateUserRequest
 	// 参数绑定
@@ -405,7 +405,7 @@ func (uc UserController) UpdateUserById(c *gin.Context) {
 // @Param DeleteUserRequest body bean.DeleteUserRequest true "Delete user request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
-// @Router /user/batch_delete [delete]
+// @Router /api/auth/user/batch_delete [delete]
 func (uc UserController) BatchDeleteUserByIds(c *gin.Context) {
 	var req bean.DeleteUserRequest
 	// 参数绑定

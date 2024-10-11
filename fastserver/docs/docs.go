@@ -24,7 +24,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api": {
+        "/api/auth/api": {
             "post": {
                 "description": "Create a new API",
                 "consumes": [
@@ -64,7 +64,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/batch_delete": {
+        "/api/auth/api/batch_delete": {
             "delete": {
                 "description": "Delete multiple APIs by their IDs",
                 "consumes": [
@@ -104,7 +104,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/tree": {
+        "/api/auth/api/tree": {
             "get": {
                 "description": "Get the API tree categorized by the Category field",
                 "consumes": [
@@ -133,7 +133,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/{apiId}": {
+        "/api/auth/api/{apiId}": {
             "put": {
                 "description": "Update an existing API by ID",
                 "consumes": [
@@ -180,7 +180,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/apis": {
+        "/api/auth/apis": {
             "get": {
                 "description": "Get a list of APIs",
                 "consumes": [
@@ -247,7 +247,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/menu": {
+        "/api/auth/menu": {
             "post": {
                 "description": "Create a new menu",
                 "consumes": [
@@ -287,7 +287,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/menu/batch_delete": {
+        "/api/auth/menu/batch_delete": {
             "delete": {
                 "description": "Delete multiple menus by their IDs",
                 "consumes": [
@@ -327,7 +327,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/menu/tree": {
+        "/api/auth/menu/tree": {
             "get": {
                 "description": "Get the menu tree",
                 "consumes": [
@@ -356,7 +356,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/menu/{menuId}": {
+        "/api/auth/menu/{menuId}": {
             "put": {
                 "description": "Update an existing menu by ID",
                 "consumes": [
@@ -403,7 +403,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/menus": {
+        "/api/auth/menus": {
             "get": {
                 "description": "Get a list of menus",
                 "consumes": [
@@ -432,7 +432,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/operation_logs": {
+        "/api/auth/operation_logs": {
             "get": {
                 "description": "Get a list of operation logs",
                 "consumes": [
@@ -499,7 +499,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/operation_logs/batch_delete": {
+        "/api/auth/operation_logs/batch_delete": {
             "delete": {
                 "description": "Delete multiple operation logs by their IDs",
                 "consumes": [
@@ -539,7 +539,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/role": {
+        "/api/auth/role": {
             "post": {
                 "description": "Create a new role",
                 "consumes": [
@@ -579,7 +579,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/role/batch_delete": {
+        "/api/auth/role/batch_delete": {
             "delete": {
                 "description": "Delete multiple roles by their IDs",
                 "consumes": [
@@ -619,7 +619,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/role/{roleId}": {
+        "/api/auth/role/{roleId}": {
             "put": {
                 "description": "Update an existing role by ID",
                 "consumes": [
@@ -666,7 +666,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/role/{roleId}/apis": {
+        "/api/auth/role/{roleId}/apis": {
             "get": {
                 "description": "Get the APIs for a role by ID",
                 "consumes": [
@@ -749,7 +749,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/role/{roleId}/menus": {
+        "/api/auth/role/{roleId}/menus": {
             "get": {
                 "description": "Get the menus for a role by ID",
                 "consumes": [
@@ -832,7 +832,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/roles": {
+        "/api/auth/roles": {
             "get": {
                 "description": "Get a list of roles",
                 "consumes": [
@@ -887,7 +887,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/batch_delete": {
+        "/api/auth/user/batch_delete": {
             "delete": {
                 "description": "批量删除用户",
                 "consumes": [
@@ -927,7 +927,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/change_pwd": {
+        "/api/auth/user/change_pwd": {
             "post": {
                 "description": "更新用户登录密码",
                 "consumes": [
@@ -967,7 +967,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/create": {
+        "/api/auth/user/create": {
             "post": {
                 "description": "创建用户",
                 "consumes": [
@@ -1007,7 +1007,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/info": {
+        "/api/auth/user/info": {
             "get": {
                 "description": "获取当前登录用户信息",
                 "consumes": [
@@ -1036,7 +1036,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/list": {
+        "/api/auth/user/list": {
             "post": {
                 "description": "获取用户列表",
                 "consumes": [
@@ -1076,7 +1076,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/update/{userId}": {
+        "/api/auth/user/update/{userId}": {
             "put": {
                 "description": "更新用户",
                 "consumes": [
@@ -1123,7 +1123,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/{userId}/menu_tree": {
+        "/api/auth/user/{userId}/menu_tree": {
             "get": {
                 "description": "Get the accessible menu tree for a user by user ID",
                 "consumes": [
@@ -1161,7 +1161,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/{userId}/menus": {
+        "/api/auth/user/{userId}/menus": {
             "get": {
                 "description": "Get the accessible menus for a user by user ID",
                 "consumes": [
@@ -1194,6 +1194,94 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/controller.ResponseBody"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/public/login": {
+            "post": {
+                "description": "用户登录获取JWT Token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "用户登录",
+                "parameters": [
+                    {
+                        "description": "登录信息",
+                        "name": "login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"token\":\"xxx\",\"expire\":\"xxx\"}",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "{\"code\":401,\"message\":\"Unauthorized\"}",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/public/logout": {
+            "post": {
+                "description": "用户登出",
+                "tags": [
+                    "用户"
+                ],
+                "summary": "登出",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200}",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/public/refreshToken": {
+            "post": {
+                "description": "刷新JWT Token",
+                "tags": [
+                    "用户"
+                ],
+                "summary": "刷新Token",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"token\":\"xxx\",\"expire\":\"xxx\"}",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "{\"code\":401,\"message\":\"Unauthorized\"}",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
                         }
                     }
                 }
@@ -1653,7 +1741,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "192.168.123.214:8088",
-	BasePath:         "/api/",
+	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Go Web fastgin API",
 	Description:      "This is a sample server for a Go web mini project.",
