@@ -1,10 +1,10 @@
 package middleware
 
 import (
+	"fastgin/config"
+	"fastgin/internal/controller"
+	"fastgin/internal/dao/sys"
 	"github.com/gin-gonic/gin"
-	"go-web-mini/config"
-	"go-web-mini/internal/controller"
-	"go-web-mini/internal/dao/sys"
 	"strings"
 	"sync"
 )

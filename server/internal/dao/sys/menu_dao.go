@@ -1,9 +1,9 @@
 package sys
 
 import (
+	"fastgin/config"
+	"fastgin/internal/model/sys"
 	"github.com/thoas/go-funk"
-	"go-web-mini/config"
-	"go-web-mini/internal/model/sys"
 )
 
 type IMenuRepository interface {

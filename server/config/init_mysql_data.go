@@ -2,9 +2,9 @@ package config
 
 import (
 	"errors"
+	"fastgin/internal/model/sys"
+	"fastgin/internal/util"
 	"github.com/thoas/go-funk"
-	"go-web-mini/internal/model/sys"
-	"go-web-mini/internal/util"
 	"gorm.io/gorm"
 )
 

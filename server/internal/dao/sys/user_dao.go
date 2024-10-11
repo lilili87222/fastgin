@@ -2,14 +2,14 @@ package sys
 
 import (
 	"errors"
+	"fastgin/config"
+	"fastgin/internal/bean"
+	"fastgin/internal/model/sys"
+	"fastgin/internal/util"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/patrickmn/go-cache"
 	"github.com/thoas/go-funk"
-	"go-web-mini/config"
-	"go-web-mini/internal/bean"
-	"go-web-mini/internal/model/sys"
-	"go-web-mini/internal/util"
 	"strings"
 	"time"
 )

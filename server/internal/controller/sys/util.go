@@ -1,7 +1,7 @@
 package sys
 
 import (
-	"go-web-mini/internal/model/sys"
+	"fastgin/internal/model/sys"
 )
 
 // 返回给前端的当前用户信息

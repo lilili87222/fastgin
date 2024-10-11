@@ -1,10 +1,10 @@
 package config
 
 import (
+	"fastgin/internal/util"
 	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
-	"go-web-mini/internal/util"
 	"go.uber.org/zap/zapcore"
 	"os"
 )

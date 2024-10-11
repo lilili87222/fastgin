@@ -1,10 +1,10 @@
 package sys
 
 import (
+	"fastgin/config"
+	"fastgin/internal/bean"
+	"fastgin/internal/model/sys"
 	"fmt"
-	"go-web-mini/config"
-	"go-web-mini/internal/bean"
-	"go-web-mini/internal/model/sys"
 	"strings"
 )
 

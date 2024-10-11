@@ -1,10 +1,10 @@
 package middleware
 
 import (
+	"fastgin/config"
+	sys2 "fastgin/internal/dao/sys"
+	"fastgin/internal/model/sys"
 	"github.com/gin-gonic/gin"
-	"go-web-mini/config"
-	sys2 "go-web-mini/internal/dao/sys"
-	"go-web-mini/internal/model/sys"
 	"strings"
 	"time"
 )

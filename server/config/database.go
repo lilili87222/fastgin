@@ -1,8 +1,8 @@
 package config
 
 import (
+	"fastgin/internal/model/sys"
 	"fmt"
-	"go-web-mini/internal/model/sys"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

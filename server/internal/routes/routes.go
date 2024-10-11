@@ -1,11 +1,14 @@
 package routes
 
 import (
+	"fastgin/config"
+	_ "fastgin/docs" // Import the generated docs
+	middleware2 "fastgin/internal/middleware"
+	"fastgin/internal/routes/sys"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"go-web-mini/config"
-	middleware2 "go-web-mini/internal/middleware"
-	"go-web-mini/internal/routes/sys"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"time"
 )
 
@@ -50,6 +53,8 @@ func InitRoutes() *gin.Engine {
 	sys.InitMenuRoutes(apiGroup, authMiddleware)         // 注册菜单路由, jwt认证中间件,casbin鉴权中间件
 	sys.InitApiRoutes(apiGroup, authMiddleware)          // 注册接口路由, jwt认证中间件,casbin鉴权中间件
 	sys.InitOperationLogRoutes(apiGroup, authMiddleware) // 注册操作日志路由, jwt认证中间件,casbin鉴权中间件
+
+	r.Group("/").GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	config.Log.Info("初始化路由完成！")
 	return r

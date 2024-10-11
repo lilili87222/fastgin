@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
+	"fastgin/config"
+	"fastgin/internal/dao/sys"
+	"fastgin/internal/middleware"
+	"fastgin/internal/routes"
 	"fmt"
-	"go-web-mini/config"
-	"go-web-mini/internal/dao/sys"
-	"go-web-mini/internal/middleware"
-	"go-web-mini/internal/routes"
 	"net/http"
 	"os"
 	"os/signal"
@@ -14,6 +14,20 @@ import (
 	"time"
 )
 
+// @title Go Web fastgin API
+// @version 1.0
+// @description This is a sample server for a Go web mini project.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:8080
+// @BasePath /
 func main() {
 
 	// 加载配置文件到全局配置结构体
@@ -43,6 +57,7 @@ func main() {
 
 	// 注册所有路由
 	r := routes.InitRoutes()
+	// Add Swagger routes
 
 	host := "localhost"
 	port := config.Conf.System.Port

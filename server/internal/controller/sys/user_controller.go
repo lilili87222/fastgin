@@ -1,15 +1,15 @@
 package sys
 
 import (
+	"fastgin/config"
+	"fastgin/internal/bean"
+	"fastgin/internal/controller"
+	sys2 "fastgin/internal/dao/sys"
+	"fastgin/internal/model/sys"
+	util2 "fastgin/internal/util"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/thoas/go-funk"
-	"go-web-mini/config"
-	"go-web-mini/internal/bean"
-	"go-web-mini/internal/controller"
-	sys2 "go-web-mini/internal/dao/sys"
-	"go-web-mini/internal/model/sys"
-	util2 "go-web-mini/internal/util"
 	"strconv"
 )
 

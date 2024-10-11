@@ -1,12 +1,12 @@
 package sys
 
 import (
+	"fastgin/config"
+	"fastgin/internal/bean"
+	"fastgin/internal/controller"
+	"fastgin/internal/dao/sys"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"go-web-mini/config"
-	"go-web-mini/internal/bean"
-	"go-web-mini/internal/controller"
-	"go-web-mini/internal/dao/sys"
 )
 
 type IOperationLogController interface {

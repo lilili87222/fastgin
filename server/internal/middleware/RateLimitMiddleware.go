@@ -1,9 +1,9 @@
 package middleware
 
 import (
+	"fastgin/internal/controller"
 	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"
-	"go-web-mini/internal/controller"
 	"time"
 )
 
