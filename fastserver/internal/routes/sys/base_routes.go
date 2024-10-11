@@ -11,7 +11,7 @@ func InitBaseRoutes(r *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) gi
 	{
 		// 登录登出刷新token无需鉴权
 		router.POST("/login", authMiddleware.LoginHandler)
-		router.GET("/login", authMiddleware.LoginHandler)
+		//router.GET("/login", authMiddleware.LoginHandler)
 		router.POST("/logout", authMiddleware.LogoutHandler)
 		router.POST("/refreshToken", authMiddleware.RefreshHandler)
 	}
