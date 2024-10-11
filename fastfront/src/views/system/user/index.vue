@@ -273,7 +273,8 @@ wLXapv+ZfsjG7NgdawIDAQAB
             // 设置公钥
             encryptor.setPublicKey(this.publicKey)
             // 加密密码
-            const encPassword = encryptor.encrypt(this.dialogFormData.password)
+            //const encPassword = encryptor.encrypt(this.dialogFormData.password)
+            const encPassword = this.dialogFormData.password
             this.dialogFormDataCopy.password = encPassword
           }
           let msg = ''

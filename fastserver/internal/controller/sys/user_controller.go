@@ -105,18 +105,18 @@ func (uc UserController) ChangePwd(c *gin.Context) {
 
 	// 前端传来的密码是rsa加密的,先解密
 	// 密码通过RSA解密
-	decodeOldPassword, err := util2.RSADecrypt([]byte(req.OldPassword), config.Conf.System.RSAPrivateBytes)
-	if err != nil {
-		controller.Fail(c, nil, err.Error())
-		return
-	}
-	decodeNewPassword, err := util2.RSADecrypt([]byte(req.NewPassword), config.Conf.System.RSAPrivateBytes)
-	if err != nil {
-		controller.Fail(c, nil, err.Error())
-		return
-	}
-	req.OldPassword = string(decodeOldPassword)
-	req.NewPassword = string(decodeNewPassword)
+	//decodeOldPassword, err := util2.RSADecrypt([]byte(req.OldPassword), config.Conf.System.RSAPrivateBytes)
+	//if err != nil {
+	//	controller.Fail(c, nil, err.Error())
+	//	return
+	//}
+	//decodeNewPassword, err := util2.RSADecrypt([]byte(req.NewPassword), config.Conf.System.RSAPrivateBytes)
+	//if err != nil {
+	//	controller.Fail(c, nil, err.Error())
+	//	return
+	//}
+	//req.OldPassword = string(decodeOldPassword)
+	//req.NewPassword = string(decodeNewPassword)
 
 	// 获取当前用户
 	user, err := uc.UserRepository.GetCurrentUser(c)
@@ -167,18 +167,18 @@ func (uc UserController) CreateUser(c *gin.Context) {
 
 	// 密码通过RSA解密
 	// 密码不为空就解密
-	if req.Password != "" {
-		decodeData, err := util2.RSADecrypt([]byte(req.Password), config.Conf.System.RSAPrivateBytes)
-		if err != nil {
-			controller.Fail(c, nil, err.Error())
-			return
-		}
-		req.Password = string(decodeData)
-		if len(req.Password) < 6 {
-			controller.Fail(c, nil, "密码长度至少为6位")
-			return
-		}
-	}
+	//if req.Password != "" {
+	//	decodeData, err := util2.RSADecrypt([]byte(req.Password), config.Conf.System.RSAPrivateBytes)
+	//	if err != nil {
+	//		controller.Fail(c, nil, err.Error())
+	//		return
+	//	}
+	//	req.Password = string(decodeData)
+	//	if len(req.Password) < 6 {
+	//		controller.Fail(c, nil, "密码长度至少为6位")
+	//		return
+	//	}
+	//}
 
 	// 当前用户角色排序最小值（最高等级角色）以及当前用户
 	currentRoleSortMin, ctxUser, err := uc.UserRepository.GetCurrentUserMinRoleSort(c)
@@ -373,16 +373,17 @@ func (uc UserController) UpdateUserById(c *gin.Context) {
 		}
 
 		// 密码赋值
-		if req.Password != "" {
-			// 密码通过RSA解密
-			decodeData, err := util2.RSADecrypt([]byte(req.Password), config.Conf.System.RSAPrivateBytes)
-			if err != nil {
-				controller.Fail(c, nil, err.Error())
-				return
-			}
-			req.Password = string(decodeData)
-			user.Password = util2.GenPasswd(req.Password)
-		}
+		//if req.Password != "" {
+		//	// 密码通过RSA解密
+		//	decodeData, err := util2.RSADecrypt([]byte(req.Password), config.Conf.System.RSAPrivateBytes)
+		//	if err != nil {
+		//		controller.Fail(c, nil, err.Error())
+		//		return
+		//	}
+		//	req.Password = string(decodeData)
+		//	user.Password = util2.GenPasswd(req.Password)
+		//}
+		user.Password = util2.GenPasswd(req.Password)
 
 	}
 

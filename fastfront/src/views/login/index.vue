@@ -137,7 +137,8 @@ wLXapv+ZfsjG7NgdawIDAQAB
           // 设置公钥
           encryptor.setPublicKey(this.publicKey)
           // 加密密码
-          const encPassword = encryptor.encrypt(this.loginForm.password)
+         // const encPassword = encryptor.encrypt(this.loginForm.password)
+          const encPassword = this.loginForm.password
           const encLoginForm = { username: this.loginForm.username, password: encPassword }
           this.$store.dispatch('user/login', encLoginForm)
             .then(() => {

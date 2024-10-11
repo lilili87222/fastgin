@@ -98,9 +98,13 @@ wLXapv+ZfsjG7NgdawIDAQAB
           // 设置公钥
           encryptor.setPublicKey(this.publicKey)
           // 加密密码
-          const oldPasswd = encryptor.encrypt(this.dialogFormData.oldPassword)
-          const newPasswd = encryptor.encrypt(this.dialogFormData.newPassword)
-          const confirmPasswd = encryptor.encrypt(this.dialogFormData.confirmPassword)
+          //const oldPasswd = encryptor.encrypt(this.dialogFormData.oldPassword)
+         // const newPasswd = encryptor.encrypt(this.dialogFormData.newPassword)
+         // const confirmPasswd = encryptor.encrypt(this.dialogFormData.confirmPassword)
+
+          const oldPasswd = this.dialogFormData.oldPassword
+          const newPasswd = this.dialogFormData.newPassword
+          const confirmPasswd = this.dialogFormData.confirmPassword
           this.dialogFormDataCopy.oldPassword = oldPasswd
           this.dialogFormDataCopy.newPassword = newPasswd
           this.dialogFormDataCopy.confirmPassword = confirmPasswd
