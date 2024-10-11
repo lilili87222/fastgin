@@ -25,6 +25,14 @@ func NewUserController() UserController {
 }
 
 // 获取当前登录用户信息
+// @Summary 获取当前登录用户信息
+// @Description 获取当前登录用户信息
+// @Tags User
+// @Accept json
+// @Produce json
+// @Success 200 {object} controller.ResponseBody
+// @Failure 400 {object} controller.ResponseBody
+// @Router /user/info [get]
 func (uc UserController) GetUserInfo(c *gin.Context) {
 	user, err := uc.UserRepository.GetCurrentUser(c)
 	if err != nil {
@@ -38,6 +46,15 @@ func (uc UserController) GetUserInfo(c *gin.Context) {
 }
 
 // 获取用户列表
+// @Summary 获取用户列表
+// @Description 获取用户列表
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param UserListRequest body bean.UserListRequest true "User list request"
+// @Success 200 {object} controller.ResponseBody
+// @Failure 400 {object} controller.ResponseBody
+// @Router /user/list [post]
 func (uc UserController) GetUsers(c *gin.Context) {
 	var req bean.UserListRequest
 	// 参数绑定
@@ -62,6 +79,15 @@ func (uc UserController) GetUsers(c *gin.Context) {
 }
 
 // 更新用户登录密码
+// @Summary 更新用户登录密码
+// @Description 更新用户登录密码
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param ChangePwdRequest body bean.ChangePwdRequest true "Change password request"
+// @Success 200 {object} controller.ResponseBody
+// @Failure 400 {object} controller.ResponseBody
+// @Router /user/change_pwd [post]
 func (uc UserController) ChangePwd(c *gin.Context) {
 	var req bean.ChangePwdRequest
 
@@ -116,6 +142,15 @@ func (uc UserController) ChangePwd(c *gin.Context) {
 }
 
 // 创建用户
+// @Summary 创建用户
+// @Description 创建用户
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param CreateUserRequest body bean.CreateUserRequest true "Create user request"
+// @Success 200 {object} controller.ResponseBody
+// @Failure 400 {object} controller.ResponseBody
+// @Router /user/create [post]
 func (uc UserController) CreateUser(c *gin.Context) {
 	var req bean.CreateUserRequest
 	// 参数绑定
@@ -170,7 +205,7 @@ func (uc UserController) CreateUser(c *gin.Context) {
 		reqRoleSorts = append(reqRoleSorts, int(role.Sort))
 	}
 	// 前端传来用户角色排序最小值（最高等级角色）
-	reqRoleSortMin := uint(funk.MinInt(reqRoleSorts).(int))
+	reqRoleSortMin := uint(funk.MinInt(reqRoleSorts))
 
 	// 当前用户的角色排序最小值 需要小于 前端传来的角色排序最小值（用户不能创建比自己等级高的或者相同等级的用户）
 	if currentRoleSortMin >= reqRoleSortMin {
@@ -204,6 +239,16 @@ func (uc UserController) CreateUser(c *gin.Context) {
 }
 
 // 更新用户
+// @Summary 更新用户
+// @Description 更新用户
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param userId path int true "User ID"
+// @Param CreateUserRequest body bean.CreateUserRequest true "Update user request"
+// @Success 200 {object} controller.ResponseBody
+// @Failure 400 {object} controller.ResponseBody
+// @Router /user/update/{userId} [put]
 func (uc UserController) UpdateUserById(c *gin.Context) {
 	var req bean.CreateUserRequest
 	// 参数绑定
@@ -249,7 +294,7 @@ func (uc UserController) UpdateUserById(c *gin.Context) {
 		currentRoleIds = append(currentRoleIds, role.ID)
 	}
 	// 当前用户角色排序最小值（最高等级角色）
-	currentRoleSortMin := funk.MinInt(currentRoleSorts).(int)
+	currentRoleSortMin := funk.MinInt(currentRoleSorts)
 
 	// 获取前端传来的用户角色id
 	reqRoleIds := req.RoleIds
@@ -269,7 +314,7 @@ func (uc UserController) UpdateUserById(c *gin.Context) {
 		reqRoleSorts = append(reqRoleSorts, int(role.Sort))
 	}
 	// 前端传来用户角色排序最小值（最高等级角色）
-	reqRoleSortMin := funk.MinInt(reqRoleSorts).(int)
+	reqRoleSortMin := funk.MinInt(reqRoleSorts)
 
 	user := sys.User{
 		Model:        oldUser.Model,
@@ -352,6 +397,15 @@ func (uc UserController) UpdateUserById(c *gin.Context) {
 }
 
 // 批量删除用户
+// @Summary 批量删除用户
+// @Description 批量删除用户
+// @Tags User
+// @Accept json
+// @Produce json
+// @Param DeleteUserRequest body bean.DeleteUserRequest true "Delete user request"
+// @Success 200 {object} controller.ResponseBody
+// @Failure 400 {object} controller.ResponseBody
+// @Router /user/batch_delete [delete]
 func (uc UserController) BatchDeleteUserByIds(c *gin.Context) {
 	var req bean.DeleteUserRequest
 	// 参数绑定

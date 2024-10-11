@@ -5,6 +5,12 @@ import (
 	"net/http"
 )
 
+type ResponseBody struct {
+	Code int            `json:"code"`
+	Msg  string         `json:"message"`
+	Data map[string]any `json:"data"`
+}
+
 // 返回前端
 func Response(c *gin.Context, httpStatus int, code int, data gin.H, message string) {
 	c.JSON(httpStatus, gin.H{"code": code, "data": data, "message": message})

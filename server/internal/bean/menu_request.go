@@ -19,7 +19,7 @@ type CreateMenuRequest struct {
 }
 
 // 更新接口结构体
-type UpdateMenuRequest2 struct {
+type UpdateMenuRequest struct {
 	Name       string `json:"name" form:"name" validate:"required,min=1,max=50"`
 	Title      string `json:"title" form:"title" validate:"required,min=1,max=50"`
 	Icon       string `json:"icon" form:"icon" validate:"min=0,max=50"`

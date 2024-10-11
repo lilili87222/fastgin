@@ -11,17 +11,27 @@ import (
 	"strconv"
 )
 
+// MenuController handles menu-related requests
 type MenuController struct {
 	MenuRepository sys2.MenuRepository
 }
 
+// NewMenuController creates a new MenuController
 func NewMenuController() MenuController {
 	menuRepository := sys2.NewMenuRepository()
 	menuController := MenuController{MenuRepository: menuRepository}
 	return menuController
 }
 
-// 获取菜单列表
+// GetMenus retrieves a list of menus
+// @Summary Get menu list
+// @Description Get a list of menus
+// @Tags Menu
+// @Accept json
+// @Produce json
+// @Success 200 {object} controller.ResponseBody
+// @Failure 400 {object} controller.ResponseBody
+// @Router /menus [get]
 func (mc MenuController) GetMenus(c *gin.Context) {
 	menus, err := mc.MenuRepository.GetMenus()
 	if err != nil {
@@ -31,7 +41,15 @@ func (mc MenuController) GetMenus(c *gin.Context) {
 	controller.Success(c, gin.H{"menus": menus}, "获取菜单列表成功")
 }
 
-// 获取菜单树
+// GetMenuTree retrieves the menu tree
+// @Summary Get menu tree
+// @Description Get the menu tree
+// @Tags Menu
+// @Accept json
+// @Produce json
+// @Success 200 {object} controller.ResponseBody
+// @Failure 400 {object} controller.ResponseBody
+// @Router /menu/tree [get]
 func (mc MenuController) GetMenuTree(c *gin.Context) {
 	menuTree, err := mc.MenuRepository.GetMenuTree()
 	if err != nil {
@@ -41,29 +59,33 @@ func (mc MenuController) GetMenuTree(c *gin.Context) {
 	controller.Success(c, gin.H{"menuTree": menuTree}, "获取菜单树成功")
 }
 
-// 创建菜单
+// CreateMenu creates a new menu
+// @Summary Create menu
+// @Description Create a new menu
+// @Tags Menu
+// @Accept json
+// @Produce json
+// @Param menu body bean.CreateMenuRequest true "Create menu request"
+// @Success 200 {object} controller.ResponseBody
+// @Failure 400 {object} controller.ResponseBody
+// @Router /menu [post]
 func (mc MenuController) CreateMenu(c *gin.Context) {
 	var req bean.CreateMenuRequest
-	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
 	}
-	// 参数校验
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
 		controller.Fail(c, nil, errStr)
 		return
 	}
-
-	// 获取当前用户
 	ur := sys2.NewUserRepository()
 	ctxUser, err := ur.GetCurrentUser(c)
 	if err != nil {
 		controller.Fail(c, nil, "获取当前用户信息失败")
 		return
 	}
-
 	menu := sys.Menu{
 		Name:       req.Name,
 		Title:      req.Title,
@@ -81,7 +103,6 @@ func (mc MenuController) CreateMenu(c *gin.Context) {
 		ParentId:   &req.ParentId,
 		Creator:    ctxUser.Username,
 	}
-
 	err = mc.MenuRepository.CreateMenu(&menu)
 	if err != nil {
 		controller.Fail(c, nil, "创建菜单失败: "+err.Error())
@@ -90,52 +111,39 @@ func (mc MenuController) CreateMenu(c *gin.Context) {
 	controller.Success(c, nil, "创建菜单成功")
 }
 
-// 更新菜单
+// UpdateMenuById updates an existing menu by ID
+// @Summary Update menu
+// @Description Update an existing menu by ID
+// @Tags Menu
+// @Accept json
+// @Produce json
+// @Param menuId path int true "Menu ID"
+// @Param menu body bean.UpdateMenuRequest true "Update menu request"
+// @Success 200 {object} controller.ResponseBody
+// @Failure 400 {object} controller.ResponseBody
+// @Router /menu/{menuId} [put]
 func (mc MenuController) UpdateMenuById(c *gin.Context) {
-	type UpdateMenuRequest struct {
-		Name       string `json:"name" form:"name" validate:"required,min=1,max=50"`
-		Title      string `json:"title" form:"title" validate:"required,min=1,max=50"`
-		Icon       string `json:"icon" form:"icon" validate:"min=0,max=50"`
-		Path       string `json:"path" form:"path" validate:"required,min=1,max=100"`
-		Redirect   string `json:"redirect" form:"redirect" validate:"min=0,max=100"`
-		Component  string `json:"component" form:"component" validate:"min=0,max=100"`
-		Sort       uint   `json:"sort" form:"sort" validate:"gte=1,lte=999"`
-		Status     uint   `json:"status" form:"status" validate:"oneof=1 2"`
-		Hidden     uint   `json:"hidden" form:"hidden" validate:"oneof=1 2"`
-		NoCache    uint   `json:"noCache" form:"noCache" validate:"oneof=1 2"`
-		AlwaysShow uint   `json:"alwaysShow" form:"alwaysShow" validate:"oneof=1 2"`
-		Breadcrumb uint   `json:"breadcrumb" form:"breadcrumb" validate:"oneof=1 2"`
-		ActiveMenu string `json:"activeMenu" form:"activeMenu" validate:"min=0,max=100"`
-		ParentId   uint   `json:"parentId" form:"parentId"`
-	}
-	var req UpdateMenuRequest
-	// 参数绑定
+	var req bean.UpdateMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
 	}
-	// 参数校验
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
 		controller.Fail(c, nil, errStr)
 		return
 	}
-
-	// 获取路径中的menuId
 	menuId, _ := strconv.Atoi(c.Param("menuId"))
 	if menuId <= 0 {
 		controller.Fail(c, nil, "菜单ID不正确")
 		return
 	}
-
-	// 获取当前用户
 	ur := sys2.NewUserRepository()
 	ctxUser, err := ur.GetCurrentUser(c)
 	if err != nil {
 		controller.Fail(c, nil, "获取当前用户信息失败")
 		return
 	}
-
 	menu := sys.Menu{
 		Name:       req.Name,
 		Title:      req.Title,
@@ -153,26 +161,30 @@ func (mc MenuController) UpdateMenuById(c *gin.Context) {
 		ParentId:   &req.ParentId,
 		Creator:    ctxUser.Username,
 	}
-
 	err = mc.MenuRepository.UpdateMenuById(uint(menuId), &menu)
 	if err != nil {
 		controller.Fail(c, nil, "更新菜单失败: "+err.Error())
 		return
 	}
-
 	controller.Success(c, nil, "更新菜单成功")
-
 }
 
-// 批量删除菜单
+// BatchDeleteMenuByIds deletes multiple menus by their IDs
+// @Summary Batch delete menus
+// @Description Delete multiple menus by their IDs
+// @Tags Menu
+// @Accept json
+// @Produce json
+// @Param menuIds body bean.DeleteMenuRequest true "Delete menu request"
+// @Success 200 {object} controller.ResponseBody
+// @Failure 400 {object} controller.ResponseBody
+// @Router /menu/batch_delete [delete]
 func (mc MenuController) BatchDeleteMenuByIds(c *gin.Context) {
 	var req bean.DeleteMenuRequest
-	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
 	}
-	// 参数校验
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
 		controller.Fail(c, nil, errStr)
@@ -183,19 +195,25 @@ func (mc MenuController) BatchDeleteMenuByIds(c *gin.Context) {
 		controller.Fail(c, nil, "删除菜单失败: "+err.Error())
 		return
 	}
-
 	controller.Success(c, nil, "删除菜单成功")
 }
 
-// 根据用户ID获取用户的可访问菜单列表
+// GetUserMenusByUserId retrieves the accessible menus for a user by user ID
+// @Summary Get user menus by user ID
+// @Description Get the accessible menus for a user by user ID
+// @Tags Menu
+// @Accept json
+// @Produce json
+// @Param userId path int true "User ID"
+// @Success 200 {object} controller.ResponseBody
+// @Failure 400 {object} controller.ResponseBody
+// @Router /user/{userId}/menus [get]
 func (mc MenuController) GetUserMenusByUserId(c *gin.Context) {
-	// 获取路径中的userId
 	userId, _ := strconv.Atoi(c.Param("userId"))
 	if userId <= 0 {
 		controller.Fail(c, nil, "用户ID不正确")
 		return
 	}
-
 	menus, err := mc.MenuRepository.GetUserMenusByUserId(uint(userId))
 	if err != nil {
 		controller.Fail(c, nil, "获取用户的可访问菜单列表失败: "+err.Error())
@@ -204,15 +222,22 @@ func (mc MenuController) GetUserMenusByUserId(c *gin.Context) {
 	controller.Success(c, gin.H{"menus": menus}, "获取用户的可访问菜单列表成功")
 }
 
-// 根据用户ID获取用户的可访问菜单树
+// GetUserMenuTreeByUserId retrieves the accessible menu tree for a user by user ID
+// @Summary Get user menu tree by user ID
+// @Description Get the accessible menu tree for a user by user ID
+// @Tags Menu
+// @Accept json
+// @Produce json
+// @Param userId path int true "User ID"
+// @Success 200 {object} controller.ResponseBody
+// @Failure 400 {object} controller.ResponseBody
+// @Router /user/{userId}/menu_tree [get]
 func (mc MenuController) GetUserMenuTreeByUserId(c *gin.Context) {
-	// 获取路径中的userId
 	userId, _ := strconv.Atoi(c.Param("userId"))
 	if userId <= 0 {
 		controller.Fail(c, nil, "用户ID不正确")
 		return
 	}
-
 	menuTree, err := mc.MenuRepository.GetUserMenuTreeByUserId(uint(userId))
 	if err != nil {
 		controller.Fail(c, nil, "获取用户的可访问菜单树失败: "+err.Error())

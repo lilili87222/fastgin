@@ -26,8 +26,8 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host localhost:8080
-// @BasePath /
+// @host localhost:8088
+// @BasePath /api/
 func main() {
 
 	// 加载配置文件到全局配置结构体

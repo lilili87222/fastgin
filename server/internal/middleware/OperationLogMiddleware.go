@@ -4,6 +4,7 @@ import (
 	"fastgin/config"
 	sys2 "fastgin/internal/dao/sys"
 	"fastgin/internal/model/sys"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"strings"
 	"time"
@@ -38,8 +39,12 @@ func OperationLogMiddleware() gin.HandlerFunc {
 		}
 		username = user.Username
 
+		//requestPath := c.Request.RequestURI
+		fullPath := c.FullPath()
+		requestURL := c.Request.RequestURI
+		fmt.Println("requestPath:", requestURL, "fullPath:", fullPath)
 		// 获取访问路径
-		path := strings.TrimPrefix(c.FullPath(), "/"+config.Conf.System.UrlPathPrefix)
+		path := strings.TrimPrefix(fullPath, "/"+config.Conf.System.UrlPathPrefix)
 		// 请求方式
 		method := c.Request.Method
 

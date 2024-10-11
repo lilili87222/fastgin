@@ -111,9 +111,10 @@ func (ur UserRepository) GetCurrentUserMinRoleSort(c *gin.Context) (uint, sys.Us
 		currentRoleSorts = append(currentRoleSorts, int(role.Sort))
 	}
 	// 当前用户角色排序最小值（最高等级角色）
-	currentRoleSortMin := uint(funk.MinInt(currentRoleSorts).(int))
+	currentRoleSortMin := funk.MinInt(currentRoleSorts)
+	//currentRoleSortMin := uint(funk.MinInt(currentRoleSorts).(int))
 
-	return currentRoleSortMin, ctxUser, nil
+	return uint(currentRoleSortMin), ctxUser, nil
 }
 
 // 获取单个用户
@@ -248,7 +249,7 @@ func (ur UserRepository) GetUserMinRoleSortsByIds(ids []uint) ([]int, error) {
 		for _, role := range roles {
 			roleSortList = append(roleSortList, int(role.Sort))
 		}
-		roleMinSort := funk.MinInt(roleSortList).(int)
+		roleMinSort := funk.MinInt(roleSortList)
 		roleMinSortList = append(roleMinSortList, roleMinSort)
 	}
 	return roleMinSortList, nil
