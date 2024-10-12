@@ -263,7 +263,7 @@ func InitData() {
 			Creator:  "系统",
 		},
 		{
-			Method:   "POST",
+			Method:   "GET",
 			Path:     "/user/info",
 			Category: "user",
 			Desc:     "获取当前登录用户信息",

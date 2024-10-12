@@ -12,6 +12,7 @@ func InitUserRoutes(r *gin.RouterGroup) gin.IRoutes {
 	// 开启casbin鉴权中间件
 	//router.Use(middleware.CasbinMiddleware())
 	{
+		router.GET("/info", userController.GetUserInfo)
 		router.POST("/info", userController.GetUserInfo)
 		router.GET("/list", userController.GetUsers)
 		router.PUT("/changePwd", userController.ChangePwd)
