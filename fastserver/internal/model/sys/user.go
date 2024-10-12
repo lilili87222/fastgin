@@ -14,3 +14,11 @@ type User struct {
 	Creator      string  `gorm:"type:varchar(20);" json:"creator"`
 	Roles        []*Role `gorm:"many2many:user_roles" json:"roles"`
 }
+
+func (user *User) GetRoleIds() []uint {
+	roleIds := make([]uint, 0)
+	for _, role := range user.Roles {
+		roleIds = append(roleIds, role.ID)
+	}
+	return roleIds
+}

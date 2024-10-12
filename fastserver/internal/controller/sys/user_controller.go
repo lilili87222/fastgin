@@ -9,6 +9,7 @@ import (
 	util2 "fastgin/internal/util"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/jinzhu/copier"
 	"github.com/thoas/go-funk"
 	"slices"
 	"strconv"
@@ -35,12 +36,22 @@ func NewUserController() UserController {
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/user/info [get]
 func (uc UserController) GetUserInfo(c *gin.Context) {
+	type UserInfoDto struct {
+		ID           uint        `json:"id"`
+		Username     string      `json:"username"`
+		Mobile       string      `json:"mobile"`
+		Avatar       string      `json:"avatar"`
+		Nickname     string      `json:"nickname"`
+		Introduction string      `json:"introduction"`
+		Roles        []*sys.Role `json:"roles"`
+	}
 	user, err := uc.UserRepository.GetCurrentUser(c)
 	if err != nil {
 		controller.Fail(c, nil, "获取当前用户信息失败: "+err.Error())
 		return
 	}
-	userInfoDto := ToUserInfoDto(user)
+	userInfoDto := UserInfoDto{}
+	copier.Copy(&userInfoDto, &user)
 	controller.Success(c, gin.H{
 		"userInfo": userInfoDto,
 	}, "获取当前用户信息成功")
@@ -57,6 +68,7 @@ func (uc UserController) GetUserInfo(c *gin.Context) {
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/user/list [post]
 func (uc UserController) GetUsers(c *gin.Context) {
+
 	var req bean.UserListRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
@@ -75,6 +87,28 @@ func (uc UserController) GetUsers(c *gin.Context) {
 	if err != nil {
 		controller.Fail(c, nil, "获取用户列表失败: "+err.Error())
 		return
+	}
+
+	type UsersDto struct {
+		ID           uint   `json:"ID"`
+		Username     string `json:"username"`
+		Mobile       string `json:"mobile"`
+		Avatar       string `json:"avatar"`
+		Nickname     string `json:"nickname"`
+		Introduction string `json:"introduction"`
+		Status       uint   `json:"status"`
+		Creator      string `json:"creator"`
+		RoleIds      []uint `json:"roleIds"`
+	}
+	ToUsersDto := func(userList []*sys.User) []UsersDto {
+		var users []UsersDto
+		for _, user := range userList {
+			userDto := UsersDto{}
+			copier.Copy(&userDto, user)
+			userDto.RoleIds = user.GetRoleIds()
+			users = append(users, userDto)
+		}
+		return users
 	}
 	controller.Success(c, gin.H{"users": ToUsersDto(users), "total": total}, "获取用户列表成功")
 }
