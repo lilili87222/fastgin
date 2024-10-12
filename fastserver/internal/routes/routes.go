@@ -2,12 +2,12 @@ package routes
 
 import (
 	"fastgin/config"
-	//_ "fastgin/docs" // Import the generated docs
+	_ "fastgin/docs" // Import the generated docs
 	"fastgin/internal/middleware"
 	"fastgin/internal/routes/sys"
 	"github.com/gin-gonic/gin"
-	//swaggerFiles "github.com/swaggo/files"
-	//ginSwagger "github.com/swaggo/gin-swagger"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"time"
 )
 
@@ -29,7 +29,7 @@ func InitRoutes() *gin.Engine {
 	// 启用全局跨域中间件
 	r.Use(middleware.CORSMiddleware())
 
-	//r.Group("/").GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	r.Group("/").GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	publicGroup := r.Group("api/public")
 	sys.InitBaseRoutes(publicGroup) // 注册基础路由, 不需要jwt认证中间件,不需要casbin中间件
