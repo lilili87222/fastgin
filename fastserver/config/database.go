@@ -3,6 +3,7 @@ package config
 import (
 	"fastgin/internal/model/sys"
 	"fmt"
+	"github.com/glebarez/sqlite"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -57,7 +58,7 @@ func initMysql() {
 // 初始化sqllite数据库
 func initSqlLite() {
 	sqlConfig := Conf.Database.SqlLiteConfig
-	db, err := gorm.Open(mysql.Open(sqlConfig.FilePath), &gorm.Config{
+	db, err := gorm.Open(sqlite.Open(sqlConfig.FilePath), &gorm.Config{
 		// 禁用外键(指定外键时不会在sqlite创建真实的外键约束)
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
