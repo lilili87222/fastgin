@@ -33,6 +33,13 @@
                 "summary": "Create API",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Create API request",
                         "name": "api",
                         "in": "body",
@@ -73,6 +80,13 @@
                 "summary": "Batch delete APIs",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Delete API request",
                         "name": "apiIds",
                         "in": "body",
@@ -111,6 +125,15 @@
                     "API"
                 ],
                 "summary": "Get API tree",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -141,6 +164,13 @@
                 ],
                 "summary": "Update API",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "API ID",
@@ -188,6 +218,13 @@
                 ],
                 "summary": "Get API list",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "Request method",
@@ -256,6 +293,13 @@
                 "summary": "Create menu",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Create menu request",
                         "name": "menu",
                         "in": "body",
@@ -296,6 +340,13 @@
                 "summary": "Batch delete menus",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Delete menu request",
                         "name": "menuIds",
                         "in": "body",
@@ -334,6 +385,15 @@
                     "Menu"
                 ],
                 "summary": "Get menu tree",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -364,6 +424,13 @@
                 ],
                 "summary": "Update menu",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Menu ID",
@@ -410,6 +477,15 @@
                     "Menu"
                 ],
                 "summary": "Get menu list",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -440,6 +516,13 @@
                 ],
                 "summary": "Get operation log list",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "Request method",
@@ -508,6 +591,13 @@
                 "summary": "Batch delete operation logs",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Delete operation log request",
                         "name": "operationLogIds",
                         "in": "body",
@@ -547,6 +637,13 @@
                 ],
                 "summary": "Create role",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "Create role request",
                         "name": "role",
@@ -588,6 +685,13 @@
                 "summary": "Batch delete roles",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Delete role request",
                         "name": "roleIds",
                         "in": "body",
@@ -627,6 +731,13 @@
                 ],
                 "summary": "Update role",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Role ID",
@@ -675,6 +786,13 @@
                 "summary": "Get role APIs by ID",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "type": "integer",
                         "description": "Role ID",
                         "name": "roleId",
@@ -710,6 +828,13 @@
                 ],
                 "summary": "Update role APIs by ID",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Role ID",
@@ -758,6 +883,13 @@
                 "summary": "Get role menus by ID",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "type": "integer",
                         "description": "Role ID",
                         "name": "roleId",
@@ -793,6 +925,13 @@
                 ],
                 "summary": "Update role menus by ID",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Role ID",
@@ -840,6 +979,13 @@
                 ],
                 "summary": "Get role list",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "Role name",
@@ -896,6 +1042,13 @@
                 "summary": "批量删除用户",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Delete user request",
                         "name": "DeleteUserRequest",
                         "in": "body",
@@ -935,6 +1088,13 @@
                 ],
                 "summary": "更新用户登录密码",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "Change password request",
                         "name": "ChangePwdRequest",
@@ -976,6 +1136,13 @@
                 "summary": "创建用户",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Create user request",
                         "name": "CreateUserRequest",
                         "in": "body",
@@ -1014,6 +1181,15 @@
                     "User"
                 ],
                 "summary": "获取当前登录用户信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1044,6 +1220,13 @@
                 ],
                 "summary": "获取用户列表",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "User list request",
                         "name": "UserListRequest",
@@ -1084,6 +1267,13 @@
                 ],
                 "summary": "更新用户",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "User ID",
@@ -1132,6 +1322,13 @@
                 "summary": "Get user menu tree by user ID",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "type": "integer",
                         "description": "User ID",
                         "name": "userId",
@@ -1169,6 +1366,13 @@
                 ],
                 "summary": "Get user menus by user ID",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "User ID",

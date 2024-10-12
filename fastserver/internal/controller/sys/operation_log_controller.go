@@ -27,6 +27,7 @@ func NewOperationLogController() OperationLogController {
 // @Tags OperationLog
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param method query string false "Request method"
 // @Param path query string false "Request path"
 // @Param category query string false "Category"
@@ -64,6 +65,7 @@ func (oc OperationLogController) GetOperationLogs(c *gin.Context) {
 // @Tags OperationLog
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param operationLogIds body bean.DeleteOperationLogRequest true "Delete operation log request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody

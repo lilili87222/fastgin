@@ -39,6 +39,13 @@ const docTemplate = `{
                 "summary": "Create API",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Create API request",
                         "name": "api",
                         "in": "body",
@@ -79,6 +86,13 @@ const docTemplate = `{
                 "summary": "Batch delete APIs",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Delete API request",
                         "name": "apiIds",
                         "in": "body",
@@ -117,6 +131,15 @@ const docTemplate = `{
                     "API"
                 ],
                 "summary": "Get API tree",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -147,6 +170,13 @@ const docTemplate = `{
                 ],
                 "summary": "Update API",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "API ID",
@@ -194,6 +224,13 @@ const docTemplate = `{
                 ],
                 "summary": "Get API list",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "Request method",
@@ -262,6 +299,13 @@ const docTemplate = `{
                 "summary": "Create menu",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Create menu request",
                         "name": "menu",
                         "in": "body",
@@ -302,6 +346,13 @@ const docTemplate = `{
                 "summary": "Batch delete menus",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Delete menu request",
                         "name": "menuIds",
                         "in": "body",
@@ -340,6 +391,15 @@ const docTemplate = `{
                     "Menu"
                 ],
                 "summary": "Get menu tree",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -370,6 +430,13 @@ const docTemplate = `{
                 ],
                 "summary": "Update menu",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Menu ID",
@@ -416,6 +483,15 @@ const docTemplate = `{
                     "Menu"
                 ],
                 "summary": "Get menu list",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -446,6 +522,13 @@ const docTemplate = `{
                 ],
                 "summary": "Get operation log list",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "Request method",
@@ -514,6 +597,13 @@ const docTemplate = `{
                 "summary": "Batch delete operation logs",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Delete operation log request",
                         "name": "operationLogIds",
                         "in": "body",
@@ -553,6 +643,13 @@ const docTemplate = `{
                 ],
                 "summary": "Create role",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "Create role request",
                         "name": "role",
@@ -594,6 +691,13 @@ const docTemplate = `{
                 "summary": "Batch delete roles",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Delete role request",
                         "name": "roleIds",
                         "in": "body",
@@ -633,6 +737,13 @@ const docTemplate = `{
                 ],
                 "summary": "Update role",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Role ID",
@@ -681,6 +792,13 @@ const docTemplate = `{
                 "summary": "Get role APIs by ID",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "type": "integer",
                         "description": "Role ID",
                         "name": "roleId",
@@ -716,6 +834,13 @@ const docTemplate = `{
                 ],
                 "summary": "Update role APIs by ID",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Role ID",
@@ -764,6 +889,13 @@ const docTemplate = `{
                 "summary": "Get role menus by ID",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "type": "integer",
                         "description": "Role ID",
                         "name": "roleId",
@@ -799,6 +931,13 @@ const docTemplate = `{
                 ],
                 "summary": "Update role menus by ID",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Role ID",
@@ -846,6 +985,13 @@ const docTemplate = `{
                 ],
                 "summary": "Get role list",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "Role name",
@@ -902,6 +1048,13 @@ const docTemplate = `{
                 "summary": "批量删除用户",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Delete user request",
                         "name": "DeleteUserRequest",
                         "in": "body",
@@ -941,6 +1094,13 @@ const docTemplate = `{
                 ],
                 "summary": "更新用户登录密码",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "Change password request",
                         "name": "ChangePwdRequest",
@@ -982,6 +1142,13 @@ const docTemplate = `{
                 "summary": "创建用户",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "description": "Create user request",
                         "name": "CreateUserRequest",
                         "in": "body",
@@ -1020,6 +1187,15 @@ const docTemplate = `{
                     "User"
                 ],
                 "summary": "获取当前登录用户信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1050,6 +1226,13 @@ const docTemplate = `{
                 ],
                 "summary": "获取用户列表",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "User list request",
                         "name": "UserListRequest",
@@ -1090,6 +1273,13 @@ const docTemplate = `{
                 ],
                 "summary": "更新用户",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "User ID",
@@ -1138,6 +1328,13 @@ const docTemplate = `{
                 "summary": "Get user menu tree by user ID",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "type": "integer",
                         "description": "User ID",
                         "name": "userId",
@@ -1175,6 +1372,13 @@ const docTemplate = `{
                 ],
                 "summary": "Get user menus by user ID",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "User ID",

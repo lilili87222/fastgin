@@ -13,7 +13,7 @@ func InitUserRoutes(r *gin.RouterGroup) gin.IRoutes {
 	//router.Use(middleware.CasbinMiddleware())
 	{
 		router.GET("/info", userController.GetUserInfo)
-		router.POST("/info", userController.GetUserInfo)
+		//router.POST("/info", userController.GetUserInfo)
 		router.GET("/list", userController.GetUsers)
 		router.PUT("/changePwd", userController.ChangePwd)
 		router.POST("/create", userController.CreateUser)

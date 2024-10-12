@@ -29,6 +29,7 @@ func NewMenuController() MenuController {
 // @Tags Menu
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/menus [get]
@@ -47,6 +48,7 @@ func (mc MenuController) GetMenus(c *gin.Context) {
 // @Tags Menu
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/menu/tree [get]
@@ -65,6 +67,7 @@ func (mc MenuController) GetMenuTree(c *gin.Context) {
 // @Tags Menu
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param menu body bean.CreateMenuRequest true "Create menu request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
@@ -117,6 +120,7 @@ func (mc MenuController) CreateMenu(c *gin.Context) {
 // @Tags Menu
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param menuId path int true "Menu ID"
 // @Param menu body bean.UpdateMenuRequest true "Update menu request"
 // @Success 200 {object} controller.ResponseBody
@@ -175,6 +179,7 @@ func (mc MenuController) UpdateMenuById(c *gin.Context) {
 // @Tags Menu
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param menuIds body bean.DeleteMenuRequest true "Delete menu request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
@@ -204,6 +209,7 @@ func (mc MenuController) BatchDeleteMenuByIds(c *gin.Context) {
 // @Tags Menu
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param userId path int true "User ID"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
@@ -228,6 +234,7 @@ func (mc MenuController) GetUserMenusByUserId(c *gin.Context) {
 // @Tags Menu
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param userId path int true "User ID"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody

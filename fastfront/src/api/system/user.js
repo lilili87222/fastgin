@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export function getInfo() {
   return request({
     url: '/api/auth/user/info',
-    method: 'post'
+    method: 'get'
   })
 }
 

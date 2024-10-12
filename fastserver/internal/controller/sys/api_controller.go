@@ -29,6 +29,7 @@ func NewApiController() ApiController {
 // @Tags API
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param method query string false "Request method"
 // @Param path query string false "Request path"
 // @Param category query string false "Category"
@@ -66,6 +67,7 @@ func (ac ApiController) GetApis(c *gin.Context) {
 // @Tags API
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/api/tree [get]
@@ -86,6 +88,7 @@ func (ac ApiController) GetApiTree(c *gin.Context) {
 // @Tags API
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param api body bean.CreateApiRequest true "Create API request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
@@ -128,6 +131,7 @@ func (ac ApiController) CreateApi(c *gin.Context) {
 // @Tags API
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param apiId path int true "API ID"
 // @Param api body bean.UpdateApiRequest true "Update API request"
 // @Success 200 {object} controller.ResponseBody
@@ -176,6 +180,7 @@ func (ac ApiController) UpdateApiById(c *gin.Context) {
 // @Tags API
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param apiIds body bean.DeleteApiRequest true "Delete API request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody

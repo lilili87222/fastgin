@@ -32,6 +32,7 @@ func NewRoleController() RoleController {
 // @Tags Role
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param name query string false "Role name"
 // @Param status query int false "Role status"
 // @Param pageNum query int false "Page number"
@@ -64,6 +65,7 @@ func (rc RoleController) GetRoles(c *gin.Context) {
 // @Tags Role
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param role body bean.CreateRoleRequest true "Create role request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
@@ -111,6 +113,7 @@ func (rc RoleController) CreateRole(c *gin.Context) {
 // @Tags Role
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role ID"
 // @Param role body bean.CreateRoleRequest true "Update role request"
 // @Success 200 {object} controller.ResponseBody
@@ -211,6 +214,7 @@ func (rc RoleController) UpdateRoleById(c *gin.Context) {
 // @Tags Role
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role ID"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
@@ -235,6 +239,7 @@ func (rc RoleController) GetRoleMenusById(c *gin.Context) {
 // @Tags Role
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role ID"
 // @Param menus body bean.UpdateRoleMenusRequest true "Update role menus request"
 // @Success 200 {object} controller.ResponseBody
@@ -358,6 +363,7 @@ func (rc RoleController) UpdateRoleMenusById(c *gin.Context) {
 // @Tags Role
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role ID"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
@@ -392,6 +398,7 @@ func (rc RoleController) GetRoleApisById(c *gin.Context) {
 // @Tags Role
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role ID"
 // @Param apis body bean.UpdateRoleApisRequest true "Update role APIs request"
 // @Success 200 {object} controller.ResponseBody
@@ -482,6 +489,7 @@ func (rc RoleController) UpdateRoleApisById(c *gin.Context) {
 // @Tags Role
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param roleIds body bean.DeleteRoleRequest true "Delete role request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody

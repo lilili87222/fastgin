@@ -32,6 +32,7 @@ func NewUserController() UserController {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/user/info [get]
@@ -63,6 +64,7 @@ func (uc UserController) GetUserInfo(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param UserListRequest body bean.UserListRequest true "User list request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
@@ -119,6 +121,7 @@ func (uc UserController) GetUsers(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param ChangePwdRequest body bean.ChangePwdRequest true "Change password request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
@@ -182,6 +185,7 @@ func (uc UserController) ChangePwd(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param CreateUserRequest body bean.CreateUserRequest true "Create user request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
@@ -280,6 +284,7 @@ func (uc UserController) CreateUser(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param userId path int true "User ID"
 // @Param CreateUserRequest body bean.CreateUserRequest true "Update user request"
 // @Success 200 {object} controller.ResponseBody
@@ -439,6 +444,7 @@ func (uc UserController) UpdateUserById(c *gin.Context) {
 // @Tags User
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer token"
 // @Param DeleteUserRequest body bean.DeleteUserRequest true "Delete user request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
