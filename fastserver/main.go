@@ -36,17 +36,14 @@ func main() {
 	// 初始化日志
 	config.InitLogger()
 
-	// 初始化数据库(mysql)
-	config.InitMysql()
+	// 初始化数据库
+	config.InitDatabase()
 
 	// 初始化casbin策略管理器
 	config.InitCasbinEnforcer()
 
 	// 初始化Validator数据校验
 	config.InitValidate()
-
-	// 初始化mysql数据
-	config.InitData()
 
 	// 操作日志中间件处理日志时没有将日志发送到rabbitmq或者kafka中, 而是发送到了channel中
 	// 这里开启3个goroutine处理channel将日志记录到数据库

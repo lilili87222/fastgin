@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/thoas/go-funk"
+	"slices"
 	"strconv"
 )
 
@@ -205,7 +206,8 @@ func (uc UserController) CreateUser(c *gin.Context) {
 		reqRoleSorts = append(reqRoleSorts, int(role.Sort))
 	}
 	// 前端传来用户角色排序最小值（最高等级角色）
-	reqRoleSortMin := uint(funk.MinInt(reqRoleSorts))
+	//reqRoleSortMin := uint(funk.MinInt(reqRoleSorts))
+	reqRoleSortMin := uint(slices.Min(reqRoleSorts))
 
 	// 当前用户的角色排序最小值 需要小于 前端传来的角色排序最小值（用户不能创建比自己等级高的或者相同等级的用户）
 	if currentRoleSortMin >= reqRoleSortMin {
@@ -294,7 +296,7 @@ func (uc UserController) UpdateUserById(c *gin.Context) {
 		currentRoleIds = append(currentRoleIds, role.ID)
 	}
 	// 当前用户角色排序最小值（最高等级角色）
-	currentRoleSortMin := funk.MinInt(currentRoleSorts)
+	currentRoleSortMin := slices.Min(currentRoleSorts)
 
 	// 获取前端传来的用户角色id
 	reqRoleIds := req.RoleIds
@@ -314,7 +316,7 @@ func (uc UserController) UpdateUserById(c *gin.Context) {
 		reqRoleSorts = append(reqRoleSorts, int(role.Sort))
 	}
 	// 前端传来用户角色排序最小值（最高等级角色）
-	reqRoleSortMin := funk.MinInt(reqRoleSorts)
+	reqRoleSortMin := slices.Min(reqRoleSorts)
 
 	user := sys.User{
 		Model:        oldUser.Model,
@@ -439,7 +441,7 @@ func (uc UserController) BatchDeleteUserByIds(c *gin.Context) {
 	currentRoleSortMin := int(minSort)
 
 	// 不能删除自己
-	if funk.Contains(reqUserIds, ctxUser.ID) {
+	if slices.Contains(reqUserIds, ctxUser.ID) {
 		controller.Fail(c, nil, "用户不能删除自己")
 		return
 	}

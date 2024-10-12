@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/patrickmn/go-cache"
-	"github.com/thoas/go-funk"
+	"slices"
 	"strings"
 	"time"
 )
@@ -111,9 +111,7 @@ func (ur UserRepository) GetCurrentUserMinRoleSort(c *gin.Context) (uint, sys.Us
 		currentRoleSorts = append(currentRoleSorts, int(role.Sort))
 	}
 	// 当前用户角色排序最小值（最高等级角色）
-	currentRoleSortMin := funk.MinInt(currentRoleSorts)
-	//currentRoleSortMin := uint(funk.MinInt(currentRoleSorts).(int))
-
+	currentRoleSortMin := slices.Min(currentRoleSorts)
 	return uint(currentRoleSortMin), ctxUser, nil
 }
 
@@ -249,7 +247,8 @@ func (ur UserRepository) GetUserMinRoleSortsByIds(ids []uint) ([]int, error) {
 		for _, role := range roles {
 			roleSortList = append(roleSortList, int(role.Sort))
 		}
-		roleMinSort := funk.MinInt(roleSortList)
+		//roleMinSort := funk.MinInt(roleSortList)
+		roleMinSort := slices.Min(roleSortList)
 		roleMinSortList = append(roleMinSortList, roleMinSort)
 	}
 	return roleMinSortList, nil

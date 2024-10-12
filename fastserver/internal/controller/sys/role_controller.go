@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/thoas/go-funk"
+	"slices"
 	"strconv"
 )
 
@@ -308,7 +309,7 @@ func (rc RoleController) UpdateRoleMenusById(c *gin.Context) {
 	// (非管理员)不能把角色的权限菜单设置的比当前用户所拥有的权限菜单多
 	if minSort != 1 {
 		for _, id := range menuIds {
-			if !funk.Contains(ctxUserMenusIds, id) {
+			if !slices.Contains(ctxUserMenusIds, id) {
 				controller.Fail(c, nil, fmt.Sprintf("无权设置ID为%d的菜单", id))
 				return
 			}

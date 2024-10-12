@@ -4,17 +4,13 @@ import (
 	"errors"
 	"fastgin/internal/model/sys"
 	"fastgin/internal/util"
-	"github.com/thoas/go-funk"
 	"gorm.io/gorm"
+	"slices"
 )
 
 // 初始化mysql数据
 func InitData() {
 	// 是否初始化数据
-	if !Conf.System.InitData {
-		return
-	}
-
 	// 1.写入角色数据
 	newRoles := make([]*sys.Role, 0)
 	roles := []*sys.Role{
@@ -487,7 +483,7 @@ func InitData() {
 				"/menu/access/tree/:userId",
 			}
 
-			if funk.ContainsString(basePaths, api.Path) {
+			if slices.Contains(basePaths, api.Path) {
 				newRoleCasbin = append(newRoleCasbin, sys.RoleCasbin{
 					Keyword: roles[1].Keyword,
 					Path:    api.Path,
