@@ -21,6 +21,10 @@ type Menu struct {
 	ActiveMenu *string `gorm:"type:varchar(100);comment:'在其它路由时，想在侧边栏高亮的路由'" json:"activeMenu"`
 	ParentId   *uint   `gorm:"default:0;comment:'父菜单编号(编号为0时表示根菜单)'" json:"parentId"`
 	Creator    string  `gorm:"type:varchar(20);comment:'创建人'" json:"creator"`
-	Children   []*Menu `gorm:"-" json:"children"`                  // 子菜单集合
-	Roles      []*Role `gorm:"many2many:role_menus;" json:"roles"` // 角色菜单多对多关系
+	Children   []*Menu `gorm:"-" json:"children"`                     // 子菜单集合
+	Roles      []*Role `gorm:"many2many:sys_role_menu;" json:"roles"` // 角色菜单多对多关系
+}
+
+func (*Menu) TableName() string {
+	return "sys_menu"
 }
