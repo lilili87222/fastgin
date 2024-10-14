@@ -1253,6 +1253,67 @@
                 }
             }
         },
+        "/api/auth/user/logout": {
+            "post": {
+                "description": "用户登出",
+                "tags": [
+                    "User"
+                ],
+                "summary": "登出",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200}",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/user/refreshToken": {
+            "post": {
+                "description": "刷新JWT Token",
+                "tags": [
+                    "User"
+                ],
+                "summary": "刷新Token",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"token\":\"xxx\",\"expire\":\"xxx\"}",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "401": {
+                        "description": "{\"code\":401,\"message\":\"Unauthorized\"}",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/api/auth/user/update/{userId}": {
             "put": {
                 "description": "更新用户",
@@ -1407,7 +1468,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "用户"
+                    "公开接口"
                 ],
                 "summary": "用户登录",
                 "parameters": [
@@ -1421,49 +1482,6 @@
                         }
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "{\"code\":200,\"token\":\"xxx\",\"expire\":\"xxx\"}",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "401": {
-                        "description": "{\"code\":401,\"message\":\"Unauthorized\"}",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    }
-                }
-            }
-        },
-        "/api/public/logout": {
-            "post": {
-                "description": "用户登出",
-                "tags": [
-                    "用户"
-                ],
-                "summary": "登出",
-                "responses": {
-                    "200": {
-                        "description": "{\"code\":200}",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    }
-                }
-            }
-        },
-        "/api/public/refreshToken": {
-            "post": {
-                "description": "刷新JWT Token",
-                "tags": [
-                    "用户"
-                ],
-                "summary": "刷新Token",
                 "responses": {
                     "200": {
                         "description": "{\"code\":200,\"token\":\"xxx\",\"expire\":\"xxx\"}",

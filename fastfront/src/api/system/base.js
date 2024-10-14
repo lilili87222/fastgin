@@ -8,16 +8,3 @@ export function login(data) {
   })
 }
 
-export function refreshToken() {
-  return request({
-    url: '/api/public/refreshToken',
-    method: 'post'
-  })
-}
-
-export function logout() {
-  return request({
-    url: '/api/public/logout',
-    method: 'post'
-  })
-}

@@ -10,6 +10,9 @@ import (
 
 // 初始化mysql数据
 func InitData() {
+	if !Conf.Database.InitData {
+		return
+	}
 	// 是否初始化数据
 	// 1.写入角色数据
 	newRoles := make([]*sys.Role, 0)
@@ -241,24 +244,24 @@ func InitData() {
 
 	// 4.写入api
 	apis := []sys.Api{
+		//{
+		//	Method:   "POST",
+		//	Path:     "/base/login",
+		//	Category: "base",
+		//	Desc:     "用户登录",
+		//	Creator:  "系统",
+		//},
 		{
 			Method:   "POST",
-			Path:     "/base/login",
-			Category: "base",
-			Desc:     "用户登录",
-			Creator:  "系统",
-		},
-		{
-			Method:   "POST",
-			Path:     "/base/logout",
-			Category: "base",
+			Path:     "/user/logout",
+			Category: "user",
 			Desc:     "用户登出",
 			Creator:  "系统",
 		},
 		{
 			Method:   "POST",
-			Path:     "/base/refreshToken",
-			Category: "base",
+			Path:     "/user/refreshToken",
+			Category: "user",
 			Desc:     "刷新JWT令牌",
 			Creator:  "系统",
 		},
@@ -476,9 +479,9 @@ func InitData() {
 
 			// 非管理员拥有基础权限
 			basePaths := []string{
-				"/base/login",
-				"/base/logout",
-				"/base/refreshToken",
+				//"/base/login",
+				"/user/logout",
+				"/user/refreshToken",
 				"/user/info",
 				"/menu/access/tree/:userId",
 			}

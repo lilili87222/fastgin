@@ -12,7 +12,11 @@ type User struct {
 	Introduction *string `gorm:"type:varchar(255)" json:"introduction"`
 	Status       uint    `gorm:"type:tinyint(1);default:1;comment:'1正常, 2禁用'" json:"status"`
 	Creator      string  `gorm:"type:varchar(20);" json:"creator"`
-	Roles        []*Role `gorm:"many2many:user_roles" json:"roles"`
+	Roles        []*Role `gorm:"many2many:sys_user_role" json:"roles"`
+}
+
+func (*User) TableName() string {
+	return "sys_user"
 }
 
 func (user *User) GetRoleIds() []uint {

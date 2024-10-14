@@ -53,3 +53,17 @@ export function batchDeleteUserByIds(data) {
   })
 }
 
+
+export function refreshToken() {
+  return request({
+    url: '/api/auth/user/refreshToken',
+    method: 'post'
+  })
+}
+
+export function logout() {
+  return request({
+    url: '/api/auth/user/logout',
+    method: 'post'
+  })
+}

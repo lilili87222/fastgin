@@ -38,9 +38,10 @@ func main() {
 
 	// 初始化数据库
 	config.InitDatabase()
-
 	// 初始化casbin策略管理器
 	config.InitCasbinEnforcer()
+	// 初始化数据
+	config.InitData()
 
 	// 初始化Validator数据校验
 	config.InitValidate()

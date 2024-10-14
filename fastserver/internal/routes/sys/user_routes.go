@@ -2,6 +2,7 @@ package sys
 
 import (
 	"fastgin/internal/controller/sys"
+	"fastgin/internal/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,6 +20,10 @@ func InitUserRoutes(r *gin.RouterGroup) gin.IRoutes {
 		router.POST("/create", userController.CreateUser)
 		router.PATCH("/update/:userId", userController.UpdateUserById)
 		router.DELETE("/delete/batch", userController.BatchDeleteUserByIds)
+
+		router.POST("/logout", middleware.GetJwtMiddleware().LogoutHandler)
+
+		router.POST("/refreshToken", middleware.GetJwtMiddleware().RefreshHandler)
 	}
 	return r
 }

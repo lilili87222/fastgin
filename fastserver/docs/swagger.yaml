@@ -1222,6 +1222,47 @@ paths:
       summary: 获取用户列表
       tags:
       - User
+  /api/auth/user/logout:
+    post:
+      description: 用户登出
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{"code":200}'
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 登出
+      tags:
+      - User
+  /api/auth/user/refreshToken:
+    post:
+      description: 刷新JWT Token
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{"code":200,"token":"xxx","expire":"xxx"}'
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: '{"code":401,"message":"Unauthorized"}'
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 刷新Token
+      tags:
+      - User
   /api/auth/user/update/{userId}:
     put:
       consumes:
@@ -1285,34 +1326,5 @@ paths:
             type: object
       summary: 用户登录
       tags:
-      - 用户
-  /api/public/logout:
-    post:
-      description: 用户登出
-      responses:
-        "200":
-          description: '{"code":200}'
-          schema:
-            additionalProperties: true
-            type: object
-      summary: 登出
-      tags:
-      - 用户
-  /api/public/refreshToken:
-    post:
-      description: 刷新JWT Token
-      responses:
-        "200":
-          description: '{"code":200,"token":"xxx","expire":"xxx"}'
-          schema:
-            additionalProperties: true
-            type: object
-        "401":
-          description: '{"code":401,"message":"Unauthorized"}'
-          schema:
-            additionalProperties: true
-            type: object
-      summary: 刷新Token
-      tags:
-      - 用户
+      - 公开接口
 swagger: "2.0"

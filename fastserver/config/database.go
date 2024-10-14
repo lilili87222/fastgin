@@ -37,7 +37,7 @@ func initMysql() {
 	)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
-			SingularTable: false,
+			SingularTable: true,
 		},
 		// 禁用外键(指定外键时不会在mysql创建真实的外键约束)
 		DisableForeignKeyConstraintWhenMigrating: true,
@@ -55,7 +55,7 @@ func initMysql() {
 		db.Debug()
 	}
 	DB = db
-	initDatabaseTableAndData()
+	createTables()
 	Log.Infof("初始化mysql数据库完成!")
 }
 
@@ -71,12 +71,12 @@ func initSqlLite() {
 		panic(fmt.Errorf("初始化sqlite数据库异常: %v", err))
 	}
 	DB = db
-	initDatabaseTableAndData()
+	createTables()
 	Log.Infof("初始化sqlite数据库完成!")
 }
 
 // 自动迁移表结构
-func initDatabaseTableAndData() {
+func createTables() {
 	if Conf.Database.CreateTables {
 		DB.AutoMigrate(
 			&sys.User{},
@@ -85,8 +85,5 @@ func initDatabaseTableAndData() {
 			&sys.Api{},
 			&sys.OperationLog{},
 		)
-	}
-	if Conf.Database.InitData {
-		InitData()
 	}
 }
