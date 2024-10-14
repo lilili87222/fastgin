@@ -22,7 +22,7 @@ func InitCasbinEnforcer() {
 }
 
 func mysqlCasbin() (*casbin.Enforcer, error) {
-	a, err := gormadapter.NewAdapterByDB(DB)
+	a, err := gormadapter.NewAdapterByDBUseTableName(DB, "sys", "casbin_rule")
 	if err != nil {
 		return nil, err
 	}
