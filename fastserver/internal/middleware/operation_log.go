@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"fastgin/config"
-	sys2 "fastgin/internal/dao/sys"
 	"fastgin/internal/model/sys"
+	sys3 "fastgin/internal/service/sys"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"strings"
@@ -49,7 +49,7 @@ func OperationLogMiddleware() gin.HandlerFunc {
 		method := c.Request.Method
 
 		// 获取接口描述
-		apiDao := sys2.NewApiDao()
+		apiDao := sys3.NewApiService()
 		apiDesc, _ := apiDao.GetApiDescByPath(path, method)
 
 		operationLog := sys.OperationLog{

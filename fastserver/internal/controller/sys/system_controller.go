@@ -3,7 +3,7 @@ package sys
 import (
 	"fastgin/config"
 	"fastgin/internal/controller"
-	"fastgin/internal/service"
+	"fastgin/internal/service/sys"
 	"github.com/gin-gonic/gin"
 	"os"
 )
@@ -24,7 +24,7 @@ func NewSystemController() SystemController {
 // @Success 200 {object} map[string]interface{}
 // @Router /api/auth/system/info [get]
 func (oc SystemController) GetSystemInformation(c *gin.Context) {
-	service := service.SystemService{}
+	service := sys.SystemService{}
 	controller.Success(c, service.GetSystemInformation(), "系统信息成功")
 }
 
@@ -49,7 +49,7 @@ func (oc SystemController) GetStopServer(c *gin.Context) {
 // @Success 200 {string} string "重启服务成功"
 // @Router /api/auth/system/restart [get]
 func (oc SystemController) RestartServer(c *gin.Context) {
-	service := service.SystemService{}
+	service := sys.SystemService{}
 	e := service.Restart()
 	config.Log.Info("重启服务")
 	if e != nil {

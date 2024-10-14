@@ -6,6 +6,7 @@ import (
 	sys2 "fastgin/internal/dao/sys"
 	"fastgin/internal/model/sys"
 	"fastgin/internal/model/sys/request"
+	sys3 "fastgin/internal/service/sys"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -455,7 +456,7 @@ func (rc RoleController) UpdateRoleApisById(c *gin.Context) {
 		policy[0] = roles[0].Keyword
 	}
 	apiIds := req.ApiIds
-	ar := sys2.NewApiDao()
+	ar := sys3.NewApiService()
 	apis, err := ar.GetApisById(apiIds)
 	if err != nil {
 		controller.Fail(c, nil, "根据接口ID获取接口信息失败")

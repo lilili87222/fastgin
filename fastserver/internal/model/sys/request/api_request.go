@@ -1,5 +1,7 @@
 package request
 
+import "fastgin/internal/model/sys"
+
 // 获取接口列表结构体
 type ApiListRequest struct {
 	Method   string `json:"method" form:"method"`
@@ -29,4 +31,11 @@ type UpdateApiRequest struct {
 // 批量删除接口结构体
 type DeleteApiRequest struct {
 	ApiIds []uint `json:"apiIds" form:"apiIds"`
+}
+
+type ApiTreeDto struct {
+	ID       int        `json:"ID"`
+	Desc     string     `json:"desc"`
+	Category string     `json:"category"`
+	Children []*sys.Api `json:"children"`
 }

@@ -6,6 +6,7 @@ import (
 	sys2 "fastgin/internal/dao/sys"
 	"fastgin/internal/model/sys"
 	"fastgin/internal/model/sys/request"
+	sys3 "fastgin/internal/service/sys"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"strconv"
@@ -13,13 +14,12 @@ import (
 
 // ApiController handles API requests
 type ApiController struct {
-	ApiDao sys2.ApiDao
+	apiService sys3.ApiService
 }
 
 // NewApiController creates a new ApiController
 func NewApiController() ApiController {
-	apiDao := sys2.NewApiDao()
-	apiController := ApiController{ApiDao: apiDao}
+	apiController := ApiController{apiService: sys3.NewApiService()}
 	return apiController
 }
 
@@ -50,7 +50,7 @@ func (ac ApiController) GetApis(c *gin.Context) {
 		controller.Fail(c, nil, errStr)
 		return
 	}
-	apis, total, err := ac.ApiDao.GetApis(&req)
+	apis, total, err := ac.apiService.GetApis(&req)
 	if err != nil {
 		controller.Fail(c, nil, "获取接口列表失败")
 		return
@@ -72,7 +72,7 @@ func (ac ApiController) GetApis(c *gin.Context) {
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/api/tree [get]
 func (ac ApiController) GetApiTree(c *gin.Context) {
-	tree, err := ac.ApiDao.GetApiTree()
+	tree, err := ac.apiService.GetApiTree()
 	if err != nil {
 		controller.Fail(c, nil, "获取接口树失败")
 		return
@@ -117,7 +117,7 @@ func (ac ApiController) CreateApi(c *gin.Context) {
 		Desc:     req.Desc,
 		Creator:  ctxUser.Username,
 	}
-	err = ac.ApiDao.CreateApi(&api)
+	err = ac.apiService.CreateApi(&api)
 	if err != nil {
 		controller.Fail(c, nil, "创建接口失败: "+err.Error())
 		return
@@ -166,7 +166,7 @@ func (ac ApiController) UpdateApiById(c *gin.Context) {
 		Desc:     req.Desc,
 		Creator:  ctxUser.Username,
 	}
-	err = ac.ApiDao.UpdateApiById(uint(apiId), &api)
+	err = ac.apiService.UpdateApiById(uint(apiId), &api)
 	if err != nil {
 		controller.Fail(c, nil, "更新接口失败: "+err.Error())
 		return
@@ -196,7 +196,7 @@ func (ac ApiController) BatchDeleteApiByIds(c *gin.Context) {
 		controller.Fail(c, nil, errStr)
 		return
 	}
-	err := ac.ApiDao.BatchDeleteApiByIds(req.ApiIds)
+	err := ac.apiService.BatchDeleteApiByIds(req.ApiIds)
 	if err != nil {
 		controller.Fail(c, nil, "删除接口失败: "+err.Error())
 		return
