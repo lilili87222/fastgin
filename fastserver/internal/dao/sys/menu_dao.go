@@ -9,9 +9,9 @@ import (
 type MenuDao struct {
 }
 
-func NewMenuDao() MenuDao {
-	return MenuDao{}
-}
+//func NewMenuDao() MenuDao {
+//	return MenuDao{}
+//}
 
 // 获取菜单列表
 func (m MenuDao) GetMenus() ([]*sys.Menu, error) {

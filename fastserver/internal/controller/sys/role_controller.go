@@ -293,7 +293,7 @@ func (rc RoleController) UpdateRoleMenusById(c *gin.Context) {
 	}
 
 	// 获取当前用户所拥有的权限菜单
-	mr := sys2.NewMenuDao()
+	mr := sys3.NewMenuService()
 	ctxUserMenus, err := mr.GetUserMenusByUserId(ctxUser.ID)
 	if err != nil {
 		controller.Fail(c, nil, "获取当前用户的可访问菜单列表失败: "+err.Error())

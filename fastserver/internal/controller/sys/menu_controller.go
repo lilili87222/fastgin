@@ -6,6 +6,7 @@ import (
 	sys2 "fastgin/internal/dao/sys"
 	"fastgin/internal/model/sys"
 	"fastgin/internal/model/sys/request"
+	sys3 "fastgin/internal/service/sys"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"strconv"
@@ -13,13 +14,13 @@ import (
 
 // MenuController handles menu-related requests
 type MenuController struct {
-	MenuDao sys2.MenuDao
+	MenuDao sys3.MenuService
 }
 
 // NewMenuController creates a new MenuController
 func NewMenuController() MenuController {
-	menuDao := sys2.NewMenuDao()
-	menuController := MenuController{MenuDao: menuDao}
+	//menuDao := sys2.NewMenuDao()
+	menuController := MenuController{MenuDao: sys3.NewMenuService()}
 	return menuController
 }
 
