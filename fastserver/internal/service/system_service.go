@@ -66,6 +66,7 @@ func (s *SystemService) GetSystemInformation() map[string]any {
 
 		// 返回该分区的使用信息
 		return map[string]any{
+			"partition":    partition,
 			"total":        usage.Total / GB,
 			"used":         usage.Used / GB,
 			"free":         usage.Free / GB,
