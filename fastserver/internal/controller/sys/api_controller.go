@@ -13,13 +13,13 @@ import (
 
 // ApiController handles API requests
 type ApiController struct {
-	ApiRepository sys2.ApiRepository
+	ApiDao sys2.ApiDao
 }
 
 // NewApiController creates a new ApiController
 func NewApiController() ApiController {
-	apiRepository := sys2.NewApiRepository()
-	apiController := ApiController{ApiRepository: apiRepository}
+	apiDao := sys2.NewApiDao()
+	apiController := ApiController{ApiDao: apiDao}
 	return apiController
 }
 
@@ -50,7 +50,7 @@ func (ac ApiController) GetApis(c *gin.Context) {
 		controller.Fail(c, nil, errStr)
 		return
 	}
-	apis, total, err := ac.ApiRepository.GetApis(&req)
+	apis, total, err := ac.ApiDao.GetApis(&req)
 	if err != nil {
 		controller.Fail(c, nil, "获取接口列表失败")
 		return
@@ -72,7 +72,7 @@ func (ac ApiController) GetApis(c *gin.Context) {
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/api/tree [get]
 func (ac ApiController) GetApiTree(c *gin.Context) {
-	tree, err := ac.ApiRepository.GetApiTree()
+	tree, err := ac.ApiDao.GetApiTree()
 	if err != nil {
 		controller.Fail(c, nil, "获取接口树失败")
 		return
@@ -104,7 +104,7 @@ func (ac ApiController) CreateApi(c *gin.Context) {
 		controller.Fail(c, nil, errStr)
 		return
 	}
-	ur := sys2.NewUserRepository()
+	ur := sys2.NewUserDao()
 	ctxUser, err := ur.GetCurrentUser(c)
 	if err != nil {
 		controller.Fail(c, nil, "获取当前用户信息失败")
@@ -117,7 +117,7 @@ func (ac ApiController) CreateApi(c *gin.Context) {
 		Desc:     req.Desc,
 		Creator:  ctxUser.Username,
 	}
-	err = ac.ApiRepository.CreateApi(&api)
+	err = ac.ApiDao.CreateApi(&api)
 	if err != nil {
 		controller.Fail(c, nil, "创建接口失败: "+err.Error())
 		return
@@ -153,7 +153,7 @@ func (ac ApiController) UpdateApiById(c *gin.Context) {
 		controller.Fail(c, nil, "接口ID不正确")
 		return
 	}
-	ur := sys2.NewUserRepository()
+	ur := sys2.NewUserDao()
 	ctxUser, err := ur.GetCurrentUser(c)
 	if err != nil {
 		controller.Fail(c, nil, "获取当前用户信息失败")
@@ -166,7 +166,7 @@ func (ac ApiController) UpdateApiById(c *gin.Context) {
 		Desc:     req.Desc,
 		Creator:  ctxUser.Username,
 	}
-	err = ac.ApiRepository.UpdateApiById(uint(apiId), &api)
+	err = ac.ApiDao.UpdateApiById(uint(apiId), &api)
 	if err != nil {
 		controller.Fail(c, nil, "更新接口失败: "+err.Error())
 		return
@@ -196,7 +196,7 @@ func (ac ApiController) BatchDeleteApiByIds(c *gin.Context) {
 		controller.Fail(c, nil, errStr)
 		return
 	}
-	err := ac.ApiRepository.BatchDeleteApiByIds(req.ApiIds)
+	err := ac.ApiDao.BatchDeleteApiByIds(req.ApiIds)
 	if err != nil {
 		controller.Fail(c, nil, "删除接口失败: "+err.Error())
 		return

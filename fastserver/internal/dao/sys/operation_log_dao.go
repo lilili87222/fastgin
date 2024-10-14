@@ -8,14 +8,14 @@ import (
 	"strings"
 )
 
-type OperationLogRepository struct {
+type OperationLogDao struct {
 }
 
-func NewOperationLogRepository() OperationLogRepository {
-	return OperationLogRepository{}
+func NewOperationLogDao() OperationLogDao {
+	return OperationLogDao{}
 }
 
-func (o OperationLogRepository) GetOperationLogs(req *bean.OperationLogListRequest) ([]sys.OperationLog, int64, error) {
+func (o OperationLogDao) GetOperationLogs(req *bean.OperationLogListRequest) ([]sys.OperationLog, int64, error) {
 	var list []sys.OperationLog
 	db := config.DB.Model(&sys.OperationLog{}).Order("start_time DESC")
 
@@ -54,14 +54,14 @@ func (o OperationLogRepository) GetOperationLogs(req *bean.OperationLogListReque
 
 }
 
-func (o OperationLogRepository) BatchDeleteOperationLogByIds(ids []uint) error {
+func (o OperationLogDao) BatchDeleteOperationLogByIds(ids []uint) error {
 	err := config.DB.Where("id IN (?)", ids).Unscoped().Delete(&sys.OperationLog{}).Error
 	return err
 }
 
 // var Logs []model.OperationLog //全局变量多个线程需要加锁，所以每个线程自己维护一个
 // 处理OperationLogChan将日志记录到数据库
-func (o OperationLogRepository) SaveOperationLogChannel(olc <-chan *sys.OperationLog) {
+func (o OperationLogDao) SaveOperationLogChannel(olc <-chan *sys.OperationLog) {
 	// 只会在线程开启的时候执行一次
 	Logs := make([]sys.OperationLog, 0)
 

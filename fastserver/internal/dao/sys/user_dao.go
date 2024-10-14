@@ -14,19 +14,19 @@ import (
 	"time"
 )
 
-type UserRepository struct {
+type UserDao struct {
 }
 
 // 当前用户信息缓存，避免频繁获取数据库
 var userInfoCache = cache.New(24*time.Hour, 48*time.Hour)
 
-// UserRepository构造函数
-func NewUserRepository() UserRepository {
-	return UserRepository{}
+// UserDao构造函数
+func NewUserDao() UserDao {
+	return UserDao{}
 }
 
 // 登录
-func (ur UserRepository) Login(user *sys.User) (*sys.User, error) {
+func (ur UserDao) Login(user *sys.User) (*sys.User, error) {
 	// 根据用户名获取用户(正常状态:用户状态正常)
 	var firstUser sys.User
 	err := config.DB.
@@ -68,7 +68,7 @@ func (ur UserRepository) Login(user *sys.User) (*sys.User, error) {
 
 // 获取当前登录用户信息
 // 需要缓存，减少数据库访问
-func (ur UserRepository) GetCurrentUser(c *gin.Context) (sys.User, error) {
+func (ur UserDao) GetCurrentUser(c *gin.Context) (sys.User, error) {
 	var newUser sys.User
 	ctxUser, exist := c.Get("user")
 	if !exist {
@@ -97,7 +97,7 @@ func (ur UserRepository) GetCurrentUser(c *gin.Context) (sys.User, error) {
 }
 
 // 获取当前用户角色排序最小值（最高等级角色）以及当前用户信息
-func (ur UserRepository) GetCurrentUserMinRoleSort(c *gin.Context) (uint, sys.User, error) {
+func (ur UserDao) GetCurrentUserMinRoleSort(c *gin.Context) (uint, sys.User, error) {
 	// 获取当前用户
 	ctxUser, err := ur.GetCurrentUser(c)
 	if err != nil {
@@ -116,7 +116,7 @@ func (ur UserRepository) GetCurrentUserMinRoleSort(c *gin.Context) (uint, sys.Us
 }
 
 // 获取单个用户
-func (ur UserRepository) GetUserById(id uint) (sys.User, error) {
+func (ur UserDao) GetUserById(id uint) (sys.User, error) {
 	fmt.Println("GetUserById---")
 	var user sys.User
 	err := config.DB.Where("id = ?", id).Preload("Roles").First(&user).Error
@@ -124,7 +124,7 @@ func (ur UserRepository) GetUserById(id uint) (sys.User, error) {
 }
 
 // 获取用户列表
-func (ur UserRepository) GetUsers(req *bean.UserListRequest) ([]*sys.User, int64, error) {
+func (ur UserDao) GetUsers(req *bean.UserListRequest) ([]*sys.User, int64, error) {
 	var list []*sys.User
 	db := config.DB.Model(&sys.User{}).Order("created_at DESC")
 
@@ -162,7 +162,7 @@ func (ur UserRepository) GetUsers(req *bean.UserListRequest) ([]*sys.User, int64
 }
 
 // 更新密码
-func (ur UserRepository) ChangePwd(username string, hashNewPasswd string) error {
+func (ur UserDao) ChangePwd(username string, hashNewPasswd string) error {
 	err := config.DB.Model(&sys.User{}).Where("username = ?", username).Update("password", hashNewPasswd).Error
 	// 如果更新密码成功，则更新当前用户信息缓存
 	// 先获取缓存
@@ -184,13 +184,13 @@ func (ur UserRepository) ChangePwd(username string, hashNewPasswd string) error 
 }
 
 // 创建用户
-func (ur UserRepository) CreateUser(user *sys.User) error {
+func (ur UserDao) CreateUser(user *sys.User) error {
 	err := config.DB.Create(user).Error
 	return err
 }
 
 // 更新用户
-func (ur UserRepository) UpdateUser(user *sys.User) error {
+func (ur UserDao) UpdateUser(user *sys.User) error {
 	err := config.DB.Model(user).Updates(user).Error
 	if err != nil {
 		return err
@@ -207,7 +207,7 @@ func (ur UserRepository) UpdateUser(user *sys.User) error {
 }
 
 // 批量删除
-func (ur UserRepository) BatchDeleteUserByIds(ids []uint) error {
+func (ur UserDao) BatchDeleteUserByIds(ids []uint) error {
 	// 用户和角色存在多对多关联关系
 	var users []sys.User
 	for _, id := range ids {
@@ -230,7 +230,7 @@ func (ur UserRepository) BatchDeleteUserByIds(ids []uint) error {
 }
 
 // 根据用户ID获取用户角色排序最小值
-func (ur UserRepository) GetUserMinRoleSortsByIds(ids []uint) ([]int, error) {
+func (ur UserDao) GetUserMinRoleSortsByIds(ids []uint) ([]int, error) {
 	// 根据用户ID获取用户信息
 	var userList []sys.User
 	err := config.DB.Where("id IN (?)", ids).Preload("Roles").Find(&userList).Error
@@ -255,12 +255,12 @@ func (ur UserRepository) GetUserMinRoleSortsByIds(ids []uint) ([]int, error) {
 }
 
 // 设置用户信息缓存
-func (ur UserRepository) SetUserInfoCache(username string, user sys.User) {
+func (ur UserDao) SetUserInfoCache(username string, user sys.User) {
 	userInfoCache.Set(username, user, cache.DefaultExpiration)
 }
 
 // 根据角色ID更新拥有该角色的用户信息缓存
-func (ur UserRepository) UpdateUserInfoCacheByRoleId(roleId uint) error {
+func (ur UserDao) UpdateUserInfoCacheByRoleId(roleId uint) error {
 
 	var role sys.Role
 	err := config.DB.Where("id = ?", roleId).Preload("Users").First(&role).Error
@@ -285,6 +285,6 @@ func (ur UserRepository) UpdateUserInfoCacheByRoleId(roleId uint) error {
 }
 
 // 清理所有用户信息缓存
-func (ur UserRepository) ClearUserInfoCache() {
+func (ur UserDao) ClearUserInfoCache() {
 	userInfoCache.Flush()
 }

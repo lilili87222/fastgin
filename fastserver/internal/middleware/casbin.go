@@ -14,7 +14,7 @@ var checkLock sync.Mutex
 // Casbin中间件, 基于RBAC的权限访问控制模型
 func CasbinMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		ur := sys.NewUserRepository()
+		ur := sys.NewUserDao()
 		user, err := ur.GetCurrentUser(c)
 		if err != nil {
 			controller.Response(c, 401, 401, nil, "用户未登录")

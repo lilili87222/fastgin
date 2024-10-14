@@ -21,9 +21,9 @@ var httpServer *http.Server
 func StartWebService() {
 	// 操作日志中间件处理日志时没有将日志发送到rabbitmq或者kafka中, 而是发送到了channel中
 	// 这里开启3个goroutine处理channel将日志记录到数据库
-	logRepository := sys.NewOperationLogRepository()
+	logDao := sys.NewOperationLogDao()
 	for i := 0; i < 3; i++ {
-		go logRepository.SaveOperationLogChannel(middleware.OperationLogChan)
+		go logDao.SaveOperationLogChannel(middleware.OperationLogChan)
 	}
 	//设置模式
 	gin.SetMode(config.Instance.System.Mode)

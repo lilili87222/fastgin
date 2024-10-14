@@ -90,8 +90,8 @@ func login(c *gin.Context) (interface{}, error) {
 	}
 
 	// 密码校验
-	userRepository := sysdao.NewUserRepository()
-	user, err := userRepository.Login(u)
+	userDao := sysdao.NewUserDao()
+	user, err := userDao.Login(u)
 	if err != nil {
 		return nil, err
 	}

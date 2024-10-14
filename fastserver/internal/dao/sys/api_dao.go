@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-type ApiRepository struct {
+type ApiDao struct {
 }
 type ApiTreeDto struct {
 	ID       int        `json:"ID"`
@@ -19,12 +19,12 @@ type ApiTreeDto struct {
 	Children []*sys.Api `json:"children"`
 }
 
-func NewApiRepository() ApiRepository {
-	return ApiRepository{}
+func NewApiDao() ApiDao {
+	return ApiDao{}
 }
 
 // 获取接口列表
-func (a ApiRepository) GetApis(req *bean.ApiListRequest) ([]*sys.Api, int64, error) {
+func (a ApiDao) GetApis(req *bean.ApiListRequest) ([]*sys.Api, int64, error) {
 	var list []*sys.Api
 	db := config.DB.Model(&sys.Api{}).Order("created_at DESC")
 
@@ -63,14 +63,14 @@ func (a ApiRepository) GetApis(req *bean.ApiListRequest) ([]*sys.Api, int64, err
 }
 
 // 根据接口ID获取接口列表
-func (a ApiRepository) GetApisById(apiIds []uint) ([]*sys.Api, error) {
+func (a ApiDao) GetApisById(apiIds []uint) ([]*sys.Api, error) {
 	var apis []*sys.Api
 	err := config.DB.Where("id IN (?)", apiIds).Find(&apis).Error
 	return apis, err
 }
 
 // 获取接口树(按接口Category字段分类)
-func (a ApiRepository) GetApiTree() ([]*ApiTreeDto, error) {
+func (a ApiDao) GetApiTree() ([]*ApiTreeDto, error) {
 	var apiList []*sys.Api
 	err := config.DB.Order("category").Order("created_at").Find(&apiList).Error
 	// 获取所有的分类
@@ -101,13 +101,13 @@ func (a ApiRepository) GetApiTree() ([]*ApiTreeDto, error) {
 }
 
 // 创建接口
-func (a ApiRepository) CreateApi(api *sys.Api) error {
+func (a ApiDao) CreateApi(api *sys.Api) error {
 	err := config.DB.Create(api).Error
 	return err
 }
 
 // 更新接口
-func (a ApiRepository) UpdateApiById(apiId uint, api *sys.Api) error {
+func (a ApiDao) UpdateApiById(apiId uint, api *sys.Api) error {
 	// 根据id获取接口信息
 	var oldApi sys.Api
 	err := config.DB.First(&oldApi, apiId).Error
@@ -153,7 +153,7 @@ func (a ApiRepository) UpdateApiById(apiId uint, api *sys.Api) error {
 }
 
 // 批量删除接口
-func (a ApiRepository) BatchDeleteApiByIds(apiIds []uint) error {
+func (a ApiDao) BatchDeleteApiByIds(apiIds []uint) error {
 
 	apis, err := a.GetApisById(apiIds)
 	if err != nil {
@@ -190,7 +190,7 @@ func (a ApiRepository) BatchDeleteApiByIds(apiIds []uint) error {
 }
 
 // 根据接口路径和请求方式获取接口描述
-func (a ApiRepository) GetApiDescByPath(path string, method string) (string, error) {
+func (a ApiDao) GetApiDescByPath(path string, method string) (string, error) {
 	var api sys.Api
 	err := config.DB.Where("path = ?", path).Where("method = ?", method).First(&api).Error
 	return api.Desc, err

@@ -49,8 +49,8 @@ func OperationLogMiddleware() gin.HandlerFunc {
 		method := c.Request.Method
 
 		// 获取接口描述
-		apiRepository := sys2.NewApiRepository()
-		apiDesc, _ := apiRepository.GetApiDescByPath(path, method)
+		apiDao := sys2.NewApiDao()
+		apiDesc, _ := apiDao.GetApiDescByPath(path, method)
 
 		operationLog := sys.OperationLog{
 			Username:   username,

@@ -6,22 +6,22 @@ import (
 	"github.com/thoas/go-funk"
 )
 
-type MenuRepository struct {
+type MenuDao struct {
 }
 
-func NewMenuRepository() MenuRepository {
-	return MenuRepository{}
+func NewMenuDao() MenuDao {
+	return MenuDao{}
 }
 
 // 获取菜单列表
-func (m MenuRepository) GetMenus() ([]*sys.Menu, error) {
+func (m MenuDao) GetMenus() ([]*sys.Menu, error) {
 	var menus []*sys.Menu
 	err := config.DB.Order("sort").Find(&menus).Error
 	return menus, err
 }
 
 // 获取菜单树
-func (m MenuRepository) GetMenuTree() ([]*sys.Menu, error) {
+func (m MenuDao) GetMenuTree() ([]*sys.Menu, error) {
 	var menus []*sys.Menu
 	err := config.DB.Order("sort").Find(&menus).Error
 	// parentId为0的是根菜单
@@ -42,19 +42,19 @@ func GenMenuTree(parentId uint, menus []*sys.Menu) []*sys.Menu {
 }
 
 // 创建菜单
-func (m MenuRepository) CreateMenu(menu *sys.Menu) error {
+func (m MenuDao) CreateMenu(menu *sys.Menu) error {
 	err := config.DB.Create(menu).Error
 	return err
 }
 
 // 更新菜单
-func (m MenuRepository) UpdateMenuById(menuId uint, menu *sys.Menu) error {
+func (m MenuDao) UpdateMenuById(menuId uint, menu *sys.Menu) error {
 	err := config.DB.Model(menu).Where("id = ?", menuId).Updates(menu).Error
 	return err
 }
 
 // 批量删除菜单
-func (m MenuRepository) BatchDeleteMenuByIds(menuIds []uint) error {
+func (m MenuDao) BatchDeleteMenuByIds(menuIds []uint) error {
 	var menus []*sys.Menu
 	err := config.DB.Where("id IN (?)", menuIds).Find(&menus).Error
 	if err != nil {
@@ -65,7 +65,7 @@ func (m MenuRepository) BatchDeleteMenuByIds(menuIds []uint) error {
 }
 
 // 根据用户ID获取用户的权限(可访问)菜单列表
-func (m MenuRepository) GetUserMenusByUserId(userId uint) ([]*sys.Menu, error) {
+func (m MenuDao) GetUserMenusByUserId(userId uint) ([]*sys.Menu, error) {
 	// 获取用户
 	var user sys.User
 	err := config.DB.Where("id = ?", userId).Preload("Roles").First(&user).Error
@@ -115,7 +115,7 @@ func (m MenuRepository) GetUserMenusByUserId(userId uint) ([]*sys.Menu, error) {
 }
 
 // 根据用户ID获取用户的权限(可访问)菜单树
-func (m MenuRepository) GetUserMenuTreeByUserId(userId uint) ([]*sys.Menu, error) {
+func (m MenuDao) GetUserMenuTreeByUserId(userId uint) ([]*sys.Menu, error) {
 	menus, err := m.GetUserMenusByUserId(userId)
 	if err != nil {
 		return nil, err

@@ -11,13 +11,13 @@ import (
 
 // OperationLogController handles operation log-related requests
 type OperationLogController struct {
-	operationLogRepository sys.OperationLogRepository
+	logDao sys.OperationLogDao
 }
 
 // NewOperationLogController creates a new OperationLogController
 func NewOperationLogController() OperationLogController {
-	operationLogRepository := sys.NewOperationLogRepository()
-	operationLogController := OperationLogController{operationLogRepository: operationLogRepository}
+	logDao := sys.NewOperationLogDao()
+	operationLogController := OperationLogController{logDao: logDao}
 	return operationLogController
 }
 
@@ -51,7 +51,7 @@ func (oc OperationLogController) GetOperationLogs(c *gin.Context) {
 		return
 	}
 	// 获取
-	logs, total, err := oc.operationLogRepository.GetOperationLogs(&req)
+	logs, total, err := oc.logDao.GetOperationLogs(&req)
 	if err != nil {
 		controller.Fail(c, nil, "获取操作日志列表失败: "+err.Error())
 		return
@@ -85,7 +85,7 @@ func (oc OperationLogController) BatchDeleteOperationLogByIds(c *gin.Context) {
 	}
 
 	// 删除接口
-	err := oc.operationLogRepository.BatchDeleteOperationLogByIds(req.OperationLogIds)
+	err := oc.logDao.BatchDeleteOperationLogByIds(req.OperationLogIds)
 	if err != nil {
 		controller.Fail(c, nil, "删除日志失败: "+err.Error())
 		return

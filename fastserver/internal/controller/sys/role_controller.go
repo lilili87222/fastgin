@@ -16,13 +16,13 @@ import (
 
 // RoleController handles role-related requests
 type RoleController struct {
-	RoleRepository sys2.RoleRepository
+	RoleDao sys2.RoleDao
 }
 
 // NewRoleController creates a new RoleController
 func NewRoleController() RoleController {
-	roleRepository := sys2.NewRoleRepository()
-	roleController := RoleController{RoleRepository: roleRepository}
+	roleDao := sys2.NewRoleDao()
+	roleController := RoleController{RoleDao: roleDao}
 	return roleController
 }
 
@@ -51,7 +51,7 @@ func (rc RoleController) GetRoles(c *gin.Context) {
 		controller.Fail(c, nil, errStr)
 		return
 	}
-	roles, total, err := rc.RoleRepository.GetRoles(&req)
+	roles, total, err := rc.RoleDao.GetRoles(&req)
 	if err != nil {
 		controller.Fail(c, nil, "获取角色列表失败: "+err.Error())
 		return
@@ -81,7 +81,7 @@ func (rc RoleController) CreateRole(c *gin.Context) {
 		controller.Fail(c, nil, errStr)
 		return
 	}
-	uc := sys2.NewUserRepository()
+	uc := sys2.NewUserDao()
 	sort, ctxUser, err := uc.GetCurrentUserMinRoleSort(c)
 	if err != nil {
 		controller.Fail(c, nil, "获取当前用户最高角色等级失败: "+err.Error())
@@ -99,7 +99,7 @@ func (rc RoleController) CreateRole(c *gin.Context) {
 		Sort:    req.Sort,
 		Creator: ctxUser.Username,
 	}
-	err = rc.RoleRepository.CreateRole(&role)
+	err = rc.RoleDao.CreateRole(&role)
 	if err != nil {
 		controller.Fail(c, nil, "创建角色失败: "+err.Error())
 		return
@@ -135,13 +135,13 @@ func (rc RoleController) UpdateRoleById(c *gin.Context) {
 		controller.Fail(c, nil, "角色ID不正确")
 		return
 	}
-	ur := sys2.NewUserRepository()
+	ur := sys2.NewUserDao()
 	minSort, ctxUser, err := ur.GetCurrentUserMinRoleSort(c)
 	if err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
 	}
-	roles, err := rc.RoleRepository.GetRolesByIds([]uint{uint(roleId)})
+	roles, err := rc.RoleDao.GetRolesByIds([]uint{uint(roleId)})
 	if err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -166,7 +166,7 @@ func (rc RoleController) UpdateRoleById(c *gin.Context) {
 		Sort:    req.Sort,
 		Creator: ctxUser.Username,
 	}
-	err = rc.RoleRepository.UpdateRoleById(uint(roleId), &role)
+	err = rc.RoleDao.UpdateRoleById(uint(roleId), &role)
 	if err != nil {
 		controller.Fail(c, nil, "更新角色失败: "+err.Error())
 		return
@@ -225,7 +225,7 @@ func (rc RoleController) GetRoleMenusById(c *gin.Context) {
 		controller.Fail(c, nil, "角色ID不正确")
 		return
 	}
-	menus, err := rc.RoleRepository.GetRoleMenusById(uint(roleId))
+	menus, err := rc.RoleDao.GetRoleMenusById(uint(roleId))
 	if err != nil {
 		controller.Fail(c, nil, "获取角色的权限菜单失败: "+err.Error())
 		return
@@ -265,7 +265,7 @@ func (rc RoleController) UpdateRoleMenusById(c *gin.Context) {
 		return
 	}
 	// 根据path中的角色ID获取该角色信息
-	roles, err := rc.RoleRepository.GetRolesByIds([]uint{uint(roleId)})
+	roles, err := rc.RoleDao.GetRolesByIds([]uint{uint(roleId)})
 	if err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -276,7 +276,7 @@ func (rc RoleController) UpdateRoleMenusById(c *gin.Context) {
 	}
 
 	// 当前用户角色排序最小值（最高等级角色）以及当前用户
-	ur := sys2.NewUserRepository()
+	ur := sys2.NewUserDao()
 	minSort, ctxUser, err := ur.GetCurrentUserMinRoleSort(c)
 	if err != nil {
 		controller.Fail(c, nil, err.Error())
@@ -292,7 +292,7 @@ func (rc RoleController) UpdateRoleMenusById(c *gin.Context) {
 	}
 
 	// 获取当前用户所拥有的权限菜单
-	mr := sys2.NewMenuRepository()
+	mr := sys2.NewMenuDao()
 	ctxUserMenus, err := mr.GetUserMenusByUserId(ctxUser.ID)
 	if err != nil {
 		controller.Fail(c, nil, "获取当前用户的可访问菜单列表失败: "+err.Error())
@@ -347,7 +347,7 @@ func (rc RoleController) UpdateRoleMenusById(c *gin.Context) {
 
 	roles[0].Menus = reqMenus
 
-	err = rc.RoleRepository.UpdateRoleMenus(roles[0])
+	err = rc.RoleDao.UpdateRoleMenus(roles[0])
 	if err != nil {
 		controller.Fail(c, nil, "更新角色的权限菜单失败: "+err.Error())
 		return
@@ -374,7 +374,7 @@ func (rc RoleController) GetRoleApisById(c *gin.Context) {
 		controller.Fail(c, nil, "角色ID不正确")
 		return
 	}
-	roles, err := rc.RoleRepository.GetRolesByIds([]uint{uint(roleId)})
+	roles, err := rc.RoleDao.GetRolesByIds([]uint{uint(roleId)})
 	if err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -384,7 +384,7 @@ func (rc RoleController) GetRoleApisById(c *gin.Context) {
 		return
 	}
 	keyword := roles[0].Keyword
-	apis, err := rc.RoleRepository.GetRoleApisByRoleKeyword(keyword)
+	apis, err := rc.RoleDao.GetRoleApisByRoleKeyword(keyword)
 	if err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -420,7 +420,7 @@ func (rc RoleController) UpdateRoleApisById(c *gin.Context) {
 		controller.Fail(c, nil, "角色ID不正确")
 		return
 	}
-	roles, err := rc.RoleRepository.GetRolesByIds([]uint{uint(roleId)})
+	roles, err := rc.RoleDao.GetRolesByIds([]uint{uint(roleId)})
 	if err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -429,7 +429,7 @@ func (rc RoleController) UpdateRoleApisById(c *gin.Context) {
 		controller.Fail(c, nil, "未获取到角色信息")
 		return
 	}
-	ur := sys2.NewUserRepository()
+	ur := sys2.NewUserDao()
 	minSort, ctxUser, err := ur.GetCurrentUserMinRoleSort(c)
 	if err != nil {
 		controller.Fail(c, nil, err.Error())
@@ -455,7 +455,7 @@ func (rc RoleController) UpdateRoleApisById(c *gin.Context) {
 		policy[0] = roles[0].Keyword
 	}
 	apiIds := req.ApiIds
-	ar := sys2.NewApiRepository()
+	ar := sys2.NewApiDao()
 	apis, err := ar.GetApisById(apiIds)
 	if err != nil {
 		controller.Fail(c, nil, "根据接口ID获取接口信息失败")
@@ -475,7 +475,7 @@ func (rc RoleController) UpdateRoleApisById(c *gin.Context) {
 			}
 		}
 	}
-	err = rc.RoleRepository.UpdateRoleApis(roles[0].Keyword, reqRolePolicies)
+	err = rc.RoleDao.UpdateRoleApis(roles[0].Keyword, reqRolePolicies)
 	if err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -505,14 +505,14 @@ func (rc RoleController) BatchDeleteRoleByIds(c *gin.Context) {
 		controller.Fail(c, nil, errStr)
 		return
 	}
-	ur := sys2.NewUserRepository()
+	ur := sys2.NewUserDao()
 	minSort, _, err := ur.GetCurrentUserMinRoleSort(c)
 	if err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
 	}
 	roleIds := req.RoleIds
-	roles, err := rc.RoleRepository.GetRolesByIds(roleIds)
+	roles, err := rc.RoleDao.GetRolesByIds(roleIds)
 	if err != nil {
 		controller.Fail(c, nil, "获取角色信息失败: "+err.Error())
 		return
@@ -527,7 +527,7 @@ func (rc RoleController) BatchDeleteRoleByIds(c *gin.Context) {
 			return
 		}
 	}
-	err = rc.RoleRepository.BatchDeleteRoleByIds(roleIds)
+	err = rc.RoleDao.BatchDeleteRoleByIds(roleIds)
 	if err != nil {
 		controller.Fail(c, nil, "删除角色失败")
 		return

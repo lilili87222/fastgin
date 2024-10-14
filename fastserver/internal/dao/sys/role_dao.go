@@ -9,15 +9,15 @@ import (
 	"strings"
 )
 
-type RoleRepository struct {
+type RoleDao struct {
 }
 
-func NewRoleRepository() RoleRepository {
-	return RoleRepository{}
+func NewRoleDao() RoleDao {
+	return RoleDao{}
 }
 
 // 获取角色列表
-func (r RoleRepository) GetRoles(req *bean.RoleListRequest) ([]sys.Role, int64, error) {
+func (r RoleDao) GetRoles(req *bean.RoleListRequest) ([]sys.Role, int64, error) {
 	var list []sys.Role
 	db := config.DB.Model(&sys.Role{}).Order("created_at DESC")
 
@@ -51,39 +51,39 @@ func (r RoleRepository) GetRoles(req *bean.RoleListRequest) ([]sys.Role, int64, 
 }
 
 // 根据角色ID获取角色
-func (r RoleRepository) GetRolesByIds(roleIds []uint) ([]*sys.Role, error) {
+func (r RoleDao) GetRolesByIds(roleIds []uint) ([]*sys.Role, error) {
 	var list []*sys.Role
 	err := config.DB.Where("id IN (?)", roleIds).Find(&list).Error
 	return list, err
 }
 
 // 创建角色
-func (r RoleRepository) CreateRole(role *sys.Role) error {
+func (r RoleDao) CreateRole(role *sys.Role) error {
 	err := config.DB.Create(role).Error
 	return err
 }
 
 // 更新角色
-func (r RoleRepository) UpdateRoleById(roleId uint, role *sys.Role) error {
+func (r RoleDao) UpdateRoleById(roleId uint, role *sys.Role) error {
 	err := config.DB.Model(&sys.Role{}).Where("id = ?", roleId).Updates(role).Error
 	return err
 }
 
 // 获取角色的权限菜单
-func (r RoleRepository) GetRoleMenusById(roleId uint) ([]*sys.Menu, error) {
+func (r RoleDao) GetRoleMenusById(roleId uint) ([]*sys.Menu, error) {
 	var role sys.Role
 	err := config.DB.Where("id = ?", roleId).Preload("Menus").First(&role).Error
 	return role.Menus, err
 }
 
 // 更新角色的权限菜单
-func (r RoleRepository) UpdateRoleMenus(role *sys.Role) error {
+func (r RoleDao) UpdateRoleMenus(role *sys.Role) error {
 	err := config.DB.Model(role).Association("Menus").Replace(role.Menus)
 	return err
 }
 
 // 根据角色关键字获取角色的权限接口
-func (r RoleRepository) GetRoleApisByRoleKeyword(roleKeyword string) ([]*sys.Api, error) {
+func (r RoleDao) GetRoleApisByRoleKeyword(roleKeyword string) ([]*sys.Api, error) {
 	policies, err2 := config.CasbinEnforcer.GetFilteredPolicy(0, roleKeyword)
 	if err2 != nil {
 		return nil, errors.New("获取角色的权限接口失败")
@@ -114,7 +114,7 @@ func (r RoleRepository) GetRoleApisByRoleKeyword(roleKeyword string) ([]*sys.Api
 }
 
 // 更新角色的权限接口（先全部删除再新增）
-func (r RoleRepository) UpdateRoleApis(roleKeyword string, reqRolePolicies [][]string) error {
+func (r RoleDao) UpdateRoleApis(roleKeyword string, reqRolePolicies [][]string) error {
 	// 先获取path中的角色ID对应角色已有的police(需要先删除的)
 	err := config.CasbinEnforcer.LoadPolicy()
 	if err != nil {
@@ -143,7 +143,7 @@ func (r RoleRepository) UpdateRoleApis(roleKeyword string, reqRolePolicies [][]s
 }
 
 // 删除角色
-func (r RoleRepository) BatchDeleteRoleByIds(roleIds []uint) error {
+func (r RoleDao) BatchDeleteRoleByIds(roleIds []uint) error {
 	var roles []*sys.Role
 	err := config.DB.Where("id IN (?)", roleIds).Find(&roles).Error
 	if err != nil {

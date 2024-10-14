@@ -16,13 +16,13 @@ import (
 )
 
 type UserController struct {
-	UserRepository sys2.UserRepository
+	UserDao sys2.UserDao
 }
 
 // 构造函数
 func NewUserController() UserController {
-	userRepository := sys2.NewUserRepository()
-	userController := UserController{UserRepository: userRepository}
+	userDao := sys2.NewUserDao()
+	userController := UserController{UserDao: userDao}
 	return userController
 }
 
@@ -46,7 +46,7 @@ func (uc UserController) GetUserInfo(c *gin.Context) {
 		Introduction string      `json:"introduction"`
 		Roles        []*sys.Role `json:"roles"`
 	}
-	user, err := uc.UserRepository.GetCurrentUser(c)
+	user, err := uc.UserDao.GetCurrentUser(c)
 	if err != nil {
 		controller.Fail(c, nil, "获取当前用户信息失败: "+err.Error())
 		return
@@ -85,7 +85,7 @@ func (uc UserController) GetUsers(c *gin.Context) {
 	}
 
 	// 获取
-	users, total, err := uc.UserRepository.GetUsers(&req)
+	users, total, err := uc.UserDao.GetUsers(&req)
 	if err != nil {
 		controller.Fail(c, nil, "获取用户列表失败: "+err.Error())
 		return
@@ -157,7 +157,7 @@ func (uc UserController) ChangePwd(c *gin.Context) {
 	//req.NewPassword = string(decodeNewPassword)
 
 	// 获取当前用户
-	user, err := uc.UserRepository.GetCurrentUser(c)
+	user, err := uc.UserDao.GetCurrentUser(c)
 	if err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -171,7 +171,7 @@ func (uc UserController) ChangePwd(c *gin.Context) {
 		return
 	}
 	// 更新密码
-	err = uc.UserRepository.ChangePwd(user.Username, util2.GenPasswd(req.NewPassword))
+	err = uc.UserDao.ChangePwd(user.Username, util2.GenPasswd(req.NewPassword))
 	if err != nil {
 		controller.Fail(c, nil, "更新密码失败: "+err.Error())
 		return
@@ -220,7 +220,7 @@ func (uc UserController) CreateUser(c *gin.Context) {
 	//}
 
 	// 当前用户角色排序最小值（最高等级角色）以及当前用户
-	currentRoleSortMin, ctxUser, err := uc.UserRepository.GetCurrentUserMinRoleSort(c)
+	currentRoleSortMin, ctxUser, err := uc.UserDao.GetCurrentUserMinRoleSort(c)
 	if err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -229,7 +229,7 @@ func (uc UserController) CreateUser(c *gin.Context) {
 	// 获取前端传来的用户角色id
 	reqRoleIds := req.RoleIds
 	// 根据角色id获取角色
-	rr := sys2.NewRoleRepository()
+	rr := sys2.NewRoleDao()
 	roles, err := rr.GetRolesByIds(reqRoleIds)
 	if err != nil {
 		controller.Fail(c, nil, "根据角色ID获取角色信息失败: "+err.Error())
@@ -269,7 +269,7 @@ func (uc UserController) CreateUser(c *gin.Context) {
 		Roles:        roles,
 	}
 
-	err = uc.UserRepository.CreateUser(&user)
+	err = uc.UserDao.CreateUser(&user)
 	if err != nil {
 		controller.Fail(c, nil, "创建用户失败: "+err.Error())
 		return
@@ -312,14 +312,14 @@ func (uc UserController) UpdateUserById(c *gin.Context) {
 	}
 
 	// 根据path中的userId获取用户信息
-	oldUser, err := uc.UserRepository.GetUserById(uint(userId))
+	oldUser, err := uc.UserDao.GetUserById(uint(userId))
 	if err != nil {
 		controller.Fail(c, nil, "获取需要更新的用户信息失败: "+err.Error())
 		return
 	}
 
 	// 获取当前用户
-	ctxUser, err := uc.UserRepository.GetCurrentUser(c)
+	ctxUser, err := uc.UserDao.GetCurrentUser(c)
 	if err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -340,7 +340,7 @@ func (uc UserController) UpdateUserById(c *gin.Context) {
 	// 获取前端传来的用户角色id
 	reqRoleIds := req.RoleIds
 	// 根据角色id获取角色
-	rr := sys2.NewRoleRepository()
+	rr := sys2.NewRoleDao()
 	roles, err := rr.GetRolesByIds(reqRoleIds)
 	if err != nil {
 		controller.Fail(c, nil, "根据角色ID获取角色信息失败: "+err.Error())
@@ -397,7 +397,7 @@ func (uc UserController) UpdateUserById(c *gin.Context) {
 		// 如果是更新别人
 		// 用户不能更新比自己角色等级高的或者相同等级的用户
 		// 根据path中的userIdID获取用户角色排序最小值
-		minRoleSorts, err := uc.UserRepository.GetUserMinRoleSortsByIds([]uint{uint(userId)})
+		minRoleSorts, err := uc.UserDao.GetUserMinRoleSortsByIds([]uint{uint(userId)})
 		if err != nil || len(minRoleSorts) == 0 {
 			controller.Fail(c, nil, "根据用户ID获取用户角色排序最小值失败")
 			return
@@ -429,7 +429,7 @@ func (uc UserController) UpdateUserById(c *gin.Context) {
 	}
 
 	// 更新用户
-	err = uc.UserRepository.UpdateUser(&user)
+	err = uc.UserDao.UpdateUser(&user)
 	if err != nil {
 		controller.Fail(c, nil, "更新用户失败: "+err.Error())
 		return
@@ -466,14 +466,14 @@ func (uc UserController) BatchDeleteUserByIds(c *gin.Context) {
 	// 前端传来的用户ID
 	reqUserIds := req.UserIds
 	// 根据用户ID获取用户角色排序最小值
-	roleMinSortList, err := uc.UserRepository.GetUserMinRoleSortsByIds(reqUserIds)
+	roleMinSortList, err := uc.UserDao.GetUserMinRoleSortsByIds(reqUserIds)
 	if err != nil || len(roleMinSortList) == 0 {
 		controller.Fail(c, nil, "根据用户ID获取用户角色排序最小值失败")
 		return
 	}
 
 	// 当前用户角色排序最小值（最高等级角色）以及当前用户
-	minSort, ctxUser, err := uc.UserRepository.GetCurrentUserMinRoleSort(c)
+	minSort, ctxUser, err := uc.UserDao.GetCurrentUserMinRoleSort(c)
 	if err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -494,7 +494,7 @@ func (uc UserController) BatchDeleteUserByIds(c *gin.Context) {
 		}
 	}
 
-	err = uc.UserRepository.BatchDeleteUserByIds(reqUserIds)
+	err = uc.UserDao.BatchDeleteUserByIds(reqUserIds)
 	if err != nil {
 		controller.Fail(c, nil, "删除用户失败: "+err.Error())
 		return
