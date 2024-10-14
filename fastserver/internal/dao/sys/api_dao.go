@@ -3,8 +3,8 @@ package sys
 import (
 	"errors"
 	"fastgin/config"
-	"fastgin/internal/bean"
 	"fastgin/internal/model/sys"
+	"fastgin/internal/model/sys/request"
 	"fmt"
 	"github.com/thoas/go-funk"
 	"strings"
@@ -24,7 +24,7 @@ func NewApiDao() ApiDao {
 }
 
 // 获取接口列表
-func (a ApiDao) GetApis(req *bean.ApiListRequest) ([]*sys.Api, int64, error) {
+func (a ApiDao) GetApis(req *request.ApiListRequest) ([]*sys.Api, int64, error) {
 	var list []*sys.Api
 	db := config.DB.Model(&sys.Api{}).Order("created_at DESC")
 

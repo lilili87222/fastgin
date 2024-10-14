@@ -1,4 +1,4 @@
-package bean
+package request
 
 // 操作日志请求结构体
 type OperationLogListRequest struct {

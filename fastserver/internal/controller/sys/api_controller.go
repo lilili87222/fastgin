@@ -2,10 +2,10 @@ package sys
 
 import (
 	"fastgin/config"
-	"fastgin/internal/bean"
 	"fastgin/internal/controller"
 	sys2 "fastgin/internal/dao/sys"
 	"fastgin/internal/model/sys"
+	"fastgin/internal/model/sys/request"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"strconv"
@@ -40,7 +40,7 @@ func NewApiController() ApiController {
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/apis [get]
 func (ac ApiController) GetApis(c *gin.Context) {
-	var req bean.ApiListRequest
+	var req request.ApiListRequest
 	if err := c.ShouldBind(&req); err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -89,12 +89,12 @@ func (ac ApiController) GetApiTree(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param api body bean.CreateApiRequest true "Create API request"
+// @Param api body request.CreateApiRequest true "Create API request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/api [post]
 func (ac ApiController) CreateApi(c *gin.Context) {
-	var req bean.CreateApiRequest
+	var req request.CreateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -133,12 +133,12 @@ func (ac ApiController) CreateApi(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param apiId path int true "API ID"
-// @Param api body bean.UpdateApiRequest true "Update API request"
+// @Param api body request.UpdateApiRequest true "Update API request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/api/{apiId} [put]
 func (ac ApiController) UpdateApiById(c *gin.Context) {
-	var req bean.UpdateApiRequest
+	var req request.UpdateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -181,12 +181,12 @@ func (ac ApiController) UpdateApiById(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param apiIds body bean.DeleteApiRequest true "Delete API request"
+// @Param apiIds body request.DeleteApiRequest true "Delete API request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/api/batch_delete [delete]
 func (ac ApiController) BatchDeleteApiByIds(c *gin.Context) {
-	var req bean.DeleteApiRequest
+	var req request.DeleteApiRequest
 	if err := c.ShouldBind(&req); err != nil {
 		controller.Fail(c, nil, err.Error())
 		return

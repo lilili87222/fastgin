@@ -3,8 +3,8 @@ package sys
 import (
 	"errors"
 	"fastgin/config"
-	"fastgin/internal/bean"
 	"fastgin/internal/model/sys"
+	"fastgin/internal/model/sys/request"
 	"fmt"
 	"strings"
 )
@@ -17,7 +17,7 @@ func NewRoleDao() RoleDao {
 }
 
 // 获取角色列表
-func (r RoleDao) GetRoles(req *bean.RoleListRequest) ([]sys.Role, int64, error) {
+func (r RoleDao) GetRoles(req *request.RoleListRequest) ([]sys.Role, int64, error) {
 	var list []sys.Role
 	db := config.DB.Model(&sys.Role{}).Order("created_at DESC")
 

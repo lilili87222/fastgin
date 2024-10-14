@@ -1,4 +1,4 @@
-package bean
+package request
 
 // 用户登录结构体
 type RegisterAndLoginRequest struct {

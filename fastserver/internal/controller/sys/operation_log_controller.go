@@ -2,9 +2,9 @@ package sys
 
 import (
 	"fastgin/config"
-	"fastgin/internal/bean"
 	"fastgin/internal/controller"
 	"fastgin/internal/dao/sys"
+	"fastgin/internal/model/sys/request"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
@@ -38,7 +38,7 @@ func NewOperationLogController() OperationLogController {
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/operation_logs [get]
 func (oc OperationLogController) GetOperationLogs(c *gin.Context) {
-	var req bean.OperationLogListRequest
+	var req request.OperationLogListRequest
 	// 绑定参数
 	if err := c.ShouldBind(&req); err != nil {
 		controller.Fail(c, nil, err.Error())
@@ -66,12 +66,12 @@ func (oc OperationLogController) GetOperationLogs(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param operationLogIds body bean.DeleteOperationLogRequest true "Delete operation log request"
+// @Param operationLogIds body request.DeleteOperationLogRequest true "Delete operation log request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/operation_logs/batch_delete [delete]
 func (oc OperationLogController) BatchDeleteOperationLogByIds(c *gin.Context) {
-	var req bean.DeleteOperationLogRequest
+	var req request.DeleteOperationLogRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
 		controller.Fail(c, nil, err.Error())

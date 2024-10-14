@@ -2,10 +2,10 @@ package sys
 
 import (
 	"fastgin/config"
-	"fastgin/internal/bean"
 	"fastgin/internal/controller"
 	sys2 "fastgin/internal/dao/sys"
 	"fastgin/internal/model/sys"
+	"fastgin/internal/model/sys/request"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -41,7 +41,7 @@ func NewRoleController() RoleController {
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/roles [get]
 func (rc RoleController) GetRoles(c *gin.Context) {
-	var req bean.RoleListRequest
+	var req request.RoleListRequest
 	if err := c.ShouldBind(&req); err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -66,12 +66,12 @@ func (rc RoleController) GetRoles(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param role body bean.CreateRoleRequest true "Create role request"
+// @Param role body request.CreateRoleRequest true "Create role request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role [post]
 func (rc RoleController) CreateRole(c *gin.Context) {
-	var req bean.CreateRoleRequest
+	var req request.CreateRoleRequest
 	if err := c.ShouldBind(&req); err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -115,12 +115,12 @@ func (rc RoleController) CreateRole(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role ID"
-// @Param role body bean.CreateRoleRequest true "Update role request"
+// @Param role body request.CreateRoleRequest true "Update role request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role/{roleId} [put]
 func (rc RoleController) UpdateRoleById(c *gin.Context) {
-	var req bean.CreateRoleRequest
+	var req request.CreateRoleRequest
 	if err := c.ShouldBind(&req); err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -241,12 +241,12 @@ func (rc RoleController) GetRoleMenusById(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role ID"
-// @Param menus body bean.UpdateRoleMenusRequest true "Update role menus request"
+// @Param menus body request.UpdateRoleMenusRequest true "Update role menus request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role/{roleId}/menus [put]
 func (rc RoleController) UpdateRoleMenusById(c *gin.Context) {
-	var req bean.UpdateRoleMenusRequest
+	var req request.UpdateRoleMenusRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
 		controller.Fail(c, nil, err.Error())
@@ -400,12 +400,12 @@ func (rc RoleController) GetRoleApisById(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role ID"
-// @Param apis body bean.UpdateRoleApisRequest true "Update role APIs request"
+// @Param apis body request.UpdateRoleApisRequest true "Update role APIs request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role/{roleId}/apis [put]
 func (rc RoleController) UpdateRoleApisById(c *gin.Context) {
-	var req bean.UpdateRoleApisRequest
+	var req request.UpdateRoleApisRequest
 	if err := c.ShouldBind(&req); err != nil {
 		controller.Fail(c, nil, err.Error())
 		return
@@ -490,12 +490,12 @@ func (rc RoleController) UpdateRoleApisById(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param roleIds body bean.DeleteRoleRequest true "Delete role request"
+// @Param roleIds body request.DeleteRoleRequest true "Delete role request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role/batch_delete [delete]
 func (rc RoleController) BatchDeleteRoleByIds(c *gin.Context) {
-	var req bean.DeleteRoleRequest
+	var req request.DeleteRoleRequest
 	if err := c.ShouldBind(&req); err != nil {
 		controller.Fail(c, nil, err.Error())
 		return

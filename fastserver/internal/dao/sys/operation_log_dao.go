@@ -2,8 +2,8 @@ package sys
 
 import (
 	"fastgin/config"
-	"fastgin/internal/bean"
 	"fastgin/internal/model/sys"
+	"fastgin/internal/model/sys/request"
 	"fmt"
 	"strings"
 )
@@ -15,7 +15,7 @@ func NewOperationLogDao() OperationLogDao {
 	return OperationLogDao{}
 }
 
-func (o OperationLogDao) GetOperationLogs(req *bean.OperationLogListRequest) ([]sys.OperationLog, int64, error) {
+func (o OperationLogDao) GetOperationLogs(req *request.OperationLogListRequest) ([]sys.OperationLog, int64, error) {
 	var list []sys.OperationLog
 	db := config.DB.Model(&sys.OperationLog{}).Order("start_time DESC")
 

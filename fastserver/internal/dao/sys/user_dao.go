@@ -3,8 +3,8 @@ package sys
 import (
 	"errors"
 	"fastgin/config"
-	"fastgin/internal/bean"
 	"fastgin/internal/model/sys"
+	"fastgin/internal/model/sys/request"
 	"fastgin/internal/util"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -124,7 +124,7 @@ func (ur UserDao) GetUserById(id uint) (sys.User, error) {
 }
 
 // 获取用户列表
-func (ur UserDao) GetUsers(req *bean.UserListRequest) ([]*sys.User, int64, error) {
+func (ur UserDao) GetUsers(req *request.UserListRequest) ([]*sys.User, int64, error) {
 	var list []*sys.User
 	db := config.DB.Model(&sys.User{}).Order("created_at DESC")
 

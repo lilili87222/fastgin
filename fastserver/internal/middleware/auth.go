@@ -2,11 +2,11 @@ package middleware
 
 import (
 	"fastgin/config"
-	"fastgin/internal/bean"
 	"fastgin/internal/controller"
 	sysdao "fastgin/internal/dao/sys"
 	"fastgin/internal/middleware/jwt"
 	"fastgin/internal/model/sys"
+	"fastgin/internal/model/sys/request"
 	util2 "fastgin/internal/util"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -71,7 +71,7 @@ func identityHandler(c *gin.Context) interface{} {
 
 // 校验token的正确性, 处理登录逻辑
 func login(c *gin.Context) (interface{}, error) {
-	var req bean.RegisterAndLoginRequest
+	var req request.RegisterAndLoginRequest
 	// 请求json绑定
 	if err := c.ShouldBind(&req); err != nil {
 		return "", err

@@ -1,4 +1,4 @@
-package bean
+package request
 
 // 获取接口列表结构体
 type ApiListRequest struct {

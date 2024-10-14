@@ -1,4 +1,4 @@
-package bean
+package request
 
 // 创建接口结构体
 type CreateMenuRequest struct {

@@ -1,4 +1,4 @@
-package bean
+package request
 
 // 新增角色结构体
 type CreateRoleRequest struct {
