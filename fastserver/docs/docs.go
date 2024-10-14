@@ -1033,6 +1033,85 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/auth/system/info": {
+            "get": {
+                "description": "获取系统的详细信息",
+                "tags": [
+                    "系统"
+                ],
+                "summary": "获取系统信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/system/restart": {
+            "get": {
+                "description": "重启服务器的运行",
+                "tags": [
+                    "系统"
+                ],
+                "summary": "重启服务器",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "重启服务成功",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/system/stop": {
+            "get": {
+                "description": "停止服务器的运行",
+                "tags": [
+                    "系统"
+                ],
+                "summary": "停止服务器",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "停止服务成功",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/auth/user/batch_delete": {
             "delete": {
                 "description": "批量删除用户",

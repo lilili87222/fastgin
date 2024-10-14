@@ -44,7 +44,7 @@ func OperationLogMiddleware() gin.HandlerFunc {
 		requestURL := c.Request.RequestURI
 		fmt.Println("requestPath:", requestURL, "fullPath:", fullPath)
 		// 获取访问路径
-		path := strings.TrimPrefix(fullPath, "/"+config.Conf.System.UrlPathPrefix)
+		path := strings.TrimPrefix(fullPath, "/"+config.Instance.System.UrlPathPrefix)
 		// 请求方式
 		method := c.Request.Method
 

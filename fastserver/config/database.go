@@ -13,18 +13,18 @@ import (
 var DB *gorm.DB
 
 func InitDatabase() {
-	if Conf.Database.Type == "mysql" {
+	if Instance.Database.Type == "mysql" {
 		initMysql()
-	} else if Conf.Database.Type == "sqlite" {
+	} else if Instance.Database.Type == "sqlite" {
 		initSqlLite()
 	} else {
-		panic(fmt.Errorf("mysql and sqllite support by default,不支持的数据库类型: %s", Conf.Database.Type))
+		panic(fmt.Errorf("mysql and sqllite support by default,不支持的数据库类型: %s", Instance.Database.Type))
 	}
 }
 
 // 初始化mysql数据库
 func initMysql() {
-	mysqlConfig := Conf.Database.MysqlConfig
+	mysqlConfig := Instance.Database.MysqlConfig
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&collation=%s&%s",
 		mysqlConfig.Username,
 		mysqlConfig.Password,
@@ -61,7 +61,7 @@ func initMysql() {
 
 // 初始化sqllite数据库
 func initSqlLite() {
-	sqlConfig := Conf.Database.SqlLiteConfig
+	sqlConfig := Instance.Database.SqlLiteConfig
 	db, err := gorm.Open(sqlite.Open(sqlConfig.FilePath), &gorm.Config{
 		// 禁用外键(指定外键时不会在sqlite创建真实的外键约束)
 		DisableForeignKeyConstraintWhenMigrating: true,
@@ -77,7 +77,7 @@ func initSqlLite() {
 
 // 自动迁移表结构
 func createTables() {
-	if Conf.Database.CreateTables {
+	if Instance.Database.CreateTables {
 		DB.AutoMigrate(
 			&sys.User{},
 			&sys.Role{},

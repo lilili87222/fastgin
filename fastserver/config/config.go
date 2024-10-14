@@ -11,9 +11,10 @@ import (
 
 // 系统配置，对应yml
 // viper内置了mapstructure, yml文件用"-"区分单词, 转为驼峰方便
+const AppVersion = "v1.0.0"
 
 // 全局配置变量
-var Conf = new(config)
+var Instance = new(config)
 
 type config struct {
 	System *SystemConfig `mapstructure:"system" json:"system"`
@@ -100,23 +101,23 @@ func InitConfig() {
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		// 将读取的配置信息保存至全局变量Conf
-		if err := viper.Unmarshal(Conf); err != nil {
+		if err := viper.Unmarshal(Instance); err != nil {
 			panic(fmt.Errorf("初始化配置文件失败:%s \n", err))
 		}
 		// 读取rsa key
-		Conf.System.RSAPublicBytes = util.RSAReadKeyFromFile(Conf.System.RSAPublicKey)
-		Conf.System.RSAPrivateBytes = util.RSAReadKeyFromFile(Conf.System.RSAPrivateKey)
+		Instance.System.RSAPublicBytes = util.RSAReadKeyFromFile(Instance.System.RSAPublicKey)
+		Instance.System.RSAPrivateBytes = util.RSAReadKeyFromFile(Instance.System.RSAPrivateKey)
 	})
 
 	if err != nil {
 		panic(fmt.Errorf("读取配置文件失败:%s \n", err))
 	}
 	// 将读取的配置信息保存至全局变量Conf
-	if err := viper.Unmarshal(Conf); err != nil {
+	if err := viper.Unmarshal(Instance); err != nil {
 		panic(fmt.Errorf("初始化配置文件失败:%s \n", err))
 	}
 	// 读取rsa key
-	Conf.System.RSAPublicBytes = util.RSAReadKeyFromFile(Conf.System.RSAPublicKey)
-	Conf.System.RSAPrivateBytes = util.RSAReadKeyFromFile(Conf.System.RSAPrivateKey)
+	Instance.System.RSAPublicBytes = util.RSAReadKeyFromFile(Instance.System.RSAPublicKey)
+	Instance.System.RSAPrivateBytes = util.RSAReadKeyFromFile(Instance.System.RSAPrivateKey)
 
 }

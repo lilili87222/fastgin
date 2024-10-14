@@ -26,7 +26,7 @@ func mysqlCasbin() (*casbin.Enforcer, error) {
 	if err != nil {
 		return nil, err
 	}
-	e, err := casbin.NewEnforcer(Conf.Casbin.ModelPath, a)
+	e, err := casbin.NewEnforcer(Instance.Casbin.ModelPath, a)
 	if err != nil {
 		return nil, err
 	}

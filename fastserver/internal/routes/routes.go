@@ -29,10 +29,10 @@ func InitRoutes(engine *gin.Engine) {
 	publicGroup := engine.Group("api/public")
 	sys.InitBaseRoutes(publicGroup) // 注册基础路由, 不需要jwt认证中间件,不需要casbin中间件
 
-	authGroup := engine.Group(config.Conf.System.UrlPathPrefix)
+	authGroup := engine.Group(config.Instance.System.UrlPathPrefix)
 	// 启用中间件
 	authGroup.Use(middleware.OperationLogMiddleware())
-	authGroup.Use(middleware.RateLimitMiddleware(time.Millisecond*time.Duration(config.Conf.RateLimit.FillInterval), config.Conf.RateLimit.Capacity))
+	authGroup.Use(middleware.RateLimitMiddleware(time.Millisecond*time.Duration(config.Instance.RateLimit.FillInterval), config.Instance.RateLimit.Capacity))
 	authGroup.Use(middleware.GetJwtMiddleware().MiddlewareFunc()) // jwt认证中间件
 	authGroup.Use(middleware.CasbinMiddleware())                  //// 开启casbin鉴权中间件
 
@@ -41,6 +41,8 @@ func InitRoutes(engine *gin.Engine) {
 	sys.InitMenuRoutes(authGroup)         // 注册菜单路由, jwt认证中间件,casbin鉴权中间件
 	sys.InitApiRoutes(authGroup)          // 注册接口路由, jwt认证中间件,casbin鉴权中间件
 	sys.InitOperationLogRoutes(authGroup) // 注册操作日志路由, jwt认证中间件,casbin鉴权中间件
+
+	sys.InitSystemRoutes(authGroup) // 注册系统路由, jwt认证中间件,casbin鉴权中间件
 
 	config.Log.Info("初始化路由完成！")
 }

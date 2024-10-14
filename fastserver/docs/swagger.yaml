@@ -1013,6 +1013,58 @@ paths:
       summary: Get role list
       tags:
       - Role
+  /api/auth/system/info:
+    get:
+      description: 获取系统的详细信息
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: 获取系统信息
+      tags:
+      - 系统
+  /api/auth/system/restart:
+    get:
+      description: 重启服务器的运行
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 重启服务成功
+          schema:
+            type: string
+      summary: 重启服务器
+      tags:
+      - 系统
+  /api/auth/system/stop:
+    get:
+      description: 停止服务器的运行
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 停止服务成功
+          schema:
+            type: string
+      summary: 停止服务器
+      tags:
+      - 系统
   /api/auth/user/{userId}/menu_tree:
     get:
       consumes:

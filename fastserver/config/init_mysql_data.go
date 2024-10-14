@@ -10,7 +10,7 @@ import (
 
 // 初始化mysql数据
 func InitData() {
-	if !Conf.Database.InitData {
+	if !Instance.Database.InitData {
 		return
 	}
 	// 是否初始化数据

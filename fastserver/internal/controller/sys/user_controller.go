@@ -143,12 +143,12 @@ func (uc UserController) ChangePwd(c *gin.Context) {
 
 	// 前端传来的密码是rsa加密的,先解密
 	// 密码通过RSA解密
-	//decodeOldPassword, err := util2.RSADecrypt([]byte(req.OldPassword), config.Conf.System.RSAPrivateBytes)
+	//decodeOldPassword, err := util2.RSADecrypt([]byte(req.OldPassword), config.Instance.System.RSAPrivateBytes)
 	//if err != nil {
 	//	controller.Fail(c, nil, err.Error())
 	//	return
 	//}
-	//decodeNewPassword, err := util2.RSADecrypt([]byte(req.NewPassword), config.Conf.System.RSAPrivateBytes)
+	//decodeNewPassword, err := util2.RSADecrypt([]byte(req.NewPassword), config.Instance.System.RSAPrivateBytes)
 	//if err != nil {
 	//	controller.Fail(c, nil, err.Error())
 	//	return
@@ -207,7 +207,7 @@ func (uc UserController) CreateUser(c *gin.Context) {
 	// 密码通过RSA解密
 	// 密码不为空就解密
 	//if req.Password != "" {
-	//	decodeData, err := util2.RSADecrypt([]byte(req.Password), config.Conf.System.RSAPrivateBytes)
+	//	decodeData, err := util2.RSADecrypt([]byte(req.Password), config.Instance.System.RSAPrivateBytes)
 	//	if err != nil {
 	//		controller.Fail(c, nil, err.Error())
 	//		return
@@ -416,7 +416,7 @@ func (uc UserController) UpdateUserById(c *gin.Context) {
 		// 密码赋值
 		//if req.Password != "" {
 		//	// 密码通过RSA解密
-		//	decodeData, err := util2.RSADecrypt([]byte(req.Password), config.Conf.System.RSAPrivateBytes)
+		//	decodeData, err := util2.RSADecrypt([]byte(req.Password), config.Instance.System.RSAPrivateBytes)
 		//	if err != nil {
 		//		controller.Fail(c, nil, err.Error())
 		//		return

@@ -1,14 +1,8 @@
 package main
 
 import (
-	"errors"
+	"fastgin/boost"
 	"fastgin/config"
-	"fastgin/internal/dao/sys"
-	"fastgin/internal/middleware"
-	"fastgin/internal/routes"
-	"fmt"
-	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 // @title Go Web fastgin API
@@ -43,20 +37,6 @@ func main() {
 	// 初始化Validator数据校验
 	config.InitValidate()
 
-	// 操作日志中间件处理日志时没有将日志发送到rabbitmq或者kafka中, 而是发送到了channel中
-	// 这里开启3个goroutine处理channel将日志记录到数据库
-	logRepository := sys.NewOperationLogRepository()
-	for i := 0; i < 3; i++ {
-		go logRepository.SaveOperationLogChannel(middleware.OperationLogChan)
-	}
+	boost.StartWebService()
 
-	//设置模式
-	gin.SetMode(config.Conf.System.Mode)
-	engine := gin.Default()
-	routes.InitRoutes(engine)
-
-	server := &http.Server{Addr: fmt.Sprintf(":" + config.Conf.System.Port), Handler: engine}
-	if err := server.ListenAndServe(); err != nil && !errors.Is(http.ErrServerClosed, err) {
-		config.Log.Fatalf("listen: %s\n", err)
-	}
 }

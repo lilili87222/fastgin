@@ -36,8 +36,8 @@ func CasbinMiddleware() gin.HandlerFunc {
 			}
 		}
 		// 获得请求路径URL
-		//obj := strings.Replace(c.Request.URL.Path, "/"+config.Conf.System.UrlPathPrefix, "", 1)
-		obj := strings.TrimPrefix(c.FullPath(), "/"+config.Conf.System.UrlPathPrefix)
+		//obj := strings.Replace(c.Request.URL.Path, "/"+config.Instance.System.UrlPathPrefix, "", 1)
+		obj := strings.TrimPrefix(c.FullPath(), "/"+config.Instance.System.UrlPathPrefix)
 		// 获取请求方式
 		act := c.Request.Method
 
