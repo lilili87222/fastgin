@@ -34,7 +34,7 @@ type config struct {
 type SystemConfig struct {
 	Mode          string `mapstructure:"mode" json:"mode"`
 	UrlPathPrefix string `mapstructure:"url-path-prefix" json:"urlPathPrefix"`
-	Port          int    `mapstructure:"port" json:"port"`
+	Port          string `mapstructure:"port" json:"port"`
 
 	RSAPublicKey    string `mapstructure:"rsa-public-key" json:"rsaPublicKey"`
 	RSAPrivateKey   string `mapstructure:"rsa-private-key" json:"rsaPrivateKey"`

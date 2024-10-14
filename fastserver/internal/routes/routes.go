@@ -12,29 +12,24 @@ import (
 )
 
 // 初始化
-func InitRoutes() *gin.Engine {
-	//设置模式
-	gin.SetMode(config.Conf.System.Mode)
+func InitRoutes(engine *gin.Engine) {
 
-	// 创建带有默认中间件的路由:
-	// 日志与恢复中间件
-	r := gin.Default()
 	// 创建不带中间件的路由:
-	// r := gin.New()
-	// r.Use(gin.Recovery())
+	// engine := gin.New()
+	// engine.Use(gin.Recovery())
 
 	// 启用限流中间件
 	// 默认每50毫秒填充一个令牌，最多填充200个
 
 	// 启用全局跨域中间件
-	r.Use(middleware.CORSMiddleware())
+	engine.Use(middleware.CORSMiddleware())
 
-	r.Group("/").GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	engine.Group("/").GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	publicGroup := r.Group("api/public")
+	publicGroup := engine.Group("api/public")
 	sys.InitBaseRoutes(publicGroup) // 注册基础路由, 不需要jwt认证中间件,不需要casbin中间件
 
-	authGroup := r.Group(config.Conf.System.UrlPathPrefix)
+	authGroup := engine.Group(config.Conf.System.UrlPathPrefix)
 	// 启用中间件
 	authGroup.Use(middleware.OperationLogMiddleware())
 	authGroup.Use(middleware.RateLimitMiddleware(time.Millisecond*time.Duration(config.Conf.RateLimit.FillInterval), config.Conf.RateLimit.Capacity))
@@ -48,5 +43,4 @@ func InitRoutes() *gin.Engine {
 	sys.InitOperationLogRoutes(authGroup) // 注册操作日志路由, jwt认证中间件,casbin鉴权中间件
 
 	config.Log.Info("初始化路由完成！")
-	return r
 }
