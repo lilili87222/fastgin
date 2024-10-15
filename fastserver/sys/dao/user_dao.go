@@ -1,7 +1,7 @@
 package dao
 
 import (
-	"fastgin/config"
+	"fastgin/database"
 	"fastgin/sys/dto"
 	"fastgin/sys/model"
 	"fmt"
@@ -16,19 +16,19 @@ func NewUserDao() *UserDao {
 
 func (ur *UserDao) GetUserByUsername(username string) (model.User, error) {
 	var user model.User
-	err := config.DB.Where("user_name = ?", username).Preload("Roles").First(&user).Error
+	err := database.DB.Where("user_name = ?", username).Preload("Roles").First(&user).Error
 	return user, err
 }
 
 func (ur *UserDao) GetUserById(id uint) (model.User, error) {
 	var user model.User
-	err := config.DB.Where("id = ?", id).Preload("Roles").First(&user).Error
+	err := database.DB.Where("id = ?", id).Preload("Roles").First(&user).Error
 	return user, err
 }
 
 func (ur *UserDao) GetUsers(req *dto.UserListRequest) ([]*model.User, int64, error) {
 	var list []*model.User
-	db := config.DB.Model(&model.User{}).Order("created_at DESC")
+	db := database.DB.Model(&model.User{}).Order("created_at DESC")
 
 	if username := strings.TrimSpace(req.Username); username != "" {
 		db = db.Where("user_name LIKE ?", fmt.Sprintf("%%%s%%", username))
@@ -60,19 +60,19 @@ func (ur *UserDao) GetUsers(req *dto.UserListRequest) ([]*model.User, int64, err
 }
 
 func (ur *UserDao) ChangePwd(username string, hashNewPasswd string) error {
-	return config.DB.Model(&model.User{}).Where("user_name = ?", username).Update("password", hashNewPasswd).Error
+	return database.DB.Model(&model.User{}).Where("user_name = ?", username).Update("password", hashNewPasswd).Error
 }
 
 func (ur *UserDao) CreateUser(user *model.User) error {
-	return config.DB.Create(user).Error
+	return database.DB.Create(user).Error
 }
 
 func (ur *UserDao) UpdateUser(user *model.User) error {
-	err := config.DB.Model(user).Updates(user).Error
+	err := database.DB.Model(user).Updates(user).Error
 	if err != nil {
 		return err
 	}
-	return config.DB.Model(user).Association("Roles").Replace(user.Roles)
+	return database.DB.Model(user).Association("Roles").Replace(user.Roles)
 }
 
 func (ur *UserDao) BatchDeleteUserByIds(ids []uint) error {
@@ -80,17 +80,17 @@ func (ur *UserDao) BatchDeleteUserByIds(ids []uint) error {
 	if e != nil {
 		return e
 	}
-	return config.DB.Select("Roles").Unscoped().Delete(&users).Error
+	return database.DB.Select("Roles").Unscoped().Delete(&users).Error
 }
 
 func (ur *UserDao) GetUsersByIds(ids []uint) ([]model.User, error) {
 	var users []model.User
-	err := config.DB.Where("id IN (?)", ids).Preload("Roles").Find(&users).Error
+	err := database.DB.Where("id IN (?)", ids).Preload("Roles").Find(&users).Error
 	return users, err
 }
 
 func (ur *UserDao) GetRoleById(roleId uint) (model.Role, error) {
 	var role model.Role
-	err := config.DB.Where("id = ?", roleId).Preload("Users").First(&role).Error
+	err := database.DB.Where("id = ?", roleId).Preload("Users").First(&role).Error
 	return role, err
 }

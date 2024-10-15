@@ -121,12 +121,12 @@ func (mc *MenuController) CreateMenu(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param menuId path int true "Menu Id"
-// @Param menu body dto.UpdateMenuRequest true "Update menu request"
+// @Param menu body dto.CreateMenuRequest true "Update menu request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/menu/{menuId} [put]
 func (mc *MenuController) UpdateMenuById(c *gin.Context) {
-	var req dto.UpdateMenuRequest
+	var req dto.CreateMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
 		return
@@ -179,12 +179,18 @@ func (mc *MenuController) UpdateMenuById(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param menuIds body dto.DeleteMenuRequest true "Delete menu request"
+// @Param menuIds body dto.IdListRequest true "Delete menu request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/menu/batch_delete [delete]
 func (mc *MenuController) BatchDeleteMenuByIds(c *gin.Context) {
-	var req dto.DeleteMenuRequest
+	// 删除接口结构体
+	//type DeleteMenuRequest struct {
+	//	MenuIds []uint `json:"MenuIds" form:"MenuIds"`
+	//}
+	var req dto.IdListRequest
+	//var req map[string]any
+	//var req DeleteMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
 		return
@@ -194,7 +200,8 @@ func (mc *MenuController) BatchDeleteMenuByIds(c *gin.Context) {
 		util.Fail(c, nil, errStr)
 		return
 	}
-	err := mc.menuService.BatchDeleteMenuByIds(req.MenuIds)
+	//ids := req["Ids"].([]uint)
+	err := mc.menuService.BatchDeleteMenuByIds(req.Ids)
 	if err != nil {
 		util.Fail(c, nil, "删除菜单失败: "+err.Error())
 		return

@@ -240,12 +240,12 @@ func (rc *RoleController) GetRoleMenusById(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role Id"
-// @Param menus body dto.UpdateRoleMenusRequest true "Update role menus request"
+// @Param menus body dto.IdListRequest true "Update role menus request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/role/{roleId}/menus [put]
 func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
-	var req dto.UpdateRoleMenusRequest
+	var req dto.IdListRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
@@ -305,7 +305,7 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 	}
 
 	// 前端传来最新的MenuIds集合
-	menuIds := req.MenuIds
+	menuIds := req.Ids
 
 	// 用户需要修改的菜单集合
 	reqMenus := make([]*model.Menu, 0)
@@ -399,12 +399,12 @@ func (rc *RoleController) GetRoleApisById(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role Id"
-// @Param apis body dto.UpdateRoleApisRequest true "Update role APIs request"
+// @Param apis body dto.IdListRequest true "Update role APIs request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/role/{roleId}/apis [put]
 func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
-	var req dto.UpdateRoleApisRequest
+	var req dto.IdListRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
 		return
@@ -453,7 +453,7 @@ func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
 	for _, policy := range ctxRolesPolicies {
 		policy[0] = roles[0].Keyword
 	}
-	apiIds := req.ApiIds
+	apiIds := req.Ids
 	ar := service.NewApiService()
 	apis, err := ar.GetApisById(apiIds)
 	if err != nil {
@@ -489,12 +489,12 @@ func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param roleIds body dto.DeleteRoleRequest true "Delete role request"
+// @Param roleIds body dto.IdListRequest true "Delete role request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/role/batch_delete [delete]
 func (rc *RoleController) BatchDeleteRoleByIds(c *gin.Context) {
-	var req dto.DeleteRoleRequest
+	var req dto.IdListRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
 		return
@@ -510,7 +510,7 @@ func (rc *RoleController) BatchDeleteRoleByIds(c *gin.Context) {
 		util.Fail(c, nil, err.Error())
 		return
 	}
-	roleIds := req.RoleIds
+	roleIds := req.Ids
 	roles, err := rc.roleService.GetRolesByIds(roleIds)
 	if err != nil {
 		util.Fail(c, nil, "获取角色信息失败: "+err.Error())

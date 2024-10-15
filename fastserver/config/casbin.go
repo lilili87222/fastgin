@@ -1,39 +1,27 @@
 package config
 
 import (
-	"fmt"
 	"github.com/casbin/casbin/v2"
 	gormadapter "github.com/casbin/gorm-adapter/v3"
+	"gorm.io/gorm"
 )
 
 // 全局CasbinEnforcer
 var CasbinEnforcer *casbin.Enforcer
 
-// 初始化casbin策略管理器
-func InitCasbinEnforcer() {
-	e, err := mysqlCasbin()
-	if err != nil {
-		Log.Panicf("初始化Casbin失败：%v", err)
-		panic(fmt.Sprintf("初始化Casbin失败：%v", err))
-	}
-
-	CasbinEnforcer = e
-	Log.Info("初始化Casbin完成!")
-}
-
-func mysqlCasbin() (*casbin.Enforcer, error) {
-	a, err := gormadapter.NewAdapterByDBUseTableName(DB, "sys", "casbin_rule")
+func InitCasbinEnforcer(db *gorm.DB) (*casbin.Enforcer, error) {
+	a, err := gormadapter.NewAdapterByDBUseTableName(db, "sys", "casbin_rule")
 	if err != nil {
 		return nil, err
 	}
-	e, err := casbin.NewEnforcer(Instance.Casbin.ModelPath, a)
+	CasbinEnforcer, err = casbin.NewEnforcer(Instance.Casbin.ModelPath, a)
 	if err != nil {
 		return nil, err
 	}
 
-	err = e.LoadPolicy()
+	err = CasbinEnforcer.LoadPolicy()
 	if err != nil {
 		return nil, err
 	}
-	return e, nil
+	return CasbinEnforcer, nil
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"fastgin/boost"
 	"fastgin/config"
+	"fastgin/database"
 )
 
 // @title Go Web fastgin API
@@ -28,11 +29,11 @@ func main() {
 	config.InitLogger()
 
 	// 初始化数据库
-	config.InitDatabase()
+	database.InitDatabase()
 	// 初始化casbin策略管理器
-	config.InitCasbinEnforcer()
+	config.InitCasbinEnforcer(database.DB)
 	// 初始化数据
-	config.InitData()
+	database.InitData()
 
 	// 初始化Validator数据校验
 	config.InitValidate()

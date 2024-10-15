@@ -93,6 +93,7 @@ func (ac *ApiController) GetApiTree(c *gin.Context) {
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/api [post]
 func (ac *ApiController) CreateApi(c *gin.Context) {
+
 	var req dto.CreateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
@@ -132,12 +133,18 @@ func (ac *ApiController) CreateApi(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param apiId path int true "API Id"
-// @Param api body dto.UpdateApiRequest true "Update API request"
+// @Param api body dto.CreateApiRequest true "Update API request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/api/{apiId} [put]
 func (ac *ApiController) UpdateApiById(c *gin.Context) {
-	var req dto.UpdateApiRequest
+	//type UpdateApiRequest struct {
+	//	Method   string `json:"Method" form:"Method" validate:"min=1,max=20"`
+	//	Path     string `json:"Path" form:"Path" validate:"min=1,max=100"`
+	//	Category string `json:"Category" form:"Category" validate:"min=1,max=50"`
+	//	Desc     string `json:"Desc" form:"Desc" validate:"min=0,max=100"`
+	//}
+	var req dto.CreateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
 		return
@@ -180,22 +187,27 @@ func (ac *ApiController) UpdateApiById(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param apiIds body dto.DeleteApiRequest true "Delete API request"
+// @Param apiIds body dto.IdListRequest true "Delete API request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/api/batch_delete [delete]
 func (ac *ApiController) BatchDeleteApiByIds(c *gin.Context) {
-	var req dto.DeleteApiRequest
+	//type DeleteApiRequest struct {
+	//	ApiIds []uint `json:"ApiIds" form:"ApiIds"`
+	//}
+	var req dto.IdListRequest
+	//var req map[string]any
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
 		return
 	}
+	//ids := req["Ids"].([]uint)
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
 		util.Fail(c, nil, errStr)
 		return
 	}
-	err := ac.apiService.BatchDeleteApiByIds(req.ApiIds)
+	err := ac.apiService.BatchDeleteApiByIds(req.Ids)
 	if err != nil {
 		util.Fail(c, nil, "删除接口失败: "+err.Error())
 		return

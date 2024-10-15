@@ -29,3 +29,17 @@ func Success(c *gin.Context, data gin.H, message string) {
 func Fail(c *gin.Context, data gin.H, message string) {
 	Response(c, http.StatusBadRequest, 400, data, message)
 }
+func GetFormData(c *gin.Context) (map[string]string, error) {
+	err := c.Request.ParseForm()
+	if err != nil {
+		return nil, err
+	}
+	params := make(map[string]string)
+	for key, values := range c.Request.Form {
+		// 只取第一个值
+		if len(values) > 0 {
+			params[key] = values[0]
+		}
+	}
+	return params, nil
+}

@@ -29,9 +29,9 @@ type UserListRequest struct {
 }
 
 // 批量删除用户结构体
-type DeleteUserRequest struct {
-	UserIds []uint `json:"UserIds" form:"UserIds"`
-}
+//type DeleteUserRequest struct {
+//	UserIds []uint `json:"UserIds" form:"UserIds"`
+//}
 
 // 更新密码结构体
 type ChangePwdRequest struct {

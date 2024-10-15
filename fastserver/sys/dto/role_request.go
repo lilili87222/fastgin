@@ -19,16 +19,16 @@ type RoleListRequest struct {
 }
 
 // 批量删除角色结构体
-type DeleteRoleRequest struct {
-	RoleIds []uint `json:"RoleIds" form:"RoleIds"`
-}
+//type DeleteRoleRequest struct {
+//	RoleIds []uint `json:"RoleIds" form:"RoleIds"`
+//}
 
 // 更新角色的权限菜单
-type UpdateRoleMenusRequest struct {
-	MenuIds []uint `json:"MenuIds" form:"MenuIds"`
-}
+//type UpdateRoleMenusRequest struct {
+//	MenuIds []uint `json:"MenuIds" form:"MenuIds"`
+//}
 
 // 更新角色的权限接口
-type UpdateRoleApisRequest struct {
-	ApiIds []uint `json:"ApiIds" form:"ApiIds"`
-}
+//type UpdateRoleApisRequest struct {
+//	ApiIds []uint `json:"ApiIds" form:"ApiIds"`
+//}

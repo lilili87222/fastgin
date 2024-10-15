@@ -1,7 +1,7 @@
 package dao
 
 import (
-	"fastgin/config"
+	"fastgin/database"
 	"fastgin/sys/dto"
 	"fastgin/sys/model"
 	"fmt"
@@ -14,7 +14,7 @@ type RoleDao struct {
 // 获取角色列表
 func (r *RoleDao) GetRoles(req *dto.RoleListRequest) ([]model.Role, int64, error) {
 	var list []model.Role
-	db := config.DB.Model(&model.Role{}).Order("created_at DESC")
+	db := database.DB.Model(&model.Role{}).Order("created_at DESC")
 
 	name := strings.TrimSpace(req.Name)
 	if name != "" {
@@ -48,32 +48,32 @@ func (r *RoleDao) GetRoles(req *dto.RoleListRequest) ([]model.Role, int64, error
 // 根据角色ID获取角色
 func (r *RoleDao) GetRolesByIds(roleIds []uint) ([]*model.Role, error) {
 	var list []*model.Role
-	err := config.DB.Where("id IN (?)", roleIds).Find(&list).Error
+	err := database.DB.Where("id IN (?)", roleIds).Find(&list).Error
 	return list, err
 }
 
 // 创建角色
 func (r *RoleDao) CreateRole(role *model.Role) error {
-	err := config.DB.Create(role).Error
+	err := database.DB.Create(role).Error
 	return err
 }
 
 // 更新角色
 func (r *RoleDao) UpdateRoleById(roleId uint, role *model.Role) error {
-	err := config.DB.Model(&model.Role{}).Where("id = ?", roleId).Updates(role).Error
+	err := database.DB.Model(&model.Role{}).Where("id = ?", roleId).Updates(role).Error
 	return err
 }
 
 // 获取角色的权限菜单
 func (r *RoleDao) GetRoleMenusById(roleId uint) ([]*model.Menu, error) {
 	var role model.Role
-	err := config.DB.Where("id = ?", roleId).Preload("Menus").First(&role).Error
+	err := database.DB.Where("id = ?", roleId).Preload("Menus").First(&role).Error
 	return role.Menus, err
 }
 
 // 更新角色的权限菜单
 func (r *RoleDao) UpdateRoleMenus(role *model.Role) error {
-	err := config.DB.Model(role).Association("Menus").Replace(role.Menus)
+	err := database.DB.Model(role).Association("Menus").Replace(role.Menus)
 	return err
 }
 
@@ -84,5 +84,5 @@ func (r *RoleDao) BatchDeleteRoleByIds(roleIds []uint) ([]*model.Role, error) {
 	if err != nil {
 		return nil, err
 	}
-	return roles, config.DB.Select("Users", "Menus").Unscoped().Delete(&roles).Error
+	return roles, database.DB.Select("Users", "Menus").Unscoped().Delete(&roles).Error
 }

@@ -51,7 +51,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.CreateApiRequest"
+                            "$ref": "#/definitions/dto.CreateApiRequest"
                         }
                     }
                 ],
@@ -73,7 +73,7 @@ const docTemplate = `{
         },
         "/api/auth/api/batch_delete": {
             "delete": {
-                "description": "Delete multiple APIs by their IDs",
+                "description": "Delete multiple APIs by their Ids",
                 "consumes": [
                     "application/json"
                 ],
@@ -98,7 +98,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.DeleteApiRequest"
+                            "$ref": "#/definitions/dto.IdListRequest"
                         }
                     }
                 ],
@@ -190,7 +190,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.UpdateApiRequest"
+                            "$ref": "#/definitions/dto.CreateApiRequest"
                         }
                     }
                 ],
@@ -311,7 +311,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.CreateMenuRequest"
+                            "$ref": "#/definitions/dto.CreateMenuRequest"
                         }
                     }
                 ],
@@ -333,7 +333,7 @@ const docTemplate = `{
         },
         "/api/auth/menu/batch_delete": {
             "delete": {
-                "description": "Delete multiple menus by their IDs",
+                "description": "Delete multiple menus by their Ids",
                 "consumes": [
                     "application/json"
                 ],
@@ -358,7 +358,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.DeleteMenuRequest"
+                            "$ref": "#/definitions/dto.IdListRequest"
                         }
                     }
                 ],
@@ -450,7 +450,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.UpdateMenuRequest"
+                            "$ref": "#/definitions/dto.CreateMenuRequest"
                         }
                     }
                 ],
@@ -584,7 +584,7 @@ const docTemplate = `{
         },
         "/api/auth/operation_logs/batch_delete": {
             "delete": {
-                "description": "Delete multiple operation logs by their IDs",
+                "description": "Delete multiple operation logs by their Ids",
                 "consumes": [
                     "application/json"
                 ],
@@ -609,7 +609,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.DeleteOperationLogRequest"
+                            "$ref": "#/definitions/dto.IdListRequest"
                         }
                     }
                 ],
@@ -656,7 +656,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.CreateRoleRequest"
+                            "$ref": "#/definitions/dto.CreateRoleRequest"
                         }
                     }
                 ],
@@ -678,7 +678,7 @@ const docTemplate = `{
         },
         "/api/auth/role/batch_delete": {
             "delete": {
-                "description": "Delete multiple roles by their IDs",
+                "description": "Delete multiple roles by their Ids",
                 "consumes": [
                     "application/json"
                 ],
@@ -703,7 +703,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.DeleteRoleRequest"
+                            "$ref": "#/definitions/dto.IdListRequest"
                         }
                     }
                 ],
@@ -757,7 +757,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.CreateRoleRequest"
+                            "$ref": "#/definitions/dto.CreateRoleRequest"
                         }
                     }
                 ],
@@ -854,7 +854,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.UpdateRoleApisRequest"
+                            "$ref": "#/definitions/dto.IdListRequest"
                         }
                     }
                 ],
@@ -951,7 +951,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.UpdateRoleMenusRequest"
+                            "$ref": "#/definitions/dto.IdListRequest"
                         }
                     }
                 ],
@@ -1139,7 +1139,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.DeleteUserRequest"
+                            "$ref": "#/definitions/dto.IdListRequest"
                         }
                     }
                 ],
@@ -1186,7 +1186,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.ChangePwdRequest"
+                            "$ref": "#/definitions/dto.ChangePwdRequest"
                         }
                     }
                 ],
@@ -1233,7 +1233,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.CreateUserRequest"
+                            "$ref": "#/definitions/dto.CreateUserRequest"
                         }
                     }
                 ],
@@ -1318,7 +1318,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.UserListRequest"
+                            "$ref": "#/definitions/dto.UserListRequest"
                         }
                     }
                 ],
@@ -1433,7 +1433,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.CreateUserRequest"
+                            "$ref": "#/definitions/dto.CreateUserRequest"
                         }
                     }
                 ],
@@ -1563,7 +1563,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.RegisterAndLoginRequest"
+                            "$ref": "#/definitions/dto.RegisterAndLoginRequest"
                         }
                     }
                 ],
@@ -1587,168 +1587,168 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "bean.ChangePwdRequest": {
+        "dto.ChangePwdRequest": {
             "type": "object",
             "required": [
-                "newPassword",
-                "oldPassword"
+                "NewPassword",
+                "OldPassword"
             ],
             "properties": {
-                "newPassword": {
+                "NewPassword": {
                     "type": "string"
                 },
-                "oldPassword": {
+                "OldPassword": {
                     "type": "string"
                 }
             }
         },
-        "bean.CreateApiRequest": {
+        "dto.CreateApiRequest": {
             "type": "object",
             "required": [
-                "category",
-                "method",
-                "path"
+                "Category",
+                "Method",
+                "Path"
             ],
             "properties": {
-                "category": {
+                "Category": {
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 1
                 },
-                "desc": {
+                "Desc": {
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 0
                 },
-                "method": {
+                "Method": {
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 1
                 },
-                "path": {
+                "Path": {
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 1
                 }
             }
         },
-        "bean.CreateMenuRequest": {
+        "dto.CreateMenuRequest": {
             "type": "object",
             "required": [
-                "component",
-                "name",
-                "path",
-                "title"
+                "Component",
+                "Name",
+                "Path",
+                "Title"
             ],
             "properties": {
-                "activeMenu": {
+                "ActiveMenu": {
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 0
                 },
-                "alwaysShow": {
+                "AlwaysShow": {
                     "type": "integer",
                     "enum": [
                         1,
                         2
                     ]
                 },
-                "breadcrumb": {
+                "Breadcrumb": {
                     "type": "integer",
                     "enum": [
                         1,
                         2
                     ]
                 },
-                "component": {
+                "Component": {
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 1
                 },
-                "hidden": {
+                "Hidden": {
                     "type": "integer",
                     "enum": [
                         1,
                         2
                     ]
                 },
-                "icon": {
+                "Icon": {
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 0
                 },
-                "name": {
+                "Name": {
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 1
                 },
-                "noCache": {
+                "NoCache": {
                     "type": "integer",
                     "enum": [
                         1,
                         2
                     ]
                 },
-                "parentId": {
+                "ParentId": {
                     "type": "integer"
                 },
-                "path": {
+                "Path": {
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 1
                 },
-                "redirect": {
+                "Redirect": {
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 0
                 },
-                "sort": {
+                "Sort": {
                     "type": "integer",
                     "maximum": 999,
                     "minimum": 1
                 },
-                "status": {
+                "Status": {
                     "type": "integer",
                     "enum": [
                         1,
                         2
                     ]
                 },
-                "title": {
+                "Title": {
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 1
                 }
             }
         },
-        "bean.CreateRoleRequest": {
+        "dto.CreateRoleRequest": {
             "type": "object",
             "required": [
-                "keyword",
-                "name"
+                "Keyword",
+                "Name"
             ],
             "properties": {
-                "desc": {
+                "Desc": {
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 0
                 },
-                "keyword": {
+                "Keyword": {
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 1
                 },
-                "name": {
+                "Name": {
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 1
                 },
-                "sort": {
+                "Sort": {
                     "type": "integer",
                     "maximum": 999,
                     "minimum": 1
                 },
-                "status": {
+                "Status": {
                     "type": "integer",
                     "enum": [
                         1,
@@ -1757,57 +1757,57 @@ const docTemplate = `{
                 }
             }
         },
-        "bean.CreateUserRequest": {
+        "dto.CreateUserRequest": {
             "type": "object",
             "required": [
-                "mobile",
-                "roleIds",
-                "username"
+                "Mobile",
+                "RoleIds",
+                "UserName"
             ],
             "properties": {
-                "avatar": {
+                "Avatar": {
                     "type": "string"
                 },
-                "introduction": {
+                "Introduction": {
                     "type": "string",
                     "maxLength": 255,
                     "minLength": 0
                 },
-                "mobile": {
+                "Mobile": {
                     "type": "string"
                 },
-                "nickname": {
+                "NickName": {
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 0
                 },
-                "password": {
+                "Password": {
                     "type": "string"
                 },
-                "roleIds": {
+                "RoleIds": {
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
-                "status": {
+                "Status": {
                     "type": "integer",
                     "enum": [
                         1,
                         2
                     ]
                 },
-                "username": {
+                "UserName": {
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 2
                 }
             }
         },
-        "bean.DeleteApiRequest": {
+        "dto.IdListRequest": {
             "type": "object",
             "properties": {
-                "apiIds": {
+                "Ids": {
                     "type": "array",
                     "items": {
                         "type": "integer"
@@ -1815,219 +1815,40 @@ const docTemplate = `{
                 }
             }
         },
-        "bean.DeleteMenuRequest": {
-            "type": "object",
-            "properties": {
-                "menuIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "bean.DeleteOperationLogRequest": {
-            "type": "object",
-            "properties": {
-                "operationLogIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "bean.DeleteRoleRequest": {
-            "type": "object",
-            "properties": {
-                "roleIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "bean.DeleteUserRequest": {
-            "type": "object",
-            "properties": {
-                "userIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "bean.RegisterAndLoginRequest": {
+        "dto.RegisterAndLoginRequest": {
             "type": "object",
             "required": [
-                "password",
-                "username"
+                "Password",
+                "UserName"
             ],
             "properties": {
-                "password": {
+                "Password": {
                     "type": "string"
                 },
-                "username": {
+                "UserName": {
                     "type": "string"
                 }
             }
         },
-        "bean.UpdateApiRequest": {
+        "dto.UserListRequest": {
             "type": "object",
             "properties": {
-                "category": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 1
-                },
-                "desc": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 0
-                },
-                "method": {
-                    "type": "string",
-                    "maxLength": 20,
-                    "minLength": 1
-                },
-                "path": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 1
-                }
-            }
-        },
-        "bean.UpdateMenuRequest": {
-            "type": "object",
-            "required": [
-                "name",
-                "path",
-                "title"
-            ],
-            "properties": {
-                "activeMenu": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 0
-                },
-                "alwaysShow": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                },
-                "breadcrumb": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                },
-                "component": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 0
-                },
-                "hidden": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                },
-                "icon": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 0
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 1
-                },
-                "noCache": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                },
-                "parentId": {
-                    "type": "integer"
-                },
-                "path": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 1
-                },
-                "redirect": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 0
-                },
-                "sort": {
-                    "type": "integer",
-                    "maximum": 999,
-                    "minimum": 1
-                },
-                "status": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                },
-                "title": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 1
-                }
-            }
-        },
-        "bean.UpdateRoleApisRequest": {
-            "type": "object",
-            "properties": {
-                "apiIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "bean.UpdateRoleMenusRequest": {
-            "type": "object",
-            "properties": {
-                "menuIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "bean.UserListRequest": {
-            "type": "object",
-            "properties": {
-                "mobile": {
+                "Mobile": {
                     "type": "string"
                 },
-                "nickname": {
+                "NickName": {
                     "type": "string"
                 },
-                "pageNum": {
+                "PageNum": {
                     "type": "integer"
                 },
-                "pageSize": {
+                "PageSize": {
                     "type": "integer"
                 },
-                "status": {
+                "Status": {
                     "type": "integer"
                 },
-                "username": {
+                "UserName": {
                     "type": "string"
                 }
             }
@@ -2035,14 +1856,14 @@ const docTemplate = `{
         "util.ResponseBody": {
             "type": "object",
             "properties": {
-                "code": {
+                "Code": {
                     "type": "integer"
                 },
-                "data": {
+                "Data": {
                     "type": "object",
                     "additionalProperties": {}
                 },
-                "message": {
+                "Message": {
                     "type": "string"
                 }
             }

@@ -420,12 +420,12 @@ func (uc *UserController) UpdateUserById(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param DeleteUserRequest body dto.DeleteUserRequest true "Delete user request"
+// @Param DeleteUserRequest body dto.IdListRequest true "Delete user request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/user/batch_delete [delete]
 func (uc *UserController) BatchDeleteUserByIds(c *gin.Context) {
-	var req dto.DeleteUserRequest
+	var req dto.IdListRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
@@ -439,7 +439,7 @@ func (uc *UserController) BatchDeleteUserByIds(c *gin.Context) {
 	}
 
 	// 前端传来的用户ID
-	reqUserIds := req.UserIds
+	reqUserIds := req.Ids
 	// 根据用户ID获取用户角色排序最小值
 	roleMinSortList, err := uc.userService.GetUserMinRoleSortsByIds(reqUserIds)
 	if err != nil || len(roleMinSortList) == 0 {

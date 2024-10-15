@@ -492,7 +492,7 @@ func (mw *GinJWTMiddleware) GetClaimsFromJWT(c *gin.Context) (MapClaims, error) 
 }
 
 // @Summary 用户登录
-// @Description 用户登录获取JWT Token {"username": "testlog", "password": "123456"}
+// @Description 用户登录获取JWT Token {"UserName": "testlog", "Password": "123456"}
 // @Tags 公开接口
 // @Accept json
 // @Produce json

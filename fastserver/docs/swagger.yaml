@@ -1,333 +1,206 @@
 basePath: /
 definitions:
-  bean.ChangePwdRequest:
+  dto.ChangePwdRequest:
     properties:
-      newPassword:
+      NewPassword:
         type: string
-      oldPassword:
+      OldPassword:
         type: string
     required:
-    - newPassword
-    - oldPassword
+    - NewPassword
+    - OldPassword
     type: object
-  bean.CreateApiRequest:
+  dto.CreateApiRequest:
     properties:
-      category:
+      Category:
         maxLength: 50
         minLength: 1
         type: string
-      desc:
+      Desc:
         maxLength: 100
         minLength: 0
         type: string
-      method:
+      Method:
         maxLength: 20
         minLength: 1
         type: string
-      path:
+      Path:
         maxLength: 100
         minLength: 1
         type: string
     required:
-    - category
-    - method
-    - path
+    - Category
+    - Method
+    - Path
     type: object
-  bean.CreateMenuRequest:
+  dto.CreateMenuRequest:
     properties:
-      activeMenu:
+      ActiveMenu:
         maxLength: 100
         minLength: 0
         type: string
-      alwaysShow:
+      AlwaysShow:
         enum:
         - 1
         - 2
         type: integer
-      breadcrumb:
+      Breadcrumb:
         enum:
         - 1
         - 2
         type: integer
-      component:
+      Component:
         maxLength: 100
         minLength: 1
         type: string
-      hidden:
+      Hidden:
         enum:
         - 1
         - 2
         type: integer
-      icon:
+      Icon:
         maxLength: 50
         minLength: 0
         type: string
-      name:
+      Name:
         maxLength: 50
         minLength: 1
         type: string
-      noCache:
+      NoCache:
         enum:
         - 1
         - 2
         type: integer
-      parentId:
+      ParentId:
         type: integer
-      path:
+      Path:
         maxLength: 100
         minLength: 1
         type: string
-      redirect:
+      Redirect:
         maxLength: 100
         minLength: 0
         type: string
-      sort:
+      Sort:
         maximum: 999
         minimum: 1
         type: integer
-      status:
+      Status:
         enum:
         - 1
         - 2
         type: integer
-      title:
+      Title:
         maxLength: 50
         minLength: 1
         type: string
     required:
-    - component
-    - name
-    - path
-    - title
+    - Component
+    - Name
+    - Path
+    - Title
     type: object
-  bean.CreateRoleRequest:
+  dto.CreateRoleRequest:
     properties:
-      desc:
+      Desc:
         maxLength: 100
         minLength: 0
         type: string
-      keyword:
+      Keyword:
         maxLength: 20
         minLength: 1
         type: string
-      name:
+      Name:
         maxLength: 20
         minLength: 1
         type: string
-      sort:
+      Sort:
         maximum: 999
         minimum: 1
         type: integer
-      status:
+      Status:
         enum:
         - 1
         - 2
         type: integer
     required:
-    - keyword
-    - name
+    - Keyword
+    - Name
     type: object
-  bean.CreateUserRequest:
+  dto.CreateUserRequest:
     properties:
-      avatar:
+      Avatar:
         type: string
-      introduction:
+      Introduction:
         maxLength: 255
         minLength: 0
         type: string
-      mobile:
+      Mobile:
         type: string
-      nickname:
+      NickName:
         maxLength: 20
         minLength: 0
         type: string
-      password:
+      Password:
         type: string
-      roleIds:
+      RoleIds:
         items:
           type: integer
         type: array
-      status:
+      Status:
         enum:
         - 1
         - 2
         type: integer
-      username:
+      UserName:
         maxLength: 20
         minLength: 2
         type: string
     required:
-    - mobile
-    - roleIds
-    - username
+    - Mobile
+    - RoleIds
+    - UserName
     type: object
-  bean.DeleteApiRequest:
+  dto.IdListRequest:
     properties:
-      apiIds:
+      Ids:
         items:
           type: integer
         type: array
     type: object
-  bean.DeleteMenuRequest:
+  dto.RegisterAndLoginRequest:
     properties:
-      menuIds:
-        items:
-          type: integer
-        type: array
-    type: object
-  bean.DeleteOperationLogRequest:
-    properties:
-      operationLogIds:
-        items:
-          type: integer
-        type: array
-    type: object
-  bean.DeleteRoleRequest:
-    properties:
-      roleIds:
-        items:
-          type: integer
-        type: array
-    type: object
-  bean.DeleteUserRequest:
-    properties:
-      userIds:
-        items:
-          type: integer
-        type: array
-    type: object
-  bean.RegisterAndLoginRequest:
-    properties:
-      password:
+      Password:
         type: string
-      username:
+      UserName:
         type: string
     required:
-    - password
-    - username
+    - Password
+    - UserName
     type: object
-  bean.UpdateApiRequest:
+  dto.UserListRequest:
     properties:
-      category:
-        maxLength: 50
-        minLength: 1
+      Mobile:
         type: string
-      desc:
-        maxLength: 100
-        minLength: 0
+      NickName:
         type: string
-      method:
-        maxLength: 20
-        minLength: 1
-        type: string
-      path:
-        maxLength: 100
-        minLength: 1
+      PageNum:
+        type: integer
+      PageSize:
+        type: integer
+      Status:
+        type: integer
+      UserName:
         type: string
     type: object
-  bean.UpdateMenuRequest:
+  util.ResponseBody:
     properties:
-      activeMenu:
-        maxLength: 100
-        minLength: 0
-        type: string
-      alwaysShow:
-        enum:
-        - 1
-        - 2
+      Code:
         type: integer
-      breadcrumb:
-        enum:
-        - 1
-        - 2
-        type: integer
-      component:
-        maxLength: 100
-        minLength: 0
-        type: string
-      hidden:
-        enum:
-        - 1
-        - 2
-        type: integer
-      icon:
-        maxLength: 50
-        minLength: 0
-        type: string
-      name:
-        maxLength: 50
-        minLength: 1
-        type: string
-      noCache:
-        enum:
-        - 1
-        - 2
-        type: integer
-      parentId:
-        type: integer
-      path:
-        maxLength: 100
-        minLength: 1
-        type: string
-      redirect:
-        maxLength: 100
-        minLength: 0
-        type: string
-      sort:
-        maximum: 999
-        minimum: 1
-        type: integer
-      status:
-        enum:
-        - 1
-        - 2
-        type: integer
-      title:
-        maxLength: 50
-        minLength: 1
-        type: string
-    required:
-    - name
-    - path
-    - title
-    type: object
-  bean.UpdateRoleApisRequest:
-    properties:
-      apiIds:
-        items:
-          type: integer
-        type: array
-    type: object
-  bean.UpdateRoleMenusRequest:
-    properties:
-      menuIds:
-        items:
-          type: integer
-        type: array
-    type: object
-  bean.UserListRequest:
-    properties:
-      mobile:
-        type: string
-      nickname:
-        type: string
-      pageNum:
-        type: integer
-      pageSize:
-        type: integer
-      status:
-        type: integer
-      username:
-        type: string
-    type: object
-  controller.ResponseBody:
-    properties:
-      code:
-        type: integer
-      data:
+      Data:
         additionalProperties: {}
         type: object
-      message:
+      Message:
         type: string
     type: object
 host: 192.168.123.214:8088
@@ -360,18 +233,18 @@ paths:
         name: api
         required: true
         schema:
-          $ref: '#/definitions/bean.CreateApiRequest'
+          $ref: '#/definitions/dto.CreateApiRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: Create API
       tags:
       - API
@@ -379,14 +252,14 @@ paths:
     put:
       consumes:
       - application/json
-      description: Update an existing API by ID
+      description: Update an existing API by Id
       parameters:
       - description: Bearer token
         in: header
         name: Authorization
         required: true
         type: string
-      - description: API ID
+      - description: API Id
         in: path
         name: apiId
         required: true
@@ -396,18 +269,18 @@ paths:
         name: api
         required: true
         schema:
-          $ref: '#/definitions/bean.UpdateApiRequest'
+          $ref: '#/definitions/dto.CreateApiRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: Update API
       tags:
       - API
@@ -415,7 +288,7 @@ paths:
     delete:
       consumes:
       - application/json
-      description: Delete multiple APIs by their IDs
+      description: Delete multiple APIs by their Ids
       parameters:
       - description: Bearer token
         in: header
@@ -427,18 +300,18 @@ paths:
         name: apiIds
         required: true
         schema:
-          $ref: '#/definitions/bean.DeleteApiRequest'
+          $ref: '#/definitions/dto.IdListRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: Batch delete APIs
       tags:
       - API
@@ -459,11 +332,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: Get API tree
       tags:
       - API
@@ -508,11 +381,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: Get API list
       tags:
       - API
@@ -532,18 +405,18 @@ paths:
         name: menu
         required: true
         schema:
-          $ref: '#/definitions/bean.CreateMenuRequest'
+          $ref: '#/definitions/dto.CreateMenuRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: Create menu
       tags:
       - Menu
@@ -551,14 +424,14 @@ paths:
     put:
       consumes:
       - application/json
-      description: Update an existing menu by ID
+      description: Update an existing menu by Id
       parameters:
       - description: Bearer token
         in: header
         name: Authorization
         required: true
         type: string
-      - description: Menu ID
+      - description: Menu Id
         in: path
         name: menuId
         required: true
@@ -568,18 +441,18 @@ paths:
         name: menu
         required: true
         schema:
-          $ref: '#/definitions/bean.UpdateMenuRequest'
+          $ref: '#/definitions/dto.CreateMenuRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: Update menu
       tags:
       - Menu
@@ -587,7 +460,7 @@ paths:
     delete:
       consumes:
       - application/json
-      description: Delete multiple menus by their IDs
+      description: Delete multiple menus by their Ids
       parameters:
       - description: Bearer token
         in: header
@@ -599,18 +472,18 @@ paths:
         name: menuIds
         required: true
         schema:
-          $ref: '#/definitions/bean.DeleteMenuRequest'
+          $ref: '#/definitions/dto.IdListRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: Batch delete menus
       tags:
       - Menu
@@ -631,11 +504,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: Get menu tree
       tags:
       - Menu
@@ -656,11 +529,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: Get menu list
       tags:
       - Menu
@@ -705,11 +578,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: Get operation log list
       tags:
       - OperationLog
@@ -717,7 +590,7 @@ paths:
     delete:
       consumes:
       - application/json
-      description: Delete multiple operation logs by their IDs
+      description: Delete multiple operation logs by their Ids
       parameters:
       - description: Bearer token
         in: header
@@ -729,18 +602,18 @@ paths:
         name: operationLogIds
         required: true
         schema:
-          $ref: '#/definitions/bean.DeleteOperationLogRequest'
+          $ref: '#/definitions/dto.IdListRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: Batch delete operation logs
       tags:
       - OperationLog
@@ -760,18 +633,18 @@ paths:
         name: role
         required: true
         schema:
-          $ref: '#/definitions/bean.CreateRoleRequest'
+          $ref: '#/definitions/dto.CreateRoleRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: Create role
       tags:
       - Role
@@ -779,14 +652,14 @@ paths:
     put:
       consumes:
       - application/json
-      description: Update an existing role by ID
+      description: Update an existing role by Id
       parameters:
       - description: Bearer token
         in: header
         name: Authorization
         required: true
         type: string
-      - description: Role ID
+      - description: Role Id
         in: path
         name: roleId
         required: true
@@ -796,18 +669,18 @@ paths:
         name: role
         required: true
         schema:
-          $ref: '#/definitions/bean.CreateRoleRequest'
+          $ref: '#/definitions/dto.CreateRoleRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: Update role
       tags:
       - Role
@@ -815,14 +688,14 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get the APIs for a role by ID
+      description: Get the APIs for a role by Id
       parameters:
       - description: Bearer token
         in: header
         name: Authorization
         required: true
         type: string
-      - description: Role ID
+      - description: Role Id
         in: path
         name: roleId
         required: true
@@ -833,25 +706,25 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
-      summary: Get role APIs by ID
+            $ref: '#/definitions/util.ResponseBody'
+      summary: Get role APIs by Id
       tags:
       - Role
     put:
       consumes:
       - application/json
-      description: Update the APIs for a role by ID
+      description: Update the APIs for a role by Id
       parameters:
       - description: Bearer token
         in: header
         name: Authorization
         required: true
         type: string
-      - description: Role ID
+      - description: Role Id
         in: path
         name: roleId
         required: true
@@ -861,33 +734,33 @@ paths:
         name: apis
         required: true
         schema:
-          $ref: '#/definitions/bean.UpdateRoleApisRequest'
+          $ref: '#/definitions/dto.IdListRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
-      summary: Update role APIs by ID
+            $ref: '#/definitions/util.ResponseBody'
+      summary: Update role APIs by Id
       tags:
       - Role
   /api/auth/role/{roleId}/menus:
     get:
       consumes:
       - application/json
-      description: Get the menus for a role by ID
+      description: Get the menus for a role by Id
       parameters:
       - description: Bearer token
         in: header
         name: Authorization
         required: true
         type: string
-      - description: Role ID
+      - description: Role Id
         in: path
         name: roleId
         required: true
@@ -898,25 +771,25 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
-      summary: Get role menus by ID
+            $ref: '#/definitions/util.ResponseBody'
+      summary: Get role menus by Id
       tags:
       - Role
     put:
       consumes:
       - application/json
-      description: Update the menus for a role by ID
+      description: Update the menus for a role by Id
       parameters:
       - description: Bearer token
         in: header
         name: Authorization
         required: true
         type: string
-      - description: Role ID
+      - description: Role Id
         in: path
         name: roleId
         required: true
@@ -926,26 +799,26 @@ paths:
         name: menus
         required: true
         schema:
-          $ref: '#/definitions/bean.UpdateRoleMenusRequest'
+          $ref: '#/definitions/dto.IdListRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
-      summary: Update role menus by ID
+            $ref: '#/definitions/util.ResponseBody'
+      summary: Update role menus by Id
       tags:
       - Role
   /api/auth/role/batch_delete:
     delete:
       consumes:
       - application/json
-      description: Delete multiple roles by their IDs
+      description: Delete multiple roles by their Ids
       parameters:
       - description: Bearer token
         in: header
@@ -957,18 +830,18 @@ paths:
         name: roleIds
         required: true
         schema:
-          $ref: '#/definitions/bean.DeleteRoleRequest'
+          $ref: '#/definitions/dto.IdListRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: Batch delete roles
       tags:
       - Role
@@ -1005,11 +878,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: Get role list
       tags:
       - Role
@@ -1069,14 +942,14 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get the accessible menu tree for a user by user ID
+      description: Get the accessible menu tree for a user by user Id
       parameters:
       - description: Bearer token
         in: header
         name: Authorization
         required: true
         type: string
-      - description: User ID
+      - description: User Id
         in: path
         name: userId
         required: true
@@ -1087,26 +960,26 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
-      summary: Get user menu tree by user ID
+            $ref: '#/definitions/util.ResponseBody'
+      summary: Get user menu tree by user Id
       tags:
       - Menu
   /api/auth/user/{userId}/menus:
     get:
       consumes:
       - application/json
-      description: Get the accessible menus for a user by user ID
+      description: Get the accessible menus for a user by user Id
       parameters:
       - description: Bearer token
         in: header
         name: Authorization
         required: true
         type: string
-      - description: User ID
+      - description: User Id
         in: path
         name: userId
         required: true
@@ -1117,12 +990,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
-      summary: Get user menus by user ID
+            $ref: '#/definitions/util.ResponseBody'
+      summary: Get user menus by user Id
       tags:
       - Menu
   /api/auth/user/batch_delete:
@@ -1141,18 +1014,18 @@ paths:
         name: DeleteUserRequest
         required: true
         schema:
-          $ref: '#/definitions/bean.DeleteUserRequest'
+          $ref: '#/definitions/dto.IdListRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: 批量删除用户
       tags:
       - User
@@ -1172,18 +1045,18 @@ paths:
         name: ChangePwdRequest
         required: true
         schema:
-          $ref: '#/definitions/bean.ChangePwdRequest'
+          $ref: '#/definitions/dto.ChangePwdRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: 更新用户登录密码
       tags:
       - User
@@ -1203,18 +1076,18 @@ paths:
         name: CreateUserRequest
         required: true
         schema:
-          $ref: '#/definitions/bean.CreateUserRequest'
+          $ref: '#/definitions/dto.CreateUserRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: 创建用户
       tags:
       - User
@@ -1235,11 +1108,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: 获取当前登录用户信息
       tags:
       - User
@@ -1259,18 +1132,18 @@ paths:
         name: UserListRequest
         required: true
         schema:
-          $ref: '#/definitions/bean.UserListRequest'
+          $ref: '#/definitions/dto.UserListRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: 获取用户列表
       tags:
       - User
@@ -1326,7 +1199,7 @@ paths:
         name: Authorization
         required: true
         type: string
-      - description: User ID
+      - description: User Id
         in: path
         name: userId
         required: true
@@ -1336,18 +1209,18 @@ paths:
         name: CreateUserRequest
         required: true
         schema:
-          $ref: '#/definitions/bean.CreateUserRequest'
+          $ref: '#/definitions/dto.CreateUserRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controller.ResponseBody'
+            $ref: '#/definitions/util.ResponseBody'
       summary: 更新用户
       tags:
       - User
@@ -1362,7 +1235,7 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/bean.RegisterAndLoginRequest'
+          $ref: '#/definitions/dto.RegisterAndLoginRequest'
       produces:
       - application/json
       responses:

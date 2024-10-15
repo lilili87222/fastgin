@@ -45,7 +45,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.CreateApiRequest"
+                            "$ref": "#/definitions/dto.CreateApiRequest"
                         }
                     }
                 ],
@@ -53,13 +53,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -67,7 +67,7 @@
         },
         "/api/auth/api/batch_delete": {
             "delete": {
-                "description": "Delete multiple APIs by their IDs",
+                "description": "Delete multiple APIs by their Ids",
                 "consumes": [
                     "application/json"
                 ],
@@ -92,7 +92,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.DeleteApiRequest"
+                            "$ref": "#/definitions/dto.IdListRequest"
                         }
                     }
                 ],
@@ -100,13 +100,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -138,13 +138,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -152,7 +152,7 @@
         },
         "/api/auth/api/{apiId}": {
             "put": {
-                "description": "Update an existing API by ID",
+                "description": "Update an existing API by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -173,7 +173,7 @@
                     },
                     {
                         "type": "integer",
-                        "description": "API ID",
+                        "description": "API Id",
                         "name": "apiId",
                         "in": "path",
                         "required": true
@@ -184,7 +184,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.UpdateApiRequest"
+                            "$ref": "#/definitions/dto.CreateApiRequest"
                         }
                     }
                 ],
@@ -192,13 +192,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -266,13 +266,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -305,7 +305,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.CreateMenuRequest"
+                            "$ref": "#/definitions/dto.CreateMenuRequest"
                         }
                     }
                 ],
@@ -313,13 +313,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -327,7 +327,7 @@
         },
         "/api/auth/menu/batch_delete": {
             "delete": {
-                "description": "Delete multiple menus by their IDs",
+                "description": "Delete multiple menus by their Ids",
                 "consumes": [
                     "application/json"
                 ],
@@ -352,7 +352,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.DeleteMenuRequest"
+                            "$ref": "#/definitions/dto.IdListRequest"
                         }
                     }
                 ],
@@ -360,13 +360,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -398,13 +398,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -412,7 +412,7 @@
         },
         "/api/auth/menu/{menuId}": {
             "put": {
-                "description": "Update an existing menu by ID",
+                "description": "Update an existing menu by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -433,7 +433,7 @@
                     },
                     {
                         "type": "integer",
-                        "description": "Menu ID",
+                        "description": "Menu Id",
                         "name": "menuId",
                         "in": "path",
                         "required": true
@@ -444,7 +444,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.UpdateMenuRequest"
+                            "$ref": "#/definitions/dto.CreateMenuRequest"
                         }
                     }
                 ],
@@ -452,13 +452,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -490,13 +490,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -564,13 +564,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -578,7 +578,7 @@
         },
         "/api/auth/operation_logs/batch_delete": {
             "delete": {
-                "description": "Delete multiple operation logs by their IDs",
+                "description": "Delete multiple operation logs by their Ids",
                 "consumes": [
                     "application/json"
                 ],
@@ -603,7 +603,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.DeleteOperationLogRequest"
+                            "$ref": "#/definitions/dto.IdListRequest"
                         }
                     }
                 ],
@@ -611,13 +611,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -650,7 +650,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.CreateRoleRequest"
+                            "$ref": "#/definitions/dto.CreateRoleRequest"
                         }
                     }
                 ],
@@ -658,13 +658,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -672,7 +672,7 @@
         },
         "/api/auth/role/batch_delete": {
             "delete": {
-                "description": "Delete multiple roles by their IDs",
+                "description": "Delete multiple roles by their Ids",
                 "consumes": [
                     "application/json"
                 ],
@@ -697,7 +697,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.DeleteRoleRequest"
+                            "$ref": "#/definitions/dto.IdListRequest"
                         }
                     }
                 ],
@@ -705,13 +705,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -719,7 +719,7 @@
         },
         "/api/auth/role/{roleId}": {
             "put": {
-                "description": "Update an existing role by ID",
+                "description": "Update an existing role by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -740,7 +740,7 @@
                     },
                     {
                         "type": "integer",
-                        "description": "Role ID",
+                        "description": "Role Id",
                         "name": "roleId",
                         "in": "path",
                         "required": true
@@ -751,7 +751,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.CreateRoleRequest"
+                            "$ref": "#/definitions/dto.CreateRoleRequest"
                         }
                     }
                 ],
@@ -759,13 +759,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -773,7 +773,7 @@
         },
         "/api/auth/role/{roleId}/apis": {
             "get": {
-                "description": "Get the APIs for a role by ID",
+                "description": "Get the APIs for a role by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -783,7 +783,7 @@
                 "tags": [
                     "Role"
                 ],
-                "summary": "Get role APIs by ID",
+                "summary": "Get role APIs by Id",
                 "parameters": [
                     {
                         "type": "string",
@@ -794,7 +794,7 @@
                     },
                     {
                         "type": "integer",
-                        "description": "Role ID",
+                        "description": "Role Id",
                         "name": "roleId",
                         "in": "path",
                         "required": true
@@ -804,19 +804,19 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
             },
             "put": {
-                "description": "Update the APIs for a role by ID",
+                "description": "Update the APIs for a role by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -826,7 +826,7 @@
                 "tags": [
                     "Role"
                 ],
-                "summary": "Update role APIs by ID",
+                "summary": "Update role APIs by Id",
                 "parameters": [
                     {
                         "type": "string",
@@ -837,7 +837,7 @@
                     },
                     {
                         "type": "integer",
-                        "description": "Role ID",
+                        "description": "Role Id",
                         "name": "roleId",
                         "in": "path",
                         "required": true
@@ -848,7 +848,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.UpdateRoleApisRequest"
+                            "$ref": "#/definitions/dto.IdListRequest"
                         }
                     }
                 ],
@@ -856,13 +856,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -870,7 +870,7 @@
         },
         "/api/auth/role/{roleId}/menus": {
             "get": {
-                "description": "Get the menus for a role by ID",
+                "description": "Get the menus for a role by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -880,7 +880,7 @@
                 "tags": [
                     "Role"
                 ],
-                "summary": "Get role menus by ID",
+                "summary": "Get role menus by Id",
                 "parameters": [
                     {
                         "type": "string",
@@ -891,7 +891,7 @@
                     },
                     {
                         "type": "integer",
-                        "description": "Role ID",
+                        "description": "Role Id",
                         "name": "roleId",
                         "in": "path",
                         "required": true
@@ -901,19 +901,19 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
             },
             "put": {
-                "description": "Update the menus for a role by ID",
+                "description": "Update the menus for a role by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -923,7 +923,7 @@
                 "tags": [
                     "Role"
                 ],
-                "summary": "Update role menus by ID",
+                "summary": "Update role menus by Id",
                 "parameters": [
                     {
                         "type": "string",
@@ -934,7 +934,7 @@
                     },
                     {
                         "type": "integer",
-                        "description": "Role ID",
+                        "description": "Role Id",
                         "name": "roleId",
                         "in": "path",
                         "required": true
@@ -945,7 +945,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.UpdateRoleMenusRequest"
+                            "$ref": "#/definitions/dto.IdListRequest"
                         }
                     }
                 ],
@@ -953,13 +953,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1015,13 +1015,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1133,7 +1133,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.DeleteUserRequest"
+                            "$ref": "#/definitions/dto.IdListRequest"
                         }
                     }
                 ],
@@ -1141,13 +1141,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1180,7 +1180,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.ChangePwdRequest"
+                            "$ref": "#/definitions/dto.ChangePwdRequest"
                         }
                     }
                 ],
@@ -1188,13 +1188,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1227,7 +1227,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.CreateUserRequest"
+                            "$ref": "#/definitions/dto.CreateUserRequest"
                         }
                     }
                 ],
@@ -1235,13 +1235,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1273,13 +1273,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1312,7 +1312,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.UserListRequest"
+                            "$ref": "#/definitions/dto.UserListRequest"
                         }
                     }
                 ],
@@ -1320,13 +1320,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1416,7 +1416,7 @@
                     },
                     {
                         "type": "integer",
-                        "description": "User ID",
+                        "description": "User Id",
                         "name": "userId",
                         "in": "path",
                         "required": true
@@ -1427,7 +1427,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.CreateUserRequest"
+                            "$ref": "#/definitions/dto.CreateUserRequest"
                         }
                     }
                 ],
@@ -1435,13 +1435,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1449,7 +1449,7 @@
         },
         "/api/auth/user/{userId}/menu_tree": {
             "get": {
-                "description": "Get the accessible menu tree for a user by user ID",
+                "description": "Get the accessible menu tree for a user by user Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -1459,7 +1459,7 @@
                 "tags": [
                     "Menu"
                 ],
-                "summary": "Get user menu tree by user ID",
+                "summary": "Get user menu tree by user Id",
                 "parameters": [
                     {
                         "type": "string",
@@ -1470,7 +1470,7 @@
                     },
                     {
                         "type": "integer",
-                        "description": "User ID",
+                        "description": "User Id",
                         "name": "userId",
                         "in": "path",
                         "required": true
@@ -1480,13 +1480,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1494,7 +1494,7 @@
         },
         "/api/auth/user/{userId}/menus": {
             "get": {
-                "description": "Get the accessible menus for a user by user ID",
+                "description": "Get the accessible menus for a user by user Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -1504,7 +1504,7 @@
                 "tags": [
                     "Menu"
                 ],
-                "summary": "Get user menus by user ID",
+                "summary": "Get user menus by user Id",
                 "parameters": [
                     {
                         "type": "string",
@@ -1515,7 +1515,7 @@
                     },
                     {
                         "type": "integer",
-                        "description": "User ID",
+                        "description": "User Id",
                         "name": "userId",
                         "in": "path",
                         "required": true
@@ -1525,13 +1525,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1557,7 +1557,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/bean.RegisterAndLoginRequest"
+                            "$ref": "#/definitions/dto.RegisterAndLoginRequest"
                         }
                     }
                 ],
@@ -1581,168 +1581,168 @@
         }
     },
     "definitions": {
-        "bean.ChangePwdRequest": {
+        "dto.ChangePwdRequest": {
             "type": "object",
             "required": [
-                "newPassword",
-                "oldPassword"
+                "NewPassword",
+                "OldPassword"
             ],
             "properties": {
-                "newPassword": {
+                "NewPassword": {
                     "type": "string"
                 },
-                "oldPassword": {
+                "OldPassword": {
                     "type": "string"
                 }
             }
         },
-        "bean.CreateApiRequest": {
+        "dto.CreateApiRequest": {
             "type": "object",
             "required": [
-                "category",
-                "method",
-                "path"
+                "Category",
+                "Method",
+                "Path"
             ],
             "properties": {
-                "category": {
+                "Category": {
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 1
                 },
-                "desc": {
+                "Desc": {
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 0
                 },
-                "method": {
+                "Method": {
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 1
                 },
-                "path": {
+                "Path": {
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 1
                 }
             }
         },
-        "bean.CreateMenuRequest": {
+        "dto.CreateMenuRequest": {
             "type": "object",
             "required": [
-                "component",
-                "name",
-                "path",
-                "title"
+                "Component",
+                "Name",
+                "Path",
+                "Title"
             ],
             "properties": {
-                "activeMenu": {
+                "ActiveMenu": {
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 0
                 },
-                "alwaysShow": {
+                "AlwaysShow": {
                     "type": "integer",
                     "enum": [
                         1,
                         2
                     ]
                 },
-                "breadcrumb": {
+                "Breadcrumb": {
                     "type": "integer",
                     "enum": [
                         1,
                         2
                     ]
                 },
-                "component": {
+                "Component": {
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 1
                 },
-                "hidden": {
+                "Hidden": {
                     "type": "integer",
                     "enum": [
                         1,
                         2
                     ]
                 },
-                "icon": {
+                "Icon": {
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 0
                 },
-                "name": {
+                "Name": {
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 1
                 },
-                "noCache": {
+                "NoCache": {
                     "type": "integer",
                     "enum": [
                         1,
                         2
                     ]
                 },
-                "parentId": {
+                "ParentId": {
                     "type": "integer"
                 },
-                "path": {
+                "Path": {
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 1
                 },
-                "redirect": {
+                "Redirect": {
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 0
                 },
-                "sort": {
+                "Sort": {
                     "type": "integer",
                     "maximum": 999,
                     "minimum": 1
                 },
-                "status": {
+                "Status": {
                     "type": "integer",
                     "enum": [
                         1,
                         2
                     ]
                 },
-                "title": {
+                "Title": {
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 1
                 }
             }
         },
-        "bean.CreateRoleRequest": {
+        "dto.CreateRoleRequest": {
             "type": "object",
             "required": [
-                "keyword",
-                "name"
+                "Keyword",
+                "Name"
             ],
             "properties": {
-                "desc": {
+                "Desc": {
                     "type": "string",
                     "maxLength": 100,
                     "minLength": 0
                 },
-                "keyword": {
+                "Keyword": {
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 1
                 },
-                "name": {
+                "Name": {
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 1
                 },
-                "sort": {
+                "Sort": {
                     "type": "integer",
                     "maximum": 999,
                     "minimum": 1
                 },
-                "status": {
+                "Status": {
                     "type": "integer",
                     "enum": [
                         1,
@@ -1751,57 +1751,57 @@
                 }
             }
         },
-        "bean.CreateUserRequest": {
+        "dto.CreateUserRequest": {
             "type": "object",
             "required": [
-                "mobile",
-                "roleIds",
-                "username"
+                "Mobile",
+                "RoleIds",
+                "UserName"
             ],
             "properties": {
-                "avatar": {
+                "Avatar": {
                     "type": "string"
                 },
-                "introduction": {
+                "Introduction": {
                     "type": "string",
                     "maxLength": 255,
                     "minLength": 0
                 },
-                "mobile": {
+                "Mobile": {
                     "type": "string"
                 },
-                "nickname": {
+                "NickName": {
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 0
                 },
-                "password": {
+                "Password": {
                     "type": "string"
                 },
-                "roleIds": {
+                "RoleIds": {
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
-                "status": {
+                "Status": {
                     "type": "integer",
                     "enum": [
                         1,
                         2
                     ]
                 },
-                "username": {
+                "UserName": {
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 2
                 }
             }
         },
-        "bean.DeleteApiRequest": {
+        "dto.IdListRequest": {
             "type": "object",
             "properties": {
-                "apiIds": {
+                "Ids": {
                     "type": "array",
                     "items": {
                         "type": "integer"
@@ -1809,234 +1809,55 @@
                 }
             }
         },
-        "bean.DeleteMenuRequest": {
-            "type": "object",
-            "properties": {
-                "menuIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "bean.DeleteOperationLogRequest": {
-            "type": "object",
-            "properties": {
-                "operationLogIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "bean.DeleteRoleRequest": {
-            "type": "object",
-            "properties": {
-                "roleIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "bean.DeleteUserRequest": {
-            "type": "object",
-            "properties": {
-                "userIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "bean.RegisterAndLoginRequest": {
+        "dto.RegisterAndLoginRequest": {
             "type": "object",
             "required": [
-                "password",
-                "username"
+                "Password",
+                "UserName"
             ],
             "properties": {
-                "password": {
+                "Password": {
                     "type": "string"
                 },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "bean.UpdateApiRequest": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 1
-                },
-                "desc": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 0
-                },
-                "method": {
-                    "type": "string",
-                    "maxLength": 20,
-                    "minLength": 1
-                },
-                "path": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 1
-                }
-            }
-        },
-        "bean.UpdateMenuRequest": {
-            "type": "object",
-            "required": [
-                "name",
-                "path",
-                "title"
-            ],
-            "properties": {
-                "activeMenu": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 0
-                },
-                "alwaysShow": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                },
-                "breadcrumb": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                },
-                "component": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 0
-                },
-                "hidden": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                },
-                "icon": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 0
-                },
-                "name": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 1
-                },
-                "noCache": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                },
-                "parentId": {
-                    "type": "integer"
-                },
-                "path": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 1
-                },
-                "redirect": {
-                    "type": "string",
-                    "maxLength": 100,
-                    "minLength": 0
-                },
-                "sort": {
-                    "type": "integer",
-                    "maximum": 999,
-                    "minimum": 1
-                },
-                "status": {
-                    "type": "integer",
-                    "enum": [
-                        1,
-                        2
-                    ]
-                },
-                "title": {
-                    "type": "string",
-                    "maxLength": 50,
-                    "minLength": 1
-                }
-            }
-        },
-        "bean.UpdateRoleApisRequest": {
-            "type": "object",
-            "properties": {
-                "apiIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "bean.UpdateRoleMenusRequest": {
-            "type": "object",
-            "properties": {
-                "menuIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "bean.UserListRequest": {
-            "type": "object",
-            "properties": {
-                "mobile": {
-                    "type": "string"
-                },
-                "nickname": {
-                    "type": "string"
-                },
-                "pageNum": {
-                    "type": "integer"
-                },
-                "pageSize": {
-                    "type": "integer"
-                },
-                "status": {
-                    "type": "integer"
-                },
-                "username": {
+                "UserName": {
                     "type": "string"
                 }
             }
         },
-        "controller.ResponseBody": {
+        "dto.UserListRequest": {
             "type": "object",
             "properties": {
-                "code": {
+                "Mobile": {
+                    "type": "string"
+                },
+                "NickName": {
+                    "type": "string"
+                },
+                "PageNum": {
                     "type": "integer"
                 },
-                "data": {
+                "PageSize": {
+                    "type": "integer"
+                },
+                "Status": {
+                    "type": "integer"
+                },
+                "UserName": {
+                    "type": "string"
+                }
+            }
+        },
+        "util.ResponseBody": {
+            "type": "object",
+            "properties": {
+                "Code": {
+                    "type": "integer"
+                },
+                "Data": {
                     "type": "object",
                     "additionalProperties": {}
                 },
-                "message": {
+                "Message": {
                     "type": "string"
                 }
             }

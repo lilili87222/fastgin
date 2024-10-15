@@ -11,12 +11,12 @@ import (
 
 // OperationLogController handles operation log-related requests
 type OperationLogController struct {
-	logDao *service.OperationLogService
+	logService *service.OperationLogService
 }
 
 // NewOperationLogController creates a new OperationLogController
 func NewOperationLogController() *OperationLogController {
-	return &OperationLogController{logDao: service.NewLogService()}
+	return &OperationLogController{logService: service.NewLogService()}
 }
 
 // GetOperationLogs retrieves a list of operation logs
@@ -36,20 +36,12 @@ func NewOperationLogController() *OperationLogController {
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/operation_logs [get]
 func (oc *OperationLogController) GetOperationLogs(c *gin.Context) {
-	var req dto.OperationLogListRequest
-	// 绑定参数
-	if err := c.ShouldBind(&req); err != nil {
-		util.Fail(c, nil, err.Error())
+	params, e := util.GetFormData(c)
+	if e != nil {
+		util.Fail(c, nil, e.Error())
 		return
 	}
-	// 参数校验
-	if err := config.Validate.Struct(&req); err != nil {
-		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		util.Fail(c, nil, errStr)
-		return
-	}
-	// 获取
-	logs, total, err := oc.logDao.GetOperationLogs(&req)
+	logs, total, err := oc.logService.GetOperationLogs(dto.NewSearchRequest(params))
 	if err != nil {
 		util.Fail(c, nil, "获取操作日志列表失败: "+err.Error())
 		return
@@ -64,12 +56,12 @@ func (oc *OperationLogController) GetOperationLogs(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param operationLogIds body dto.DeleteOperationLogRequest true "Delete operation log request"
+// @Param operationLogIds body dto.IdListRequest true "Delete operation log request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/operation_logs/batch_delete [delete]
 func (oc *OperationLogController) BatchDeleteOperationLogByIds(c *gin.Context) {
-	var req dto.DeleteOperationLogRequest
+	var req dto.IdListRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
@@ -83,7 +75,7 @@ func (oc *OperationLogController) BatchDeleteOperationLogByIds(c *gin.Context) {
 	}
 
 	// 删除接口
-	err := oc.logDao.BatchDeleteOperationLogByIds(req.OperationLogIds)
+	err := oc.logService.BatchDeleteOperationLogByIds(req.Ids)
 	if err != nil {
 		util.Fail(c, nil, "删除日志失败: "+err.Error())
 		return

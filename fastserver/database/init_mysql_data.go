@@ -1,7 +1,8 @@
-package config
+package database
 
 import (
 	"errors"
+	"fastgin/config"
 	"fastgin/sys/model"
 	"fastgin/util"
 	"gorm.io/gorm"
@@ -10,7 +11,7 @@ import (
 
 // 初始化mysql数据
 func InitData() {
-	if !Instance.Database.InitData {
+	if !config.Instance.Database.InitData {
 		return
 	}
 	// 是否初始化数据
@@ -57,7 +58,7 @@ func InitData() {
 	if len(newRoles) > 0 {
 		err := DB.Create(&newRoles).Error
 		if err != nil {
-			Log.Errorf("写入系统角色数据失败：%v", err)
+			config.Log.Errorf("写入系统角色数据失败：%v", err)
 		}
 	}
 
@@ -172,7 +173,7 @@ func InitData() {
 	if len(newMenus) > 0 {
 		err := DB.Create(&newMenus).Error
 		if err != nil {
-			Log.Errorf("写入系统菜单数据失败：%v", err)
+			config.Log.Errorf("写入系统菜单数据失败：%v", err)
 		}
 	}
 
@@ -239,7 +240,7 @@ func InitData() {
 	if len(newUsers) > 0 {
 		err := DB.Create(&newUsers).Error
 		if err != nil {
-			Log.Errorf("写入用户数据失败：%v", err)
+			config.Log.Errorf("写入用户数据失败：%v", err)
 		}
 	}
 
@@ -504,7 +505,7 @@ func InitData() {
 
 	if len(newApi) > 0 {
 		if err := DB.Create(&newApi).Error; err != nil {
-			Log.Errorf("写入api数据失败：%v", err)
+			config.Log.Errorf("写入api数据失败：%v", err)
 		}
 	}
 
@@ -515,9 +516,9 @@ func InitData() {
 				c.Keyword, c.Path, c.Method,
 			})
 		}
-		isAdd, err := CasbinEnforcer.AddPolicies(rules)
+		isAdd, err := config.CasbinEnforcer.AddPolicies(rules)
 		if !isAdd {
-			Log.Errorf("写入casbin数据失败：%v", err)
+			config.Log.Errorf("写入casbin数据失败：%v", err)
 		}
 	}
 }

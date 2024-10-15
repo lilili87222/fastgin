@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"fastgin/config"
+	"fastgin/database"
 	"fastgin/sys/dao"
 	"fastgin/sys/dto"
 	"fastgin/sys/model"
@@ -55,7 +56,7 @@ func (r *RoleService) GetRoleApisByRoleKeyword(roleKeyword string) ([]*model.Api
 
 	// 获取所有接口
 	var apis []*model.Api
-	err := config.DB.Find(&apis).Error
+	err := database.DB.Find(&apis).Error
 	if err != nil {
 		return apis, errors.New("获取角色的权限接口失败")
 	}
