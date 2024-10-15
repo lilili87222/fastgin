@@ -35,15 +35,7 @@ func NewUserController() *UserController {
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/user/info [get]
 func (uc *UserController) GetUserInfo(c *gin.Context) {
-	type UserInfoDto struct {
-		ID           uint          `json:"id"`
-		Username     string        `json:"username"`
-		Mobile       string        `json:"mobile"`
-		Avatar       string        `json:"avatar"`
-		Nickname     string        `json:"nickname"`
-		Introduction string        `json:"introduction"`
-		Roles        []*model.Role `json:"roles"`
-	}
+
 	user, err := uc.userService.GetCurrentUser(c)
 	if err != nil {
 		util.Fail(c, nil, "获取当前用户信息失败: "+err.Error())
@@ -54,7 +46,7 @@ func (uc *UserController) GetUserInfo(c *gin.Context) {
 		fmt.Println(e.Error())
 	}
 	fmt.Println(util.Struct2Json(userMap))
-	userInfoDto := UserInfoDto{}
+	userInfoDto := dto.UserInfoDto{}
 	copier.Copy(&userInfoDto, &user)
 	util.Success(c, gin.H{
 		"userInfo": userInfoDto,
