@@ -41,7 +41,7 @@ database:
     # 数据库名
     database: go_web_mini
     # 主机地址
-    host: 192.168.123.214
+    host: localhost
     # 端口
     port: 3306
     # 连接字符串参数
