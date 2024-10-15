@@ -6,6 +6,7 @@ import (
 	sys2 "fastgin/internal/dao/sys"
 	"fastgin/internal/model/sys"
 	"fastgin/internal/model/sys/request"
+	sys3 "fastgin/internal/service/sys"
 	util2 "fastgin/internal/util"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -229,7 +230,7 @@ func (uc UserController) CreateUser(c *gin.Context) {
 	// 获取前端传来的用户角色id
 	reqRoleIds := req.RoleIds
 	// 根据角色id获取角色
-	rr := sys2.NewRoleDao()
+	rr := sys3.NewRoleDao()
 	roles, err := rr.GetRolesByIds(reqRoleIds)
 	if err != nil {
 		controller.Fail(c, nil, "根据角色ID获取角色信息失败: "+err.Error())
@@ -340,7 +341,7 @@ func (uc UserController) UpdateUserById(c *gin.Context) {
 	// 获取前端传来的用户角色id
 	reqRoleIds := req.RoleIds
 	// 根据角色id获取角色
-	rr := sys2.NewRoleDao()
+	rr := sys3.NewRoleDao()
 	roles, err := rr.GetRolesByIds(reqRoleIds)
 	if err != nil {
 		controller.Fail(c, nil, "根据角色ID获取角色信息失败: "+err.Error())

@@ -11,9 +11,9 @@ import (
 type OperationLogDao struct {
 }
 
-func NewOperationLogDao() OperationLogDao {
-	return OperationLogDao{}
-}
+//func NewOperationLogDao() OperationLogDao {
+//	return OperationLogDao{}
+//}
 
 func (o OperationLogDao) GetOperationLogs(req *request.OperationLogListRequest) ([]sys.OperationLog, int64, error) {
 	var list []sys.OperationLog

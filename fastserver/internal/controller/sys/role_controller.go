@@ -17,12 +17,12 @@ import (
 
 // RoleController handles role-related requests
 type RoleController struct {
-	RoleDao sys2.RoleDao
+	RoleDao sys3.RoleService
 }
 
 // NewRoleController creates a new RoleController
 func NewRoleController() RoleController {
-	roleDao := sys2.NewRoleDao()
+	roleDao := sys3.NewRoleDao()
 	roleController := RoleController{RoleDao: roleDao}
 	return roleController
 }

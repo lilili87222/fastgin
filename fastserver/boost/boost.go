@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 	"fastgin/config"
-	"fastgin/internal/dao/sys"
 	"fastgin/internal/middleware"
 	"fastgin/internal/routes"
+	sys2 "fastgin/internal/service/sys"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -21,7 +21,7 @@ var httpServer *http.Server
 func StartWebService() {
 	// 操作日志中间件处理日志时没有将日志发送到rabbitmq或者kafka中, 而是发送到了channel中
 	// 这里开启3个goroutine处理channel将日志记录到数据库
-	logDao := sys.NewOperationLogDao()
+	logDao := sys2.NewLogService()
 	for i := 0; i < 3; i++ {
 		go logDao.SaveOperationLogChannel(middleware.OperationLogChan)
 	}

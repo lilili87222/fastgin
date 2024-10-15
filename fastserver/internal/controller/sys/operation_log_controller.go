@@ -3,20 +3,20 @@ package sys
 import (
 	"fastgin/config"
 	"fastgin/internal/controller"
-	"fastgin/internal/dao/sys"
 	"fastgin/internal/model/sys/request"
+	sys2 "fastgin/internal/service/sys"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
 
 // OperationLogController handles operation log-related requests
 type OperationLogController struct {
-	logDao sys.OperationLogDao
+	logDao sys2.LogService
 }
 
 // NewOperationLogController creates a new OperationLogController
 func NewOperationLogController() OperationLogController {
-	logDao := sys.NewOperationLogDao()
+	logDao := sys2.NewLogService()
 	operationLogController := OperationLogController{logDao: logDao}
 	return operationLogController
 }
