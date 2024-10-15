@@ -6,6 +6,7 @@ import (
 	"fastgin/sys/model"
 	"fastgin/sys/service"
 	"fastgin/util"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/jinzhu/copier"
@@ -48,6 +49,11 @@ func (uc *UserController) GetUserInfo(c *gin.Context) {
 		util.Fail(c, nil, "获取当前用户信息失败: "+err.Error())
 		return
 	}
+	userMap, e := util.StructToMap(user, true, "ID", "UserName", "Mobile", "Avatar", "NickName", "Introduction", "Roles")
+	if e != nil {
+		fmt.Println(e.Error())
+	}
+	fmt.Println(util.Struct2Json(userMap))
 	userInfoDto := UserInfoDto{}
 	copier.Copy(&userInfoDto, &user)
 	util.Success(c, gin.H{
@@ -147,7 +153,7 @@ func (uc *UserController) ChangePwd(c *gin.Context) {
 		return
 	}
 	// 更新密码
-	err = uc.userService.ChangePwd(user.Username, util.GenPasswd(req.NewPassword))
+	err = uc.userService.ChangePwd(user.UserName, util.GenPasswd(req.NewPassword))
 	if err != nil {
 		util.Fail(c, nil, "更新密码失败: "+err.Error())
 		return
@@ -234,14 +240,14 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 		req.Password = "123456"
 	}
 	user := model.User{
-		Username:     req.Username,
+		UserName:     req.Username,
 		Password:     util.GenPasswd(req.Password),
 		Mobile:       req.Mobile,
 		Avatar:       req.Avatar,
-		Nickname:     &req.Nickname,
+		NickName:     &req.Nickname,
 		Introduction: &req.Introduction,
 		Status:       req.Status,
-		Creator:      ctxUser.Username,
+		Creator:      ctxUser.UserName,
 		Roles:        roles,
 	}
 
@@ -335,14 +341,14 @@ func (uc *UserController) UpdateUserById(c *gin.Context) {
 
 	user := model.User{
 		Model:        oldUser.Model,
-		Username:     req.Username,
+		UserName:     req.Username,
 		Password:     oldUser.Password,
 		Mobile:       req.Mobile,
 		Avatar:       req.Avatar,
-		Nickname:     &req.Nickname,
+		NickName:     &req.Nickname,
 		Introduction: &req.Introduction,
 		Status:       req.Status,
-		Creator:      ctxUser.Username,
+		Creator:      ctxUser.UserName,
 		Roles:        roles,
 	}
 	// 判断是更新自己还是更新别人

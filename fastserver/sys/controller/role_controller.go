@@ -96,7 +96,7 @@ func (rc *RoleController) CreateRole(c *gin.Context) {
 		Desc:    &req.Desc,
 		Status:  req.Status,
 		Sort:    req.Sort,
-		Creator: ctxUser.Username,
+		Creator: ctxUser.UserName,
 	}
 	err = rc.roleService.CreateRole(&role)
 	if err != nil {
@@ -163,7 +163,7 @@ func (rc *RoleController) UpdateRoleById(c *gin.Context) {
 		Desc:    &req.Desc,
 		Status:  req.Status,
 		Sort:    req.Sort,
-		Creator: ctxUser.Username,
+		Creator: ctxUser.UserName,
 	}
 	err = rc.roleService.UpdateRoleById(uint(roleId), &role)
 	if err != nil {

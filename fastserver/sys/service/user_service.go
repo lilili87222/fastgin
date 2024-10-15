@@ -25,7 +25,7 @@ func NewUserService() *UserService {
 
 // 登录
 func (us *UserService) Login(user *model.User) (*model.User, error) {
-	firstUser, err := us.userDao.GetUserByUsername(user.Username)
+	firstUser, err := us.userDao.GetUserByUsername(user.UserName)
 	if err != nil {
 		return nil, errors.New("用户不存在")
 	}
@@ -61,16 +61,16 @@ func (us *UserService) GetCurrentUser(c *gin.Context) (model.User, error) {
 	}
 	u, _ := ctxUser.(model.User)
 
-	cacheUser, found := userInfoCache.Get(u.Username)
+	cacheUser, found := userInfoCache.Get(u.UserName)
 	if found {
 		return cacheUser.(model.User), nil
 	}
 
 	user, err := us.userDao.GetUserById(u.ID)
 	if err != nil {
-		userInfoCache.Delete(u.Username)
+		userInfoCache.Delete(u.UserName)
 	} else {
-		userInfoCache.Set(u.Username, user, cache.DefaultExpiration)
+		userInfoCache.Set(u.UserName, user, cache.DefaultExpiration)
 	}
 	return user, err
 }
@@ -138,7 +138,7 @@ func (us *UserService) CreateUser(user *model.User) error {
 func (us *UserService) UpdateUser(user *model.User) error {
 	err := us.userDao.UpdateUser(user)
 	if err == nil {
-		userInfoCache.Set(user.Username, *user, cache.DefaultExpiration)
+		userInfoCache.Set(user.UserName, *user, cache.DefaultExpiration)
 	}
 	return err
 }
@@ -153,7 +153,7 @@ func (us *UserService) BatchDeleteUserByIds(ids []uint) error {
 	err = us.userDao.BatchDeleteUserByIds(ids)
 	if err == nil {
 		for _, user := range users {
-			userInfoCache.Delete(user.Username)
+			userInfoCache.Delete(user.UserName)
 		}
 	}
 	return err
@@ -190,9 +190,9 @@ func (us *UserService) UpdateUserInfoCacheByRoleId(roleId uint) error {
 	}
 
 	for _, user := range role.Users {
-		_, found := userInfoCache.Get(user.Username)
+		_, found := userInfoCache.Get(user.UserName)
 		if found {
-			userInfoCache.Set(user.Username, *user, cache.DefaultExpiration)
+			userInfoCache.Set(user.UserName, *user, cache.DefaultExpiration)
 		}
 	}
 	return nil

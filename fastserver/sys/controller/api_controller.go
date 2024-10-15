@@ -114,7 +114,7 @@ func (ac *ApiController) CreateApi(c *gin.Context) {
 		Path:     req.Path,
 		Category: req.Category,
 		Desc:     req.Desc,
-		Creator:  ctxUser.Username,
+		Creator:  ctxUser.UserName,
 	}
 	err = ac.apiService.CreateApi(&api)
 	if err != nil {
@@ -163,7 +163,7 @@ func (ac *ApiController) UpdateApiById(c *gin.Context) {
 		Path:     req.Path,
 		Category: req.Category,
 		Desc:     req.Desc,
-		Creator:  ctxUser.Username,
+		Creator:  ctxUser.UserName,
 	}
 	err = ac.apiService.UpdateApiById(uint(apiId), &api)
 	if err != nil {

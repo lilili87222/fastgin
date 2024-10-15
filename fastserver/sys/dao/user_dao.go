@@ -16,7 +16,7 @@ func NewUserDao() *UserDao {
 
 func (ur *UserDao) GetUserByUsername(username string) (model.User, error) {
 	var user model.User
-	err := config.DB.Where("username = ?", username).Preload("Roles").First(&user).Error
+	err := config.DB.Where("user_name = ?", username).Preload("Roles").First(&user).Error
 	return user, err
 }
 
@@ -31,10 +31,10 @@ func (ur *UserDao) GetUsers(req *dto.UserListRequest) ([]*model.User, int64, err
 	db := config.DB.Model(&model.User{}).Order("created_at DESC")
 
 	if username := strings.TrimSpace(req.Username); username != "" {
-		db = db.Where("username LIKE ?", fmt.Sprintf("%%%s%%", username))
+		db = db.Where("user_name LIKE ?", fmt.Sprintf("%%%s%%", username))
 	}
 	if nickname := strings.TrimSpace(req.Nickname); nickname != "" {
-		db = db.Where("nickname LIKE ?", fmt.Sprintf("%%%s%%", nickname))
+		db = db.Where("nick_name LIKE ?", fmt.Sprintf("%%%s%%", nickname))
 	}
 	if mobile := strings.TrimSpace(req.Mobile); mobile != "" {
 		db = db.Where("mobile LIKE ?", fmt.Sprintf("%%%s%%", mobile))
@@ -60,7 +60,7 @@ func (ur *UserDao) GetUsers(req *dto.UserListRequest) ([]*model.User, int64, err
 }
 
 func (ur *UserDao) ChangePwd(username string, hashNewPasswd string) error {
-	return config.DB.Model(&model.User{}).Where("username = ?", username).Update("password", hashNewPasswd).Error
+	return config.DB.Model(&model.User{}).Where("user_name = ?", username).Update("password", hashNewPasswd).Error
 }
 
 func (ur *UserDao) CreateUser(user *model.User) error {

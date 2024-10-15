@@ -84,7 +84,7 @@ func login(c *gin.Context) (interface{}, error) {
 	//decodeData := []byte(req.Password)
 
 	u := &model.User{
-		Username: req.Username,
+		UserName: req.Username,
 		Password: req.Password,
 	}
 

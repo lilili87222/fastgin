@@ -103,7 +103,7 @@ func (mc *MenuController) CreateMenu(c *gin.Context) {
 		Breadcrumb: req.Breadcrumb,
 		ActiveMenu: &req.ActiveMenu,
 		ParentId:   &req.ParentId,
-		Creator:    ctxUser.Username,
+		Creator:    ctxUser.UserName,
 	}
 	err = mc.menuService.CreateMenu(&menu)
 	if err != nil {
@@ -162,7 +162,7 @@ func (mc *MenuController) UpdateMenuById(c *gin.Context) {
 		Breadcrumb: req.Breadcrumb,
 		ActiveMenu: &req.ActiveMenu,
 		ParentId:   &req.ParentId,
-		Creator:    ctxUser.Username,
+		Creator:    ctxUser.UserName,
 	}
 	err = mc.menuService.UpdateMenuById(uint(menuId), &menu)
 	if err != nil {

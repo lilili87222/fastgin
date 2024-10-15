@@ -37,7 +37,7 @@ func OperationLogMiddleware() gin.HandlerFunc {
 		if !ok {
 			username = "未登录"
 		}
-		username = user.Username
+		username = user.UserName
 
 		//requestPath := c.Request.RequestURI
 		fullPath := c.FullPath()

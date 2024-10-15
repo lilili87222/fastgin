@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"slices"
 )
 
 // 结构体转为json
@@ -45,7 +46,7 @@ func StructsToMap(objs []any, include bool, fields ...string) ([]map[string]any,
 	return results, nil
 }
 func StructToMap(obj any, include bool, fields ...string) (map[string]any, error) {
-	result := make(map[string]interface{})
+	result := make(map[string]any)
 	v := reflect.ValueOf(obj)
 
 	// 处理结构体指针
@@ -61,26 +62,31 @@ func StructToMap(obj any, include bool, fields ...string) (map[string]any, error
 		return nil, fmt.Errorf("expected a struct, got %s", v.Kind())
 	}
 
-	fieldSet := make(map[string]struct{})
-	for _, field := range fields {
-		fieldSet[field] = struct{}{}
-	}
-
+	// 遍历所有字段，包括嵌套结构体字段
 	for i := 0; i < v.NumField(); i++ {
 		field := v.Type().Field(i)
 		fieldName := field.Name
 		fieldValue := v.Field(i)
 
-		if include {
-			// 如果是包含，检查字段是否在指定的字段列表中
-			if _, found := fieldSet[fieldName]; found {
-				result[fieldName] = fieldValue.Interface()
+		// 处理嵌入结构体的字段
+		if field.Anonymous {
+			// 如果是嵌入字段，递归调用 StructToMap
+			embeddedMap, err := StructToMap(fieldValue.Interface(), include, fields...)
+			if err != nil {
+				return nil, err
 			}
-		} else {
-			// 如果是排除，检查字段是否在指定的字段列表中
-			if _, found := fieldSet[fieldName]; !found {
-				result[fieldName] = fieldValue.Interface()
+			for k, v := range embeddedMap {
+				result[k] = v
 			}
+			continue
+		}
+		contains := slices.Contains(fields, fieldName)
+
+		// 检查字段是否在包含或排除列表中
+		if include && contains {
+			result[fieldName] = fieldValue.Interface()
+		} else if !include && !contains {
+			result[fieldName] = fieldValue.Interface()
 		}
 	}
 
