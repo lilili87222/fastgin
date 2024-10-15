@@ -55,7 +55,7 @@ func (rc *RoleController) GetRoles(c *gin.Context) {
 		util.Fail(c, nil, "获取角色列表失败: "+err.Error())
 		return
 	}
-	util.Success(c, gin.H{"roles": roles, "total": total}, "获取角色列表成功")
+	util.Success(c, gin.H{"Roles": roles, "Total": total}, "获取角色列表成功")
 }
 
 // CreateRole creates a new role
@@ -229,7 +229,7 @@ func (rc *RoleController) GetRoleMenusById(c *gin.Context) {
 		util.Fail(c, nil, "获取角色的权限菜单失败: "+err.Error())
 		return
 	}
-	util.Success(c, gin.H{"menus": menus}, "获取角色的权限菜单成功")
+	util.Success(c, gin.H{"Menus": menus}, "获取角色的权限菜单成功")
 }
 
 // UpdateRoleMenusById updates the menus for a role by ID
@@ -388,7 +388,7 @@ func (rc *RoleController) GetRoleApisById(c *gin.Context) {
 		util.Fail(c, nil, err.Error())
 		return
 	}
-	util.Success(c, gin.H{"apis": apis}, "获取角色的权限接口成功")
+	util.Success(c, gin.H{"Apis": apis}, "获取角色的权限接口成功")
 }
 
 // UpdateRoleApisById updates the APIs for a role by ID

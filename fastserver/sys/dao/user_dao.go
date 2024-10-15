@@ -33,7 +33,7 @@ func (ur *UserDao) GetUsers(req *dto.UserListRequest) ([]*model.User, int64, err
 	if username := strings.TrimSpace(req.Username); username != "" {
 		db = db.Where("user_name LIKE ?", fmt.Sprintf("%%%s%%", username))
 	}
-	if nickname := strings.TrimSpace(req.Nickname); nickname != "" {
+	if nickname := strings.TrimSpace(req.NickName); nickname != "" {
 		db = db.Where("nick_name LIKE ?", fmt.Sprintf("%%%s%%", nickname))
 	}
 	if mobile := strings.TrimSpace(req.Mobile); mobile != "" {

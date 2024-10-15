@@ -54,7 +54,7 @@ func (oc *OperationLogController) GetOperationLogs(c *gin.Context) {
 		util.Fail(c, nil, "获取操作日志列表失败: "+err.Error())
 		return
 	}
-	util.Success(c, gin.H{"logs": logs, "total": total}, "获取操作日志列表成功")
+	util.Success(c, gin.H{"Logs": logs, "Total": total}, "获取操作日志列表成功")
 }
 
 // BatchDeleteOperationLogByIds deletes multiple operation logs by their IDs

@@ -22,20 +22,20 @@ type CreateApiRequest struct {
 
 // 更新接口结构体
 type UpdateApiRequest struct {
-	Method   string `json:"method" form:"method" validate:"min=1,max=20"`
-	Path     string `json:"path" form:"path" validate:"min=1,max=100"`
-	Category string `json:"category" form:"category" validate:"min=1,max=50"`
-	Desc     string `json:"desc" form:"desc" validate:"min=0,max=100"`
+	Method   string `json:"Method" form:"Method" validate:"min=1,max=20"`
+	Path     string `json:"Path" form:"Path" validate:"min=1,max=100"`
+	Category string `json:"Category" form:"Category" validate:"min=1,max=50"`
+	Desc     string `json:"Desc" form:"Desc" validate:"min=0,max=100"`
 }
 
 // 批量删除接口结构体
 type DeleteApiRequest struct {
-	ApiIds []uint `json:"apiIds" form:"apiIds"`
+	ApiIds []uint `json:"ApiIds" form:"ApiIds"`
 }
 
 type ApiTreeDto struct {
 	ID       int          `json:"ID"`
-	Desc     string       `json:"desc"`
-	Category string       `json:"category"`
-	Children []*model.Api `json:"children"`
+	Desc     string       `json:"Desc"`
+	Category string       `json:"Category"`
+	Children []*model.Api `json:"Children"`
 }

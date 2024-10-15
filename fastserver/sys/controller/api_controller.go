@@ -55,8 +55,8 @@ func (ac *ApiController) GetApis(c *gin.Context) {
 		return
 	}
 	util.Success(c, gin.H{
-		"apis":  apis,
-		"total": total,
+		"Apis":  apis,
+		"Total": total,
 	}, "获取接口列表成功")
 }
 
@@ -77,7 +77,7 @@ func (ac *ApiController) GetApiTree(c *gin.Context) {
 		return
 	}
 	util.Success(c, gin.H{
-		"apiTree": tree,
+		"ApiTree": tree,
 	}, "获取接口树成功")
 }
 

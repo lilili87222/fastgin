@@ -53,7 +53,7 @@ func OperationLogMiddleware() gin.HandlerFunc {
 		apiDesc, _ := apiDao.GetApiDescByPath(path, method)
 
 		operationLog := model.OperationLog{
-			Username:   username,
+			UserName:   username,
 			Ip:         c.ClientIP(),
 			IpLocation: "",
 			Method:     method,

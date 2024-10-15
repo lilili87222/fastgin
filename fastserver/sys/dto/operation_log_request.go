@@ -2,15 +2,15 @@ package dto
 
 // 操作日志请求结构体
 type OperationLogListRequest struct {
-	Username string `json:"username" form:"username"`
-	Ip       string `json:"ip" form:"ip"`
-	Path     string `json:"path" form:"path"`
-	Status   int    `json:"status" form:"status"`
-	PageNum  int    `json:"pageNum" form:"pageNum"`
-	PageSize int    `json:"pageSize" form:"pageSize"`
+	Username string `json:"UserName" form:"UserName"`
+	Ip       string `json:"Ip" form:"Ip"`
+	Path     string `json:"Path" form:"Path"`
+	Status   int    `json:"Status" form:"Status"`
+	PageNum  int    `json:"PageNum" form:"PageNum"`
+	PageSize int    `json:"PageSize" form:"PageSize"`
 }
 
 // 批量删除操作日志结构体
 type DeleteOperationLogRequest struct {
-	OperationLogIds []uint `json:"operationLogIds" form:"operationLogIds"`
+	OperationLogIds []uint `json:"OperationLogIds" form:"OperationLogIds"`
 }

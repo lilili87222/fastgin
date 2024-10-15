@@ -46,6 +46,7 @@ func (uc *UserController) GetUserInfo(c *gin.Context) {
 		fmt.Println(e.Error())
 	}
 	fmt.Println(util.Struct2Json(userMap))
+	fmt.Println(util.Struct2Json(user))
 	userInfoDto := dto.UserInfoDto{}
 	copier.Copy(&userInfoDto, &user)
 	util.Success(c, gin.H{
@@ -86,7 +87,7 @@ func (uc *UserController) GetUsers(c *gin.Context) {
 		return
 	}
 
-	util.Success(c, gin.H{"users": users, "total": total}, "获取用户列表成功")
+	util.Success(c, gin.H{"Users": users, "Total": total}, "获取用户列表成功")
 }
 
 // 更新用户登录密码
@@ -236,7 +237,7 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 		Password:     util.GenPasswd(req.Password),
 		Mobile:       req.Mobile,
 		Avatar:       req.Avatar,
-		NickName:     &req.Nickname,
+		NickName:     &req.NickName,
 		Introduction: &req.Introduction,
 		Status:       req.Status,
 		Creator:      ctxUser.UserName,
@@ -337,7 +338,7 @@ func (uc *UserController) UpdateUserById(c *gin.Context) {
 		Password:     oldUser.Password,
 		Mobile:       req.Mobile,
 		Avatar:       req.Avatar,
-		NickName:     &req.Nickname,
+		NickName:     &req.NickName,
 		Introduction: &req.Introduction,
 		Status:       req.Status,
 		Creator:      ctxUser.UserName,

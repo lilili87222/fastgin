@@ -6,14 +6,18 @@ import (
 )
 
 type ResponseBody struct {
-	Code int            `json:"code"`
-	Msg  string         `json:"message"`
-	Data map[string]any `json:"data"`
+	Code    int            `json:"Code"`
+	Message string         `json:"Message"`
+	Data    map[string]any `json:"Data"`
 }
 
 // 返回前端
 func Response(c *gin.Context, httpStatus int, code int, data gin.H, message string) {
-	c.JSON(httpStatus, gin.H{"code": code, "data": data, "message": message})
+	c.JSON(httpStatus, ResponseBody{
+		Code:    code,
+		Message: message,
+		Data:    data,
+	})
 }
 
 // 返回前端-成功

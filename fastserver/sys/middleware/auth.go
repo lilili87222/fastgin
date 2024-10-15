@@ -84,7 +84,7 @@ func login(c *gin.Context) (interface{}, error) {
 	//decodeData := []byte(req.Password)
 
 	u := &model.User{
-		UserName: req.Username,
+		UserName: req.UserName,
 		Password: req.Password,
 	}
 
@@ -124,8 +124,8 @@ func unauthorized(c *gin.Context, code int, message string) {
 func loginResponse(c *gin.Context, code int, token string, expires time.Time) {
 	util.Response(c, code, code,
 		gin.H{
-			"token":   token,
-			"expires": expires.Format("2006-01-02 15:04:05"),
+			"Token":   token,
+			"Expires": expires.Format("2006-01-02 15:04:05"),
 		},
 		"登录成功")
 }
@@ -139,8 +139,8 @@ func logoutResponse(c *gin.Context, code int) {
 func refreshResponse(c *gin.Context, code int, token string, expires time.Time) {
 	util.Response(c, code, code,
 		gin.H{
-			"token":   token,
-			"expires": expires,
+			"Token":   token,
+			"Expires": expires,
 		},
 		"刷新token成功")
 }

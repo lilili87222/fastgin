@@ -57,7 +57,7 @@ func (mc *MenuController) GetMenuTree(c *gin.Context) {
 		util.Fail(c, nil, "获取菜单树失败: "+err.Error())
 		return
 	}
-	util.Success(c, gin.H{"menuTree": menuTree}, "获取菜单树成功")
+	util.Success(c, gin.H{"MenuTree": menuTree}, "获取菜单树成功")
 }
 
 // CreateMenu creates a new menu
@@ -224,7 +224,7 @@ func (mc *MenuController) GetUserMenusByUserId(c *gin.Context) {
 		util.Fail(c, nil, "获取用户的可访问菜单列表失败: "+err.Error())
 		return
 	}
-	util.Success(c, gin.H{"menus": menus}, "获取用户的可访问菜单列表成功")
+	util.Success(c, gin.H{"Menus": menus}, "获取用户的可访问菜单列表成功")
 }
 
 // GetUserMenuTreeByUserId retrieves the accessible menu tree for a user by user ID
@@ -249,5 +249,5 @@ func (mc *MenuController) GetUserMenuTreeByUserId(c *gin.Context) {
 		util.Fail(c, nil, "获取用户的可访问菜单树失败: "+err.Error())
 		return
 	}
-	util.Success(c, gin.H{"menuTree": menuTree}, "获取用户的可访问菜单树成功")
+	util.Success(c, gin.H{"MenuTree": menuTree}, "获取用户的可访问菜单树成功")
 }
