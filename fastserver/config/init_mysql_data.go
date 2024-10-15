@@ -18,7 +18,8 @@ func InitData() {
 	newRoles := make([]*model.Role, 0)
 	roles := []*model.Role{
 		{
-			Model:   gorm.Model{ID: 1},
+			//Model:   model.Model{Id: 1},
+			Model:   model.Model{Id: 1},
 			Name:    "管理员",
 			Keyword: "admin",
 			Desc:    new(string),
@@ -27,7 +28,7 @@ func InitData() {
 			Creator: "系统",
 		},
 		{
-			Model:   gorm.Model{ID: 2},
+			Model:   model.Model{Id: 2},
 			Name:    "普通用户",
 			Keyword: "user",
 			Desc:    new(string),
@@ -36,7 +37,7 @@ func InitData() {
 			Creator: "系统",
 		},
 		{
-			Model:   gorm.Model{ID: 3},
+			Model:   model.Model{Id: 3},
 			Name:    "访客",
 			Keyword: "guest",
 			Desc:    new(string),
@@ -47,7 +48,7 @@ func InitData() {
 	}
 
 	for _, role := range roles {
-		err := DB.First(&role, role.ID).Error
+		err := DB.First(&role, role.Id).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			newRoles = append(newRoles, role)
 		}
@@ -76,7 +77,7 @@ func InitData() {
 	var uint6 uint = 6
 	menus := []model.Menu{
 		{
-			Model:     gorm.Model{ID: 1},
+			Model:     model.Model{Id: 1},
 			Name:      "System",
 			Title:     "系统管理",
 			Icon:      &componentStr,
@@ -89,7 +90,7 @@ func InitData() {
 			Creator:   "系统",
 		},
 		{
-			Model:     gorm.Model{ID: 2},
+			Model:     model.Model{Id: 2},
 			Name:      "User",
 			Title:     "用户管理",
 			Icon:      &userStr,
@@ -101,7 +102,7 @@ func InitData() {
 			Creator:   "系统",
 		},
 		{
-			Model:     gorm.Model{ID: 3},
+			Model:     model.Model{Id: 3},
 			Name:      "Role",
 			Title:     "角色管理",
 			Icon:      &peoplesStr,
@@ -113,7 +114,7 @@ func InitData() {
 			Creator:   "系统",
 		},
 		{
-			Model:     gorm.Model{ID: 4},
+			Model:     model.Model{Id: 4},
 			Name:      "Menu",
 			Title:     "菜单管理",
 			Icon:      &treeTableStr,
@@ -125,7 +126,7 @@ func InitData() {
 			Creator:   "系统",
 		},
 		{
-			Model:     gorm.Model{ID: 5},
+			Model:     model.Model{Id: 5},
 			Name:      "Api",
 			Title:     "接口管理",
 			Icon:      &treeStr,
@@ -137,7 +138,7 @@ func InitData() {
 			Creator:   "系统",
 		},
 		{
-			Model:     gorm.Model{ID: 6},
+			Model:     model.Model{Id: 6},
 			Name:      "Log",
 			Title:     "日志管理",
 			Icon:      &exampleStr,
@@ -150,7 +151,7 @@ func InitData() {
 			Creator:   "系统",
 		},
 		{
-			Model:     gorm.Model{ID: 7},
+			Model:     model.Model{Id: 7},
 			Name:      "OperationLog",
 			Title:     "操作日志",
 			Icon:      &documentationStr,
@@ -163,7 +164,7 @@ func InitData() {
 		},
 	}
 	for _, menu := range menus {
-		err := DB.First(&menu, menu.ID).Error
+		err := DB.First(&menu, menu.Id).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			newMenus = append(newMenus, menu)
 		}
@@ -179,7 +180,7 @@ func InitData() {
 	newUsers := make([]model.User, 0)
 	users := []model.User{
 		{
-			Model:        gorm.Model{ID: 1},
+			Model:        model.Model{Id: 1},
 			UserName:     "admin",
 			Password:     util.GenPasswd("123456"),
 			Mobile:       "18888888888",
@@ -191,7 +192,7 @@ func InitData() {
 			Roles:        roles[:1],
 		},
 		{
-			Model:        gorm.Model{ID: 2},
+			Model:        model.Model{Id: 2},
 			UserName:     "faker",
 			Password:     util.GenPasswd("123456"),
 			Mobile:       "19999999999",
@@ -203,7 +204,7 @@ func InitData() {
 			Roles:        roles[:2],
 		},
 		{
-			Model:        gorm.Model{ID: 3},
+			Model:        model.Model{Id: 3},
 			UserName:     "nike",
 			Password:     util.GenPasswd("123456"),
 			Mobile:       "13333333333",
@@ -215,7 +216,7 @@ func InitData() {
 			Roles:        roles[1:2],
 		},
 		{
-			Model:        gorm.Model{ID: 4},
+			Model:        model.Model{Id: 4},
 			UserName:     "bob",
 			Password:     util.GenPasswd("123456"),
 			Mobile:       "15555555555",
@@ -229,7 +230,7 @@ func InitData() {
 	}
 
 	for _, user := range users {
-		err := DB.First(&user, user.ID).Error
+		err := DB.First(&user, user.Id).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			newUsers = append(newUsers, user)
 		}
@@ -465,8 +466,8 @@ func InitData() {
 	newApi := make([]model.Api, 0)
 	newRoleCasbin := make([]model.RoleCasbin, 0)
 	for i, api := range apis {
-		api.ID = uint(i + 1)
-		err := DB.First(&api, api.ID).Error
+		api.Id = uint(i + 1)
+		err := DB.First(&api, api.Id).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			newApi = append(newApi, api)
 

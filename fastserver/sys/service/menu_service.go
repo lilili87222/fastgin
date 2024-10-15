@@ -54,7 +54,7 @@ func (s *MenuService) GetUserMenusByUserId(userId uint) ([]*model.Menu, error) {
 
 	allRoleMenus := make([]*model.Menu, 0)
 	for _, role := range user.Roles {
-		userRole, err := s.menuDao.GetRoleById(role.ID)
+		userRole, err := s.menuDao.GetRoleById(role.Id)
 		if err != nil {
 			return nil, err
 		}
@@ -63,13 +63,13 @@ func (s *MenuService) GetUserMenusByUserId(userId uint) ([]*model.Menu, error) {
 
 	allRoleMenusId := make([]int, 0)
 	for _, menu := range allRoleMenus {
-		allRoleMenusId = append(allRoleMenusId, int(menu.ID))
+		allRoleMenusId = append(allRoleMenusId, int(menu.Id))
 	}
 	allRoleMenusIdUniq := funk.UniqInt(allRoleMenusId)
 	allRoleMenusUniq := make([]*model.Menu, 0)
 	for _, id := range allRoleMenusIdUniq {
 		for _, menu := range allRoleMenus {
-			if id == int(menu.ID) {
+			if id == int(menu.Id) {
 				allRoleMenusUniq = append(allRoleMenusUniq, menu)
 				break
 			}
@@ -99,7 +99,7 @@ func GenMenuTree(parentId uint, menus []*model.Menu) []*model.Menu {
 	tree := make([]*model.Menu, 0)
 	for _, m := range menus {
 		if *m.ParentId == parentId {
-			children := GenMenuTree(m.ID, menus)
+			children := GenMenuTree(m.Id, menus)
 			m.Children = children
 			tree = append(tree, m)
 		}

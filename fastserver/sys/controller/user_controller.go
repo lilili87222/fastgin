@@ -41,7 +41,7 @@ func (uc *UserController) GetUserInfo(c *gin.Context) {
 		util.Fail(c, nil, "获取当前用户信息失败: "+err.Error())
 		return
 	}
-	userMap, e := util.StructToMap(user, true, "ID", "UserName", "Mobile", "Avatar", "NickName", "Introduction", "Roles")
+	userMap, e := util.StructToMap(user, true, "Id", "UserName", "Mobile", "Avatar", "NickName", "Introduction", "Roles")
 	if e != nil {
 		fmt.Println(e.Error())
 	}
@@ -260,7 +260,7 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param userId path int true "User ID"
+// @Param userId path int true "User Id"
 // @Param CreateUserRequest body dto.CreateUserRequest true "Update user request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
@@ -307,7 +307,7 @@ func (uc *UserController) UpdateUserById(c *gin.Context) {
 	var currentRoleIds []uint
 	for _, role := range currentRoles {
 		currentRoleSorts = append(currentRoleSorts, int(role.Sort))
-		currentRoleIds = append(currentRoleIds, role.ID)
+		currentRoleIds = append(currentRoleIds, role.Id)
 	}
 	// 当前用户角色排序最小值（最高等级角色）
 	currentRoleSortMin := slices.Min(currentRoleSorts)
@@ -345,7 +345,7 @@ func (uc *UserController) UpdateUserById(c *gin.Context) {
 		Roles:        roles,
 	}
 	// 判断是更新自己还是更新别人
-	if userId == int(ctxUser.ID) {
+	if userId == int(ctxUser.Id) {
 		// 如果是更新自己
 		// 不能禁用自己
 		if req.Status == 2 {
@@ -456,7 +456,7 @@ func (uc *UserController) BatchDeleteUserByIds(c *gin.Context) {
 	currentRoleSortMin := int(minSort)
 
 	// 不能删除自己
-	if slices.Contains(reqUserIds, ctxUser.ID) {
+	if slices.Contains(reqUserIds, ctxUser.Id) {
 		util.Fail(c, nil, "用户不能删除自己")
 		return
 	}

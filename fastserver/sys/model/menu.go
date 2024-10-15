@@ -1,9 +1,5 @@
 package model
 
-import (
-	"gorm.io/gorm"
-)
-
 //	type Menu struct {
 //		gorm.Model
 //		Name       string  `gorm:"type:varchar(50);comment:'菜单名称(英文名, 可用于国际化)'" json:"name"`
@@ -25,7 +21,7 @@ import (
 //		Roles      []*Role `gorm:"many2many:sys_role_menu;" json:"roles"` // 角色菜单多对多关系
 //	}
 type Menu struct {
-	gorm.Model
+	Model
 	Name       string  `gorm:"type:varchar(50);comment:'菜单名称(英文名, 可用于国际化)'" `
 	Title      string  `gorm:"type:varchar(50);comment:'菜单标题(无法国际化时使用)'" `
 	Icon       *string `gorm:"type:varchar(50);comment:'菜单图标'" `

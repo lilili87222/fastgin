@@ -1,7 +1,5 @@
 package model
 
-import "gorm.io/gorm"
-
 //	type Role struct {
 //		gorm.Model
 //		Name    string  `gorm:"type:varchar(20);not null;unique" json:"name"`
@@ -14,7 +12,7 @@ import "gorm.io/gorm"
 //		Menus   []*Menu `gorm:"many2many:sys_role_menu;" json:"menus"` // 角色菜单多对多关系
 //	}
 type Role struct {
-	gorm.Model
+	Model
 	Name    string  `gorm:"type:varchar(20);not null;unique" `
 	Keyword string  `gorm:"type:varchar(20);not null;unique" `
 	Desc    *string `gorm:"type:varchar(100);" `

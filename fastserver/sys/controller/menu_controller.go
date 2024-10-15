@@ -113,14 +113,14 @@ func (mc *MenuController) CreateMenu(c *gin.Context) {
 	util.Success(c, nil, "创建菜单成功")
 }
 
-// UpdateMenuById updates an existing menu by ID
+// UpdateMenuById updates an existing menu by Id
 // @Summary Update menu
-// @Description Update an existing menu by ID
+// @Description Update an existing menu by Id
 // @Tags Menu
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param menuId path int true "Menu ID"
+// @Param menuId path int true "Menu Id"
 // @Param menu body dto.UpdateMenuRequest true "Update menu request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
@@ -172,9 +172,9 @@ func (mc *MenuController) UpdateMenuById(c *gin.Context) {
 	util.Success(c, nil, "更新菜单成功")
 }
 
-// BatchDeleteMenuByIds deletes multiple menus by their IDs
+// BatchDeleteMenuByIds deletes multiple menus by their Ids
 // @Summary Batch delete menus
-// @Description Delete multiple menus by their IDs
+// @Description Delete multiple menus by their Ids
 // @Tags Menu
 // @Accept json
 // @Produce json
@@ -202,14 +202,14 @@ func (mc *MenuController) BatchDeleteMenuByIds(c *gin.Context) {
 	util.Success(c, nil, "删除菜单成功")
 }
 
-// GetUserMenusByUserId retrieves the accessible menus for a user by user ID
-// @Summary Get user menus by user ID
-// @Description Get the accessible menus for a user by user ID
+// GetUserMenusByUserId retrieves the accessible menus for a user by user Id
+// @Summary Get user menus by user Id
+// @Description Get the accessible menus for a user by user Id
 // @Tags Menu
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param userId path int true "User ID"
+// @Param userId path int true "User Id"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/user/{userId}/menus [get]
@@ -227,14 +227,14 @@ func (mc *MenuController) GetUserMenusByUserId(c *gin.Context) {
 	util.Success(c, gin.H{"Menus": menus}, "获取用户的可访问菜单列表成功")
 }
 
-// GetUserMenuTreeByUserId retrieves the accessible menu tree for a user by user ID
-// @Summary Get user menu tree by user ID
-// @Description Get the accessible menu tree for a user by user ID
+// GetUserMenuTreeByUserId retrieves the accessible menu tree for a user by user Id
+// @Summary Get user menu tree by user Id
+// @Description Get the accessible menu tree for a user by user Id
 // @Tags Menu
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param userId path int true "User ID"
+// @Param userId path int true "User Id"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/user/{userId}/menu_tree [get]

@@ -124,14 +124,14 @@ func (ac *ApiController) CreateApi(c *gin.Context) {
 	util.Success(c, nil, "创建接口成功")
 }
 
-// UpdateApiById updates an existing API by ID
+// UpdateApiById updates an existing API by Id
 // @Summary Update API
-// @Description Update an existing API by ID
+// @Description Update an existing API by Id
 // @Tags API
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param apiId path int true "API ID"
+// @Param apiId path int true "API Id"
 // @Param api body dto.UpdateApiRequest true "Update API request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
@@ -173,9 +173,9 @@ func (ac *ApiController) UpdateApiById(c *gin.Context) {
 	util.Success(c, nil, "更新接口成功")
 }
 
-// BatchDeleteApiByIds deletes multiple APIs by their IDs
+// BatchDeleteApiByIds deletes multiple APIs by their Ids
 // @Summary Batch delete APIs
-// @Description Delete multiple APIs by their IDs
+// @Description Delete multiple APIs by their Ids
 // @Tags API
 // @Accept json
 // @Produce json

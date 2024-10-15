@@ -158,7 +158,7 @@ const docTemplate = `{
         },
         "/api/auth/api/{apiId}": {
             "put": {
-                "description": "Update an existing API by ID",
+                "description": "Update an existing API by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -179,7 +179,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "API ID",
+                        "description": "API Id",
                         "name": "apiId",
                         "in": "path",
                         "required": true
@@ -418,7 +418,7 @@ const docTemplate = `{
         },
         "/api/auth/menu/{menuId}": {
             "put": {
-                "description": "Update an existing menu by ID",
+                "description": "Update an existing menu by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -439,7 +439,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "Menu ID",
+                        "description": "Menu Id",
                         "name": "menuId",
                         "in": "path",
                         "required": true
@@ -725,7 +725,7 @@ const docTemplate = `{
         },
         "/api/auth/role/{roleId}": {
             "put": {
-                "description": "Update an existing role by ID",
+                "description": "Update an existing role by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -746,7 +746,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "Role ID",
+                        "description": "Role Id",
                         "name": "roleId",
                         "in": "path",
                         "required": true
@@ -779,7 +779,7 @@ const docTemplate = `{
         },
         "/api/auth/role/{roleId}/apis": {
             "get": {
-                "description": "Get the APIs for a role by ID",
+                "description": "Get the APIs for a role by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -789,7 +789,7 @@ const docTemplate = `{
                 "tags": [
                     "Role"
                 ],
-                "summary": "Get role APIs by ID",
+                "summary": "Get role APIs by Id",
                 "parameters": [
                     {
                         "type": "string",
@@ -800,7 +800,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "Role ID",
+                        "description": "Role Id",
                         "name": "roleId",
                         "in": "path",
                         "required": true
@@ -822,7 +822,7 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "description": "Update the APIs for a role by ID",
+                "description": "Update the APIs for a role by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -832,7 +832,7 @@ const docTemplate = `{
                 "tags": [
                     "Role"
                 ],
-                "summary": "Update role APIs by ID",
+                "summary": "Update role APIs by Id",
                 "parameters": [
                     {
                         "type": "string",
@@ -843,7 +843,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "Role ID",
+                        "description": "Role Id",
                         "name": "roleId",
                         "in": "path",
                         "required": true
@@ -876,7 +876,7 @@ const docTemplate = `{
         },
         "/api/auth/role/{roleId}/menus": {
             "get": {
-                "description": "Get the menus for a role by ID",
+                "description": "Get the menus for a role by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -886,7 +886,7 @@ const docTemplate = `{
                 "tags": [
                     "Role"
                 ],
-                "summary": "Get role menus by ID",
+                "summary": "Get role menus by Id",
                 "parameters": [
                     {
                         "type": "string",
@@ -897,7 +897,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "Role ID",
+                        "description": "Role Id",
                         "name": "roleId",
                         "in": "path",
                         "required": true
@@ -919,7 +919,7 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "description": "Update the menus for a role by ID",
+                "description": "Update the menus for a role by Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -929,7 +929,7 @@ const docTemplate = `{
                 "tags": [
                     "Role"
                 ],
-                "summary": "Update role menus by ID",
+                "summary": "Update role menus by Id",
                 "parameters": [
                     {
                         "type": "string",
@@ -940,7 +940,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "Role ID",
+                        "description": "Role Id",
                         "name": "roleId",
                         "in": "path",
                         "required": true
@@ -1422,7 +1422,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "User ID",
+                        "description": "User Id",
                         "name": "userId",
                         "in": "path",
                         "required": true
@@ -1455,7 +1455,7 @@ const docTemplate = `{
         },
         "/api/auth/user/{userId}/menu_tree": {
             "get": {
-                "description": "Get the accessible menu tree for a user by user ID",
+                "description": "Get the accessible menu tree for a user by user Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -1465,7 +1465,7 @@ const docTemplate = `{
                 "tags": [
                     "Menu"
                 ],
-                "summary": "Get user menu tree by user ID",
+                "summary": "Get user menu tree by user Id",
                 "parameters": [
                     {
                         "type": "string",
@@ -1476,7 +1476,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "User ID",
+                        "description": "User Id",
                         "name": "userId",
                         "in": "path",
                         "required": true
@@ -1500,7 +1500,7 @@ const docTemplate = `{
         },
         "/api/auth/user/{userId}/menus": {
             "get": {
-                "description": "Get the accessible menus for a user by user ID",
+                "description": "Get the accessible menus for a user by user Id",
                 "consumes": [
                     "application/json"
                 ],
@@ -1510,7 +1510,7 @@ const docTemplate = `{
                 "tags": [
                     "Menu"
                 ],
-                "summary": "Get user menus by user ID",
+                "summary": "Get user menus by user Id",
                 "parameters": [
                     {
                         "type": "string",
@@ -1521,7 +1521,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "User ID",
+                        "description": "User Id",
                         "name": "userId",
                         "in": "path",
                         "required": true

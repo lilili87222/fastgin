@@ -106,14 +106,14 @@ func (rc *RoleController) CreateRole(c *gin.Context) {
 	util.Success(c, nil, "创建角色成功")
 }
 
-// UpdateRoleById updates an existing role by ID
+// UpdateRoleById updates an existing role by Id
 // @Summary Update role
-// @Description Update an existing role by ID
+// @Description Update an existing role by Id
 // @Tags Role
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param roleId path int true "Role ID"
+// @Param roleId path int true "Role Id"
 // @Param role body dto.CreateRoleRequest true "Update role request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
@@ -207,14 +207,14 @@ func (rc *RoleController) UpdateRoleById(c *gin.Context) {
 	util.Success(c, nil, "更新角色成功")
 }
 
-// GetRoleMenusById retrieves the menus for a role by ID
-// @Summary Get role menus by ID
-// @Description Get the menus for a role by ID
+// GetRoleMenusById retrieves the menus for a role by Id
+// @Summary Get role menus by Id
+// @Description Get the menus for a role by Id
 // @Tags Role
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param roleId path int true "Role ID"
+// @Param roleId path int true "Role Id"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/role/{roleId}/menus [get]
@@ -232,14 +232,14 @@ func (rc *RoleController) GetRoleMenusById(c *gin.Context) {
 	util.Success(c, gin.H{"Menus": menus}, "获取角色的权限菜单成功")
 }
 
-// UpdateRoleMenusById updates the menus for a role by ID
-// @Summary Update role menus by ID
-// @Description Update the menus for a role by ID
+// UpdateRoleMenusById updates the menus for a role by Id
+// @Summary Update role menus by Id
+// @Description Update the menus for a role by Id
 // @Tags Role
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param roleId path int true "Role ID"
+// @Param roleId path int true "Role Id"
 // @Param menus body dto.UpdateRoleMenusRequest true "Update role menus request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
@@ -263,7 +263,7 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 		util.Fail(c, nil, "角色ID不正确")
 		return
 	}
-	// 根据path中的角色ID获取该角色信息
+	// 根据path中的角色Id获取该角色信息
 	roles, err := rc.roleService.GetRolesByIds([]uint{uint(roleId)})
 	if err != nil {
 		util.Fail(c, nil, err.Error())
@@ -292,16 +292,16 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 
 	// 获取当前用户所拥有的权限菜单
 	mr := service.NewMenuService()
-	ctxUserMenus, err := mr.GetUserMenusByUserId(ctxUser.ID)
+	ctxUserMenus, err := mr.GetUserMenusByUserId(ctxUser.Id)
 	if err != nil {
 		util.Fail(c, nil, "获取当前用户的可访问菜单列表失败: "+err.Error())
 		return
 	}
 
-	// 获取当前用户所拥有的权限菜单ID
+	// 获取当前用户所拥有的权限菜单Id
 	ctxUserMenusIds := make([]uint, 0)
 	for _, menu := range ctxUserMenus {
-		ctxUserMenusIds = append(ctxUserMenusIds, menu.ID)
+		ctxUserMenusIds = append(ctxUserMenusIds, menu.Id)
 	}
 
 	// 前端传来最新的MenuIds集合
@@ -321,7 +321,7 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 
 		for _, id := range menuIds {
 			for _, menu := range ctxUserMenus {
-				if id == menu.ID {
+				if id == menu.Id {
 					reqMenus = append(reqMenus, menu)
 					break
 				}
@@ -337,7 +337,7 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 		}
 		for _, menuId := range menuIds {
 			for _, menu := range menus {
-				if menuId == menu.ID {
+				if menuId == menu.Id {
 					reqMenus = append(reqMenus, menu)
 				}
 			}
@@ -356,14 +356,14 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 
 }
 
-// GetRoleApisById retrieves the APIs for a role by ID
-// @Summary Get role APIs by ID
-// @Description Get the APIs for a role by ID
+// GetRoleApisById retrieves the APIs for a role by Id
+// @Summary Get role APIs by Id
+// @Description Get the APIs for a role by Id
 // @Tags Role
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param roleId path int true "Role ID"
+// @Param roleId path int true "Role Id"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/role/{roleId}/apis [get]
@@ -391,14 +391,14 @@ func (rc *RoleController) GetRoleApisById(c *gin.Context) {
 	util.Success(c, gin.H{"Apis": apis}, "获取角色的权限接口成功")
 }
 
-// UpdateRoleApisById updates the APIs for a role by ID
-// @Summary Update role APIs by ID
-// @Description Update the APIs for a role by ID
+// UpdateRoleApisById updates the APIs for a role by Id
+// @Summary Update role APIs by Id
+// @Description Update the APIs for a role by Id
 // @Tags Role
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param roleId path int true "Role ID"
+// @Param roleId path int true "Role Id"
 // @Param apis body dto.UpdateRoleApisRequest true "Update role APIs request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
@@ -482,9 +482,9 @@ func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
 	util.Success(c, nil, "更新角色的权限接口成功")
 }
 
-// BatchDeleteRoleByIds deletes multiple roles by their IDs
+// BatchDeleteRoleByIds deletes multiple roles by their Ids
 // @Summary Batch delete roles
-// @Description Delete multiple roles by their IDs
+// @Description Delete multiple roles by their Ids
 // @Tags Role
 // @Accept json
 // @Produce json

@@ -1,7 +1,6 @@
 package model
 
 import (
-	"gorm.io/gorm"
 	"time"
 )
 
@@ -19,7 +18,7 @@ import (
 //		UserAgent  string    `gorm:"type:varchar(20);comment:'浏览器标识'" json:"userAgent"`
 //	}
 type OperationLog struct {
-	gorm.Model
+	Model
 	UserName   string    `gorm:"type:varchar(20);comment:'用户登录名'" `
 	Ip         string    `gorm:"type:varchar(20);comment:'Ip地址'" `
 	IpLocation string    `gorm:"type:varchar(20);comment:'Ip所在地'" `

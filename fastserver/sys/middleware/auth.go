@@ -51,7 +51,7 @@ func payloadFunc(data interface{}) jwt.MapClaims {
 		// 将用户json转为结构体
 		util.JsonI2Struct(v["user"], &user)
 		return jwt.MapClaims{
-			jwt.IdentityKey: user.ID,
+			jwt.IdentityKey: user.Id,
 			"user":          v["user"],
 		}
 	}

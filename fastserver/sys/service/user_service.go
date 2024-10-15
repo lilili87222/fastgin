@@ -66,7 +66,7 @@ func (us *UserService) GetCurrentUser(c *gin.Context) (model.User, error) {
 		return cacheUser.(model.User), nil
 	}
 
-	user, err := us.userDao.GetUserById(u.ID)
+	user, err := us.userDao.GetUserById(u.Id)
 	if err != nil {
 		userInfoCache.Delete(u.UserName)
 	} else {

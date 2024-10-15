@@ -1,7 +1,5 @@
 package model
 
-import "gorm.io/gorm"
-
 //type User struct {
 //	gorm.Model
 //	UserName     string  `gorm:"type:varchar(20);not null;unique" json:"username"`
@@ -16,7 +14,7 @@ import "gorm.io/gorm"
 //}
 
 type User struct {
-	gorm.Model
+	Model
 	UserName     string  `gorm:"type:varchar(20);not null;unique" `
 	Password     string  `gorm:"size:255;not null" `
 	Mobile       string  `gorm:"type:varchar(11);not null;unique" `
@@ -35,7 +33,7 @@ func (*User) TableName() string {
 func (user *User) GetRoleIds() []uint {
 	roleIds := make([]uint, 0)
 	for _, role := range user.Roles {
-		roleIds = append(roleIds, role.ID)
+		roleIds = append(roleIds, role.Id)
 	}
 	return roleIds
 }

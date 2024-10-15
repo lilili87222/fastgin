@@ -36,7 +36,7 @@ func (s *ApiService) GetApiTree() ([]*dto.ApiTreeDto, error) {
 	apiTree := make([]*dto.ApiTreeDto, len(categoryUniq))
 	for i, category := range categoryUniq {
 		apiTree[i] = &dto.ApiTreeDto{
-			ID:       -i,
+			Id:       -i,
 			Desc:     category,
 			Category: category,
 			Children: nil,

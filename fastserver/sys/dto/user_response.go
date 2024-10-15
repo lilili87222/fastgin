@@ -3,7 +3,7 @@ package dto
 import "fastgin/sys/model"
 
 type UsersDto struct {
-	ID           uint   `json:"ID"`
+	Id           uint   `json:"Id"`
 	UserName     string `json:"UserName"`
 	Mobile       string `json:"Mobile"`
 	Avatar       string `json:"Avatar"`
@@ -14,7 +14,7 @@ type UsersDto struct {
 	RoleIds      []uint `json:"RoleIds"`
 }
 type UserInfoDto struct {
-	ID           uint          `json:"ID"`
+	Id           uint          `json:"Id"`
 	UserName     string        `json:"UserName"`
 	Mobile       string        `json:"Mobile"`
 	Avatar       string        `json:"Avatar"`
