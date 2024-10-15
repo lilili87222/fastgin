@@ -1,4 +1,4 @@
-package request
+package dto
 
 // 创建接口结构体
 type CreateMenuRequest struct {

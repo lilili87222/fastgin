@@ -2,8 +2,8 @@ package dao
 
 import (
 	"fastgin/config"
+	"fastgin/sys/dto"
 	"fastgin/sys/model"
-	"fastgin/sys/model/request"
 	"fmt"
 	"strings"
 )
@@ -11,7 +11,7 @@ import (
 type ApiDao struct {
 }
 
-func (a ApiDao) GetApis(req *request.ApiListRequest) ([]*model.Api, int64, error) {
+func (a ApiDao) GetApis(req *dto.ApiListRequest) ([]*model.Api, int64, error) {
 	var list []*model.Api
 	db := config.DB.Model(&model.Api{}).Order("created_at DESC")
 

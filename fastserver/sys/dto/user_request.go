@@ -1,4 +1,4 @@
-package request
+package dto
 
 // 用户登录结构体
 type RegisterAndLoginRequest struct {

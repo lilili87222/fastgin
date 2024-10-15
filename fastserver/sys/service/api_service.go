@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fastgin/config"
 	"fastgin/sys/dao"
+	"fastgin/sys/dto"
 	"fastgin/sys/model"
-	"fastgin/sys/model/request"
 	"github.com/thoas/go-funk"
 )
 
@@ -17,11 +17,11 @@ func NewApiService() ApiService {
 	return ApiService{apiDao: dao.ApiDao{}}
 }
 
-func (s ApiService) GetApis(req *request.ApiListRequest) ([]*model.Api, int64, error) {
+func (s ApiService) GetApis(req *dto.ApiListRequest) ([]*model.Api, int64, error) {
 	return s.apiDao.GetApis(req)
 }
 
-func (s ApiService) GetApiTree() ([]*request.ApiTreeDto, error) {
+func (s ApiService) GetApiTree() ([]*dto.ApiTreeDto, error) {
 	apiList, err := s.apiDao.GetApiTree()
 	if err != nil {
 		return nil, err
@@ -33,9 +33,9 @@ func (s ApiService) GetApiTree() ([]*request.ApiTreeDto, error) {
 	}
 	categoryUniq := funk.UniqString(categoryList)
 
-	apiTree := make([]*request.ApiTreeDto, len(categoryUniq))
+	apiTree := make([]*dto.ApiTreeDto, len(categoryUniq))
 	for i, category := range categoryUniq {
-		apiTree[i] = &request.ApiTreeDto{
+		apiTree[i] = &dto.ApiTreeDto{
 			ID:       -i,
 			Desc:     category,
 			Category: category,

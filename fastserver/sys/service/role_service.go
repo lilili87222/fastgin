@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fastgin/config"
 	"fastgin/sys/dao"
+	"fastgin/sys/dto"
 	"fastgin/sys/model"
-	"fastgin/sys/model/request"
 )
 
 type RoleService struct {
@@ -17,7 +17,7 @@ func NewRoleDao() RoleService {
 }
 
 // 获取角色列表
-func (r RoleService) GetRoles(req *request.RoleListRequest) ([]model.Role, int64, error) {
+func (r RoleService) GetRoles(req *dto.RoleListRequest) ([]model.Role, int64, error) {
 	return r.roleDao.GetRoles(req)
 }
 

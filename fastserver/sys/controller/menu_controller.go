@@ -3,8 +3,8 @@ package controller
 import (
 	"fastgin/config"
 	"fastgin/sys/dao"
+	"fastgin/sys/dto"
 	"fastgin/sys/model"
-	"fastgin/sys/model/request"
 	"fastgin/sys/service"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -68,12 +68,12 @@ func (mc MenuController) GetMenuTree(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param menu body request.CreateMenuRequest true "Create menu request"
+// @Param menu body dto.CreateMenuRequest true "Create menu request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/menu [post]
 func (mc MenuController) CreateMenu(c *gin.Context) {
-	var req request.CreateMenuRequest
+	var req dto.CreateMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())
 		return
@@ -122,12 +122,12 @@ func (mc MenuController) CreateMenu(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param menuId path int true "Menu ID"
-// @Param menu body request.UpdateMenuRequest true "Update menu request"
+// @Param menu body dto.UpdateMenuRequest true "Update menu request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/menu/{menuId} [put]
 func (mc MenuController) UpdateMenuById(c *gin.Context) {
-	var req request.UpdateMenuRequest
+	var req dto.UpdateMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())
 		return
@@ -180,12 +180,12 @@ func (mc MenuController) UpdateMenuById(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param menuIds body request.DeleteMenuRequest true "Delete menu request"
+// @Param menuIds body dto.DeleteMenuRequest true "Delete menu request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/menu/batch_delete [delete]
 func (mc MenuController) BatchDeleteMenuByIds(c *gin.Context) {
-	var req request.DeleteMenuRequest
+	var req dto.DeleteMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())
 		return

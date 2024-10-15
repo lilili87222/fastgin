@@ -1,4 +1,4 @@
-package request
+package dto
 
 // 新增角色结构体
 type CreateRoleRequest struct {

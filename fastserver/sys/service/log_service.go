@@ -2,8 +2,8 @@ package service
 
 import (
 	"fastgin/sys/dao"
+	"fastgin/sys/dto"
 	"fastgin/sys/model"
-	"fastgin/sys/model/request"
 )
 
 type LogService struct {
@@ -15,7 +15,7 @@ func NewLogService() LogService {
 }
 
 // 获取操作日志列表
-func (s LogService) GetOperationLogs(req *request.OperationLogListRequest) ([]model.OperationLog, int64, error) {
+func (s LogService) GetOperationLogs(req *dto.OperationLogListRequest) ([]model.OperationLog, int64, error) {
 	return s.logDao.GetOperationLogs(req)
 }
 

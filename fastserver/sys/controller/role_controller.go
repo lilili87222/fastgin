@@ -3,8 +3,8 @@ package controller
 import (
 	"fastgin/config"
 	"fastgin/sys/dao"
+	"fastgin/sys/dto"
 	"fastgin/sys/model"
-	"fastgin/sys/model/request"
 	"fastgin/sys/service"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -41,7 +41,7 @@ func NewRoleController() RoleController {
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/roles [get]
 func (rc RoleController) GetRoles(c *gin.Context) {
-	var req request.RoleListRequest
+	var req dto.RoleListRequest
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())
 		return
@@ -66,12 +66,12 @@ func (rc RoleController) GetRoles(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param role body request.CreateRoleRequest true "Create role request"
+// @Param role body dto.CreateRoleRequest true "Create role request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role [post]
 func (rc RoleController) CreateRole(c *gin.Context) {
-	var req request.CreateRoleRequest
+	var req dto.CreateRoleRequest
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())
 		return
@@ -115,12 +115,12 @@ func (rc RoleController) CreateRole(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role ID"
-// @Param role body request.CreateRoleRequest true "Update role request"
+// @Param role body dto.CreateRoleRequest true "Update role request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role/{roleId} [put]
 func (rc RoleController) UpdateRoleById(c *gin.Context) {
-	var req request.CreateRoleRequest
+	var req dto.CreateRoleRequest
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())
 		return
@@ -241,12 +241,12 @@ func (rc RoleController) GetRoleMenusById(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role ID"
-// @Param menus body request.UpdateRoleMenusRequest true "Update role menus request"
+// @Param menus body dto.UpdateRoleMenusRequest true "Update role menus request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role/{roleId}/menus [put]
 func (rc RoleController) UpdateRoleMenusById(c *gin.Context) {
-	var req request.UpdateRoleMenusRequest
+	var req dto.UpdateRoleMenusRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())
@@ -400,12 +400,12 @@ func (rc RoleController) GetRoleApisById(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role ID"
-// @Param apis body request.UpdateRoleApisRequest true "Update role APIs request"
+// @Param apis body dto.UpdateRoleApisRequest true "Update role APIs request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role/{roleId}/apis [put]
 func (rc RoleController) UpdateRoleApisById(c *gin.Context) {
-	var req request.UpdateRoleApisRequest
+	var req dto.UpdateRoleApisRequest
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())
 		return
@@ -490,12 +490,12 @@ func (rc RoleController) UpdateRoleApisById(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param roleIds body request.DeleteRoleRequest true "Delete role request"
+// @Param roleIds body dto.DeleteRoleRequest true "Delete role request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role/batch_delete [delete]
 func (rc RoleController) BatchDeleteRoleByIds(c *gin.Context) {
-	var req request.DeleteRoleRequest
+	var req dto.DeleteRoleRequest
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())
 		return

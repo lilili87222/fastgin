@@ -4,9 +4,9 @@ import (
 	"fastgin/config"
 	"fastgin/sys/controller"
 	"fastgin/sys/dao"
+	"fastgin/sys/dto"
 	"fastgin/sys/middleware/jwt"
 	"fastgin/sys/model"
-	"fastgin/sys/model/request"
 	"fastgin/sys/util"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -71,7 +71,7 @@ func identityHandler(c *gin.Context) interface{} {
 
 // 校验token的正确性, 处理登录逻辑
 func login(c *gin.Context) (interface{}, error) {
-	var req request.RegisterAndLoginRequest
+	var req dto.RegisterAndLoginRequest
 	// 请求json绑定
 	if err := c.ShouldBind(&req); err != nil {
 		return "", err

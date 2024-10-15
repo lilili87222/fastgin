@@ -3,8 +3,8 @@ package controller
 import (
 	"fastgin/config"
 	"fastgin/sys/dao"
+	"fastgin/sys/dto"
 	"fastgin/sys/model"
-	"fastgin/sys/model/request"
 	"fastgin/sys/service"
 	"fastgin/sys/util"
 	"github.com/gin-gonic/gin"
@@ -65,13 +65,13 @@ func (uc UserController) GetUserInfo(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param UserListRequest body request.UserListRequest true "User list request"
+// @Param UserListRequest body dto.UserListRequest true "User list request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/user/list [post]
 func (uc UserController) GetUsers(c *gin.Context) {
 
-	var req request.UserListRequest
+	var req dto.UserListRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())
@@ -122,12 +122,12 @@ func (uc UserController) GetUsers(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param ChangePwdRequest body request.ChangePwdRequest true "Change password request"
+// @Param ChangePwdRequest body dto.ChangePwdRequest true "Change password request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/user/change_pwd [post]
 func (uc UserController) ChangePwd(c *gin.Context) {
-	var req request.ChangePwdRequest
+	var req dto.ChangePwdRequest
 
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
@@ -186,12 +186,12 @@ func (uc UserController) ChangePwd(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param CreateUserRequest body request.CreateUserRequest true "Create user request"
+// @Param CreateUserRequest body dto.CreateUserRequest true "Create user request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/user/create [post]
 func (uc UserController) CreateUser(c *gin.Context) {
-	var req request.CreateUserRequest
+	var req dto.CreateUserRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())
@@ -286,12 +286,12 @@ func (uc UserController) CreateUser(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param userId path int true "User ID"
-// @Param CreateUserRequest body request.CreateUserRequest true "Update user request"
+// @Param CreateUserRequest body dto.CreateUserRequest true "Update user request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/user/update/{userId} [put]
 func (uc UserController) UpdateUserById(c *gin.Context) {
-	var req request.CreateUserRequest
+	var req dto.CreateUserRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())
@@ -445,12 +445,12 @@ func (uc UserController) UpdateUserById(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param DeleteUserRequest body request.DeleteUserRequest true "Delete user request"
+// @Param DeleteUserRequest body dto.DeleteUserRequest true "Delete user request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/user/batch_delete [delete]
 func (uc UserController) BatchDeleteUserByIds(c *gin.Context) {
-	var req request.DeleteUserRequest
+	var req dto.DeleteUserRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())

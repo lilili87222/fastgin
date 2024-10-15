@@ -3,8 +3,8 @@ package dao
 import (
 	"errors"
 	"fastgin/config"
+	"fastgin/sys/dto"
 	"fastgin/sys/model"
-	"fastgin/sys/model/request"
 	"fastgin/sys/util"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -124,7 +124,7 @@ func (ur UserDao) GetUserById(id uint) (model.User, error) {
 }
 
 // 获取用户列表
-func (ur UserDao) GetUsers(req *request.UserListRequest) ([]*model.User, int64, error) {
+func (ur UserDao) GetUsers(req *dto.UserListRequest) ([]*model.User, int64, error) {
 	var list []*model.User
 	db := config.DB.Model(&model.User{}).Order("created_at DESC")
 

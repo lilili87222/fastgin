@@ -2,8 +2,8 @@ package dao
 
 import (
 	"fastgin/config"
+	"fastgin/sys/dto"
 	"fastgin/sys/model"
-	"fastgin/sys/model/request"
 	"fmt"
 	"strings"
 )
@@ -12,7 +12,7 @@ type RoleDao struct {
 }
 
 // 获取角色列表
-func (r RoleDao) GetRoles(req *request.RoleListRequest) ([]model.Role, int64, error) {
+func (r RoleDao) GetRoles(req *dto.RoleListRequest) ([]model.Role, int64, error) {
 	var list []model.Role
 	db := config.DB.Model(&model.Role{}).Order("created_at DESC")
 

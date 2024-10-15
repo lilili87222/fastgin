@@ -2,8 +2,8 @@ package dao
 
 import (
 	"fastgin/config"
+	"fastgin/sys/dto"
 	"fastgin/sys/model"
-	"fastgin/sys/model/request"
 	"fmt"
 	"strings"
 )
@@ -15,7 +15,7 @@ type OperationLogDao struct {
 //	return OperationLogDao{}
 //}
 
-func (o OperationLogDao) GetOperationLogs(req *request.OperationLogListRequest) ([]model.OperationLog, int64, error) {
+func (o OperationLogDao) GetOperationLogs(req *dto.OperationLogListRequest) ([]model.OperationLog, int64, error) {
 	var list []model.OperationLog
 	db := config.DB.Model(&model.OperationLog{}).Order("start_time DESC")
 

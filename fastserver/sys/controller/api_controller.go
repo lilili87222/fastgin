@@ -3,8 +3,8 @@ package controller
 import (
 	"fastgin/config"
 	"fastgin/sys/dao"
+	"fastgin/sys/dto"
 	"fastgin/sys/model"
-	"fastgin/sys/model/request"
 	"fastgin/sys/service"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -39,7 +39,7 @@ func NewApiController() ApiController {
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/apis [get]
 func (ac ApiController) GetApis(c *gin.Context) {
-	var req request.ApiListRequest
+	var req dto.ApiListRequest
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())
 		return
@@ -88,12 +88,12 @@ func (ac ApiController) GetApiTree(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param api body request.CreateApiRequest true "Create API request"
+// @Param api body dto.CreateApiRequest true "Create API request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/api [post]
 func (ac ApiController) CreateApi(c *gin.Context) {
-	var req request.CreateApiRequest
+	var req dto.CreateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())
 		return
@@ -132,12 +132,12 @@ func (ac ApiController) CreateApi(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param apiId path int true "API ID"
-// @Param api body request.UpdateApiRequest true "Update API request"
+// @Param api body dto.UpdateApiRequest true "Update API request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/api/{apiId} [put]
 func (ac ApiController) UpdateApiById(c *gin.Context) {
-	var req request.UpdateApiRequest
+	var req dto.UpdateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())
 		return
@@ -180,12 +180,12 @@ func (ac ApiController) UpdateApiById(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param apiIds body request.DeleteApiRequest true "Delete API request"
+// @Param apiIds body dto.DeleteApiRequest true "Delete API request"
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/api/batch_delete [delete]
 func (ac ApiController) BatchDeleteApiByIds(c *gin.Context) {
-	var req request.DeleteApiRequest
+	var req dto.DeleteApiRequest
 	if err := c.ShouldBind(&req); err != nil {
 		Fail(c, nil, err.Error())
 		return
