@@ -7,31 +7,31 @@ import (
 )
 
 type OperationLogService struct {
-	logDao dao.OperationLogDao
+	logDao *dao.OperationLogDao
 }
 
-func NewLogService() OperationLogService {
-	return OperationLogService{logDao: dao.OperationLogDao{}}
+func NewLogService() *OperationLogService {
+	return &OperationLogService{logDao: &dao.OperationLogDao{}}
 }
 
 // 获取操作日志列表
-func (s OperationLogService) GetOperationLogs(req *dto.OperationLogListRequest) ([]model.OperationLog, int64, error) {
+func (s *OperationLogService) GetOperationLogs(req *dto.OperationLogListRequest) ([]model.OperationLog, int64, error) {
 	return s.logDao.GetOperationLogs(req)
 }
 
 // 批量删除操作日志
-func (s OperationLogService) BatchDeleteOperationLogByIds(ids []uint) error {
+func (s *OperationLogService) BatchDeleteOperationLogByIds(ids []uint) error {
 	return s.logDao.BatchDeleteOperationLogByIds(ids)
 }
 
 // 保存操作日志到数据库
 //
-//	func (s OperationLogService) SaveOperationLogChannel(olc <-chan *model.OperationLog) {
+//	func (s *OperationLogService) SaveOperationLogChannel(olc <-chan *model.OperationLog) {
 //		s.logDao.SaveOperationLogChannel(olc)
 //	}
 //
 // 保存操作日志到数据库
-func (s OperationLogService) SaveOperationLogChannel(olc <-chan *model.OperationLog) {
+func (s *OperationLogService) SaveOperationLogChannel(olc <-chan *model.OperationLog) {
 	var logs []model.OperationLog
 
 	for log := range olc {

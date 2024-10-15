@@ -16,14 +16,13 @@ import (
 
 // RoleController handles role-related requests
 type RoleController struct {
-	roleService service.RoleService
-	userService service.UserService
+	roleService *service.RoleService
+	userService *service.UserService
 }
 
 // NewRoleController creates a new RoleController
-func NewRoleController() RoleController {
-	roleController := RoleController{roleService: service.NewRoleService(), userService: service.NewUserService()}
-	return roleController
+func NewRoleController() *RoleController {
+	return &RoleController{roleService: service.NewRoleService(), userService: service.NewUserService()}
 }
 
 // GetRoles retrieves a list of roles
@@ -40,7 +39,7 @@ func NewRoleController() RoleController {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/roles [get]
-func (rc RoleController) GetRoles(c *gin.Context) {
+func (rc *RoleController) GetRoles(c *gin.Context) {
 	var req dto.RoleListRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
@@ -70,7 +69,7 @@ func (rc RoleController) GetRoles(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role [post]
-func (rc RoleController) CreateRole(c *gin.Context) {
+func (rc *RoleController) CreateRole(c *gin.Context) {
 	var req dto.CreateRoleRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
@@ -119,7 +118,7 @@ func (rc RoleController) CreateRole(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role/{roleId} [put]
-func (rc RoleController) UpdateRoleById(c *gin.Context) {
+func (rc *RoleController) UpdateRoleById(c *gin.Context) {
 	var req dto.CreateRoleRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
@@ -219,7 +218,7 @@ func (rc RoleController) UpdateRoleById(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role/{roleId}/menus [get]
-func (rc RoleController) GetRoleMenusById(c *gin.Context) {
+func (rc *RoleController) GetRoleMenusById(c *gin.Context) {
 	roleId, _ := strconv.Atoi(c.Param("roleId"))
 	if roleId <= 0 {
 		util.Fail(c, nil, "角色ID不正确")
@@ -245,7 +244,7 @@ func (rc RoleController) GetRoleMenusById(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role/{roleId}/menus [put]
-func (rc RoleController) UpdateRoleMenusById(c *gin.Context) {
+func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 	var req dto.UpdateRoleMenusRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
@@ -368,7 +367,7 @@ func (rc RoleController) UpdateRoleMenusById(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role/{roleId}/apis [get]
-func (rc RoleController) GetRoleApisById(c *gin.Context) {
+func (rc *RoleController) GetRoleApisById(c *gin.Context) {
 	roleId, _ := strconv.Atoi(c.Param("roleId"))
 	if roleId <= 0 {
 		util.Fail(c, nil, "角色ID不正确")
@@ -404,7 +403,7 @@ func (rc RoleController) GetRoleApisById(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role/{roleId}/apis [put]
-func (rc RoleController) UpdateRoleApisById(c *gin.Context) {
+func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
 	var req dto.UpdateRoleApisRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
@@ -494,7 +493,7 @@ func (rc RoleController) UpdateRoleApisById(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/role/batch_delete [delete]
-func (rc RoleController) BatchDeleteRoleByIds(c *gin.Context) {
+func (rc *RoleController) BatchDeleteRoleByIds(c *gin.Context) {
 	var req dto.DeleteRoleRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())

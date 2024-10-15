@@ -10,18 +10,18 @@ import (
 )
 
 type ApiService struct {
-	apiDao dao.ApiDao
+	apiDao *dao.ApiDao
 }
 
-func NewApiService() ApiService {
-	return ApiService{apiDao: dao.ApiDao{}}
+func NewApiService() *ApiService {
+	return &ApiService{apiDao: &dao.ApiDao{}}
 }
 
-func (s ApiService) GetApis(req *dto.ApiListRequest) ([]*model.Api, int64, error) {
+func (s *ApiService) GetApis(req *dto.ApiListRequest) ([]*model.Api, int64, error) {
 	return s.apiDao.GetApis(req)
 }
 
-func (s ApiService) GetApiTree() ([]*dto.ApiTreeDto, error) {
+func (s *ApiService) GetApiTree() ([]*dto.ApiTreeDto, error) {
 	apiList, err := s.apiDao.GetApiTree()
 	if err != nil {
 		return nil, err
@@ -50,11 +50,11 @@ func (s ApiService) GetApiTree() ([]*dto.ApiTreeDto, error) {
 	return apiTree, nil
 }
 
-func (s ApiService) CreateApi(api *model.Api) error {
+func (s *ApiService) CreateApi(api *model.Api) error {
 	return s.apiDao.CreateApi(api)
 }
 
-func (s ApiService) UpdateApiById(apiId uint, api *model.Api) error {
+func (s *ApiService) UpdateApiById(apiId uint, api *model.Api) error {
 	oldApi, err := s.apiDao.GetApisById([]uint{apiId})
 	if err != nil || len(oldApi) == 0 {
 		return errors.New("根据接口ID获取接口信息失败")
@@ -92,7 +92,7 @@ func (s ApiService) UpdateApiById(apiId uint, api *model.Api) error {
 	return nil
 }
 
-func (s ApiService) BatchDeleteApiByIds(apiIds []uint) error {
+func (s *ApiService) BatchDeleteApiByIds(apiIds []uint) error {
 	apis, err := s.apiDao.GetApisById(apiIds)
 	if err != nil {
 		return errors.New("根据接口ID获取接口列表失败")
@@ -123,10 +123,10 @@ func (s ApiService) BatchDeleteApiByIds(apiIds []uint) error {
 	return err
 }
 
-func (s ApiService) GetApiDescByPath(path string, method string) (string, error) {
+func (s *ApiService) GetApiDescByPath(path string, method string) (string, error) {
 	return s.apiDao.GetApiDescByPath(path, method)
 }
 
-func (s ApiService) GetApisById(apiIds []uint) ([]*model.Api, error) {
+func (s *ApiService) GetApisById(apiIds []uint) ([]*model.Api, error) {
 	return s.apiDao.GetApisById(apiIds)
 }

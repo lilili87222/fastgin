@@ -11,7 +11,7 @@ import (
 type ApiDao struct {
 }
 
-func (a ApiDao) GetApis(req *dto.ApiListRequest) ([]*model.Api, int64, error) {
+func (a *ApiDao) GetApis(req *dto.ApiListRequest) ([]*model.Api, int64, error) {
 	var list []*model.Api
 	db := config.DB.Model(&model.Api{}).Order("created_at DESC")
 
@@ -47,31 +47,31 @@ func (a ApiDao) GetApis(req *dto.ApiListRequest) ([]*model.Api, int64, error) {
 	return list, total, err
 }
 
-func (a ApiDao) GetApisById(apiIds []uint) ([]*model.Api, error) {
+func (a *ApiDao) GetApisById(apiIds []uint) ([]*model.Api, error) {
 	var apis []*model.Api
 	err := config.DB.Where("id IN (?)", apiIds).Find(&apis).Error
 	return apis, err
 }
 
-func (a ApiDao) GetApiTree() ([]*model.Api, error) {
+func (a *ApiDao) GetApiTree() ([]*model.Api, error) {
 	var apiList []*model.Api
 	err := config.DB.Order("category").Order("created_at").Find(&apiList).Error
 	return apiList, err
 }
 
-func (a ApiDao) CreateApi(api *model.Api) error {
+func (a *ApiDao) CreateApi(api *model.Api) error {
 	return config.DB.Create(api).Error
 }
 
-func (a ApiDao) UpdateApiById(apiId uint, api *model.Api) error {
+func (a *ApiDao) UpdateApiById(apiId uint, api *model.Api) error {
 	return config.DB.Model(api).Where("id = ?", apiId).Updates(api).Error
 }
 
-func (a ApiDao) BatchDeleteApiByIds(apiIds []uint) error {
+func (a *ApiDao) BatchDeleteApiByIds(apiIds []uint) error {
 	return config.DB.Where("id IN (?)", apiIds).Unscoped().Delete(&model.Api{}).Error
 }
 
-func (a ApiDao) GetApiDescByPath(path string, method string) (string, error) {
+func (a *ApiDao) GetApiDescByPath(path string, method string) (string, error) {
 	var api model.Api
 	err := config.DB.Where("path = ?", path).Where("method = ?", method).First(&api).Error
 	return api.Desc, err

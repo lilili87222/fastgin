@@ -15,7 +15,7 @@ type OperationLogDao struct {
 //	return OperationLogDao{}
 //}
 
-func (o OperationLogDao) GetOperationLogs(req *dto.OperationLogListRequest) ([]model.OperationLog, int64, error) {
+func (o *OperationLogDao) GetOperationLogs(req *dto.OperationLogListRequest) ([]model.OperationLog, int64, error) {
 	var list []model.OperationLog
 	db := config.DB.Model(&model.OperationLog{}).Order("start_time DESC")
 
@@ -54,14 +54,14 @@ func (o OperationLogDao) GetOperationLogs(req *dto.OperationLogListRequest) ([]m
 
 }
 
-func (o OperationLogDao) BatchDeleteOperationLogByIds(ids []uint) error {
+func (o *OperationLogDao) BatchDeleteOperationLogByIds(ids []uint) error {
 	err := config.DB.Where("id IN (?)", ids).Unscoped().Delete(&model.OperationLog{}).Error
 	return err
 }
 
 // var Logs []model.OperationLog //全局变量多个线程需要加锁，所以每个线程自己维护一个
 // 处理OperationLogChan将日志记录到数据库
-//func (o OperationLogDao) SaveOperationLogChannel(olc <-chan *model.OperationLog) {
+//func (o *OperationLogDao) SaveOperationLogChannel(olc <-chan *model.OperationLog) {
 //	// 只会在线程开启的时候执行一次
 //	Logs := make([]model.OperationLog, 0)
 //
@@ -76,6 +76,6 @@ func (o OperationLogDao) BatchDeleteOperationLogByIds(ids []uint) error {
 //	}
 //}
 
-func (o OperationLogDao) SaveOperationLogs(logs []model.OperationLog) error {
+func (o *OperationLogDao) SaveOperationLogs(logs []model.OperationLog) error {
 	return config.DB.Create(&logs).Error
 }

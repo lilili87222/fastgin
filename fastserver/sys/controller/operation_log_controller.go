@@ -11,14 +11,12 @@ import (
 
 // OperationLogController handles operation log-related requests
 type OperationLogController struct {
-	logDao service.OperationLogService
+	logDao *service.OperationLogService
 }
 
 // NewOperationLogController creates a new OperationLogController
-func NewOperationLogController() OperationLogController {
-	logDao := service.NewLogService()
-	operationLogController := OperationLogController{logDao: logDao}
-	return operationLogController
+func NewOperationLogController() *OperationLogController {
+	return &OperationLogController{logDao: service.NewLogService()}
 }
 
 // GetOperationLogs retrieves a list of operation logs
@@ -37,7 +35,7 @@ func NewOperationLogController() OperationLogController {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/operation_logs [get]
-func (oc OperationLogController) GetOperationLogs(c *gin.Context) {
+func (oc *OperationLogController) GetOperationLogs(c *gin.Context) {
 	var req dto.OperationLogListRequest
 	// 绑定参数
 	if err := c.ShouldBind(&req); err != nil {
@@ -70,7 +68,7 @@ func (oc OperationLogController) GetOperationLogs(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/operation_logs/batch_delete [delete]
-func (oc OperationLogController) BatchDeleteOperationLogByIds(c *gin.Context) {
+func (oc *OperationLogController) BatchDeleteOperationLogByIds(c *gin.Context) {
 	var req dto.DeleteOperationLogRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {

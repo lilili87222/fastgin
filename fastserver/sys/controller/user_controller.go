@@ -15,13 +15,12 @@ import (
 )
 
 type UserController struct {
-	userService service.UserService
+	userService *service.UserService
 }
 
 // 构造函数
-func NewUserController() UserController {
-	userController := UserController{userService: service.NewUserService()}
-	return userController
+func NewUserController() *UserController {
+	return &UserController{userService: service.NewUserService()}
 }
 
 // 获取当前登录用户信息
@@ -34,7 +33,7 @@ func NewUserController() UserController {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/user/info [get]
-func (uc UserController) GetUserInfo(c *gin.Context) {
+func (uc *UserController) GetUserInfo(c *gin.Context) {
 	type UserInfoDto struct {
 		ID           uint          `json:"id"`
 		Username     string        `json:"username"`
@@ -67,7 +66,7 @@ func (uc UserController) GetUserInfo(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/user/list [post]
-func (uc UserController) GetUsers(c *gin.Context) {
+func (uc *UserController) GetUsers(c *gin.Context) {
 
 	var req dto.UserListRequest
 	// 参数绑定
@@ -124,7 +123,7 @@ func (uc UserController) GetUsers(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/user/change_pwd [post]
-func (uc UserController) ChangePwd(c *gin.Context) {
+func (uc *UserController) ChangePwd(c *gin.Context) {
 	var req dto.ChangePwdRequest
 
 	// 参数绑定
@@ -188,7 +187,7 @@ func (uc UserController) ChangePwd(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/user/create [post]
-func (uc UserController) CreateUser(c *gin.Context) {
+func (uc *UserController) CreateUser(c *gin.Context) {
 	var req dto.CreateUserRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
@@ -288,7 +287,7 @@ func (uc UserController) CreateUser(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/user/update/{userId} [put]
-func (uc UserController) UpdateUserById(c *gin.Context) {
+func (uc *UserController) UpdateUserById(c *gin.Context) {
 	var req dto.CreateUserRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
@@ -447,7 +446,7 @@ func (uc UserController) UpdateUserById(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/user/batch_delete [delete]
-func (uc UserController) BatchDeleteUserByIds(c *gin.Context) {
+func (uc *UserController) BatchDeleteUserByIds(c *gin.Context) {
 	var req dto.DeleteUserRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {

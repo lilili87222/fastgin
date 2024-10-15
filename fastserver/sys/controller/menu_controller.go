@@ -13,15 +13,13 @@ import (
 
 // MenuController handles menu-related requests
 type MenuController struct {
-	menuService service.MenuService
-	userService service.UserService
+	menuService *service.MenuService
+	userService *service.UserService
 }
 
 // NewMenuController creates a new MenuController
-func NewMenuController() MenuController {
-	//menuDao := dao.NewMenuDao()
-	menuController := MenuController{menuService: service.NewMenuService(), userService: service.NewUserService()}
-	return menuController
+func NewMenuController() *MenuController {
+	return &MenuController{menuService: service.NewMenuService(), userService: service.NewUserService()}
 }
 
 // GetMenus retrieves a list of menus
@@ -34,7 +32,7 @@ func NewMenuController() MenuController {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/menus [get]
-func (mc MenuController) GetMenus(c *gin.Context) {
+func (mc *MenuController) GetMenus(c *gin.Context) {
 	menus, err := mc.menuService.GetMenus()
 	if err != nil {
 		util.Fail(c, nil, "获取菜单列表失败: "+err.Error())
@@ -53,7 +51,7 @@ func (mc MenuController) GetMenus(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/menu/tree [get]
-func (mc MenuController) GetMenuTree(c *gin.Context) {
+func (mc *MenuController) GetMenuTree(c *gin.Context) {
 	menuTree, err := mc.menuService.GetMenuTree()
 	if err != nil {
 		util.Fail(c, nil, "获取菜单树失败: "+err.Error())
@@ -73,7 +71,7 @@ func (mc MenuController) GetMenuTree(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/menu [post]
-func (mc MenuController) CreateMenu(c *gin.Context) {
+func (mc *MenuController) CreateMenu(c *gin.Context) {
 	var req dto.CreateMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
@@ -127,7 +125,7 @@ func (mc MenuController) CreateMenu(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/menu/{menuId} [put]
-func (mc MenuController) UpdateMenuById(c *gin.Context) {
+func (mc *MenuController) UpdateMenuById(c *gin.Context) {
 	var req dto.UpdateMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
@@ -185,7 +183,7 @@ func (mc MenuController) UpdateMenuById(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/menu/batch_delete [delete]
-func (mc MenuController) BatchDeleteMenuByIds(c *gin.Context) {
+func (mc *MenuController) BatchDeleteMenuByIds(c *gin.Context) {
 	var req dto.DeleteMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
@@ -215,7 +213,7 @@ func (mc MenuController) BatchDeleteMenuByIds(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/user/{userId}/menus [get]
-func (mc MenuController) GetUserMenusByUserId(c *gin.Context) {
+func (mc *MenuController) GetUserMenusByUserId(c *gin.Context) {
 	userId, _ := strconv.Atoi(c.Param("userId"))
 	if userId <= 0 {
 		util.Fail(c, nil, "用户ID不正确")
@@ -240,7 +238,7 @@ func (mc MenuController) GetUserMenusByUserId(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/user/{userId}/menu_tree [get]
-func (mc MenuController) GetUserMenuTreeByUserId(c *gin.Context) {
+func (mc *MenuController) GetUserMenuTreeByUserId(c *gin.Context) {
 	userId, _ := strconv.Atoi(c.Param("userId"))
 	if userId <= 0 {
 		util.Fail(c, nil, "用户ID不正确")

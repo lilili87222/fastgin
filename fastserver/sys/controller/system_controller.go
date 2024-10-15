@@ -12,11 +12,8 @@ type SystemController struct {
 	systemService *service.SystemService
 }
 
-func NewSystemController() SystemController {
-	operationLogController := SystemController{
-		systemService: &service.SystemService{},
-	}
-	return operationLogController
+func NewSystemController() *SystemController {
+	return &SystemController{systemService: &service.SystemService{}}
 }
 
 // GetSystemInformation godoc
@@ -26,7 +23,7 @@ func NewSystemController() SystemController {
 // @Param Authorization header string true "Bearer token"
 // @Success 200 {object} map[string]interface{}
 // @Router /api/auth/system/info [get]
-func (oc SystemController) GetSystemInformation(c *gin.Context) {
+func (oc *SystemController) GetSystemInformation(c *gin.Context) {
 	//service := service.SystemService{}
 	util.Success(c, oc.systemService.GetSystemInformation(), "系统信息成功")
 }
@@ -38,7 +35,7 @@ func (oc SystemController) GetSystemInformation(c *gin.Context) {
 // @Param Authorization header string true "Bearer token"
 // @Success 200 {string} string "停止服务成功"
 // @Router /api/auth/system/stop [get]
-func (oc SystemController) GetStopServer(c *gin.Context) {
+func (oc *SystemController) GetStopServer(c *gin.Context) {
 	config.Log.Info("停止服务")
 	os.Exit(0)
 	util.Success(c, nil, "停止服务成功")
@@ -51,7 +48,7 @@ func (oc SystemController) GetStopServer(c *gin.Context) {
 // @Param Authorization header string true "Bearer token"
 // @Success 200 {string} string "重启服务成功"
 // @Router /api/auth/system/restart [get]
-func (oc SystemController) RestartServer(c *gin.Context) {
+func (oc *SystemController) RestartServer(c *gin.Context) {
 	//service := service.SystemService{}
 	e := oc.systemService.Restart()
 	config.Log.Info("重启服务")

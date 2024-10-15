@@ -13,17 +13,17 @@ import (
 )
 
 type UserService struct {
-	userDao dao.UserDao
+	userDao *dao.UserDao
 }
 
 var userInfoCache = cache.New(24*time.Hour, 48*time.Hour)
 
-func NewUserService() UserService {
-	return UserService{userDao: dao.NewUserDao()}
+func NewUserService() *UserService {
+	return &UserService{userDao: dao.NewUserDao()}
 }
 
 // 登录
-func (us UserService) Login(user *model.User) (*model.User, error) {
+func (us *UserService) Login(user *model.User) (*model.User, error) {
 	firstUser, err := us.userDao.GetUserByUsername(user.Username)
 	if err != nil {
 		return nil, errors.New("用户不存在")
@@ -53,7 +53,7 @@ func (us UserService) Login(user *model.User) (*model.User, error) {
 }
 
 // 获取当前登录用户信息
-func (us UserService) GetCurrentUser(c *gin.Context) (model.User, error) {
+func (us *UserService) GetCurrentUser(c *gin.Context) (model.User, error) {
 	ctxUser, exist := c.Get("user")
 	if !exist {
 		return model.User{}, errors.New("用户未登录")
@@ -75,7 +75,7 @@ func (us UserService) GetCurrentUser(c *gin.Context) (model.User, error) {
 }
 
 // 获取当前用户角色排序最小值（最高等级角色）以及当前用户信息
-func (us UserService) GetCurrentUserMinRoleSort(c *gin.Context) (uint, model.User, error) {
+func (us *UserService) GetCurrentUserMinRoleSort(c *gin.Context) (uint, model.User, error) {
 	ctxUser, err := us.GetCurrentUser(c)
 	if err != nil {
 		return 999, ctxUser, err
@@ -91,17 +91,17 @@ func (us UserService) GetCurrentUserMinRoleSort(c *gin.Context) (uint, model.Use
 }
 
 // 获取单个用户
-func (us UserService) GetUserById(id uint) (model.User, error) {
+func (us *UserService) GetUserById(id uint) (model.User, error) {
 	return us.userDao.GetUserById(id)
 }
 
 // 获取用户列表
-func (us UserService) GetUsers(req *dto.UserListRequest) ([]*model.User, int64, error) {
+func (us *UserService) GetUsers(req *dto.UserListRequest) ([]*model.User, int64, error) {
 	return us.userDao.GetUsers(req)
 }
 
 // 更新密码
-func (us UserService) ChangePwd(username string, hashNewPasswd string) error {
+func (us *UserService) ChangePwd(username string, hashNewPasswd string) error {
 	err := us.userDao.ChangePwd(username, hashNewPasswd)
 	if err == nil {
 		cacheUser, found := userInfoCache.Get(username)
@@ -118,12 +118,12 @@ func (us UserService) ChangePwd(username string, hashNewPasswd string) error {
 }
 
 // 创建用户
-func (us UserService) CreateUser(user *model.User) error {
+func (us *UserService) CreateUser(user *model.User) error {
 	return us.userDao.CreateUser(user)
 }
 
 // 更新用户
-func (us UserService) UpdateUser(user *model.User) error {
+func (us *UserService) UpdateUser(user *model.User) error {
 	err := us.userDao.UpdateUser(user)
 	if err == nil {
 		userInfoCache.Set(user.Username, *user, cache.DefaultExpiration)
@@ -132,7 +132,7 @@ func (us UserService) UpdateUser(user *model.User) error {
 }
 
 // 批量删除
-func (us UserService) BatchDeleteUserByIds(ids []uint) error {
+func (us *UserService) BatchDeleteUserByIds(ids []uint) error {
 	users, err := us.userDao.GetUsersByIds(ids)
 	if err != nil {
 		return err
@@ -148,7 +148,7 @@ func (us UserService) BatchDeleteUserByIds(ids []uint) error {
 }
 
 // 根据用户ID获取用户角色排序最小值
-func (us UserService) GetUserMinRoleSortsByIds(ids []uint) ([]int, error) {
+func (us *UserService) GetUserMinRoleSortsByIds(ids []uint) ([]int, error) {
 	userList, err := us.userDao.GetUsersByIds(ids)
 	if err != nil {
 		return nil, err
@@ -166,12 +166,12 @@ func (us UserService) GetUserMinRoleSortsByIds(ids []uint) ([]int, error) {
 }
 
 // 设置用户信息缓存
-func (us UserService) SetUserInfoCache(username string, user model.User) {
+func (us *UserService) SetUserInfoCache(username string, user model.User) {
 	userInfoCache.Set(username, user, cache.DefaultExpiration)
 }
 
 // 根据角色ID更新拥有该角色的用户信息缓存
-func (us UserService) UpdateUserInfoCacheByRoleId(roleId uint) error {
+func (us *UserService) UpdateUserInfoCacheByRoleId(roleId uint) error {
 	role, err := us.userDao.GetRoleById(roleId)
 	if err != nil {
 		return errors.New("根据角色ID角色信息失败")
@@ -187,6 +187,6 @@ func (us UserService) UpdateUserInfoCacheByRoleId(roleId uint) error {
 }
 
 // 清理所有用户信息缓存
-func (us UserService) ClearUserInfoCache() {
+func (us *UserService) ClearUserInfoCache() {
 	userInfoCache.Flush()
 }

@@ -9,45 +9,45 @@ import (
 )
 
 type RoleService struct {
-	roleDao dao.RoleDao
+	roleDao *dao.RoleDao
 }
 
-func NewRoleService() RoleService {
-	return RoleService{roleDao: dao.RoleDao{}}
+func NewRoleService() *RoleService {
+	return &RoleService{roleDao: &dao.RoleDao{}}
 }
 
 // 获取角色列表
-func (r RoleService) GetRoles(req *dto.RoleListRequest) ([]model.Role, int64, error) {
+func (r *RoleService) GetRoles(req *dto.RoleListRequest) ([]model.Role, int64, error) {
 	return r.roleDao.GetRoles(req)
 }
 
 // 根据角色ID获取角色
-func (r RoleService) GetRolesByIds(roleIds []uint) ([]*model.Role, error) {
+func (r *RoleService) GetRolesByIds(roleIds []uint) ([]*model.Role, error) {
 	return r.roleDao.GetRolesByIds(roleIds)
 }
 
 // 创建角色
-func (r RoleService) CreateRole(role *model.Role) error {
+func (r *RoleService) CreateRole(role *model.Role) error {
 	return r.roleDao.CreateRole(role)
 }
 
 // 更新角色
-func (r RoleService) UpdateRoleById(roleId uint, role *model.Role) error {
+func (r *RoleService) UpdateRoleById(roleId uint, role *model.Role) error {
 	return r.roleDao.UpdateRoleById(roleId, role)
 }
 
 // 获取角色的权限菜单
-func (r RoleService) GetRoleMenusById(roleId uint) ([]*model.Menu, error) {
+func (r *RoleService) GetRoleMenusById(roleId uint) ([]*model.Menu, error) {
 	return r.roleDao.GetRoleMenusById(roleId)
 }
 
 // 更新角色的权限菜单
-func (r RoleService) UpdateRoleMenus(role *model.Role) error {
+func (r *RoleService) UpdateRoleMenus(role *model.Role) error {
 	return r.roleDao.UpdateRoleMenus(role)
 }
 
 // 根据角色关键字获取角色的权限接口
-func (r RoleService) GetRoleApisByRoleKeyword(roleKeyword string) ([]*model.Api, error) {
+func (r *RoleService) GetRoleApisByRoleKeyword(roleKeyword string) ([]*model.Api, error) {
 	policies, err2 := config.CasbinEnforcer.GetFilteredPolicy(0, roleKeyword)
 	if err2 != nil {
 		return nil, errors.New("获取角色的权限接口失败")
@@ -78,7 +78,7 @@ func (r RoleService) GetRoleApisByRoleKeyword(roleKeyword string) ([]*model.Api,
 }
 
 // 更新角色的权限接口（先全部删除再新增）
-func (r RoleService) UpdateRoleApis(roleKeyword string, reqRolePolicies [][]string) error {
+func (r *RoleService) UpdateRoleApis(roleKeyword string, reqRolePolicies [][]string) error {
 	// 先获取path中的角色ID对应角色已有的police(需要先删除的)
 	err := config.CasbinEnforcer.LoadPolicy()
 	if err != nil {
@@ -107,7 +107,7 @@ func (r RoleService) UpdateRoleApis(roleKeyword string, reqRolePolicies [][]stri
 }
 
 // 删除角色
-func (r RoleService) BatchDeleteRoleByIds(roleIds []uint) error {
+func (r *RoleService) BatchDeleteRoleByIds(roleIds []uint) error {
 	roles, err := r.roleDao.BatchDeleteRoleByIds(roleIds)
 	// 删除成功就删除casbin policy
 	if err == nil {

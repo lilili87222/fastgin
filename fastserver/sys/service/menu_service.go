@@ -7,22 +7,22 @@ import (
 )
 
 type MenuService struct {
-	menuDao dao.MenuDao
+	menuDao *dao.MenuDao
 }
 
-func NewMenuService() MenuService {
-	return MenuService{
-		menuDao: dao.MenuDao{},
+func NewMenuService() *MenuService {
+	return &MenuService{
+		menuDao: &dao.MenuDao{},
 	}
 }
 
 // 获取菜单列表
-func (s MenuService) GetMenus() ([]*model.Menu, error) {
+func (s *MenuService) GetMenus() ([]*model.Menu, error) {
 	return s.menuDao.GetMenus()
 }
 
 // 获取菜单树
-func (s MenuService) GetMenuTree() ([]*model.Menu, error) {
+func (s *MenuService) GetMenuTree() ([]*model.Menu, error) {
 	menus, err := s.menuDao.GetMenuTree()
 	if err != nil {
 		return nil, err
@@ -30,35 +30,23 @@ func (s MenuService) GetMenuTree() ([]*model.Menu, error) {
 	return GenMenuTree(0, menus), nil
 }
 
-func GenMenuTree(parentId uint, menus []*model.Menu) []*model.Menu {
-	tree := make([]*model.Menu, 0)
-	for _, m := range menus {
-		if *m.ParentId == parentId {
-			children := GenMenuTree(m.ID, menus)
-			m.Children = children
-			tree = append(tree, m)
-		}
-	}
-	return tree
-}
-
 // 创建菜单
-func (s MenuService) CreateMenu(menu *model.Menu) error {
+func (s *MenuService) CreateMenu(menu *model.Menu) error {
 	return s.menuDao.CreateMenu(menu)
 }
 
 // 更新菜单
-func (s MenuService) UpdateMenuById(menuId uint, menu *model.Menu) error {
+func (s *MenuService) UpdateMenuById(menuId uint, menu *model.Menu) error {
 	return s.menuDao.UpdateMenuById(menuId, menu)
 }
 
 // 批量删除菜单
-func (s MenuService) BatchDeleteMenuByIds(menuIds []uint) error {
+func (s *MenuService) BatchDeleteMenuByIds(menuIds []uint) error {
 	return s.menuDao.BatchDeleteMenuByIds(menuIds)
 }
 
 // 根据用户ID获取用户的权限(可访问)菜单列表
-func (s MenuService) GetUserMenusByUserId(userId uint) ([]*model.Menu, error) {
+func (s *MenuService) GetUserMenusByUserId(userId uint) ([]*model.Menu, error) {
 	user, err := s.menuDao.GetUserById(userId)
 	if err != nil {
 		return nil, err
@@ -99,10 +87,22 @@ func (s MenuService) GetUserMenusByUserId(userId uint) ([]*model.Menu, error) {
 }
 
 // 根据用户ID获取用户的权限(可访问)菜单树
-func (s MenuService) GetUserMenuTreeByUserId(userId uint) ([]*model.Menu, error) {
+func (s *MenuService) GetUserMenuTreeByUserId(userId uint) ([]*model.Menu, error) {
 	menus, err := s.GetUserMenusByUserId(userId)
 	if err != nil {
 		return nil, err
 	}
 	return GenMenuTree(0, menus), nil
+}
+
+func GenMenuTree(parentId uint, menus []*model.Menu) []*model.Menu {
+	tree := make([]*model.Menu, 0)
+	for _, m := range menus {
+		if *m.ParentId == parentId {
+			children := GenMenuTree(m.ID, menus)
+			m.Children = children
+			tree = append(tree, m)
+		}
+	}
+	return tree
 }

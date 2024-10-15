@@ -13,14 +13,13 @@ import (
 
 // ApiController handles API requests
 type ApiController struct {
-	apiService  service.ApiService
-	userService service.UserService
+	apiService  *service.ApiService
+	userService *service.UserService
 }
 
 // NewApiController creates a new ApiController
-func NewApiController() ApiController {
-	apiController := ApiController{apiService: service.NewApiService(), userService: service.NewUserService()}
-	return apiController
+func NewApiController() *ApiController {
+	return &ApiController{apiService: service.NewApiService(), userService: service.NewUserService()}
 }
 
 // GetApis retrieves a list of APIs
@@ -39,7 +38,7 @@ func NewApiController() ApiController {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/apis [get]
-func (ac ApiController) GetApis(c *gin.Context) {
+func (ac *ApiController) GetApis(c *gin.Context) {
 	var req dto.ApiListRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
@@ -71,7 +70,7 @@ func (ac ApiController) GetApis(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/api/tree [get]
-func (ac ApiController) GetApiTree(c *gin.Context) {
+func (ac *ApiController) GetApiTree(c *gin.Context) {
 	tree, err := ac.apiService.GetApiTree()
 	if err != nil {
 		util.Fail(c, nil, "获取接口树失败")
@@ -93,7 +92,7 @@ func (ac ApiController) GetApiTree(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/api [post]
-func (ac ApiController) CreateApi(c *gin.Context) {
+func (ac *ApiController) CreateApi(c *gin.Context) {
 	var req dto.CreateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
@@ -137,7 +136,7 @@ func (ac ApiController) CreateApi(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/api/{apiId} [put]
-func (ac ApiController) UpdateApiById(c *gin.Context) {
+func (ac *ApiController) UpdateApiById(c *gin.Context) {
 	var req dto.UpdateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
@@ -185,7 +184,7 @@ func (ac ApiController) UpdateApiById(c *gin.Context) {
 // @Success 200 {object} controller.ResponseBody
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/api/batch_delete [delete]
-func (ac ApiController) BatchDeleteApiByIds(c *gin.Context) {
+func (ac *ApiController) BatchDeleteApiByIds(c *gin.Context) {
 	var req dto.DeleteApiRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())

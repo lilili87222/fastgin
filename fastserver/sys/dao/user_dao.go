@@ -10,23 +10,23 @@ import (
 
 type UserDao struct{}
 
-func NewUserDao() UserDao {
-	return UserDao{}
+func NewUserDao() *UserDao {
+	return &UserDao{}
 }
 
-func (ur UserDao) GetUserByUsername(username string) (model.User, error) {
+func (ur *UserDao) GetUserByUsername(username string) (model.User, error) {
 	var user model.User
 	err := config.DB.Where("username = ?", username).Preload("Roles").First(&user).Error
 	return user, err
 }
 
-func (ur UserDao) GetUserById(id uint) (model.User, error) {
+func (ur *UserDao) GetUserById(id uint) (model.User, error) {
 	var user model.User
 	err := config.DB.Where("id = ?", id).Preload("Roles").First(&user).Error
 	return user, err
 }
 
-func (ur UserDao) GetUsers(req *dto.UserListRequest) ([]*model.User, int64, error) {
+func (ur *UserDao) GetUsers(req *dto.UserListRequest) ([]*model.User, int64, error) {
 	var list []*model.User
 	db := config.DB.Model(&model.User{}).Order("created_at DESC")
 
@@ -59,15 +59,15 @@ func (ur UserDao) GetUsers(req *dto.UserListRequest) ([]*model.User, int64, erro
 	return list, total, err
 }
 
-func (ur UserDao) ChangePwd(username string, hashNewPasswd string) error {
+func (ur *UserDao) ChangePwd(username string, hashNewPasswd string) error {
 	return config.DB.Model(&model.User{}).Where("username = ?", username).Update("password", hashNewPasswd).Error
 }
 
-func (ur UserDao) CreateUser(user *model.User) error {
+func (ur *UserDao) CreateUser(user *model.User) error {
 	return config.DB.Create(user).Error
 }
 
-func (ur UserDao) UpdateUser(user *model.User) error {
+func (ur *UserDao) UpdateUser(user *model.User) error {
 	err := config.DB.Model(user).Updates(user).Error
 	if err != nil {
 		return err
@@ -75,7 +75,7 @@ func (ur UserDao) UpdateUser(user *model.User) error {
 	return config.DB.Model(user).Association("Roles").Replace(user.Roles)
 }
 
-func (ur UserDao) BatchDeleteUserByIds(ids []uint) error {
+func (ur *UserDao) BatchDeleteUserByIds(ids []uint) error {
 	users, e := ur.GetUsersByIds(ids)
 	if e != nil {
 		return e
@@ -83,13 +83,13 @@ func (ur UserDao) BatchDeleteUserByIds(ids []uint) error {
 	return config.DB.Select("Roles").Unscoped().Delete(&users).Error
 }
 
-func (ur UserDao) GetUsersByIds(ids []uint) ([]model.User, error) {
+func (ur *UserDao) GetUsersByIds(ids []uint) ([]model.User, error) {
 	var users []model.User
 	err := config.DB.Where("id IN (?)", ids).Preload("Roles").Find(&users).Error
 	return users, err
 }
 
-func (ur UserDao) GetRoleById(roleId uint) (model.Role, error) {
+func (ur *UserDao) GetRoleById(roleId uint) (model.Role, error) {
 	var role model.Role
 	err := config.DB.Where("id = ?", roleId).Preload("Users").First(&role).Error
 	return role, err
