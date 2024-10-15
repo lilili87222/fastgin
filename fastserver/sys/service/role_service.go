@@ -12,7 +12,7 @@ type RoleService struct {
 	roleDao dao.RoleDao
 }
 
-func NewRoleDao() RoleService {
+func NewRoleService() RoleService {
 	return RoleService{roleDao: dao.RoleDao{}}
 }
 
@@ -108,12 +108,7 @@ func (r RoleService) UpdateRoleApis(roleKeyword string, reqRolePolicies [][]stri
 
 // 删除角色
 func (r RoleService) BatchDeleteRoleByIds(roleIds []uint) error {
-	var roles []*model.Role
-	err := config.DB.Where("id IN (?)", roleIds).Find(&roles).Error
-	if err != nil {
-		return err
-	}
-	err = config.DB.Select("Users", "Menus").Unscoped().Delete(&roles).Error
+	roles, err := r.roleDao.BatchDeleteRoleByIds(roleIds)
 	// 删除成功就删除casbin policy
 	if err == nil {
 		for _, role := range roles {
@@ -129,7 +124,6 @@ func (r RoleService) BatchDeleteRoleByIds(roleIds []uint) error {
 				}
 			}
 		}
-
 	}
 	return err
 }

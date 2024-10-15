@@ -9,10 +9,13 @@ import (
 )
 
 type SystemController struct {
+	systemService *service.SystemService
 }
 
 func NewSystemController() SystemController {
-	operationLogController := SystemController{}
+	operationLogController := SystemController{
+		systemService: &service.SystemService{},
+	}
 	return operationLogController
 }
 
@@ -24,8 +27,8 @@ func NewSystemController() SystemController {
 // @Success 200 {object} map[string]interface{}
 // @Router /api/auth/system/info [get]
 func (oc SystemController) GetSystemInformation(c *gin.Context) {
-	service := service.SystemService{}
-	util.Success(c, service.GetSystemInformation(), "系统信息成功")
+	//service := service.SystemService{}
+	util.Success(c, oc.systemService.GetSystemInformation(), "系统信息成功")
 }
 
 // GetStopServer godoc
@@ -49,8 +52,8 @@ func (oc SystemController) GetStopServer(c *gin.Context) {
 // @Success 200 {string} string "重启服务成功"
 // @Router /api/auth/system/restart [get]
 func (oc SystemController) RestartServer(c *gin.Context) {
-	service := service.SystemService{}
-	e := service.Restart()
+	//service := service.SystemService{}
+	e := oc.systemService.Restart()
 	config.Log.Info("重启服务")
 	if e != nil {
 		config.Log.Info("重启服务失败 " + e.Error())

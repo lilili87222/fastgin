@@ -2,7 +2,6 @@ package controller
 
 import (
 	"fastgin/config"
-	"fastgin/sys/dao"
 	"fastgin/sys/dto"
 	"fastgin/sys/model"
 	"fastgin/sys/service"
@@ -14,12 +13,13 @@ import (
 
 // ApiController handles API requests
 type ApiController struct {
-	apiService service.ApiService
+	apiService  service.ApiService
+	userService service.UserService
 }
 
 // NewApiController creates a new ApiController
 func NewApiController() ApiController {
-	apiController := ApiController{apiService: service.NewApiService()}
+	apiController := ApiController{apiService: service.NewApiService(), userService: service.NewUserService()}
 	return apiController
 }
 
@@ -104,8 +104,8 @@ func (ac ApiController) CreateApi(c *gin.Context) {
 		util.Fail(c, nil, errStr)
 		return
 	}
-	ur := dao.NewUserDao()
-	ctxUser, err := ur.GetCurrentUser(c)
+	//ur := service.NewUserService()
+	ctxUser, err := ac.userService.GetCurrentUser(c)
 	if err != nil {
 		util.Fail(c, nil, "获取当前用户信息失败")
 		return
@@ -153,8 +153,8 @@ func (ac ApiController) UpdateApiById(c *gin.Context) {
 		util.Fail(c, nil, "接口ID不正确")
 		return
 	}
-	ur := dao.NewUserDao()
-	ctxUser, err := ur.GetCurrentUser(c)
+	//ur := service.NewUserService()
+	ctxUser, err := ac.userService.GetCurrentUser(c)
 	if err != nil {
 		util.Fail(c, nil, "获取当前用户信息失败")
 		return

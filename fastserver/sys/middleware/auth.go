@@ -2,10 +2,10 @@ package middleware
 
 import (
 	"fastgin/config"
-	"fastgin/sys/dao"
 	"fastgin/sys/dto"
 	"fastgin/sys/middleware/jwt"
 	"fastgin/sys/model"
+	"fastgin/sys/service"
 	"fastgin/sys/util"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -89,8 +89,8 @@ func login(c *gin.Context) (interface{}, error) {
 	}
 
 	// 密码校验
-	userDao := dao.NewUserDao()
-	user, err := userDao.Login(u)
+	userService := service.NewUserService()
+	user, err := userService.Login(u)
 	if err != nil {
 		return nil, err
 	}

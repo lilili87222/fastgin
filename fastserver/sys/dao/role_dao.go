@@ -77,67 +77,12 @@ func (r RoleDao) UpdateRoleMenus(role *model.Role) error {
 	return err
 }
 
-// 根据角色关键字获取角色的权限接口
-//func (r RoleDao) GetRoleApisByRoleKeyword(roleKeyword string) ([]*model.Api, error) {
-//	policies, err2 := config.CasbinEnforcer.GetFilteredPolicy(0, roleKeyword)
-//	if err2 != nil {
-//		return nil, errors.New("获取角色的权限接口失败")
-//	}
-//
-//	// 获取所有接口
-//	var apis []*model.Api
-//	err := config.DB.Find(&apis).Error
-//	if err != nil {
-//		return apis, errors.New("获取角色的权限接口失败")
-//	}
-//
-//	accessApis := make([]*model.Api, 0)
-//
-//	for _, policy := range policies {
-//		path := policy[1]
-//		method := policy[2]
-//		for _, api := range apis {
-//			if path == api.Path && method == api.Method {
-//				accessApis = append(accessApis, api)
-//				break
-//			}
-//		}
-//	}
-//
-//	return accessApis, err
-//
-//}
-
-// 更新角色的权限接口（先全部删除再新增）
-//func (r RoleDao) UpdateRoleApis(roleKeyword string, reqRolePolicies [][]string) error {
-//	// 先获取path中的角色ID对应角色已有的police(需要先删除的)
-//	err := config.CasbinEnforcer.LoadPolicy()
-//	if err != nil {
-//		return errors.New("角色的权限接口策略加载失败")
-//	}
-//	rmPolicies, err2 := config.CasbinEnforcer.GetFilteredPolicy(0, roleKeyword)
-//	if err2 != nil {
-//		return errors.New("获取角色的权限接口失败")
-//	}
-//	if len(rmPolicies) > 0 {
-//		isRemoved, _ := config.CasbinEnforcer.RemovePolicies(rmPolicies)
-//		if !isRemoved {
-//			return errors.New("更新角色的权限接口失败")
-//		}
-//	}
-//	isAdded, _ := config.CasbinEnforcer.AddPolicies(reqRolePolicies)
-//	if !isAdded {
-//		return errors.New("更新角色的权限接口失败")
-//	}
-//	err = config.CasbinEnforcer.LoadPolicy()
-//	if err != nil {
-//		return errors.New("更新角色的权限接口成功，角色的权限接口策略加载失败")
-//	} else {
-//		return err
-//	}
-//}
-
+// New function to get roles by IDs
 // 删除角色
-func (r RoleDao) BatchDeleteRoleByIds(roleIds []uint) error {
-	return nil
+func (r RoleDao) BatchDeleteRoleByIds(roleIds []uint) ([]*model.Role, error) {
+	roles, err := r.GetRolesByIds(roleIds)
+	if err != nil {
+		return nil, err
+	}
+	return roles, config.DB.Select("Users", "Menus").Unscoped().Delete(&roles).Error
 }

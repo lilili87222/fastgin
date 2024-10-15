@@ -2,7 +2,6 @@ package controller
 
 import (
 	"fastgin/config"
-	"fastgin/sys/dao"
 	"fastgin/sys/dto"
 	"fastgin/sys/model"
 	"fastgin/sys/service"
@@ -14,13 +13,14 @@ import (
 
 // MenuController handles menu-related requests
 type MenuController struct {
-	MenuDao service.MenuService
+	menuService service.MenuService
+	userService service.UserService
 }
 
 // NewMenuController creates a new MenuController
 func NewMenuController() MenuController {
 	//menuDao := dao.NewMenuDao()
-	menuController := MenuController{MenuDao: service.NewMenuService()}
+	menuController := MenuController{menuService: service.NewMenuService(), userService: service.NewUserService()}
 	return menuController
 }
 
@@ -35,7 +35,7 @@ func NewMenuController() MenuController {
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/menus [get]
 func (mc MenuController) GetMenus(c *gin.Context) {
-	menus, err := mc.MenuDao.GetMenus()
+	menus, err := mc.menuService.GetMenus()
 	if err != nil {
 		util.Fail(c, nil, "获取菜单列表失败: "+err.Error())
 		return
@@ -54,7 +54,7 @@ func (mc MenuController) GetMenus(c *gin.Context) {
 // @Failure 400 {object} controller.ResponseBody
 // @Router /api/auth/menu/tree [get]
 func (mc MenuController) GetMenuTree(c *gin.Context) {
-	menuTree, err := mc.MenuDao.GetMenuTree()
+	menuTree, err := mc.menuService.GetMenuTree()
 	if err != nil {
 		util.Fail(c, nil, "获取菜单树失败: "+err.Error())
 		return
@@ -84,8 +84,8 @@ func (mc MenuController) CreateMenu(c *gin.Context) {
 		util.Fail(c, nil, errStr)
 		return
 	}
-	ur := dao.NewUserDao()
-	ctxUser, err := ur.GetCurrentUser(c)
+	//ur := service.NewUserService()
+	ctxUser, err := mc.userService.GetCurrentUser(c)
 	if err != nil {
 		util.Fail(c, nil, "获取当前用户信息失败")
 		return
@@ -107,7 +107,7 @@ func (mc MenuController) CreateMenu(c *gin.Context) {
 		ParentId:   &req.ParentId,
 		Creator:    ctxUser.Username,
 	}
-	err = mc.MenuDao.CreateMenu(&menu)
+	err = mc.menuService.CreateMenu(&menu)
 	if err != nil {
 		util.Fail(c, nil, "创建菜单失败: "+err.Error())
 		return
@@ -143,8 +143,8 @@ func (mc MenuController) UpdateMenuById(c *gin.Context) {
 		util.Fail(c, nil, "菜单ID不正确")
 		return
 	}
-	ur := dao.NewUserDao()
-	ctxUser, err := ur.GetCurrentUser(c)
+	//ur := service.NewUserService()
+	ctxUser, err := mc.userService.GetCurrentUser(c)
 	if err != nil {
 		util.Fail(c, nil, "获取当前用户信息失败")
 		return
@@ -166,7 +166,7 @@ func (mc MenuController) UpdateMenuById(c *gin.Context) {
 		ParentId:   &req.ParentId,
 		Creator:    ctxUser.Username,
 	}
-	err = mc.MenuDao.UpdateMenuById(uint(menuId), &menu)
+	err = mc.menuService.UpdateMenuById(uint(menuId), &menu)
 	if err != nil {
 		util.Fail(c, nil, "更新菜单失败: "+err.Error())
 		return
@@ -196,7 +196,7 @@ func (mc MenuController) BatchDeleteMenuByIds(c *gin.Context) {
 		util.Fail(c, nil, errStr)
 		return
 	}
-	err := mc.MenuDao.BatchDeleteMenuByIds(req.MenuIds)
+	err := mc.menuService.BatchDeleteMenuByIds(req.MenuIds)
 	if err != nil {
 		util.Fail(c, nil, "删除菜单失败: "+err.Error())
 		return
@@ -221,7 +221,7 @@ func (mc MenuController) GetUserMenusByUserId(c *gin.Context) {
 		util.Fail(c, nil, "用户ID不正确")
 		return
 	}
-	menus, err := mc.MenuDao.GetUserMenusByUserId(uint(userId))
+	menus, err := mc.menuService.GetUserMenusByUserId(uint(userId))
 	if err != nil {
 		util.Fail(c, nil, "获取用户的可访问菜单列表失败: "+err.Error())
 		return
@@ -246,7 +246,7 @@ func (mc MenuController) GetUserMenuTreeByUserId(c *gin.Context) {
 		util.Fail(c, nil, "用户ID不正确")
 		return
 	}
-	menuTree, err := mc.MenuDao.GetUserMenuTreeByUserId(uint(userId))
+	menuTree, err := mc.menuService.GetUserMenuTreeByUserId(uint(userId))
 	if err != nil {
 		util.Fail(c, nil, "获取用户的可访问菜单树失败: "+err.Error())
 		return

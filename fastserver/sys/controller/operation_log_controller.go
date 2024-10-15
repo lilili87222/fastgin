@@ -11,7 +11,7 @@ import (
 
 // OperationLogController handles operation log-related requests
 type OperationLogController struct {
-	logDao service.LogService
+	logDao service.OperationLogService
 }
 
 // NewOperationLogController creates a new OperationLogController

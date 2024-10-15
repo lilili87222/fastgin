@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"fastgin/config"
-	"fastgin/sys/dao"
+	"fastgin/sys/service"
 	"fastgin/sys/util"
 	"github.com/gin-gonic/gin"
 	"strings"
@@ -14,7 +14,7 @@ var checkLock sync.Mutex
 // Casbin中间件, 基于RBAC的权限访问控制模型
 func CasbinMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		ur := dao.NewUserDao()
+		ur := service.NewUserService()
 		user, err := ur.GetCurrentUser(c)
 		if err != nil {
 			util.Response(c, 401, 401, nil, "用户未登录")
