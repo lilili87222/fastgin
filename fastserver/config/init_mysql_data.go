@@ -2,8 +2,8 @@ package config
 
 import (
 	"errors"
-	"fastgin/internal/model/sys"
-	"fastgin/internal/util"
+	"fastgin/sys/model"
+	"fastgin/sys/util"
 	"gorm.io/gorm"
 	"slices"
 )
@@ -15,8 +15,8 @@ func InitData() {
 	}
 	// 是否初始化数据
 	// 1.写入角色数据
-	newRoles := make([]*sys.Role, 0)
-	roles := []*sys.Role{
+	newRoles := make([]*model.Role, 0)
+	roles := []*model.Role{
 		{
 			Model:   gorm.Model{ID: 1},
 			Name:    "管理员",
@@ -61,7 +61,7 @@ func InitData() {
 	}
 
 	// 2写入菜单
-	newMenus := make([]sys.Menu, 0)
+	newMenus := make([]model.Menu, 0)
 	var uint0 uint = 0
 	var uint1 uint = 1
 	componentStr := "component"
@@ -74,7 +74,7 @@ func InitData() {
 	logOperationStr := "/log/operation-log"
 	documentationStr := "documentation"
 	var uint6 uint = 6
-	menus := []sys.Menu{
+	menus := []model.Menu{
 		{
 			Model:     gorm.Model{ID: 1},
 			Name:      "System",
@@ -176,8 +176,8 @@ func InitData() {
 	}
 
 	// 3.写入用户
-	newUsers := make([]sys.User, 0)
-	users := []sys.User{
+	newUsers := make([]model.User, 0)
+	users := []model.User{
 		{
 			Model:        gorm.Model{ID: 1},
 			Username:     "admin",
@@ -243,7 +243,7 @@ func InitData() {
 	}
 
 	// 4.写入api
-	apis := []sys.Api{
+	apis := []model.Api{
 		//{
 		//	Method:   "POST",
 		//	Path:     "/base/login",
@@ -462,8 +462,8 @@ func InitData() {
 			Creator:  "系统",
 		},
 	}
-	newApi := make([]sys.Api, 0)
-	newRoleCasbin := make([]sys.RoleCasbin, 0)
+	newApi := make([]model.Api, 0)
+	newRoleCasbin := make([]model.RoleCasbin, 0)
 	for i, api := range apis {
 		api.ID = uint(i + 1)
 		err := DB.First(&api, api.ID).Error
@@ -471,7 +471,7 @@ func InitData() {
 			newApi = append(newApi, api)
 
 			// 管理员拥有所有API权限
-			newRoleCasbin = append(newRoleCasbin, sys.RoleCasbin{
+			newRoleCasbin = append(newRoleCasbin, model.RoleCasbin{
 				Keyword: roles[0].Keyword,
 				Path:    api.Path,
 				Method:  api.Method,
@@ -487,12 +487,12 @@ func InitData() {
 			}
 
 			if slices.Contains(basePaths, api.Path) {
-				newRoleCasbin = append(newRoleCasbin, sys.RoleCasbin{
+				newRoleCasbin = append(newRoleCasbin, model.RoleCasbin{
 					Keyword: roles[1].Keyword,
 					Path:    api.Path,
 					Method:  api.Method,
 				})
-				newRoleCasbin = append(newRoleCasbin, sys.RoleCasbin{
+				newRoleCasbin = append(newRoleCasbin, model.RoleCasbin{
 					Keyword: roles[2].Keyword,
 					Path:    api.Path,
 					Method:  api.Method,

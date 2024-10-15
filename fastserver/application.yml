@@ -27,9 +27,9 @@ logs:
 database:
   # 数据库类型(mysql,sqlite3)
   type: mysql
-  create-tables: true
+  create-tables: false
   # 是否初始化数据(没有初始数据时使用, 已发布正式版改为false)
-  init-data: true
+  init-data: false
   sqlite:
     # 数据库文件路径(config.yml相对路径, 也可以填绝对路径)
     file-path: go_web_mini.db

@@ -1,7 +1,7 @@
 package config
 
 import (
-	"fastgin/internal/model/sys"
+	"fastgin/sys/model"
 	"fmt"
 	"github.com/glebarez/sqlite"
 	"gorm.io/driver/mysql"
@@ -79,11 +79,11 @@ func initSqlLite() {
 func createTables() {
 	if Instance.Database.CreateTables {
 		DB.AutoMigrate(
-			&sys.User{},
-			&sys.Role{},
-			&sys.Menu{},
-			&sys.Api{},
-			&sys.OperationLog{},
+			&model.User{},
+			&model.Role{},
+			&model.Menu{},
+			&model.Api{},
+			&model.OperationLog{},
 		)
 	}
 }
