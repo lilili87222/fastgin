@@ -5,8 +5,9 @@ import (
 	"fastgin/sys/dao"
 	"fastgin/sys/dto"
 	"fastgin/sys/model"
-	"fastgin/sys/util"
+	"fastgin/util"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/copier"
 	"github.com/patrickmn/go-cache"
 	"slices"
 	"time"
@@ -98,6 +99,17 @@ func (us *UserService) GetUserById(id uint) (model.User, error) {
 // 获取用户列表
 func (us *UserService) GetUsers(req *dto.UserListRequest) ([]*model.User, int64, error) {
 	return us.userDao.GetUsers(req)
+}
+func (us *UserService) GetUsersWithRoleIds(req *dto.UserListRequest) ([]dto.UsersDto, int64, error) {
+	userList, i, err := us.userDao.GetUsers(req)
+	var users []dto.UsersDto
+	for _, user := range userList {
+		userDto := dto.UsersDto{}
+		copier.Copy(&userDto, user)
+		userDto.RoleIds = user.GetRoleIds()
+		users = append(users, userDto)
+	}
+	return users, i, err
 }
 
 // 更新密码

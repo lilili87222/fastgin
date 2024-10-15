@@ -5,7 +5,7 @@ import (
 	"fastgin/sys/dto"
 	"fastgin/sys/model"
 	"fastgin/sys/service"
-	"fastgin/sys/util"
+	"fastgin/util"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"strconv"
@@ -29,8 +29,8 @@ func NewMenuController() *MenuController {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/menus [get]
 func (mc *MenuController) GetMenus(c *gin.Context) {
 	menus, err := mc.menuService.GetMenus()
@@ -48,8 +48,8 @@ func (mc *MenuController) GetMenus(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/menu/tree [get]
 func (mc *MenuController) GetMenuTree(c *gin.Context) {
 	menuTree, err := mc.menuService.GetMenuTree()
@@ -68,8 +68,8 @@ func (mc *MenuController) GetMenuTree(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param menu body dto.CreateMenuRequest true "Create menu request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/menu [post]
 func (mc *MenuController) CreateMenu(c *gin.Context) {
 	var req dto.CreateMenuRequest
@@ -122,8 +122,8 @@ func (mc *MenuController) CreateMenu(c *gin.Context) {
 // @Param Authorization header string true "Bearer token"
 // @Param menuId path int true "Menu ID"
 // @Param menu body dto.UpdateMenuRequest true "Update menu request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/menu/{menuId} [put]
 func (mc *MenuController) UpdateMenuById(c *gin.Context) {
 	var req dto.UpdateMenuRequest
@@ -180,8 +180,8 @@ func (mc *MenuController) UpdateMenuById(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param menuIds body dto.DeleteMenuRequest true "Delete menu request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/menu/batch_delete [delete]
 func (mc *MenuController) BatchDeleteMenuByIds(c *gin.Context) {
 	var req dto.DeleteMenuRequest
@@ -210,8 +210,8 @@ func (mc *MenuController) BatchDeleteMenuByIds(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param userId path int true "User ID"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/user/{userId}/menus [get]
 func (mc *MenuController) GetUserMenusByUserId(c *gin.Context) {
 	userId, _ := strconv.Atoi(c.Param("userId"))
@@ -235,8 +235,8 @@ func (mc *MenuController) GetUserMenusByUserId(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param userId path int true "User ID"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/user/{userId}/menu_tree [get]
 func (mc *MenuController) GetUserMenuTreeByUserId(c *gin.Context) {
 	userId, _ := strconv.Atoi(c.Param("userId"))

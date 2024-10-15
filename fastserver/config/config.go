@@ -1,7 +1,7 @@
 package config
 
 import (
-	"fastgin/sys/util"
+	"fastgin/util"
 	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"

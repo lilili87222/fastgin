@@ -6,7 +6,7 @@ import (
 	"fastgin/sys/middleware/jwt"
 	"fastgin/sys/model"
 	"fastgin/sys/service"
-	"fastgin/sys/util"
+	"fastgin/util"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"time"

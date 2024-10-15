@@ -3,7 +3,7 @@ package controller
 import (
 	"fastgin/config"
 	"fastgin/sys/service"
-	"fastgin/sys/util"
+	"fastgin/util"
 	"github.com/gin-gonic/gin"
 	"os"
 )

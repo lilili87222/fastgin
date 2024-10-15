@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"fastgin/sys/util"
+	"fastgin/util"
 	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"
 	"time"

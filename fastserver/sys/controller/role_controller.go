@@ -5,7 +5,7 @@ import (
 	"fastgin/sys/dto"
 	"fastgin/sys/model"
 	"fastgin/sys/service"
-	"fastgin/sys/util"
+	"fastgin/util"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -36,8 +36,8 @@ func NewRoleController() *RoleController {
 // @Param status query int false "Role status"
 // @Param pageNum query int false "Page number"
 // @Param pageSize query int false "Page size"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/roles [get]
 func (rc *RoleController) GetRoles(c *gin.Context) {
 	var req dto.RoleListRequest
@@ -66,8 +66,8 @@ func (rc *RoleController) GetRoles(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param role body dto.CreateRoleRequest true "Create role request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/role [post]
 func (rc *RoleController) CreateRole(c *gin.Context) {
 	var req dto.CreateRoleRequest
@@ -115,8 +115,8 @@ func (rc *RoleController) CreateRole(c *gin.Context) {
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role ID"
 // @Param role body dto.CreateRoleRequest true "Update role request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/role/{roleId} [put]
 func (rc *RoleController) UpdateRoleById(c *gin.Context) {
 	var req dto.CreateRoleRequest
@@ -215,8 +215,8 @@ func (rc *RoleController) UpdateRoleById(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role ID"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/role/{roleId}/menus [get]
 func (rc *RoleController) GetRoleMenusById(c *gin.Context) {
 	roleId, _ := strconv.Atoi(c.Param("roleId"))
@@ -241,8 +241,8 @@ func (rc *RoleController) GetRoleMenusById(c *gin.Context) {
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role ID"
 // @Param menus body dto.UpdateRoleMenusRequest true "Update role menus request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/role/{roleId}/menus [put]
 func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 	var req dto.UpdateRoleMenusRequest
@@ -364,8 +364,8 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role ID"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/role/{roleId}/apis [get]
 func (rc *RoleController) GetRoleApisById(c *gin.Context) {
 	roleId, _ := strconv.Atoi(c.Param("roleId"))
@@ -400,8 +400,8 @@ func (rc *RoleController) GetRoleApisById(c *gin.Context) {
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role ID"
 // @Param apis body dto.UpdateRoleApisRequest true "Update role APIs request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/role/{roleId}/apis [put]
 func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
 	var req dto.UpdateRoleApisRequest
@@ -490,8 +490,8 @@ func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param roleIds body dto.DeleteRoleRequest true "Delete role request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/role/batch_delete [delete]
 func (rc *RoleController) BatchDeleteRoleByIds(c *gin.Context) {
 	var req dto.DeleteRoleRequest

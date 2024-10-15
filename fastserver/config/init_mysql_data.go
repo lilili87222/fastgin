@@ -3,7 +3,7 @@ package config
 import (
 	"errors"
 	"fastgin/sys/model"
-	"fastgin/sys/util"
+	"fastgin/util"
 	"gorm.io/gorm"
 	"slices"
 )

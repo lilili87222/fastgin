@@ -4,7 +4,7 @@ import (
 	"fastgin/config"
 	"fastgin/sys/dto"
 	"fastgin/sys/service"
-	"fastgin/sys/util"
+	"fastgin/util"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
@@ -32,8 +32,8 @@ func NewOperationLogController() *OperationLogController {
 // @Param creator query string false "Creator"
 // @Param pageNum query int false "Page number"
 // @Param pageSize query int false "Page size"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/operation_logs [get]
 func (oc *OperationLogController) GetOperationLogs(c *gin.Context) {
 	var req dto.OperationLogListRequest
@@ -65,8 +65,8 @@ func (oc *OperationLogController) GetOperationLogs(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param operationLogIds body dto.DeleteOperationLogRequest true "Delete operation log request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/operation_logs/batch_delete [delete]
 func (oc *OperationLogController) BatchDeleteOperationLogByIds(c *gin.Context) {
 	var req dto.DeleteOperationLogRequest

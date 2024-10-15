@@ -5,7 +5,7 @@ import (
 	"fastgin/sys/dto"
 	"fastgin/sys/model"
 	"fastgin/sys/service"
-	"fastgin/sys/util"
+	"fastgin/util"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"strconv"
@@ -35,8 +35,8 @@ func NewApiController() *ApiController {
 // @Param creator query string false "Creator"
 // @Param pageNum query int false "Page number"
 // @Param pageSize query int false "Page size"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/apis [get]
 func (ac *ApiController) GetApis(c *gin.Context) {
 	var req dto.ApiListRequest
@@ -67,8 +67,8 @@ func (ac *ApiController) GetApis(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/api/tree [get]
 func (ac *ApiController) GetApiTree(c *gin.Context) {
 	tree, err := ac.apiService.GetApiTree()
@@ -89,8 +89,8 @@ func (ac *ApiController) GetApiTree(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param api body dto.CreateApiRequest true "Create API request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/api [post]
 func (ac *ApiController) CreateApi(c *gin.Context) {
 	var req dto.CreateApiRequest
@@ -133,8 +133,8 @@ func (ac *ApiController) CreateApi(c *gin.Context) {
 // @Param Authorization header string true "Bearer token"
 // @Param apiId path int true "API ID"
 // @Param api body dto.UpdateApiRequest true "Update API request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/api/{apiId} [put]
 func (ac *ApiController) UpdateApiById(c *gin.Context) {
 	var req dto.UpdateApiRequest
@@ -181,8 +181,8 @@ func (ac *ApiController) UpdateApiById(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param apiIds body dto.DeleteApiRequest true "Delete API request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/api/batch_delete [delete]
 func (ac *ApiController) BatchDeleteApiByIds(c *gin.Context) {
 	var req dto.DeleteApiRequest

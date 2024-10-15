@@ -5,7 +5,7 @@ import (
 	"fastgin/sys/dto"
 	"fastgin/sys/model"
 	"fastgin/sys/service"
-	"fastgin/sys/util"
+	"fastgin/util"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/jinzhu/copier"
@@ -30,8 +30,8 @@ func NewUserController() *UserController {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/user/info [get]
 func (uc *UserController) GetUserInfo(c *gin.Context) {
 	type UserInfoDto struct {
@@ -63,8 +63,8 @@ func (uc *UserController) GetUserInfo(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param UserListRequest body dto.UserListRequest true "User list request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/user/list [post]
 func (uc *UserController) GetUsers(c *gin.Context) {
 
@@ -82,34 +82,13 @@ func (uc *UserController) GetUsers(c *gin.Context) {
 	}
 
 	// 获取
-	users, total, err := uc.userService.GetUsers(&req)
+	users, total, err := uc.userService.GetUsersWithRoleIds(&req)
 	if err != nil {
 		util.Fail(c, nil, "获取用户列表失败: "+err.Error())
 		return
 	}
 
-	type UsersDto struct {
-		ID           uint   `json:"ID"`
-		Username     string `json:"username"`
-		Mobile       string `json:"mobile"`
-		Avatar       string `json:"avatar"`
-		Nickname     string `json:"nickname"`
-		Introduction string `json:"introduction"`
-		Status       uint   `json:"status"`
-		Creator      string `json:"creator"`
-		RoleIds      []uint `json:"roleIds"`
-	}
-	ToUsersDto := func(userList []*model.User) []UsersDto {
-		var users []UsersDto
-		for _, user := range userList {
-			userDto := UsersDto{}
-			copier.Copy(&userDto, user)
-			userDto.RoleIds = user.GetRoleIds()
-			users = append(users, userDto)
-		}
-		return users
-	}
-	util.Success(c, gin.H{"users": ToUsersDto(users), "total": total}, "获取用户列表成功")
+	util.Success(c, gin.H{"users": users, "total": total}, "获取用户列表成功")
 }
 
 // 更新用户登录密码
@@ -120,8 +99,8 @@ func (uc *UserController) GetUsers(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param ChangePwdRequest body dto.ChangePwdRequest true "Change password request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/user/change_pwd [post]
 func (uc *UserController) ChangePwd(c *gin.Context) {
 	var req dto.ChangePwdRequest
@@ -184,8 +163,8 @@ func (uc *UserController) ChangePwd(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param CreateUserRequest body dto.CreateUserRequest true "Create user request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/user/create [post]
 func (uc *UserController) CreateUser(c *gin.Context) {
 	var req dto.CreateUserRequest
@@ -284,8 +263,8 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 // @Param Authorization header string true "Bearer token"
 // @Param userId path int true "User ID"
 // @Param CreateUserRequest body dto.CreateUserRequest true "Update user request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/user/update/{userId} [put]
 func (uc *UserController) UpdateUserById(c *gin.Context) {
 	var req dto.CreateUserRequest
@@ -443,8 +422,8 @@ func (uc *UserController) UpdateUserById(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param DeleteUserRequest body dto.DeleteUserRequest true "Delete user request"
-// @Success 200 {object} controller.ResponseBody
-// @Failure 400 {object} controller.ResponseBody
+// @Success 200 {object} util.ResponseBody
+// @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/user/batch_delete [delete]
 func (uc *UserController) BatchDeleteUserByIds(c *gin.Context) {
 	var req dto.DeleteUserRequest

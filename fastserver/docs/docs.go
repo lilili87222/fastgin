@@ -59,13 +59,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -106,13 +106,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -144,13 +144,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -198,13 +198,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -272,13 +272,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -319,13 +319,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -366,13 +366,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -404,13 +404,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -458,13 +458,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -496,13 +496,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -570,13 +570,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -617,13 +617,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -664,13 +664,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -711,13 +711,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -765,13 +765,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -810,13 +810,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -862,13 +862,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -907,13 +907,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -959,13 +959,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1021,13 +1021,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1147,13 +1147,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1194,13 +1194,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1241,13 +1241,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1279,13 +1279,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1326,13 +1326,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1441,13 +1441,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1486,13 +1486,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -1531,13 +1531,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/controller.ResponseBody"
+                            "$ref": "#/definitions/util.ResponseBody"
                         }
                     }
                 }
@@ -2032,7 +2032,7 @@ const docTemplate = `{
                 }
             }
         },
-        "controller.ResponseBody": {
+        "util.ResponseBody": {
             "type": "object",
             "properties": {
                 "code": {
