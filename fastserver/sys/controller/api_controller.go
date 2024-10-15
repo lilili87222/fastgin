@@ -6,6 +6,7 @@ import (
 	"fastgin/sys/dto"
 	"fastgin/sys/model"
 	"fastgin/sys/service"
+	"fastgin/sys/util"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"strconv"
@@ -41,20 +42,20 @@ func NewApiController() ApiController {
 func (ac ApiController) GetApis(c *gin.Context) {
 	var req dto.ApiListRequest
 	if err := c.ShouldBind(&req); err != nil {
-		Fail(c, nil, err.Error())
+		util.Fail(c, nil, err.Error())
 		return
 	}
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		Fail(c, nil, errStr)
+		util.Fail(c, nil, errStr)
 		return
 	}
 	apis, total, err := ac.apiService.GetApis(&req)
 	if err != nil {
-		Fail(c, nil, "获取接口列表失败")
+		util.Fail(c, nil, "获取接口列表失败")
 		return
 	}
-	Success(c, gin.H{
+	util.Success(c, gin.H{
 		"apis":  apis,
 		"total": total,
 	}, "获取接口列表成功")
@@ -73,10 +74,10 @@ func (ac ApiController) GetApis(c *gin.Context) {
 func (ac ApiController) GetApiTree(c *gin.Context) {
 	tree, err := ac.apiService.GetApiTree()
 	if err != nil {
-		Fail(c, nil, "获取接口树失败")
+		util.Fail(c, nil, "获取接口树失败")
 		return
 	}
-	Success(c, gin.H{
+	util.Success(c, gin.H{
 		"apiTree": tree,
 	}, "获取接口树成功")
 }
@@ -95,18 +96,18 @@ func (ac ApiController) GetApiTree(c *gin.Context) {
 func (ac ApiController) CreateApi(c *gin.Context) {
 	var req dto.CreateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
-		Fail(c, nil, err.Error())
+		util.Fail(c, nil, err.Error())
 		return
 	}
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		Fail(c, nil, errStr)
+		util.Fail(c, nil, errStr)
 		return
 	}
 	ur := dao.NewUserDao()
 	ctxUser, err := ur.GetCurrentUser(c)
 	if err != nil {
-		Fail(c, nil, "获取当前用户信息失败")
+		util.Fail(c, nil, "获取当前用户信息失败")
 		return
 	}
 	api := model.Api{
@@ -118,10 +119,10 @@ func (ac ApiController) CreateApi(c *gin.Context) {
 	}
 	err = ac.apiService.CreateApi(&api)
 	if err != nil {
-		Fail(c, nil, "创建接口失败: "+err.Error())
+		util.Fail(c, nil, "创建接口失败: "+err.Error())
 		return
 	}
-	Success(c, nil, "创建接口成功")
+	util.Success(c, nil, "创建接口成功")
 }
 
 // UpdateApiById updates an existing API by ID
@@ -139,23 +140,23 @@ func (ac ApiController) CreateApi(c *gin.Context) {
 func (ac ApiController) UpdateApiById(c *gin.Context) {
 	var req dto.UpdateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
-		Fail(c, nil, err.Error())
+		util.Fail(c, nil, err.Error())
 		return
 	}
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		Fail(c, nil, errStr)
+		util.Fail(c, nil, errStr)
 		return
 	}
 	apiId, _ := strconv.Atoi(c.Param("apiId"))
 	if apiId <= 0 {
-		Fail(c, nil, "接口ID不正确")
+		util.Fail(c, nil, "接口ID不正确")
 		return
 	}
 	ur := dao.NewUserDao()
 	ctxUser, err := ur.GetCurrentUser(c)
 	if err != nil {
-		Fail(c, nil, "获取当前用户信息失败")
+		util.Fail(c, nil, "获取当前用户信息失败")
 		return
 	}
 	api := model.Api{
@@ -167,10 +168,10 @@ func (ac ApiController) UpdateApiById(c *gin.Context) {
 	}
 	err = ac.apiService.UpdateApiById(uint(apiId), &api)
 	if err != nil {
-		Fail(c, nil, "更新接口失败: "+err.Error())
+		util.Fail(c, nil, "更新接口失败: "+err.Error())
 		return
 	}
-	Success(c, nil, "更新接口成功")
+	util.Success(c, nil, "更新接口成功")
 }
 
 // BatchDeleteApiByIds deletes multiple APIs by their IDs
@@ -187,18 +188,18 @@ func (ac ApiController) UpdateApiById(c *gin.Context) {
 func (ac ApiController) BatchDeleteApiByIds(c *gin.Context) {
 	var req dto.DeleteApiRequest
 	if err := c.ShouldBind(&req); err != nil {
-		Fail(c, nil, err.Error())
+		util.Fail(c, nil, err.Error())
 		return
 	}
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		Fail(c, nil, errStr)
+		util.Fail(c, nil, errStr)
 		return
 	}
 	err := ac.apiService.BatchDeleteApiByIds(req.ApiIds)
 	if err != nil {
-		Fail(c, nil, "删除接口失败: "+err.Error())
+		util.Fail(c, nil, "删除接口失败: "+err.Error())
 		return
 	}
-	Success(c, nil, "删除接口成功")
+	util.Success(c, nil, "删除接口成功")
 }

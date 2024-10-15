@@ -6,6 +6,7 @@ import (
 	"fastgin/sys/dto"
 	"fastgin/sys/model"
 	"fastgin/sys/service"
+	"fastgin/sys/util"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"strconv"
@@ -36,10 +37,10 @@ func NewMenuController() MenuController {
 func (mc MenuController) GetMenus(c *gin.Context) {
 	menus, err := mc.MenuDao.GetMenus()
 	if err != nil {
-		Fail(c, nil, "获取菜单列表失败: "+err.Error())
+		util.Fail(c, nil, "获取菜单列表失败: "+err.Error())
 		return
 	}
-	Success(c, gin.H{"menus": menus}, "获取菜单列表成功")
+	util.Success(c, gin.H{"menus": menus}, "获取菜单列表成功")
 }
 
 // GetMenuTree retrieves the menu tree
@@ -55,10 +56,10 @@ func (mc MenuController) GetMenus(c *gin.Context) {
 func (mc MenuController) GetMenuTree(c *gin.Context) {
 	menuTree, err := mc.MenuDao.GetMenuTree()
 	if err != nil {
-		Fail(c, nil, "获取菜单树失败: "+err.Error())
+		util.Fail(c, nil, "获取菜单树失败: "+err.Error())
 		return
 	}
-	Success(c, gin.H{"menuTree": menuTree}, "获取菜单树成功")
+	util.Success(c, gin.H{"menuTree": menuTree}, "获取菜单树成功")
 }
 
 // CreateMenu creates a new menu
@@ -75,18 +76,18 @@ func (mc MenuController) GetMenuTree(c *gin.Context) {
 func (mc MenuController) CreateMenu(c *gin.Context) {
 	var req dto.CreateMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
-		Fail(c, nil, err.Error())
+		util.Fail(c, nil, err.Error())
 		return
 	}
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		Fail(c, nil, errStr)
+		util.Fail(c, nil, errStr)
 		return
 	}
 	ur := dao.NewUserDao()
 	ctxUser, err := ur.GetCurrentUser(c)
 	if err != nil {
-		Fail(c, nil, "获取当前用户信息失败")
+		util.Fail(c, nil, "获取当前用户信息失败")
 		return
 	}
 	menu := model.Menu{
@@ -108,10 +109,10 @@ func (mc MenuController) CreateMenu(c *gin.Context) {
 	}
 	err = mc.MenuDao.CreateMenu(&menu)
 	if err != nil {
-		Fail(c, nil, "创建菜单失败: "+err.Error())
+		util.Fail(c, nil, "创建菜单失败: "+err.Error())
 		return
 	}
-	Success(c, nil, "创建菜单成功")
+	util.Success(c, nil, "创建菜单成功")
 }
 
 // UpdateMenuById updates an existing menu by ID
@@ -129,23 +130,23 @@ func (mc MenuController) CreateMenu(c *gin.Context) {
 func (mc MenuController) UpdateMenuById(c *gin.Context) {
 	var req dto.UpdateMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
-		Fail(c, nil, err.Error())
+		util.Fail(c, nil, err.Error())
 		return
 	}
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		Fail(c, nil, errStr)
+		util.Fail(c, nil, errStr)
 		return
 	}
 	menuId, _ := strconv.Atoi(c.Param("menuId"))
 	if menuId <= 0 {
-		Fail(c, nil, "菜单ID不正确")
+		util.Fail(c, nil, "菜单ID不正确")
 		return
 	}
 	ur := dao.NewUserDao()
 	ctxUser, err := ur.GetCurrentUser(c)
 	if err != nil {
-		Fail(c, nil, "获取当前用户信息失败")
+		util.Fail(c, nil, "获取当前用户信息失败")
 		return
 	}
 	menu := model.Menu{
@@ -167,10 +168,10 @@ func (mc MenuController) UpdateMenuById(c *gin.Context) {
 	}
 	err = mc.MenuDao.UpdateMenuById(uint(menuId), &menu)
 	if err != nil {
-		Fail(c, nil, "更新菜单失败: "+err.Error())
+		util.Fail(c, nil, "更新菜单失败: "+err.Error())
 		return
 	}
-	Success(c, nil, "更新菜单成功")
+	util.Success(c, nil, "更新菜单成功")
 }
 
 // BatchDeleteMenuByIds deletes multiple menus by their IDs
@@ -187,20 +188,20 @@ func (mc MenuController) UpdateMenuById(c *gin.Context) {
 func (mc MenuController) BatchDeleteMenuByIds(c *gin.Context) {
 	var req dto.DeleteMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
-		Fail(c, nil, err.Error())
+		util.Fail(c, nil, err.Error())
 		return
 	}
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		Fail(c, nil, errStr)
+		util.Fail(c, nil, errStr)
 		return
 	}
 	err := mc.MenuDao.BatchDeleteMenuByIds(req.MenuIds)
 	if err != nil {
-		Fail(c, nil, "删除菜单失败: "+err.Error())
+		util.Fail(c, nil, "删除菜单失败: "+err.Error())
 		return
 	}
-	Success(c, nil, "删除菜单成功")
+	util.Success(c, nil, "删除菜单成功")
 }
 
 // GetUserMenusByUserId retrieves the accessible menus for a user by user ID
@@ -217,15 +218,15 @@ func (mc MenuController) BatchDeleteMenuByIds(c *gin.Context) {
 func (mc MenuController) GetUserMenusByUserId(c *gin.Context) {
 	userId, _ := strconv.Atoi(c.Param("userId"))
 	if userId <= 0 {
-		Fail(c, nil, "用户ID不正确")
+		util.Fail(c, nil, "用户ID不正确")
 		return
 	}
 	menus, err := mc.MenuDao.GetUserMenusByUserId(uint(userId))
 	if err != nil {
-		Fail(c, nil, "获取用户的可访问菜单列表失败: "+err.Error())
+		util.Fail(c, nil, "获取用户的可访问菜单列表失败: "+err.Error())
 		return
 	}
-	Success(c, gin.H{"menus": menus}, "获取用户的可访问菜单列表成功")
+	util.Success(c, gin.H{"menus": menus}, "获取用户的可访问菜单列表成功")
 }
 
 // GetUserMenuTreeByUserId retrieves the accessible menu tree for a user by user ID
@@ -242,13 +243,13 @@ func (mc MenuController) GetUserMenusByUserId(c *gin.Context) {
 func (mc MenuController) GetUserMenuTreeByUserId(c *gin.Context) {
 	userId, _ := strconv.Atoi(c.Param("userId"))
 	if userId <= 0 {
-		Fail(c, nil, "用户ID不正确")
+		util.Fail(c, nil, "用户ID不正确")
 		return
 	}
 	menuTree, err := mc.MenuDao.GetUserMenuTreeByUserId(uint(userId))
 	if err != nil {
-		Fail(c, nil, "获取用户的可访问菜单树失败: "+err.Error())
+		util.Fail(c, nil, "获取用户的可访问菜单树失败: "+err.Error())
 		return
 	}
-	Success(c, gin.H{"menuTree": menuTree}, "获取用户的可访问菜单树成功")
+	util.Success(c, gin.H{"menuTree": menuTree}, "获取用户的可访问菜单树成功")
 }

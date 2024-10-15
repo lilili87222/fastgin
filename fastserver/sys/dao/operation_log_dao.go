@@ -61,17 +61,21 @@ func (o OperationLogDao) BatchDeleteOperationLogByIds(ids []uint) error {
 
 // var Logs []model.OperationLog //全局变量多个线程需要加锁，所以每个线程自己维护一个
 // 处理OperationLogChan将日志记录到数据库
-func (o OperationLogDao) SaveOperationLogChannel(olc <-chan *model.OperationLog) {
-	// 只会在线程开启的时候执行一次
-	Logs := make([]model.OperationLog, 0)
+//func (o OperationLogDao) SaveOperationLogChannel(olc <-chan *model.OperationLog) {
+//	// 只会在线程开启的时候执行一次
+//	Logs := make([]model.OperationLog, 0)
+//
+//	// 一直执行--收到olc就会执行
+//	for log := range olc {
+//		Logs = append(Logs, *log)
+//		// 每10条记录到数据库
+//		if len(Logs) > 5 {
+//			config.DB.Create(&Logs)
+//			Logs = make([]model.OperationLog, 0)
+//		}
+//	}
+//}
 
-	// 一直执行--收到olc就会执行
-	for log := range olc {
-		Logs = append(Logs, *log)
-		// 每10条记录到数据库
-		if len(Logs) > 5 {
-			config.DB.Create(&Logs)
-			Logs = make([]model.OperationLog, 0)
-		}
-	}
+func (o OperationLogDao) SaveOperationLogs(logs []model.OperationLog) error {
+	return config.DB.Create(&logs).Error
 }

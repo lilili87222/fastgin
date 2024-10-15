@@ -25,6 +25,23 @@ func (s LogService) BatchDeleteOperationLogByIds(ids []uint) error {
 }
 
 // 保存操作日志到数据库
+//
+//	func (s LogService) SaveOperationLogChannel(olc <-chan *model.OperationLog) {
+//		s.logDao.SaveOperationLogChannel(olc)
+//	}
+//
+// 保存操作日志到数据库
 func (s LogService) SaveOperationLogChannel(olc <-chan *model.OperationLog) {
-	s.logDao.SaveOperationLogChannel(olc)
+	var logs []model.OperationLog
+
+	for log := range olc {
+		logs = append(logs, *log)
+		if len(logs) > 5 {
+			s.logDao.SaveOperationLogs(logs)
+			logs = make([]model.OperationLog, 0)
+		}
+	}
+	if len(logs) > 0 {
+		s.logDao.SaveOperationLogs(logs)
+	}
 }

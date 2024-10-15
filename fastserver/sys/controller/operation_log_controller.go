@@ -4,6 +4,7 @@ import (
 	"fastgin/config"
 	"fastgin/sys/dto"
 	"fastgin/sys/service"
+	"fastgin/sys/util"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
@@ -40,22 +41,22 @@ func (oc OperationLogController) GetOperationLogs(c *gin.Context) {
 	var req dto.OperationLogListRequest
 	// 绑定参数
 	if err := c.ShouldBind(&req); err != nil {
-		Fail(c, nil, err.Error())
+		util.Fail(c, nil, err.Error())
 		return
 	}
 	// 参数校验
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		Fail(c, nil, errStr)
+		util.Fail(c, nil, errStr)
 		return
 	}
 	// 获取
 	logs, total, err := oc.logDao.GetOperationLogs(&req)
 	if err != nil {
-		Fail(c, nil, "获取操作日志列表失败: "+err.Error())
+		util.Fail(c, nil, "获取操作日志列表失败: "+err.Error())
 		return
 	}
-	Success(c, gin.H{"logs": logs, "total": total}, "获取操作日志列表成功")
+	util.Success(c, gin.H{"logs": logs, "total": total}, "获取操作日志列表成功")
 }
 
 // BatchDeleteOperationLogByIds deletes multiple operation logs by their IDs
@@ -73,22 +74,22 @@ func (oc OperationLogController) BatchDeleteOperationLogByIds(c *gin.Context) {
 	var req dto.DeleteOperationLogRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
-		Fail(c, nil, err.Error())
+		util.Fail(c, nil, err.Error())
 		return
 	}
 	// 参数校验
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		Fail(c, nil, errStr)
+		util.Fail(c, nil, errStr)
 		return
 	}
 
 	// 删除接口
 	err := oc.logDao.BatchDeleteOperationLogByIds(req.OperationLogIds)
 	if err != nil {
-		Fail(c, nil, "删除日志失败: "+err.Error())
+		util.Fail(c, nil, "删除日志失败: "+err.Error())
 		return
 	}
 
-	Success(c, nil, "删除日志成功")
+	util.Success(c, nil, "删除日志成功")
 }
