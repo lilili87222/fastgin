@@ -8,17 +8,16 @@ import (
 func InitMenuRoutes(r *gin.RouterGroup) gin.IRoutes {
 	menuController := controller.NewMenuController()
 	router := r.Group("/menu")
-	// 开启casbin鉴权中间件
-	//router.Use(middleware.CasbinMiddleware())
 	{
 		router.GET("/tree", menuController.GetMenuTree)
-		router.GET("/list", menuController.GetMenus)
-		router.POST("/create", menuController.CreateMenu)
-		router.PATCH("/update/:menuId", menuController.UpdateMenuById)
-		router.DELETE("/delete/batch", menuController.BatchDeleteMenuByIds)
-		router.GET("/access/list/:userId", menuController.GetUserMenusByUserId)
-		router.GET("/access/tree/:userId", menuController.GetUserMenuTreeByUserId)
-	}
 
+		router.GET("/index", menuController.GetMenus)
+		router.POST("/index", menuController.Create)
+		router.PATCH("/index/:menuId", menuController.UpdateById)
+		router.DELETE("/index", menuController.BatchDeleteByIds)
+
+		router.GET("/user/:userId", menuController.GetUserMenusByUserId)
+		router.GET("/user_tree/:userId", menuController.GetUserMenuTreeByUserId)
+	}
 	return r
 }

@@ -16,8 +16,8 @@ func InitData() {
 	}
 	// 是否初始化数据
 	// 1.写入角色数据
-	newRoles := make([]*model.Role, 0)
-	roles := []*model.Role{
+	newRoles := make([]model.Role, 0)
+	roles := []model.Role{
 		{
 			//Model:   model.Model{Id: 1},
 			Model:   model.Model{Id: 1},

@@ -66,28 +66,41 @@ func (uc *UserController) GetUserInfo(c *gin.Context) {
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/user/list [post]
 func (uc *UserController) GetUsers(c *gin.Context) {
-
-	var req dto.UserListRequest
-	// 参数绑定
-	if err := c.ShouldBind(&req); err != nil {
-		util.Fail(c, nil, err.Error())
+	params, e := util.GetFormData(c)
+	if e != nil {
+		util.Fail(c, nil, e.Error())
 		return
 	}
-	// 参数校验
-	if err := config.Validate.Struct(&req); err != nil {
-		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		util.Fail(c, nil, errStr)
-		return
-	}
-
-	// 获取
-	users, total, err := uc.userService.GetUsersWithRoleIds(&req)
+	data, total, err := uc.userService.GetUsersWithRoleIds(dto.NewSearchRequest(params))
 	if err != nil {
-		util.Fail(c, nil, "获取用户列表失败: "+err.Error())
+		util.Fail(c, nil, "获取角色列表失败: "+err.Error())
 		return
 	}
+	util.Success(c, gin.H{"Data": data, "Total": total}, "获取角色列表成功")
 
-	util.Success(c, gin.H{"Users": users, "Total": total}, "获取用户列表成功")
+	//
+	//
+	//var req dto.UserListRequest
+	//// 参数绑定
+	//if err := c.ShouldBind(&req); err != nil {
+	//	util.Fail(c, nil, err.Error())
+	//	return
+	//}
+	//// 参数校验
+	//if err := config.Validate.Struct(&req); err != nil {
+	//	errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
+	//	util.Fail(c, nil, errStr)
+	//	return
+	//}
+	//
+	//// 获取
+	//users, total, err := uc.userService.GetUsersWithRoleIds(req)
+	//if err != nil {
+	//	util.Fail(c, nil, "获取用户列表失败: "+err.Error())
+	//	return
+	//}
+	//
+	//util.Success(c, gin.H{"Users": users, "Total": total}, "获取用户列表成功")
 }
 
 // 更新用户登录密码

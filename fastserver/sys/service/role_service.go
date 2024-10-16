@@ -5,7 +5,6 @@ import (
 	"fastgin/config"
 	"fastgin/database"
 	"fastgin/sys/dao"
-	"fastgin/sys/dto"
 	"fastgin/sys/model"
 )
 
@@ -18,28 +17,32 @@ func NewRoleService() *RoleService {
 }
 
 // 获取角色列表
-func (r *RoleService) GetRoles(req *dto.RoleListRequest) ([]model.Role, int64, error) {
-	return r.roleDao.GetRoles(req)
-}
+//func (r *RoleService) GetRoles(req *dto.RoleListRequest) ([]model.Role, int64, error) {
+//	return r.roleDao.GetRoles(req)
+//}
 
 // 根据角色ID获取角色
-func (r *RoleService) GetRolesByIds(roleIds []uint) ([]*model.Role, error) {
-	return r.roleDao.GetRolesByIds(roleIds)
+func (r *RoleService) GetRolesByIds(roleIds []uint) ([]model.Role, error) {
+	return database.GetByIds[model.Role](roleIds)
+	//return r.roleDao.GetRolesByIds(roleIds)
 }
 
 // 创建角色
 func (r *RoleService) CreateRole(role *model.Role) error {
-	return r.roleDao.CreateRole(role)
+	return database.Create(role)
+	//return r.roleDao.CreateRole(role)
 }
 
 // 更新角色
-func (r *RoleService) UpdateRoleById(roleId uint, role *model.Role) error {
-	return r.roleDao.UpdateRoleById(roleId, role)
+func (r *RoleService) UpdateRoleById(role *model.Role) error {
+	return database.Update(role)
+	//return r.roleDao.UpdateRoleById(roleId, role)
 }
 
 // 获取角色的权限菜单
 func (r *RoleService) GetRoleMenusById(roleId uint) ([]*model.Menu, error) {
-	return r.roleDao.GetRoleMenusById(roleId)
+	role, err := database.GetByIdPreload[model.Role](roleId, "Menus")
+	return role.Menus, err
 }
 
 // 更新角色的权限菜单

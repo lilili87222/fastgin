@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fastgin/database"
 	"fastgin/sys/dao"
 	"fastgin/sys/model"
 	"github.com/thoas/go-funk"
@@ -18,12 +19,13 @@ func NewMenuService() *MenuService {
 
 // 获取菜单列表
 func (s *MenuService) GetMenus() ([]*model.Menu, error) {
-	return s.menuDao.GetMenus()
+	return database.ListAll[*model.Menu]("sort")
+	//return s.menuDao.GetMenus()
 }
 
 // 获取菜单树
 func (s *MenuService) GetMenuTree() ([]*model.Menu, error) {
-	menus, err := s.menuDao.GetMenuTree()
+	menus, err := s.GetMenus()
 	if err != nil {
 		return nil, err
 	}
@@ -32,12 +34,13 @@ func (s *MenuService) GetMenuTree() ([]*model.Menu, error) {
 
 // 创建菜单
 func (s *MenuService) CreateMenu(menu *model.Menu) error {
-	return s.menuDao.CreateMenu(menu)
+	return database.Create(menu)
 }
 
 // 更新菜单
-func (s *MenuService) UpdateMenuById(menuId uint, menu *model.Menu) error {
-	return s.menuDao.UpdateMenuById(menuId, menu)
+func (s *MenuService) UpdateMenuById(menu *model.Menu) error {
+	return database.Update(menu)
+	//return s.menuDao.UpdateById(menuId, menu)
 }
 
 // 批量删除菜单
@@ -47,14 +50,18 @@ func (s *MenuService) BatchDeleteMenuByIds(menuIds []uint) error {
 
 // 根据用户ID获取用户的权限(可访问)菜单列表
 func (s *MenuService) GetUserMenusByUserId(userId uint) ([]*model.Menu, error) {
-	user, err := s.menuDao.GetUserById(userId)
+	userDao := dao.NewUserDao()
+	roleDao := dao.RoleDao{}
+	user, err := userDao.GetUserWithRoles(userId)
 	if err != nil {
 		return nil, err
 	}
 
 	allRoleMenus := make([]*model.Menu, 0)
 	for _, role := range user.Roles {
-		userRole, err := s.menuDao.GetRoleById(role.Id)
+		//userRole, err := userDao.GetRoleWithMenus(role.Id)
+		userRole, err := roleDao.GetRoleWithMenus(role.Id)
+		//userRole, err := s.menuDao.GetRoleWithMenus(role.Id)
 		if err != nil {
 			return nil, err
 		}

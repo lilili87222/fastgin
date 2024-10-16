@@ -3,19 +3,27 @@ package service
 import (
 	"errors"
 	"fastgin/config"
+	"fmt"
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/disk"
+	"github.com/shirou/gopsutil/v4/host"
 	"github.com/shirou/gopsutil/v4/mem"
 	"os"
 	"os/exec"
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type SystemService struct {
 }
 
+var systemStartTime string
+
+func init() {
+	systemStartTime = time.Now().Format("2006-01-02 15:04:05")
+}
 func (s *SystemService) GetSystemInformation() map[string]any {
 	const (
 		B  = 1
@@ -24,13 +32,29 @@ func (s *SystemService) GetSystemInformation() map[string]any {
 		GB = 1024 * MB
 	)
 	getOSInfo := func() map[string]any {
-		return map[string]any{
-			"os":            runtime.GOOS,
-			"num_cpu":       runtime.NumCPU(),
-			"compiler":      runtime.Compiler,
-			"go_version":    runtime.Version(),
-			"num_goroutine": runtime.NumGoroutine(),
+		hostInfo, e := host.Info()
+		info := map[string]any{
+			//"os":              runtime.GOOS + "/" + runtime.GOARCH,
+			"num goroutine":   runtime.NumGoroutine(),
+			"website version": config.AppVersion,
+			"start time":      systemStartTime,
+			"server time":     time.Now().Format("2006-01-02 15:04:05"),
 		}
+		if e == nil {
+			//info["hostname"] = hostInfo.Hostname
+			//info["uptime"] = hostInfo.Uptime
+			//info["bootTime"] = hostInfo.BootTime
+			//info["procs"] = hostInfo.Procs
+			//info["os"] = hostInfo.OS
+			//info["platform"] = hostInfo.Platform
+			//info["platformFamily"] = hostInfo.PlatformFamily
+			info["OS"] = hostInfo.Platform + " " + hostInfo.PlatformVersion + " " + runtime.GOARCH
+			//info["kernelVersion"] = hostInfo.KernelVersion
+			//info["kernelArch"] = hostInfo.KernelArch
+			//info["virtualizationSystem"] = hostInfo.VirtualizationSystem
+			//info["virtualizationRole"] = hostInfo.VirtualizationRole
+		}
+		return info
 	}
 	getCpuInfo := func() map[string]any {
 		cpuInfo := make(map[string]any)
@@ -42,9 +66,9 @@ func (s *SystemService) GetSystemInformation() map[string]any {
 	getMemInfo := func() map[string]any {
 		v, _ := mem.VirtualMemory()
 		return map[string]any{
-			"total":        v.Total / MB,
-			"available":    v.Available / MB,
-			"used":         v.Used / MB,
+			"total":        fmt.Sprintf("%d M", v.Total/MB),
+			"available":    fmt.Sprintf("%d M", v.Available/MB),
+			"used":         fmt.Sprintf("%d M", v.Used/MB),
 			"used_percent": v.UsedPercent,
 		}
 	}
@@ -56,7 +80,8 @@ func (s *SystemService) GetSystemInformation() map[string]any {
 		}
 
 		// 获取当前程序所在的磁盘分区
-		partition := executable[:strings.LastIndex(executable, string(os.PathSeparator))]
+		//partition := executable[:strings.LastIndex(executable, string(os.PathSeparator))]
+		partition := executable[:strings.Index(executable, string(os.PathSeparator))]
 
 		// 获取该分区的使用信息
 		usage, err := disk.Usage(partition)
@@ -67,9 +92,9 @@ func (s *SystemService) GetSystemInformation() map[string]any {
 		// 返回该分区的使用信息
 		return map[string]any{
 			"partition":    partition,
-			"total":        usage.Total / GB,
-			"used":         usage.Used / GB,
-			"free":         usage.Free / GB,
+			"total":        fmt.Sprintf("%d G", usage.Total/GB),
+			"used":         fmt.Sprintf("%d G", usage.Used/GB),
+			"free":         fmt.Sprintf("%d G", usage.Free/GB),
 			"used_percent": usage.UsedPercent,
 		}
 	}
@@ -79,7 +104,6 @@ func (s *SystemService) GetSystemInformation() map[string]any {
 	info["cpu"] = getCpuInfo()
 	info["mem"] = getMemInfo()
 	info["disk"] = getDiskInfo()
-	info["app_version"] = config.AppVersion
 	return info
 }
 func (s *SystemService) Reload() error {

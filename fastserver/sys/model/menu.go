@@ -38,7 +38,7 @@ type Menu struct {
 	ParentId   *uint   `gorm:"default:0;comment:'父菜单编号(编号为0时表示根菜单)'" `
 	Creator    string  `gorm:"type:varchar(20);comment:'创建人'" `
 	Children   []*Menu `gorm:"-"`                        // 子菜单集合
-	Roles      []*Role `gorm:"many2many:sys_role_menu;"` // 角色菜单多对多关系
+	Roles      []Role  `gorm:"many2many:sys_role_menu;"` // 角色菜单多对多关系
 }
 
 func (*Menu) TableName() string {

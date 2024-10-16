@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"fastgin/config"
+	"fastgin/database"
 	"fastgin/sys/dao"
 	"fastgin/sys/dto"
 	"fastgin/sys/model"
@@ -17,12 +18,14 @@ func NewApiService() *ApiService {
 	return &ApiService{apiDao: &dao.ApiDao{}}
 }
 
-func (s *ApiService) GetApis(req *dto.ApiListRequest) ([]*model.Api, int64, error) {
-	return s.apiDao.GetApis(req)
-}
+//func (s *ApiService) List(req *dto.SearchRequest) ([]model.Api, int64, error) {
+//	return database.SearchTable[model.Api](req)
+//}
 
 func (s *ApiService) GetApiTree() ([]*dto.ApiTreeDto, error) {
-	apiList, err := s.apiDao.GetApiTree()
+
+	//apiList, err := s.apiDao.GetApiTree()
+	apiList, err := database.ListAll[model.Api]("category", "created_at")
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +46,7 @@ func (s *ApiService) GetApiTree() ([]*dto.ApiTreeDto, error) {
 		}
 		for _, api := range apiList {
 			if category == api.Category {
-				apiTree[i].Children = append(apiTree[i].Children, api)
+				apiTree[i].Children = append(apiTree[i].Children, &api)
 			}
 		}
 	}
@@ -51,22 +54,25 @@ func (s *ApiService) GetApiTree() ([]*dto.ApiTreeDto, error) {
 }
 
 func (s *ApiService) CreateApi(api *model.Api) error {
-	return s.apiDao.CreateApi(api)
+	return database.Create(api)
+	//return s.apiDao.Create(api)
 }
 
-func (s *ApiService) UpdateApiById(apiId uint, api *model.Api) error {
-	oldApi, err := s.apiDao.GetApisById([]uint{apiId})
-	if err != nil || len(oldApi) == 0 {
+func (s *ApiService) UpdateApiById(api *model.Api) error {
+	//oldApi, err := s.apiDao.GetApisById([]uint{apiId})
+	oldApi, err := database.GetById[model.Api](api.Id)
+	if err != nil {
 		return errors.New("根据接口ID获取接口信息失败")
 	}
 
-	err = s.apiDao.UpdateApiById(apiId, api)
+	//err = s.apiDao.UpdateById(apiId, api)
+	err = database.Update(api)
 	if err != nil {
 		return err
 	}
 
-	if oldApi[0].Path != api.Path || oldApi[0].Method != api.Method {
-		policies, err := config.CasbinEnforcer.GetFilteredPolicy(1, oldApi[0].Path, oldApi[0].Method)
+	if oldApi.Path != api.Path || oldApi.Method != api.Method {
+		policies, err := config.CasbinEnforcer.GetFilteredPolicy(1, oldApi.Path, oldApi.Method)
 		if err != nil {
 			return err
 		}
@@ -93,7 +99,8 @@ func (s *ApiService) UpdateApiById(apiId uint, api *model.Api) error {
 }
 
 func (s *ApiService) BatchDeleteApiByIds(apiIds []uint) error {
-	apis, err := s.apiDao.GetApisById(apiIds)
+	//apis, err := s.apiDao.GetApisById(apiIds)
+	apis, err := database.GetByIds[model.Api](apiIds)
 	if err != nil {
 		return errors.New("根据接口ID获取接口列表失败")
 	}
@@ -101,7 +108,8 @@ func (s *ApiService) BatchDeleteApiByIds(apiIds []uint) error {
 		return errors.New("根据接口ID未获取到接口列表")
 	}
 
-	err = s.apiDao.BatchDeleteApiByIds(apiIds)
+	err = database.DeleteByIds[model.Api](apiIds)
+	//err = s.apiDao.BatchDeleteByIds(apiIds)
 	if err == nil {
 		for _, api := range apis {
 			policies, err := config.CasbinEnforcer.GetFilteredPolicy(1, api.Path, api.Method)
@@ -127,6 +135,6 @@ func (s *ApiService) GetApiDescByPath(path string, method string) (string, error
 	return s.apiDao.GetApiDescByPath(path, method)
 }
 
-func (s *ApiService) GetApisById(apiIds []uint) ([]*model.Api, error) {
-	return s.apiDao.GetApisById(apiIds)
+func (s *ApiService) GetApisById(apiIds []uint) ([]model.Api, error) {
+	return database.GetByIds[model.Api](apiIds)
 }

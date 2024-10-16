@@ -14,6 +14,7 @@ import (
 var DB *gorm.DB
 
 func InitDatabase() {
+	config.Log.Infof("选中的数据库类型" + config.Instance.Database.Type)
 	if config.Instance.Database.Type == "mysql" {
 		initMysql()
 	} else if config.Instance.Database.Type == "sqlite" {
@@ -57,7 +58,7 @@ func initMysql() {
 	}
 	DB = db
 	createTables()
-	config.Log.Infof("初始化mysql数据库完成!")
+
 }
 
 // 初始化sqllite数据库
@@ -73,12 +74,13 @@ func initSqlLite() {
 	}
 	DB = db
 	createTables()
-	config.Log.Infof("初始化sqlite数据库完成!")
+	//config.Log.Infof("初始化sqlite数据库完成!")
 }
 
 // 自动迁移表结构
 func createTables() {
 	if config.Instance.Database.CreateTables {
+		config.Log.Infof("初始化数据库完成!")
 		DB.AutoMigrate(
 			&model.User{},
 			&model.Role{},

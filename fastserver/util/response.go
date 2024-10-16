@@ -6,13 +6,13 @@ import (
 )
 
 type ResponseBody struct {
-	Code    int            `json:"Code"`
-	Message string         `json:"Message"`
-	Data    map[string]any `json:"Data"`
+	Code    int    `json:"Code"`
+	Message string `json:"Message"`
+	Data    any    `json:"Data"`
 }
 
 // 返回前端
-func Response(c *gin.Context, httpStatus int, code int, data gin.H, message string) {
+func Response(c *gin.Context, httpStatus int, code int, data any, message string) {
 	c.JSON(httpStatus, ResponseBody{
 		Code:    code,
 		Message: message,
@@ -21,12 +21,12 @@ func Response(c *gin.Context, httpStatus int, code int, data gin.H, message stri
 }
 
 // 返回前端-成功
-func Success(c *gin.Context, data gin.H, message string) {
+func Success(c *gin.Context, data any, message string) {
 	Response(c, http.StatusOK, 200, data, message)
 }
 
 // 返回前端-失败
-func Fail(c *gin.Context, data gin.H, message string) {
+func Fail(c *gin.Context, data any, message string) {
 	Response(c, http.StatusBadRequest, 400, data, message)
 }
 func GetFormData(c *gin.Context) (map[string]string, error) {

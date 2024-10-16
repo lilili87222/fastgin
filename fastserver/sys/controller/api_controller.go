@@ -2,12 +2,14 @@ package controller
 
 import (
 	"fastgin/config"
+	"fastgin/database"
 	"fastgin/sys/dto"
 	"fastgin/sys/model"
 	"fastgin/sys/service"
 	"fastgin/util"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/jinzhu/copier"
 	"strconv"
 )
 
@@ -22,7 +24,7 @@ func NewApiController() *ApiController {
 	return &ApiController{apiService: service.NewApiService(), userService: service.NewUserService()}
 }
 
-// GetApis retrieves a list of APIs
+// List retrieves a list of APIs
 // @Summary Get API list
 // @Description Get a list of APIs
 // @Tags API
@@ -33,31 +35,23 @@ func NewApiController() *ApiController {
 // @Param path query string false "Request path"
 // @Param category query string false "Category"
 // @Param creator query string false "Creator"
-// @Param pageNum query int false "Page number"
-// @Param pageSize query int false "Page size"
+// @Param PageNum query int false "Page number"
+// @Param PageSize query int false "Page size"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/apis [get]
-func (ac *ApiController) GetApis(c *gin.Context) {
-	var req dto.ApiListRequest
-	if err := c.ShouldBind(&req); err != nil {
-		util.Fail(c, nil, err.Error())
+// @Router /api/auth/api/index [get]
+func (ac *ApiController) List(c *gin.Context) {
+	params, e := util.GetFormData(c)
+	if e != nil {
+		util.Fail(c, nil, e.Error())
 		return
 	}
-	if err := config.Validate.Struct(&req); err != nil {
-		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		util.Fail(c, nil, errStr)
-		return
-	}
-	apis, total, err := ac.apiService.GetApis(&req)
+	data, total, err := database.SearchTable[model.Api](dto.NewSearchRequest(params))
 	if err != nil {
-		util.Fail(c, nil, "获取接口列表失败")
+		util.Fail(c, nil, "获取接口列表失败: "+err.Error())
 		return
 	}
-	util.Success(c, gin.H{
-		"Apis":  apis,
-		"Total": total,
-	}, "获取接口列表成功")
+	util.Success(c, gin.H{"Data": data, "Total": total}, "获取接口列表成功")
 }
 
 // GetApiTree retrieves the API tree
@@ -81,7 +75,7 @@ func (ac *ApiController) GetApiTree(c *gin.Context) {
 	}, "获取接口树成功")
 }
 
-// CreateApi creates a new API
+// Create creates a new API
 // @Summary Create API
 // @Description Create a new API
 // @Tags API
@@ -91,9 +85,8 @@ func (ac *ApiController) GetApiTree(c *gin.Context) {
 // @Param api body dto.CreateApiRequest true "Create API request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/api [post]
-func (ac *ApiController) CreateApi(c *gin.Context) {
-
+// @Router /api/auth/api/index [post]
+func (ac *ApiController) Create(c *gin.Context) {
 	var req dto.CreateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
@@ -111,12 +104,14 @@ func (ac *ApiController) CreateApi(c *gin.Context) {
 		return
 	}
 	api := model.Api{
-		Method:   req.Method,
-		Path:     req.Path,
-		Category: req.Category,
-		Desc:     req.Desc,
-		Creator:  ctxUser.UserName,
+		//Method:   req.Method,
+		//Path:     req.Path,
+		//Category: req.Category,
+		//Desc:     req.Desc,
+		Creator: ctxUser.UserName,
 	}
+	copier.Copy(&api, &req)
+	//api.Creator = ctxUser.UserName
 	err = ac.apiService.CreateApi(&api)
 	if err != nil {
 		util.Fail(c, nil, "创建接口失败: "+err.Error())
@@ -125,7 +120,7 @@ func (ac *ApiController) CreateApi(c *gin.Context) {
 	util.Success(c, nil, "创建接口成功")
 }
 
-// UpdateApiById updates an existing API by Id
+// UpdateById updates an existing API by Id
 // @Summary Update API
 // @Description Update an existing API by Id
 // @Tags API
@@ -136,8 +131,8 @@ func (ac *ApiController) CreateApi(c *gin.Context) {
 // @Param api body dto.CreateApiRequest true "Update API request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/api/{apiId} [put]
-func (ac *ApiController) UpdateApiById(c *gin.Context) {
+// @Router /api/auth/api/index/{apiId} [put]
+func (ac *ApiController) UpdateById(c *gin.Context) {
 	//type UpdateApiRequest struct {
 	//	Method   string `json:"Method" form:"Method" validate:"min=1,max=20"`
 	//	Path     string `json:"Path" form:"Path" validate:"min=1,max=100"`
@@ -159,20 +154,21 @@ func (ac *ApiController) UpdateApiById(c *gin.Context) {
 		util.Fail(c, nil, "接口ID不正确")
 		return
 	}
-	//ur := service.NewUserService()
 	ctxUser, err := ac.userService.GetCurrentUser(c)
 	if err != nil {
 		util.Fail(c, nil, "获取当前用户信息失败")
 		return
 	}
 	api := model.Api{
-		Method:   req.Method,
-		Path:     req.Path,
-		Category: req.Category,
-		Desc:     req.Desc,
-		Creator:  ctxUser.UserName,
+		//Method:   req.Method,
+		//Path:     req.Path,
+		//Category: req.Category,
+		//Desc:     req.Desc,
+		Creator: ctxUser.UserName,
 	}
-	err = ac.apiService.UpdateApiById(uint(apiId), &api)
+	copier.Copy(&api, &req)
+	api.Id = uint(apiId)
+	err = ac.apiService.UpdateApiById(&api)
 	if err != nil {
 		util.Fail(c, nil, "更新接口失败: "+err.Error())
 		return
@@ -180,7 +176,7 @@ func (ac *ApiController) UpdateApiById(c *gin.Context) {
 	util.Success(c, nil, "更新接口成功")
 }
 
-// BatchDeleteApiByIds deletes multiple APIs by their Ids
+// BatchDeleteByIds deletes multiple APIs by their Ids
 // @Summary Batch delete APIs
 // @Description Delete multiple APIs by their Ids
 // @Tags API
@@ -190,24 +186,14 @@ func (ac *ApiController) UpdateApiById(c *gin.Context) {
 // @Param apiIds body dto.IdListRequest true "Delete API request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/api/batch_delete [delete]
-func (ac *ApiController) BatchDeleteApiByIds(c *gin.Context) {
-	//type DeleteApiRequest struct {
-	//	ApiIds []uint `json:"ApiIds" form:"ApiIds"`
-	//}
+// @Router /api/auth/api/index [delete]
+func (ac *ApiController) BatchDeleteByIds(c *gin.Context) {
 	var req dto.IdListRequest
-	//var req map[string]any
 	if err := c.ShouldBind(&req); err != nil {
 		util.Fail(c, nil, err.Error())
 		return
 	}
-	//ids := req["Ids"].([]uint)
-	if err := config.Validate.Struct(&req); err != nil {
-		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		util.Fail(c, nil, errStr)
-		return
-	}
-	err := ac.apiService.BatchDeleteApiByIds(req.Ids)
+	err := database.DeleteByIds[model.Api](req.Ids)
 	if err != nil {
 		util.Fail(c, nil, "删除接口失败: "+err.Error())
 		return

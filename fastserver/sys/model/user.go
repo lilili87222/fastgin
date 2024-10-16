@@ -23,7 +23,7 @@ type User struct {
 	Introduction *string `gorm:"type:varchar(255)" `
 	Status       uint    `gorm:"type:tinyint(1);default:1;comment:'1正常, 2禁用'" `
 	Creator      string  `gorm:"type:varchar(20);" `
-	Roles        []*Role `gorm:"many2many:sys_user_role" `
+	Roles        []Role  `gorm:"many2many:sys_user_role" `
 }
 
 func (*User) TableName() string {

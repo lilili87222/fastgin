@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fastgin/config"
+	"fastgin/database"
 	"fastgin/sys/dto"
 	"fastgin/sys/model"
 	"fastgin/sys/service"
@@ -38,24 +39,19 @@ func NewRoleController() *RoleController {
 // @Param pageSize query int false "Page size"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/roles [get]
+// @Router /api/auth/list [get]
 func (rc *RoleController) GetRoles(c *gin.Context) {
-	var req dto.RoleListRequest
-	if err := c.ShouldBind(&req); err != nil {
-		util.Fail(c, nil, err.Error())
+	params, e := util.GetFormData(c)
+	if e != nil {
+		util.Fail(c, nil, e.Error())
 		return
 	}
-	if err := config.Validate.Struct(&req); err != nil {
-		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		util.Fail(c, nil, errStr)
-		return
-	}
-	roles, total, err := rc.roleService.GetRoles(&req)
+	data, total, err := database.SearchTable[model.Role](dto.NewSearchRequest(params))
 	if err != nil {
 		util.Fail(c, nil, "获取角色列表失败: "+err.Error())
 		return
 	}
-	util.Success(c, gin.H{"Roles": roles, "Total": total}, "获取角色列表成功")
+	util.Success(c, gin.H{"Data": data, "Total": total}, "获取角色列表成功")
 }
 
 // CreateRole creates a new role
@@ -165,7 +161,8 @@ func (rc *RoleController) UpdateRoleById(c *gin.Context) {
 		Sort:    req.Sort,
 		Creator: ctxUser.UserName,
 	}
-	err = rc.roleService.UpdateRoleById(uint(roleId), &role)
+	role.Id = uint(roleId)
+	err = rc.roleService.UpdateRoleById(&role)
 	if err != nil {
 		util.Fail(c, nil, "更新角色失败: "+err.Error())
 		return
@@ -346,7 +343,7 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 
 	roles[0].Menus = reqMenus
 
-	err = rc.roleService.UpdateRoleMenus(roles[0])
+	err = rc.roleService.UpdateRoleMenus(&roles[0])
 	if err != nil {
 		util.Fail(c, nil, "更新角色的权限菜单失败: "+err.Error())
 		return
@@ -499,12 +496,6 @@ func (rc *RoleController) BatchDeleteRoleByIds(c *gin.Context) {
 		util.Fail(c, nil, err.Error())
 		return
 	}
-	if err := config.Validate.Struct(&req); err != nil {
-		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		util.Fail(c, nil, errStr)
-		return
-	}
-	//ur := service.NewUserService()
 	minSort, _, err := rc.userService.GetCurrentUserMinRoleSort(c)
 	if err != nil {
 		util.Fail(c, nil, err.Error())

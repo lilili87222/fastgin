@@ -19,6 +19,8 @@ func NewSearchRequest(params map[string]string) *SearchRequest {
 	if pageSize, err := strconv.Atoi(params["PageSize"]); err == nil {
 		req.PageSize = pageSize
 	}
+	delete(params, "PageNum")
+	delete(params, "PageSize")
 	req.KeyValues = params
 	return req
 }
