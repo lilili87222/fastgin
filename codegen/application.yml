@@ -1,32 +1,12 @@
-# delelopment
-system:
-  # 设定模式(debug/release/test,正式版改为release)
-  mode: debug
-  # url前缀
-  url-path-prefix: api/auth
-  # 程序监听端口
-  port: 8081
-
 generator:
   create-view: true # 是否生成视图vue,当是否的时候只生成api，model，controller，service，dao
-  tables: ["users"] # 要生成的代码的表
+  tables: ["web_dictionary"] # 要生成的代码的表
   module-name: "user" # 模块名称
-  out-dir: code_generated # 保存路径
+  out-dir: output # 保存路径
   run-sql: true # 是否执行sql
+  table-prefix: "web_" # 表前缀
+  module: "codegen/output" # 表前缀
 
-logs:
-  # 日志等级(-1:Debug, 0:Info, 1:Warn, 2:Error, 3:DPanic, 4:Panic, 5:Fatal, -1<=level<=5, 参照zap.level源码)
-  level: -1
-  # 日志路径
-  path: logs
-  # 文件最大大小, M
-  max-size: 50
-  # 备份数
-  max-backups: 100
-  # 存放时间, 天
-  max-age: 30
-  # 是否压缩
-  compress: false
 database:
   # 数据库类型(mysql,sqlite3)
   type: mysql
@@ -44,7 +24,7 @@ database:
     # 数据库名
     database: go_web_mini
     # 主机地址
-    host: 192.168.123.214
+    host: localhost
     # 端口
     port: 3306
     # 连接字符串参数

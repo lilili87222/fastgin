@@ -3,7 +3,6 @@ package config
 import (
 	"fmt"
 	"github.com/spf13/viper"
-	"go.uber.org/zap/zapcore"
 	"os"
 )
 
@@ -15,28 +14,12 @@ const AppVersion = "v1.0.0"
 var Instance = new(config)
 
 type config struct {
-	System   *SystemConfig `mapstructure:"system" json:"system"`
-	Logs     *LogsConfig   `mapstructure:"logs" json:"logs"`
-	Database *struct {
+	Generator *GeneratorConfig `mapstructure:"generator" json:"generator"`
+	Database  *struct {
 		Type          string         `mapstructure:"type" json:"type"`
 		MysqlConfig   *MysqlConfig   `mapstructure:"mysql" json:"mysql"`
 		SqlLiteConfig *SqlLiteConfig `mapstructure:"sqlite" json:"sqlite"`
 	} `mapstructure:"database" json:"database"`
-}
-
-type SystemConfig struct {
-	Mode          string `mapstructure:"mode" json:"mode"`
-	UrlPathPrefix string `mapstructure:"url-path-prefix" json:"urlPathPrefix"`
-	Port          string `mapstructure:"port" json:"port"`
-}
-
-type LogsConfig struct {
-	Level      zapcore.Level `mapstructure:"level" json:"level"`
-	Path       string        `mapstructure:"path" json:"path"`
-	MaxSize    int           `mapstructure:"max-size" json:"maxSize"`
-	MaxBackups int           `mapstructure:"max-backups" json:"maxBackups"`
-	MaxAge     int           `mapstructure:"max-age" json:"maxAge"`
-	Compress   bool          `mapstructure:"compress" json:"compress"`
 }
 
 type MysqlConfig struct {
@@ -55,16 +38,13 @@ type SqlLiteConfig struct {
 	FilePath string `mapstructure:"file-path" json:"filePath"`
 }
 type GeneratorConfig struct {
-	//create-view: true # 是否生成视图vue
-	//tables: ["users"] # 要生成的代码的表
-	//module-name: "user" # 模块名称
-	//out-dir: code_generated # 保存路径
-	//run-sql: true # 是否执行sql
-	OutDir     string   `mapstructure:"out-dir" json:"outDir"`
-	Tables     []string `mapstructure:"tables" json:"tables"`
-	ModuleName string   `mapstructure:"module-name" json:"moduleName"`
-	RunSql     bool     `mapstructure:"run-sql" json:"runSql"`
-	CreateView bool     `mapstructure:"create-view" json:"createView"`
+	OutDir      string   `mapstructure:"out-dir" json:"outDir"`
+	Tables      []string `mapstructure:"tables" json:"tables"`
+	ModuleName  string   `mapstructure:"module-name" json:"moduleName"`
+	RunSql      bool     `mapstructure:"run-sql" json:"runSql"`
+	CreateView  bool     `mapstructure:"create-view" json:"createView"`
+	TablePrefix string   `mapstructure:"table-prefix" json:"tablePrefix"`
+	Module      string   `mapstructure:"module" json:"module"`
 }
 
 // 设置读取配置信息
@@ -76,7 +56,8 @@ func InitConfig() {
 
 	viper.SetConfigName("application")
 	viper.SetConfigType("yml")
-	viper.AddConfigPath(workDir + "./")
+	viper.AddConfigPath(workDir)
+	viper.AddConfigPath("..")
 	// 读取配置信息
 	err = viper.ReadInConfig()
 

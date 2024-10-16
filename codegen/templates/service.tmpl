@@ -1,0 +1,30 @@
+package service
+
+import (
+ "{{.Module}}/dao"
+ "{{.Module}}/model"
+)
+
+type {{.TableName | ToCamelCase}}Service struct {
+ dao *dao.{{.TableName | ToCamelCase}}DAO
+}
+
+func New{{.TableName | ToCamelCase}}Service(dao *dao.{{.TableName | ToCamelCase}}DAO) *{{.TableName | ToCamelCase}}Service {
+ return &{{.TableName | ToCamelCase}}Service{dao: dao}
+}
+
+func (s *{{.TableName | ToCamelCase}}Service) Create(entity *model.{{.TableName | ToCamelCase}}) error {
+ return s.dao.Create(entity)
+}
+
+func (s *{{.TableName | ToCamelCase}}Service) GetByID(id uint) (*model.{{.TableName | ToCamelCase}}, error) {
+ return s.dao.GetByID(id)
+}
+
+func (s *{{.TableName | ToCamelCase}}Service) Update(entity *model.{{.TableName | ToCamelCase}}) error {
+ return s.dao.Update(entity)
+}
+
+func (s *{{.TableName | ToCamelCase}}Service) Delete(id uint) error {
+ return s.dao.Delete(id)
+}

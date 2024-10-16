@@ -46,7 +46,7 @@ func initMysql() {
 		//},
 	})
 	if err != nil {
-		Log.Panicf("初始化mysql数据库异常: %v", err)
+
 		panic(fmt.Errorf("初始化mysql数据库异常: %v", err))
 	}
 	// 开启mysql日志
@@ -55,7 +55,7 @@ func initMysql() {
 	}
 	DB = db
 	createTables()
-	Log.Infof("初始化mysql数据库完成!")
+
 }
 
 // 初始化sqllite数据库
@@ -66,16 +66,15 @@ func initSqlLite() {
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 	if err != nil {
-		Log.Panicf("初始化sqlite数据库异常: %v", err)
+
 		panic(fmt.Errorf("初始化sqlite数据库异常: %v", err))
 	}
 	DB = db
 	createTables()
-	Log.Infof("初始化sqlite数据库完成!")
+
 }
 
 // 自动迁移表结构
 func createTables() {
-	if Instance.Database.CreateTables {
-	}
+
 }
