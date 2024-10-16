@@ -63,7 +63,7 @@ func initMysql() {
 
 // 初始化sqllite数据库
 func initSqlLite() {
-	sqlConfig := config.Instance.Database.SqlLiteConfig
+	var sqlConfig = config.Instance.Database.SqlLiteConfig
 	db, err := gorm.Open(sqlite.Open(sqlConfig.FilePath), &gorm.Config{
 		// 禁用外键(指定外键时不会在sqlite创建真实的外键约束)
 		DisableForeignKeyConstraintWhenMigrating: true,

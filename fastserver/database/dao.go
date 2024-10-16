@@ -19,7 +19,7 @@ func SearchTable[T any](req *dto.SearchRequest) ([]T, int64, error) {
 	}
 	// 分页
 	var total int64
-	err := db.Count(&total).Error
+	var err = db.Count(&total).Error
 	if err != nil {
 		return list, total, err
 	}
