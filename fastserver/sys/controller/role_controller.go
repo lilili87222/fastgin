@@ -39,7 +39,7 @@ func NewRoleController() *RoleController {
 // @Param pageSize query int false "Page size"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/list [get]
+// @Router /api/auth/role/index [get]
 func (rc *RoleController) GetRoles(c *gin.Context) {
 	params, e := util.GetFormData(c)
 	if e != nil {
@@ -64,7 +64,7 @@ func (rc *RoleController) GetRoles(c *gin.Context) {
 // @Param role body dto.CreateRoleRequest true "Create role request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/role [post]
+// @Router /api/auth/role/index [post]
 func (rc *RoleController) CreateRole(c *gin.Context) {
 	var req dto.CreateRoleRequest
 	if err := c.ShouldBind(&req); err != nil {
@@ -113,7 +113,7 @@ func (rc *RoleController) CreateRole(c *gin.Context) {
 // @Param role body dto.CreateRoleRequest true "Update role request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/role/{roleId} [put]
+// @Router /api/auth/role/index/{roleId} [put]
 func (rc *RoleController) UpdateRoleById(c *gin.Context) {
 	var req dto.CreateRoleRequest
 	if err := c.ShouldBind(&req); err != nil {
@@ -214,7 +214,7 @@ func (rc *RoleController) UpdateRoleById(c *gin.Context) {
 // @Param roleId path int true "Role Id"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/role/{roleId}/menus [get]
+// @Router /api/auth/role/menus/{roleId} [get]
 func (rc *RoleController) GetRoleMenusById(c *gin.Context) {
 	roleId, _ := strconv.Atoi(c.Param("roleId"))
 	if roleId <= 0 {
@@ -226,7 +226,7 @@ func (rc *RoleController) GetRoleMenusById(c *gin.Context) {
 		util.Fail(c, nil, "获取角色的权限菜单失败: "+err.Error())
 		return
 	}
-	util.Success(c, gin.H{"Menus": menus}, "获取角色的权限菜单成功")
+	util.Success(c, menus, "获取角色的权限菜单成功")
 }
 
 // UpdateRoleMenusById updates the menus for a role by Id
@@ -240,7 +240,7 @@ func (rc *RoleController) GetRoleMenusById(c *gin.Context) {
 // @Param menus body dto.IdListRequest true "Update role menus request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/role/{roleId}/menus [put]
+// @Router /api/auth/role/menus/{roleId} [put]
 func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 	var req dto.IdListRequest
 	// 参数绑定
@@ -363,7 +363,7 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 // @Param roleId path int true "Role Id"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/role/{roleId}/apis [get]
+// @Router /api/auth/role/apis/{roleId} [get]
 func (rc *RoleController) GetRoleApisById(c *gin.Context) {
 	roleId, _ := strconv.Atoi(c.Param("roleId"))
 	if roleId <= 0 {
@@ -385,7 +385,7 @@ func (rc *RoleController) GetRoleApisById(c *gin.Context) {
 		util.Fail(c, nil, err.Error())
 		return
 	}
-	util.Success(c, gin.H{"Apis": apis}, "获取角色的权限接口成功")
+	util.Success(c, apis, "获取角色的权限接口成功")
 }
 
 // UpdateRoleApisById updates the APIs for a role by Id
@@ -399,7 +399,7 @@ func (rc *RoleController) GetRoleApisById(c *gin.Context) {
 // @Param apis body dto.IdListRequest true "Update role APIs request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/role/{roleId}/apis [put]
+// @Router /api/auth/role/apis/{roleId} [put]
 func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
 	var req dto.IdListRequest
 	if err := c.ShouldBind(&req); err != nil {
@@ -489,7 +489,7 @@ func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
 // @Param roleIds body dto.IdListRequest true "Delete role request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/role/batch_delete [delete]
+// @Router /api/auth/role/index [delete]
 func (rc *RoleController) BatchDeleteRoleByIds(c *gin.Context) {
 	var req dto.IdListRequest
 	if err := c.ShouldBind(&req); err != nil {

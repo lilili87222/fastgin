@@ -11,7 +11,7 @@ func InitMenuRoutes(r *gin.RouterGroup) gin.IRoutes {
 	{
 		router.GET("/tree", menuController.GetMenuTree)
 
-		router.GET("/index", menuController.GetMenus)
+		router.GET("/index", menuController.List)
 		router.POST("/index", menuController.Create)
 		router.PATCH("/index/:menuId", menuController.UpdateById)
 		router.DELETE("/index", menuController.BatchDeleteByIds)

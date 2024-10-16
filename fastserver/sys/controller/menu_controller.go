@@ -23,7 +23,7 @@ func NewMenuController() *MenuController {
 	return &MenuController{menuService: service.NewMenuService(), userService: service.NewUserService()}
 }
 
-// GetMenus retrieves a list of menus
+// List retrieves a list of menus
 // @Summary Get menu list
 // @Description Get a list of menus
 // @Tags Menu
@@ -33,7 +33,7 @@ func NewMenuController() *MenuController {
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/menus [get]
-func (mc *MenuController) GetMenus(c *gin.Context) {
+func (mc *MenuController) List(c *gin.Context) {
 	menus, err := mc.menuService.GetMenus()
 	if err != nil {
 		util.Fail(c, nil, "获取菜单列表失败: "+err.Error())

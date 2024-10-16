@@ -20,7 +20,7 @@ func NewMenuService() *MenuService {
 // 获取菜单列表
 func (s *MenuService) GetMenus() ([]*model.Menu, error) {
 	return database.ListAll[*model.Menu]("sort")
-	//return s.menuDao.GetMenus()
+	//return s.menuDao.List()
 }
 
 // 获取菜单树

@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/jinzhu/copier"
 	"github.com/thoas/go-funk"
 	"slices"
 	"strconv"
@@ -45,13 +44,11 @@ func (uc *UserController) GetUserInfo(c *gin.Context) {
 	if e != nil {
 		fmt.Println(e.Error())
 	}
-	fmt.Println(util.Struct2Json(userMap))
-	fmt.Println(util.Struct2Json(user))
-	userInfoDto := dto.UserInfoDto{}
-	copier.Copy(&userInfoDto, &user)
-	util.Success(c, gin.H{
-		"userInfo": userInfoDto,
-	}, "获取当前用户信息成功")
+	//fmt.Println(util.Struct2Json(userMap))
+	//fmt.Println(util.Struct2Json(user))
+	//userInfoDto := dto.UserInfoDto{}
+	//copier.Copy(&userInfoDto, &user)
+	util.Success(c, userMap, "获取当前用户信息成功")
 }
 
 // 获取用户列表
@@ -64,7 +61,7 @@ func (uc *UserController) GetUserInfo(c *gin.Context) {
 // @Param UserListRequest body dto.UserListRequest true "User list request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/user/list [post]
+// @Router /api/auth/user/index [get]
 func (uc *UserController) GetUsers(c *gin.Context) {
 	params, e := util.GetFormData(c)
 	if e != nil {
@@ -113,7 +110,7 @@ func (uc *UserController) GetUsers(c *gin.Context) {
 // @Param ChangePwdRequest body dto.ChangePwdRequest true "Change password request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/user/change_pwd [post]
+// @Router /api/auth/user/changePwd [post]
 func (uc *UserController) ChangePwd(c *gin.Context) {
 	var req dto.ChangePwdRequest
 
@@ -177,7 +174,7 @@ func (uc *UserController) ChangePwd(c *gin.Context) {
 // @Param CreateUserRequest body dto.CreateUserRequest true "Create user request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/user/create [post]
+// @Router /api/auth/user/index [post]
 func (uc *UserController) CreateUser(c *gin.Context) {
 	var req dto.CreateUserRequest
 	// 参数绑定
@@ -277,7 +274,7 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 // @Param CreateUserRequest body dto.CreateUserRequest true "Update user request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/user/update/{userId} [put]
+// @Router /api/auth/user/index/{userId} [put]
 func (uc *UserController) UpdateUserById(c *gin.Context) {
 	var req dto.CreateUserRequest
 	// 参数绑定
@@ -436,7 +433,7 @@ func (uc *UserController) UpdateUserById(c *gin.Context) {
 // @Param DeleteUserRequest body dto.IdListRequest true "Delete user request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
-// @Router /api/auth/user/batch_delete [delete]
+// @Router /api/auth/user/index [delete]
 func (uc *UserController) BatchDeleteUserByIds(c *gin.Context) {
 	var req dto.IdListRequest
 	// 参数绑定
