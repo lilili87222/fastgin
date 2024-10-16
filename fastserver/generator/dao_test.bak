@@ -1,0 +1,41 @@
+package database
+
+import (
+	"codegen/config"
+	"encoding/json"
+	"fmt"
+	"testing"
+)
+
+func init() {
+	config.InitAll()
+}
+func TestGetDatabaseNames(t *testing.T) {
+	info, err := GetDatabaseNames()
+	if err != nil {
+		t.Errorf("Error fetching database names: %v", err)
+	} else {
+		fmt.Println(info)
+	}
+}
+func TestGetTableNames(t *testing.T) {
+	databaseName := "go_web_mini"
+	info, err := GetTableNames(databaseName)
+	if err != nil {
+		t.Errorf("Error fetching table names from database %s: %v", databaseName, err)
+	} else {
+		fmt.Println(info)
+	}
+}
+func TestGetTableInfo(t *testing.T) {
+	databaseName := "go_web_mini"
+	tableName := "web_dictionary"
+	info, err := GetTableInfo(databaseName, tableName)
+	if err != nil {
+		t.Errorf("Error fetching table names from database %s: %v", databaseName, err)
+	} else {
+		fmt.Println(info)
+		v, _ := json.Marshal(info)
+		fmt.Println(string(v))
+	}
+}

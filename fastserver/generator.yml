@@ -1,0 +1,39 @@
+generator:
+  create-view: true # 是否生成视图vue,当是否的时候只生成api，model，controller，service，dao
+  tables: ["web_dictionary"] # 要生成的代码的表
+  module-name: "user" # 模块名称
+  out-dir: app # 保存路径
+  run-sql: true # 是否执行sql
+  table-prefix: "web_" # 表前缀
+  module: "fastgin/app" # 表前缀
+
+database:
+  # 数据库类型(mysql,sqlite3)
+  type: mysql
+  create-tables: true
+  # 是否初始化数据(没有初始数据时使用, 已发布正式版改为false)
+  init-data: true
+  sqlite:
+    # 数据库文件路径(config.yml相对路径, 也可以填绝对路径)
+    file-path: go_web_mini.db
+  mysql:
+    # 用户名
+    username: root
+    # 密码
+    password: root
+    # 数据库名
+    database: go_web_mini
+    # 主机地址
+    host: localhost
+    # 端口
+    port: 3306
+    # 连接字符串参数
+    query: parseTime=True&loc=Local&timeout=10000ms
+    # 是否打印日志
+    log-mode: true
+    # 数据库表前缀(无需再末尾添加下划线, 程序内部自动处理)
+    table-prefix: tb
+    # 编码方式
+    charset: utf8mb4
+    # 字符集(utf8mb4_general_ci速度比utf8mb4_unicode_ci快些)
+    collation: utf8mb4_general_ci
