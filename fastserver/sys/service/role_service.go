@@ -36,7 +36,7 @@ func (r *RoleService) CreateRole(role *model.Role) error {
 // 更新角色
 func (r *RoleService) UpdateRoleById(role *model.Role) error {
 	return database.Update(role)
-	//return r.roleDao.UpdateRoleById(roleId, role)
+	//return r.roleDao.Update(roleId, role)
 }
 
 // 获取角色的权限菜单

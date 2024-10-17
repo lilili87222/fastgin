@@ -43,15 +43,15 @@ func NewApiController() *ApiController {
 func (ac *ApiController) List(c *gin.Context) {
 	params, e := util.GetFormData(c)
 	if e != nil {
-		util.Fail(c, nil, e.Error())
+		util.BadRequest(c, e.Error())
 		return
 	}
 	data, total, err := database.SearchTable[model.Api](dto.NewSearchRequest(params))
 	if err != nil {
-		util.Fail(c, nil, "获取接口列表失败: "+err.Error())
+		util.ServerError(c, "获取接口列表失败: "+err.Error())
 		return
 	}
-	util.Success(c, gin.H{"Data": data, "Total": total}, "获取接口列表成功")
+	util.Success(c, gin.H{"Data": data, "Total": total})
 }
 
 // GetApiTree retrieves the API tree
@@ -67,12 +67,10 @@ func (ac *ApiController) List(c *gin.Context) {
 func (ac *ApiController) GetApiTree(c *gin.Context) {
 	tree, err := ac.apiService.GetApiTree()
 	if err != nil {
-		util.Fail(c, nil, "获取接口树失败")
+		util.ServerError(c, "获取接口树失败")
 		return
 	}
-	util.Success(c, gin.H{
-		"ApiTree": tree,
-	}, "获取接口树成功")
+	util.Success(c, tree)
 }
 
 // Create creates a new API
@@ -89,18 +87,18 @@ func (ac *ApiController) GetApiTree(c *gin.Context) {
 func (ac *ApiController) Create(c *gin.Context) {
 	var req dto.CreateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
-		util.Fail(c, nil, err.Error())
+		util.BadRequest(c, err.Error())
 		return
 	}
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		util.Fail(c, nil, errStr)
+		util.BadRequest(c, errStr)
 		return
 	}
 	//ur := service.NewUserService()
 	ctxUser, err := ac.userService.GetCurrentUser(c)
 	if err != nil {
-		util.Fail(c, nil, "获取当前用户信息失败")
+		util.ServerError(c, "获取当前用户信息失败")
 		return
 	}
 	api := model.Api{
@@ -114,13 +112,13 @@ func (ac *ApiController) Create(c *gin.Context) {
 	//api.Creator = ctxUser.UserName
 	err = ac.apiService.CreateApi(&api)
 	if err != nil {
-		util.Fail(c, nil, "创建接口失败: "+err.Error())
+		util.ServerError(c, "创建接口失败: "+err.Error())
 		return
 	}
-	util.Success(c, nil, "创建接口成功")
+	util.Success(c, nil)
 }
 
-// UpdateById updates an existing API by Id
+// Update updates an existing API by Id
 // @Summary Update API
 // @Description Update an existing API by Id
 // @Tags API
@@ -132,7 +130,7 @@ func (ac *ApiController) Create(c *gin.Context) {
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/api/index/{apiId} [put]
-func (ac *ApiController) UpdateById(c *gin.Context) {
+func (ac *ApiController) Update(c *gin.Context) {
 	//type UpdateApiRequest struct {
 	//	Method   string `json:"Method" form:"Method" validate:"min=1,max=20"`
 	//	Path     string `json:"Path" form:"Path" validate:"min=1,max=100"`
@@ -141,22 +139,22 @@ func (ac *ApiController) UpdateById(c *gin.Context) {
 	//}
 	var req dto.CreateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
-		util.Fail(c, nil, err.Error())
+		util.BadRequest(c, err.Error())
 		return
 	}
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		util.Fail(c, nil, errStr)
+		util.BadRequest(c, errStr)
 		return
 	}
 	apiId, _ := strconv.Atoi(c.Param("apiId"))
 	if apiId <= 0 {
-		util.Fail(c, nil, "接口ID不正确")
+		util.BadRequest(c, "接口ID不正确")
 		return
 	}
 	ctxUser, err := ac.userService.GetCurrentUser(c)
 	if err != nil {
-		util.Fail(c, nil, "获取当前用户信息失败")
+		util.ServerError(c, "获取当前用户信息失败")
 		return
 	}
 	api := model.Api{
@@ -170,33 +168,33 @@ func (ac *ApiController) UpdateById(c *gin.Context) {
 	api.Id = uint(apiId)
 	err = ac.apiService.UpdateApiById(&api)
 	if err != nil {
-		util.Fail(c, nil, "更新接口失败: "+err.Error())
+		util.ServerError(c, "更新接口失败: "+err.Error())
 		return
 	}
-	util.Success(c, nil, "更新接口成功")
+	util.Success(c, nil)
 }
 
-// BatchDeleteByIds deletes multiple APIs by their Ids
+// BatchDelete deletes multiple APIs by their Ids
 // @Summary Batch delete APIs
-// @Description Delete multiple APIs by their Ids
+// @Description BatchDelete multiple APIs by their Ids
 // @Tags API
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param apiIds body dto.IdListRequest true "Delete API request"
+// @Param apiIds body dto.IdListRequest true "BatchDelete API request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/api/index [delete]
-func (ac *ApiController) BatchDeleteByIds(c *gin.Context) {
+func (ac *ApiController) BatchDelete(c *gin.Context) {
 	var req dto.IdListRequest
 	if err := c.ShouldBind(&req); err != nil {
-		util.Fail(c, nil, err.Error())
+		util.BadRequest(c, err.Error())
 		return
 	}
 	err := database.DeleteByIds[model.Api](req.Ids)
 	if err != nil {
-		util.Fail(c, nil, "删除接口失败: "+err.Error())
+		util.ServerError(c, "删除接口失败: "+err.Error())
 		return
 	}
-	util.Success(c, nil, "删除接口成功")
+	util.Success(c, nil)
 }

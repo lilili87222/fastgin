@@ -65,7 +65,7 @@ func (s *ApiService) UpdateApiById(api *model.Api) error {
 		return errors.New("根据接口ID获取接口信息失败")
 	}
 
-	//err = s.apiDao.UpdateById(apiId, api)
+	//err = s.apiDao.Update(apiId, api)
 	err = database.Update(api)
 	if err != nil {
 		return err
@@ -109,7 +109,7 @@ func (s *ApiService) BatchDeleteApiByIds(apiIds []uint) error {
 	}
 
 	err = database.DeleteByIds[model.Api](apiIds)
-	//err = s.apiDao.BatchDeleteByIds(apiIds)
+	//err = s.apiDao.BatchDelete(apiIds)
 	if err == nil {
 		for _, api := range apis {
 			policies, err := config.CasbinEnforcer.GetFilteredPolicy(1, api.Path, api.Method)

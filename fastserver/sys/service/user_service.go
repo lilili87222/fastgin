@@ -104,8 +104,16 @@ func (us *UserService) GetUsers(req *dto.SearchRequest) ([]model.User, int64, er
 }
 func (us *UserService) GetUsersWithRoleIds(req *dto.SearchRequest) ([]dto.UsersDto, int64, error) {
 	userList, i, err := us.GetUsers(req)
-	var users []dto.UsersDto
+	var ids []uint
 	for _, user := range userList {
+		ids = append(ids, user.Id)
+	}
+	userRoleList, e := us.userDao.GetUsersWithRoles(ids)
+	if e != nil {
+		return nil, 0, e
+	}
+	var users []dto.UsersDto
+	for _, user := range userRoleList {
 		userDto := dto.UsersDto{}
 		copier.Copy(&userDto, user)
 		userDto.RoleIds = user.GetRoleIds()
@@ -171,6 +179,10 @@ func (us *UserService) GetUserMinRoleSortsByIds(ids []uint) ([]int, error) {
 
 	roleMinSortList := make([]int, len(userList))
 	for i, user := range userList {
+		if len(user.Roles) == 0 {
+			roleMinSortList[i] = 999
+			continue
+		}
 		roleSortList := make([]int, len(user.Roles))
 		for j, role := range user.Roles {
 			roleSortList[j] = int(role.Sort)

@@ -13,7 +13,7 @@ func InitUserRoutes(r *gin.RouterGroup) gin.IRoutes {
 	{
 		router.GET("/index", userController.GetUsers)
 		router.POST("/index", userController.CreateUser)
-		router.PATCH("/index/:userId", userController.UpdateUserById)
+		router.PATCH("/index/:userId", userController.Update)
 		router.DELETE("/index", userController.BatchDeleteUserByIds)
 
 		router.GET("/info", userController.GetUserInfo)

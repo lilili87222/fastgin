@@ -40,7 +40,7 @@ func (s *MenuService) CreateMenu(menu *model.Menu) error {
 // 更新菜单
 func (s *MenuService) UpdateMenuById(menu *model.Menu) error {
 	return database.Update(menu)
-	//return s.menuDao.UpdateById(menuId, menu)
+	//return s.menuDao.Update(menuId, menu)
 }
 
 // 批量删除菜单

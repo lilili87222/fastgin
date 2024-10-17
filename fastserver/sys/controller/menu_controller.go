@@ -36,11 +36,11 @@ func NewMenuController() *MenuController {
 func (mc *MenuController) List(c *gin.Context) {
 	menus, err := mc.menuService.GetMenus()
 	if err != nil {
-		util.Fail(c, nil, "获取菜单列表失败: "+err.Error())
+		util.ServerError(c, "获取菜单列表失败: "+err.Error())
 		return
 	}
 	//util.Success(c, gin.H{"menus": menus}, "获取菜单列表成功")
-	util.Success(c, menus, "获取菜单列表成功")
+	util.Success(c, menus)
 }
 
 // GetMenuTree retrieves the menu tree
@@ -56,11 +56,11 @@ func (mc *MenuController) List(c *gin.Context) {
 func (mc *MenuController) GetMenuTree(c *gin.Context) {
 	menuTree, err := mc.menuService.GetMenuTree()
 	if err != nil {
-		util.Fail(c, nil, "获取菜单树失败: "+err.Error())
+		util.ServerError(c, "获取菜单树失败: "+err.Error())
 		return
 	}
 	//util.Success(c, gin.H{"MenuTree": menuTree}, "获取菜单树成功")
-	util.Success(c, menuTree, "获取菜单树成功")
+	util.Success(c, menuTree)
 }
 
 // Create creates a new menu
@@ -77,17 +77,17 @@ func (mc *MenuController) GetMenuTree(c *gin.Context) {
 func (mc *MenuController) Create(c *gin.Context) {
 	var req dto.CreateMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
-		util.Fail(c, nil, err.Error())
+		util.BadRequest(c, err.Error())
 		return
 	}
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		util.Fail(c, nil, errStr)
+		util.BadRequest(c, errStr)
 		return
 	}
 	ctxUser, err := mc.userService.GetCurrentUser(c)
 	if err != nil {
-		util.Fail(c, nil, "获取当前用户信息失败")
+		util.ServerError(c, "获取当前用户信息失败")
 		return
 	}
 	menu := model.Menu{
@@ -110,18 +110,18 @@ func (mc *MenuController) Create(c *gin.Context) {
 	e := copier.Copy(&menu, &req)
 
 	if e != nil {
-		util.Fail(c, nil, "创建菜单失败: "+e.Error())
+		util.ServerError(c, "创建菜单失败: "+e.Error())
 		return
 	}
 	err = mc.menuService.CreateMenu(&menu)
 	if err != nil {
-		util.Fail(c, nil, "创建菜单失败: "+err.Error())
+		util.ServerError(c, "创建菜单失败: "+err.Error())
 		return
 	}
-	util.Success(c, nil, "创建菜单成功")
+	util.Success(c, nil)
 }
 
-// UpdateById updates an existing menu by Id
+// Update updates an existing menu by Id
 // @Summary Update menu
 // @Description Update an existing menu by Id
 // @Tags Menu
@@ -133,26 +133,26 @@ func (mc *MenuController) Create(c *gin.Context) {
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/menu/index/{menuId} [put]
-func (mc *MenuController) UpdateById(c *gin.Context) {
+func (mc *MenuController) Update(c *gin.Context) {
 	var req dto.CreateMenuRequest
 	if err := c.ShouldBind(&req); err != nil {
-		util.Fail(c, nil, err.Error())
+		util.BadRequest(c, err.Error())
 		return
 	}
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		util.Fail(c, nil, errStr)
+		util.BadRequest(c, errStr)
 		return
 	}
 	menuId, _ := strconv.Atoi(c.Param("menuId"))
 	if menuId <= 0 {
-		util.Fail(c, nil, "菜单ID不正确")
+		util.BadRequest(c, "菜单ID不正确")
 		return
 	}
 	//ur := service.NewUserService()
 	ctxUser, err := mc.userService.GetCurrentUser(c)
 	if err != nil {
-		util.Fail(c, nil, "获取当前用户信息失败")
+		util.ServerError(c, "获取当前用户信息失败")
 		return
 	}
 	menu := model.Menu{
@@ -174,41 +174,41 @@ func (mc *MenuController) UpdateById(c *gin.Context) {
 	}
 	e := copier.Copy(&menu, &req)
 	if e != nil {
-		util.Fail(c, nil, "更新菜单失败: "+e.Error())
+		util.ServerError(c, "更新菜单失败: "+e.Error())
 		return
 	}
 	menu.Id = uint(menuId)
 	err = mc.menuService.UpdateMenuById(&menu)
 	if err != nil {
-		util.Fail(c, nil, "更新菜单失败: "+err.Error())
+		util.ServerError(c, "更新菜单失败: "+err.Error())
 		return
 	}
-	util.Success(c, nil, "更新菜单成功")
+	util.Success(c, nil)
 }
 
 // BatchDeleteByIds deletes multiple menus by their Ids
 // @Summary Batch delete menus
-// @Description Delete multiple menus by their Ids
+// @Description BatchDelete multiple menus by their Ids
 // @Tags Menu
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param menuIds body dto.IdListRequest true "Delete menu request"
+// @Param menuIds body dto.IdListRequest true "BatchDelete menu request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/menu/index [delete]
 func (mc *MenuController) BatchDeleteByIds(c *gin.Context) {
 	var req dto.IdListRequest
 	if err := c.ShouldBind(&req); err != nil {
-		util.Fail(c, nil, err.Error())
+		util.BadRequest(c, err.Error())
 		return
 	}
 	err := mc.menuService.BatchDeleteMenuByIds(req.Ids)
 	if err != nil {
-		util.Fail(c, nil, "删除菜单失败: "+err.Error())
+		util.ServerError(c, "删除菜单失败: "+err.Error())
 		return
 	}
-	util.Success(c, nil, "删除菜单成功")
+	util.Success(c, nil)
 }
 
 // GetUserMenusByUserId retrieves the accessible menus for a user by user Id
@@ -225,16 +225,16 @@ func (mc *MenuController) BatchDeleteByIds(c *gin.Context) {
 func (mc *MenuController) GetUserMenusByUserId(c *gin.Context) {
 	userId, _ := strconv.Atoi(c.Param("userId"))
 	if userId <= 0 {
-		util.Fail(c, nil, "用户ID不正确")
+		util.BadRequest(c, "用户ID不正确")
 		return
 	}
 	menus, err := mc.menuService.GetUserMenusByUserId(uint(userId))
 	if err != nil {
-		util.Fail(c, nil, "获取用户的可访问菜单列表失败: "+err.Error())
+		util.ServerError(c, "获取用户的可访问菜单列表失败: "+err.Error())
 		return
 	}
 	//util.Success(c, gin.H{"Menus": menus}, "获取用户的可访问菜单列表成功")
-	util.Success(c, menus, "获取用户的可访问菜单列表成功")
+	util.Success(c, menus)
 }
 
 // GetUserMenuTreeByUserId retrieves the accessible menu tree for a user by user Id
@@ -251,14 +251,14 @@ func (mc *MenuController) GetUserMenusByUserId(c *gin.Context) {
 func (mc *MenuController) GetUserMenuTreeByUserId(c *gin.Context) {
 	userId, _ := strconv.Atoi(c.Param("userId"))
 	if userId <= 0 {
-		util.Fail(c, nil, "用户ID不正确")
+		util.BadRequest(c, "用户ID不正确")
 		return
 	}
 	menuTree, err := mc.menuService.GetUserMenuTreeByUserId(uint(userId))
 	if err != nil {
-		util.Fail(c, nil, "获取用户的可访问菜单树失败: "+err.Error())
+		util.ServerError(c, "获取用户的可访问菜单树失败: "+err.Error())
 		return
 	}
 	//util.Success(c, gin.H{"MenuTree": menuTree}, "获取用户的可访问菜单树成功")
-	util.Success(c, menuTree, "获取用户的可访问菜单树成功")
+	util.Success(c, menuTree)
 }

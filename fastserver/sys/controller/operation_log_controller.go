@@ -36,25 +36,25 @@ func NewOperationLogController() *OperationLogController {
 func (oc *OperationLogController) List(c *gin.Context) {
 	params, e := util.GetFormData(c)
 	if e != nil {
-		util.Fail(c, nil, e.Error())
+		util.BadRequest(c, e.Error())
 		return
 	}
 	data, total, err := oc.logService.Search(dto.NewSearchRequest(params))
 	if err != nil {
-		util.Fail(c, nil, "获取操作日志列表失败: "+err.Error())
+		util.ServerError(c, "获取操作日志列表失败: "+err.Error())
 		return
 	}
-	util.Success(c, gin.H{"Data": data, "Total": total}, "获取操作日志列表成功")
+	util.Success(c, gin.H{"Data": data, "Total": total})
 }
 
 // BatchDeleteByIds deletes multiple operation logs by their Ids
 // @Summary Batch delete operation logs
-// @Description Delete multiple operation logs by their Ids
+// @Description BatchDelete multiple operation logs by their Ids
 // @Tags OperationLog
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param operationLogIds body dto.IdListRequest true "Delete operation log request"
+// @Param operationLogIds body dto.IdListRequest true "BatchDelete operation log request"
 // @Success 200 {object} util.ResponseBody
 // @Failure 400 {object} util.ResponseBody
 // @Router /api/auth/log/index [delete]
@@ -62,13 +62,13 @@ func (oc *OperationLogController) BatchDeleteByIds(c *gin.Context) {
 	var req dto.IdListRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
-		util.Fail(c, nil, err.Error())
+		util.BadRequest(c, err.Error())
 		return
 	}
 	err := oc.logService.BatchDelete(req.Ids)
 	if err != nil {
-		util.Fail(c, nil, "删除日志失败: "+err.Error())
+		util.ServerError(c, "删除日志失败: "+err.Error())
 		return
 	}
-	util.Success(c, nil, "删除日志成功")
+	util.Success(c, nil)
 }

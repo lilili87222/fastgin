@@ -8,16 +8,16 @@ import (
  "strconv"
 )
 
-type {{.TableName | ToCamelCase}}Controller struct {
- service *service.{{.TableName | ToCamelCase}}Service
+type {{.ModelName}}Controller struct {
+ service *service.{{.ModelName}}Service
 }
 
-func New{{.TableName | ToCamelCase}}Controller(service *service.{{.TableName | ToCamelCase}}Service) *{{.TableName | ToCamelCase}}Controller {
- return &{{.TableName | ToCamelCase}}Controller{service: service}
+func New{{.ModelName}}Controller(service *service.{{.ModelName}}Service) *{{.ModelName}}Controller {
+ return &{{.ModelName}}Controller{service: service}
 }
 
-func (ctrl *{{.TableName | ToCamelCase}}Controller) Create(c *gin.Context) {
- var entity model.{{.TableName | ToCamelCase}}
+func (ctrl *{{.ModelName}}Controller) Create(c *gin.Context) {
+ var entity model.{{.ModelName}}
  if err := c.ShouldBindJSON(&entity); err != nil {
   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
   return
@@ -29,7 +29,7 @@ func (ctrl *{{.TableName | ToCamelCase}}Controller) Create(c *gin.Context) {
  c.JSON(http.StatusOK, entity)
 }
 
-func (ctrl *{{.TableName | ToCamelCase}}Controller) GetByID(c *gin.Context) {
+func (ctrl *{{.ModelName}}Controller) GetByID(c *gin.Context) {
  id, err := strconv.Atoi(c.Param("id"))
  if err != nil {
   c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
@@ -43,8 +43,8 @@ func (ctrl *{{.TableName | ToCamelCase}}Controller) GetByID(c *gin.Context) {
  c.JSON(http.StatusOK, entity)
 }
 
-func (ctrl *{{.TableName | ToCamelCase}}Controller) Update(c *gin.Context) {
- var entity model.{{.TableName | ToCamelCase}}
+func (ctrl *{{.ModelName}}Controller) Update(c *gin.Context) {
+ var entity model.{{.ModelName}}
  if err := c.ShouldBindJSON(&entity); err != nil {
   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
   return
@@ -56,7 +56,7 @@ func (ctrl *{{.TableName | ToCamelCase}}Controller) Update(c *gin.Context) {
  c.JSON(http.StatusOK, entity)
 }
 
-func (ctrl *{{.TableName | ToCamelCase}}Controller) Delete(c *gin.Context) {
+func (ctrl *{{.ModelName}}Controller) Delete(c *gin.Context) {
  id, err := strconv.Atoi(c.Param("id"))
  if err != nil {
   c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})

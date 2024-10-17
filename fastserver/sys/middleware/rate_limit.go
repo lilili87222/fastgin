@@ -11,7 +11,7 @@ func RateLimitMiddleware(fillInterval time.Duration, capacity int64) gin.Handler
 	bucket := ratelimit.NewBucket(fillInterval, capacity)
 	return func(c *gin.Context) {
 		if bucket.TakeAvailable(1) < 1 {
-			util.Fail(c, nil, "访问限流")
+			util.BadRequest(c, "访问限流")
 			c.Abort()
 			return
 		}

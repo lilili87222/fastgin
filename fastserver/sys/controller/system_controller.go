@@ -25,7 +25,7 @@ func NewSystemController() *SystemController {
 // @Router /api/auth/system/info [get]
 func (oc *SystemController) GetSystemInformation(c *gin.Context) {
 	//service := service.SystemService{}
-	util.Success(c, oc.systemService.GetSystemInformation(), "系统信息成功")
+	util.Success(c, oc.systemService.GetSystemInformation())
 }
 
 // GetStopServer godoc
@@ -38,7 +38,7 @@ func (oc *SystemController) GetSystemInformation(c *gin.Context) {
 func (oc *SystemController) GetStopServer(c *gin.Context) {
 	config.Log.Info("停止服务")
 	os.Exit(0)
-	util.Success(c, nil, "停止服务成功")
+	util.Success(c, nil)
 }
 
 // RestartServer godoc
@@ -57,5 +57,5 @@ func (oc *SystemController) RestartServer(c *gin.Context) {
 	} else {
 		config.Log.Info(c, nil, "重启服务成功")
 	}
-	util.Success(c, nil, "重启服务成功")
+	util.Success(c, nil)
 }

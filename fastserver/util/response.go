@@ -11,23 +11,46 @@ type ResponseBody struct {
 	Data    any    `json:"Data"`
 }
 
+//func SuccessBody(data any) ResponseBody {
+//	return ResponseBody{
+//		Code:    http.StatusOK,
+//		Message: "Operation is successful",
+//		Data:    data,
+//	}
+//}
+//func BadRequestBody(message string) ResponseBody {
+//	return ResponseBody{
+//		Code:    http.StatusBadRequest,
+//		Message: message,
+//	}
+//}
+//func ServerErrorBody(message string) ResponseBody {
+//	return ResponseBody{
+//		Code:    http.StatusInternalServerError,
+//		Message: message,
+//	}
+//}
+
 // 返回前端
-func Response(c *gin.Context, httpStatus int, code int, data any, message string) {
+func Response(c *gin.Context, httpStatus int, data any, message string) {
 	c.JSON(httpStatus, ResponseBody{
-		Code:    code,
+		Code:    httpStatus,
 		Message: message,
 		Data:    data,
 	})
 }
 
 // 返回前端-成功
-func Success(c *gin.Context, data any, message string) {
-	Response(c, http.StatusOK, 200, data, message)
+func Success(c *gin.Context, data any) {
+	Response(c, http.StatusOK, data, "Operation is successful")
+}
+func BadRequest(c *gin.Context, message string) {
+	Response(c, http.StatusBadRequest, nil, message)
 }
 
 // 返回前端-失败
-func Fail(c *gin.Context, data any, message string) {
-	Response(c, http.StatusBadRequest, 400, data, message)
+func ServerError(c *gin.Context, message string) {
+	Response(c, http.StatusInternalServerError, nil, message)
 }
 func GetFormData(c *gin.Context) (map[string]string, error) {
 	err := c.Request.ParseForm()

@@ -143,7 +143,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "Delete multiple APIs by their Ids",
+                "description": "BatchDelete multiple APIs by their Ids",
                 "consumes": [
                     "application/json"
                 ],
@@ -163,7 +163,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Delete API request",
+                        "description": "BatchDelete API request",
                         "name": "apiIds",
                         "in": "body",
                         "required": true,
@@ -354,7 +354,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "Delete multiple operation logs by their Ids",
+                "description": "BatchDelete multiple operation logs by their Ids",
                 "consumes": [
                     "application/json"
                 ],
@@ -374,7 +374,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Delete operation log request",
+                        "description": "BatchDelete operation log request",
                         "name": "operationLogIds",
                         "in": "body",
                         "required": true,
@@ -446,7 +446,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "Delete multiple menus by their Ids",
+                "description": "BatchDelete multiple menus by their Ids",
                 "consumes": [
                     "application/json"
                 ],
@@ -466,7 +466,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Delete menu request",
+                        "description": "BatchDelete menu request",
                         "name": "menuIds",
                         "in": "body",
                         "required": true,
@@ -915,7 +915,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "Delete multiple roles by their Ids",
+                "description": "BatchDelete multiple roles by their Ids",
                 "consumes": [
                     "application/json"
                 ],
@@ -935,7 +935,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Delete role request",
+                        "description": "BatchDelete role request",
                         "name": "roleIds",
                         "in": "body",
                         "required": true,
@@ -1349,7 +1349,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Delete user request",
+                        "description": "BatchDelete user request",
                         "name": "DeleteUserRequest",
                         "in": "body",
                         "required": true,

@@ -5,26 +5,26 @@ import (
  "{{.Module}}/model"
 )
 
-type {{.TableName | ToCamelCase}}Service struct {
- dao *dao.{{.TableName | ToCamelCase}}DAO
+type {{.ModelName}}Service struct {
+ dao *dao.{{.ModelName}}DAO
 }
 
-func New{{.TableName | ToCamelCase}}Service(dao *dao.{{.TableName | ToCamelCase}}DAO) *{{.TableName | ToCamelCase}}Service {
- return &{{.TableName | ToCamelCase}}Service{dao: dao}
+func New{{.ModelName}}Service(dao *dao.{{.ModelName}}DAO) *{{.ModelName}}Service {
+ return &{{.ModelName}}Service{dao: dao}
 }
 
-func (s *{{.TableName | ToCamelCase}}Service) Create(entity *model.{{.TableName | ToCamelCase}}) error {
+func (s *{{.ModelName}}Service) Create(entity *model.{{.ModelName}}) error {
  return s.dao.Create(entity)
 }
 
-func (s *{{.TableName | ToCamelCase}}Service) GetByID(id uint) (*model.{{.TableName | ToCamelCase}}, error) {
+func (s *{{.ModelName}}Service) GetByID(id uint) (*model.{{.ModelName}}, error) {
  return s.dao.GetByID(id)
 }
 
-func (s *{{.TableName | ToCamelCase}}Service) Update(entity *model.{{.TableName | ToCamelCase}}) error {
+func (s *{{.ModelName}}Service) Update(entity *model.{{.ModelName}}) error {
  return s.dao.Update(entity)
 }
 
-func (s *{{.TableName | ToCamelCase}}Service) Delete(id uint) error {
+func (s *{{.ModelName}}Service) Delete(id uint) error {
  return s.dao.Delete(id)
 }

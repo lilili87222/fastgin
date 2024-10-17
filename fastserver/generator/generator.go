@@ -14,6 +14,7 @@ type TableConfig struct {
 	PrefixTableName string
 	OutDir          string
 	Module          string
+	ModelName       string
 }
 
 func GenerateAll() {
@@ -37,6 +38,7 @@ func GenerateAll() {
 	for _, tableName := range genConfig.Tables {
 		tableConfig.PrefixTableName = tableName
 		tableConfig.TableName = strings.TrimPrefix(tableName, genConfig.TablePrefix)
+		tableConfig.ModelName = ToCamelCase(tableConfig.TableName)
 		err := Generate(tableConfig)
 		if err != nil {
 			panic(err)
@@ -61,8 +63,7 @@ func GenerateModel(tc TableConfig) {
 		OutPath: filepath.Join(tc.OutDir, "model"),
 	})
 	g.UseDB(DB)
-	g.GenerateModelAs(tc.PrefixTableName, ToCamelCase(tc.TableName))
-	//g.GenerateModelAs(tc.TableName, ToCamelCase(tc.TableName))
+	g.GenerateModelAs(tc.PrefixTableName, tc.ModelName)
 	g.Execute()
 }
 func GenerateFromTemplate(tc TableConfig, templateName string) error {

@@ -17,12 +17,12 @@ func CasbinMiddleware() gin.HandlerFunc {
 		ur := service.NewUserService()
 		user, err := ur.GetCurrentUser(c)
 		if err != nil {
-			util.Response(c, 401, 401, nil, "用户未登录")
+			util.Response(c, 401, nil, "用户未登录")
 			c.Abort()
 			return
 		}
 		if user.Status != 1 {
-			util.Response(c, 401, 401, nil, "当前用户已被禁用")
+			util.Response(c, 401, nil, "当前用户已被禁用")
 			c.Abort()
 			return
 		}
@@ -43,7 +43,7 @@ func CasbinMiddleware() gin.HandlerFunc {
 
 		isPass := check(subs, obj, act)
 		if !isPass {
-			util.Response(c, 401, 401, nil, "没有权限")
+			util.Response(c, 401, nil, "没有权限")
 			c.Abort()
 			return
 		}

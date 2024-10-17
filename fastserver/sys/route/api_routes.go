@@ -11,8 +11,8 @@ func InitApiRoutes(r *gin.RouterGroup) gin.IRoutes {
 	{
 		router.GET("/index", apiController.List)
 		router.POST("/index", apiController.Create)
-		router.PATCH("/index/:apiId", apiController.UpdateById)
-		router.DELETE("/index", apiController.BatchDeleteByIds)
+		router.PATCH("/index/:apiId", apiController.Update)
+		router.DELETE("/index", apiController.BatchDelete)
 
 		router.GET("/tree", apiController.GetApiTree)
 	}

@@ -13,7 +13,7 @@ func InitRoleRoutes(r *gin.RouterGroup) gin.IRoutes {
 	{
 		router.GET("/index", roleController.GetRoles)
 		router.POST("/index", roleController.CreateRole)
-		router.PATCH("/index/:roleId", roleController.UpdateRoleById)
+		router.PATCH("/index/:roleId", roleController.Update)
 		router.DELETE("/index", roleController.BatchDeleteRoleByIds)
 
 		router.GET("/menus/:roleId", roleController.GetRoleMenusById)

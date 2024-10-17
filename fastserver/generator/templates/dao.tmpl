@@ -5,28 +5,28 @@ import (
  "gorm.io/gorm"
 )
 
-type {{.TableName | ToCamelCase}}DAO struct {
+type {{.ModelName}}DAO struct {
  db *gorm.DB
 }
 
-func New{{.TableName | ToCamelCase}}DAO(db *gorm.DB) *{{.TableName | ToCamelCase}}DAO {
- return &{{.TableName | ToCamelCase}}DAO{db: db}
+func New{{.ModelName}}DAO(db *gorm.DB) *{{.ModelName}}DAO {
+ return &{{.ModelName}}DAO{db: db}
 }
 
-func (dao *{{.TableName | ToCamelCase}}DAO) Create(entity *model.{{.TableName | ToCamelCase}}) error {
+func (dao *{{.ModelName}}DAO) Create(entity *model.{{.ModelName}}) error {
  return dao.db.Create(entity).Error
 }
 
-func (dao *{{.TableName | ToCamelCase}}DAO) GetByID(id uint) (*model.{{.TableName | ToCamelCase}}, error) {
- var entity model.{{.TableName | ToCamelCase}}
+func (dao *{{.ModelName}}DAO) GetByID(id uint) (*model.{{.ModelName}}, error) {
+ var entity model.{{.ModelName}}
  err := dao.db.First(&entity, id).Error
  return &entity, err
 }
 
-func (dao *{{.TableName | ToCamelCase}}DAO) Update(entity *model.{{.TableName | ToCamelCase}}) error {
+func (dao *{{.ModelName}}DAO) Update(entity *model.{{.ModelName}}) error {
  return dao.db.Save(entity).Error
 }
 
-func (dao *{{.TableName | ToCamelCase}}DAO) Delete(id uint) error {
- return dao.db.Delete(&model.{{.TableName | ToCamelCase}}{}, id).Error
+func (dao *{{.ModelName}}DAO) Delete(id uint) error {
+ return dao.db.Delete(&model.{{.ModelName}}{}, id).Error
 }
