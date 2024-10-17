@@ -1,7 +1,7 @@
 package controller
 
 import (
-	httpz2 "fastgin/common/httpz"
+	"fastgin/common/httpz"
 	"fastgin/config"
 	"fastgin/database"
 	"fastgin/modules/sys/dto"
@@ -37,21 +37,21 @@ func NewRoleController() *RoleController {
 // @Param status query int false "Role status"
 // @Param pageNum query int false "Page number"
 // @Param pageSize query int false "Page size"
-// @Success 200 {object} util.ResponseBody
-// @Failure 400 {object} util.ResponseBody
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/role/index [get]
 func (rc *RoleController) GetRoles(c *gin.Context) {
-	params, e := httpz2.GetFormData(c)
+	params, e := httpz.GetFormData(c)
 	if e != nil {
-		httpz2.BadRequest(c, e.Error())
+		httpz.BadRequest(c, e.Error())
 		return
 	}
-	data, total, err := database.SearchTable[model.Role](httpz2.NewSearchRequest(params))
+	data, total, err := database.SearchTable[model.Role](httpz.NewSearchRequest(params))
 	if err != nil {
-		httpz2.ServerError(c, "获取角色列表失败: "+err.Error())
+		httpz.ServerError(c, "获取角色列表失败: "+err.Error())
 		return
 	}
-	httpz2.Success(c, gin.H{"Data": data, "Total": total})
+	httpz.Success(c, gin.H{"Data": data, "Total": total})
 }
 
 // CreateRole creates a new role
@@ -62,28 +62,28 @@ func (rc *RoleController) GetRoles(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param role body dto.CreateRoleRequest true "Create role request"
-// @Success 200 {object} util.ResponseBody
-// @Failure 400 {object} util.ResponseBody
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/role/index [post]
 func (rc *RoleController) CreateRole(c *gin.Context) {
 	var req dto.CreateRoleRequest
 	if err := c.ShouldBind(&req); err != nil {
-		httpz2.BadRequest(c, err.Error())
+		httpz.BadRequest(c, err.Error())
 		return
 	}
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		httpz2.BadRequest(c, errStr)
+		httpz.BadRequest(c, errStr)
 		return
 	}
 	//uc := service.NewUserService()
 	sort, ctxUser, err := rc.userService.GetCurrentUserMinRoleSort(c)
 	if err != nil {
-		httpz2.ServerError(c, "获取当前用户最高角色等级失败: "+err.Error())
+		httpz.ServerError(c, "获取当前用户最高角色等级失败: "+err.Error())
 		return
 	}
 	if sort >= req.Sort {
-		httpz2.ServerError(c, "不能创建比自己等级高或相同等级的角色")
+		httpz.ServerError(c, "不能创建比自己等级高或相同等级的角色")
 		return
 	}
 	role := model.Role{
@@ -96,10 +96,10 @@ func (rc *RoleController) CreateRole(c *gin.Context) {
 	}
 	err = rc.roleService.CreateRole(&role)
 	if err != nil {
-		httpz2.ServerError(c, "创建角色失败: "+err.Error())
+		httpz.ServerError(c, "创建角色失败: "+err.Error())
 		return
 	}
-	httpz2.Success(c, nil)
+	httpz.Success(c, nil)
 }
 
 // Update updates an existing role by Id
@@ -111,46 +111,46 @@ func (rc *RoleController) CreateRole(c *gin.Context) {
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role Id"
 // @Param role body dto.CreateRoleRequest true "Update role request"
-// @Success 200 {object} util.ResponseBody
-// @Failure 400 {object} util.ResponseBody
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/role/index/{roleId} [put]
 func (rc *RoleController) Update(c *gin.Context) {
 	var req dto.CreateRoleRequest
 	if err := c.ShouldBind(&req); err != nil {
-		httpz2.BadRequest(c, err.Error())
+		httpz.BadRequest(c, err.Error())
 		return
 	}
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		httpz2.BadRequest(c, errStr)
+		httpz.BadRequest(c, errStr)
 		return
 	}
 	roleId, _ := strconv.Atoi(c.Param("roleId"))
 	if roleId <= 0 {
-		httpz2.BadRequest(c, "角色ID不正确")
+		httpz.BadRequest(c, "角色ID不正确")
 		return
 	}
 	//ur := service.NewUserService()
 	minSort, ctxUser, err := rc.userService.GetCurrentUserMinRoleSort(c)
 	if err != nil {
-		httpz2.ServerError(c, err.Error())
+		httpz.ServerError(c, err.Error())
 		return
 	}
 	roles, err := rc.roleService.GetRolesByIds([]uint{uint(roleId)})
 	if err != nil {
-		httpz2.ServerError(c, err.Error())
+		httpz.ServerError(c, err.Error())
 		return
 	}
 	if len(roles) == 0 {
-		httpz2.ServerError(c, "未获取到角色信息")
+		httpz.ServerError(c, "未获取到角色信息")
 		return
 	}
 	if minSort >= roles[0].Sort {
-		httpz2.ServerError(c, "不能更新比自己角色等级高或相等的角色")
+		httpz.ServerError(c, "不能更新比自己角色等级高或相等的角色")
 		return
 	}
 	if minSort >= req.Sort {
-		httpz2.ServerError(c, "不能把角色等级更新得比当前用户的等级高或相同")
+		httpz.ServerError(c, "不能把角色等级更新得比当前用户的等级高或相同")
 		return
 	}
 	role := model.Role{
@@ -164,17 +164,17 @@ func (rc *RoleController) Update(c *gin.Context) {
 	role.Id = uint(roleId)
 	err = rc.roleService.UpdateRoleById(&role)
 	if err != nil {
-		httpz2.ServerError(c, "更新角色失败: "+err.Error())
+		httpz.ServerError(c, "更新角色失败: "+err.Error())
 		return
 	}
 	if req.Keyword != roles[0].Keyword {
 		rolePolicies, err2 := config.CasbinEnforcer.GetFilteredPolicy(0, roles[0].Keyword)
 		if err2 != nil {
-			httpz2.ServerError(c, "获取角色关键字关联的权限接口失败")
+			httpz.ServerError(c, "获取角色关键字关联的权限接口失败")
 			return
 		}
 		if len(rolePolicies) == 0 {
-			httpz2.Success(c, "更新角色成功")
+			httpz.Success(c, "更新角色成功")
 			return
 		}
 		rolePoliciesCopy := make([][]string, 0)
@@ -186,22 +186,22 @@ func (rc *RoleController) Update(c *gin.Context) {
 		}
 		isAdded, _ := config.CasbinEnforcer.AddPolicies(rolePolicies)
 		if !isAdded {
-			httpz2.ServerError(c, "更新角色成功，但角色关键字关联的权限接口更新失败")
+			httpz.ServerError(c, "更新角色成功，但角色关键字关联的权限接口更新失败")
 			return
 		}
 		isRemoved, _ := config.CasbinEnforcer.RemovePolicies(rolePoliciesCopy)
 		if !isRemoved {
-			httpz2.ServerError(c, "更新角色成功，但角色关键字关联的权限接口更新失败")
+			httpz.ServerError(c, "更新角色成功，但角色关键字关联的权限接口更新失败")
 			return
 		}
 		err := config.CasbinEnforcer.LoadPolicy()
 		if err != nil {
-			httpz2.ServerError(c, "更新角色成功，但角色关键字关联角色的权限接口策略加载失败")
+			httpz.ServerError(c, "更新角色成功，但角色关键字关联角色的权限接口策略加载失败")
 			return
 		}
 	}
 	rc.userService.ClearUserInfoCache()
-	httpz2.Success(c, nil)
+	httpz.Success(c, nil)
 }
 
 // GetRoleMenusById retrieves the menus for a role by Id
@@ -212,21 +212,21 @@ func (rc *RoleController) Update(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role Id"
-// @Success 200 {object} util.ResponseBody
-// @Failure 400 {object} util.ResponseBody
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/role/menus/{roleId} [get]
 func (rc *RoleController) GetRoleMenusById(c *gin.Context) {
 	roleId, _ := strconv.Atoi(c.Param("roleId"))
 	if roleId <= 0 {
-		httpz2.BadRequest(c, "角色ID不正确")
+		httpz.BadRequest(c, "角色ID不正确")
 		return
 	}
 	menus, err := rc.roleService.GetRoleMenusById(uint(roleId))
 	if err != nil {
-		httpz2.ServerError(c, "获取角色的权限菜单失败: "+err.Error())
+		httpz.ServerError(c, "获取角色的权限菜单失败: "+err.Error())
 		return
 	}
-	httpz2.Success(c, menus)
+	httpz.Success(c, menus)
 }
 
 // UpdateRoleMenusById updates the menus for a role by Id
@@ -237,37 +237,37 @@ func (rc *RoleController) GetRoleMenusById(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role Id"
-// @Param menus body dto.IdListRequest true "Update role menus request"
-// @Success 200 {object} util.ResponseBody
-// @Failure 400 {object} util.ResponseBody
+// @Param menus body httpz.IdListRequest true "Update role menus request"
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/role/menus/{roleId} [put]
 func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
-	var req httpz2.IdListRequest
+	var req httpz.IdListRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
-		httpz2.BadRequest(c, err.Error())
+		httpz.BadRequest(c, err.Error())
 		return
 	}
 	// 参数校验
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		httpz2.BadRequest(c, errStr)
+		httpz.BadRequest(c, errStr)
 		return
 	}
 	// 获取path中的roleId
 	roleId, _ := strconv.Atoi(c.Param("roleId"))
 	if roleId <= 0 {
-		httpz2.BadRequest(c, "角色ID不正确")
+		httpz.BadRequest(c, "角色ID不正确")
 		return
 	}
 	// 根据path中的角色Id获取该角色信息
 	roles, err := rc.roleService.GetRolesByIds([]uint{uint(roleId)})
 	if err != nil {
-		httpz2.ServerError(c, err.Error())
+		httpz.ServerError(c, err.Error())
 		return
 	}
 	if len(roles) == 0 {
-		httpz2.ServerError(c, "未获取到角色信息")
+		httpz.ServerError(c, "未获取到角色信息")
 		return
 	}
 
@@ -275,14 +275,14 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 	//ur := service.NewUserService()
 	minSort, ctxUser, err := rc.userService.GetCurrentUserMinRoleSort(c)
 	if err != nil {
-		httpz2.ServerError(c, err.Error())
+		httpz.ServerError(c, err.Error())
 		return
 	}
 
 	// (非管理员)不能更新比自己角色等级高或相等角色的权限菜单
 	if minSort != 1 {
 		if minSort >= roles[0].Sort {
-			httpz2.ServerError(c, "不能更新比自己角色等级高或相等角色的权限菜单")
+			httpz.ServerError(c, "不能更新比自己角色等级高或相等角色的权限菜单")
 			return
 		}
 	}
@@ -291,7 +291,7 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 	mr := service.NewMenuService()
 	ctxUserMenus, err := mr.GetUserMenusByUserId(ctxUser.Id)
 	if err != nil {
-		httpz2.ServerError(c, "获取当前用户的可访问菜单列表失败: "+err.Error())
+		httpz.ServerError(c, "获取当前用户的可访问菜单列表失败: "+err.Error())
 		return
 	}
 
@@ -311,7 +311,7 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 	if minSort != 1 {
 		for _, id := range menuIds {
 			if !slices.Contains(ctxUserMenusIds, id) {
-				httpz2.ServerError(c, fmt.Sprintf("无权设置ID为%d的菜单", id))
+				httpz.ServerError(c, fmt.Sprintf("无权设置ID为%d的菜单", id))
 				return
 			}
 		}
@@ -329,7 +329,7 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 		// 根据menuIds查询查询菜单
 		menus, err := mr.GetMenus()
 		if err != nil {
-			httpz2.ServerError(c, "获取菜单列表失败: "+err.Error())
+			httpz.ServerError(c, "获取菜单列表失败: "+err.Error())
 			return
 		}
 		for _, menuId := range menuIds {
@@ -345,11 +345,11 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 
 	err = rc.roleService.UpdateRoleMenus(&roles[0])
 	if err != nil {
-		httpz2.ServerError(c, "更新角色的权限菜单失败: "+err.Error())
+		httpz.ServerError(c, "更新角色的权限菜单失败: "+err.Error())
 		return
 	}
 
-	httpz2.Success(c, nil)
+	httpz.Success(c, nil)
 
 }
 
@@ -361,31 +361,31 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role Id"
-// @Success 200 {object} util.ResponseBody
-// @Failure 400 {object} util.ResponseBody
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/role/apis/{roleId} [get]
 func (rc *RoleController) GetRoleApisById(c *gin.Context) {
 	roleId, _ := strconv.Atoi(c.Param("roleId"))
 	if roleId <= 0 {
-		httpz2.BadRequest(c, "角色ID不正确")
+		httpz.BadRequest(c, "角色ID不正确")
 		return
 	}
 	roles, err := rc.roleService.GetRolesByIds([]uint{uint(roleId)})
 	if err != nil {
-		httpz2.ServerError(c, err.Error())
+		httpz.ServerError(c, err.Error())
 		return
 	}
 	if len(roles) == 0 {
-		httpz2.ServerError(c, "未获取到角色信息")
+		httpz.ServerError(c, "未获取到角色信息")
 		return
 	}
 	keyword := roles[0].Keyword
 	apis, err := rc.roleService.GetRoleApisByRoleKeyword(keyword)
 	if err != nil {
-		httpz2.ServerError(c, err.Error())
+		httpz.ServerError(c, err.Error())
 		return
 	}
-	httpz2.Success(c, apis)
+	httpz.Success(c, apis)
 }
 
 // UpdateRoleApisById updates the APIs for a role by Id
@@ -396,44 +396,44 @@ func (rc *RoleController) GetRoleApisById(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param roleId path int true "Role Id"
-// @Param apis body dto.IdListRequest true "Update role APIs request"
-// @Success 200 {object} util.ResponseBody
-// @Failure 400 {object} util.ResponseBody
+// @Param apis body httpz.IdListRequest true "Update role APIs request"
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/role/apis/{roleId} [put]
 func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
-	var req httpz2.IdListRequest
+	var req httpz.IdListRequest
 	if err := c.ShouldBind(&req); err != nil {
-		httpz2.BadRequest(c, err.Error())
+		httpz.BadRequest(c, err.Error())
 		return
 	}
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		httpz2.BadRequest(c, errStr)
+		httpz.BadRequest(c, errStr)
 		return
 	}
 	roleId, _ := strconv.Atoi(c.Param("roleId"))
 	if roleId <= 0 {
-		httpz2.BadRequest(c, "角色ID不正确")
+		httpz.BadRequest(c, "角色ID不正确")
 		return
 	}
 	roles, err := rc.roleService.GetRolesByIds([]uint{uint(roleId)})
 	if err != nil {
-		httpz2.ServerError(c, err.Error())
+		httpz.ServerError(c, err.Error())
 		return
 	}
 	if len(roles) == 0 {
-		httpz2.ServerError(c, "未获取到角色信息")
+		httpz.ServerError(c, "未获取到角色信息")
 		return
 	}
 	//ur := service.NewUserService()
 	minSort, ctxUser, err := rc.userService.GetCurrentUserMinRoleSort(c)
 	if err != nil {
-		httpz2.ServerError(c, err.Error())
+		httpz.ServerError(c, err.Error())
 		return
 	}
 	if minSort != 1 {
 		if minSort >= roles[0].Sort {
-			httpz2.ServerError(c, "不能更新比自己角色等级高或相等角色的权限接口")
+			httpz.ServerError(c, "不能更新比自己角色等级高或相等角色的权限接口")
 			return
 		}
 	}
@@ -442,7 +442,7 @@ func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
 	for _, role := range ctxRoles {
 		policy, err2 := config.CasbinEnforcer.GetFilteredPolicy(0, role.Keyword)
 		if err2 != nil {
-			httpz2.ServerError(c, "获取当前用户的角色关键字关联的权限接口失败")
+			httpz.ServerError(c, "获取当前用户的角色关键字关联的权限接口失败")
 			return
 		}
 		ctxRolesPolicies = append(ctxRolesPolicies, policy...)
@@ -454,7 +454,7 @@ func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
 	ar := service.NewApiService()
 	apis, err := ar.GetApisById(apiIds)
 	if err != nil {
-		httpz2.ServerError(c, "根据接口ID获取接口信息失败")
+		httpz.ServerError(c, "根据接口ID获取接口信息失败")
 		return
 	}
 	reqRolePolicies := make([][]string, 0)
@@ -466,17 +466,17 @@ func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
 	if minSort != 1 {
 		for _, reqPolicy := range reqRolePolicies {
 			if !funk.Contains(ctxRolesPolicies, reqPolicy) {
-				httpz2.ServerError(c, fmt.Sprintf("无权设置路径为%s,请求方式为%s的接口", reqPolicy[1], reqPolicy[2]))
+				httpz.ServerError(c, fmt.Sprintf("无权设置路径为%s,请求方式为%s的接口", reqPolicy[1], reqPolicy[2]))
 				return
 			}
 		}
 	}
 	err = rc.roleService.UpdateRoleApis(roles[0].Keyword, reqRolePolicies)
 	if err != nil {
-		httpz2.ServerError(c, err.Error())
+		httpz.ServerError(c, err.Error())
 		return
 	}
-	httpz2.Success(c, nil)
+	httpz.Success(c, nil)
 }
 
 // BatchDeleteRoleByIds deletes multiple roles by their Ids
@@ -486,42 +486,42 @@ func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param roleIds body dto.IdListRequest true "BatchDelete role request"
-// @Success 200 {object} util.ResponseBody
-// @Failure 400 {object} util.ResponseBody
+// @Param roleIds body httpz.IdListRequest true "BatchDelete role request"
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/role/index [delete]
 func (rc *RoleController) BatchDeleteRoleByIds(c *gin.Context) {
-	var req httpz2.IdListRequest
+	var req httpz.IdListRequest
 	if err := c.ShouldBind(&req); err != nil {
-		httpz2.BadRequest(c, err.Error())
+		httpz.BadRequest(c, err.Error())
 		return
 	}
 	minSort, _, err := rc.userService.GetCurrentUserMinRoleSort(c)
 	if err != nil {
-		httpz2.ServerError(c, err.Error())
+		httpz.ServerError(c, err.Error())
 		return
 	}
 	roleIds := req.Ids
 	roles, err := rc.roleService.GetRolesByIds(roleIds)
 	if err != nil {
-		httpz2.ServerError(c, "获取角色信息失败: "+err.Error())
+		httpz.ServerError(c, "获取角色信息失败: "+err.Error())
 		return
 	}
 	if len(roles) == 0 {
-		httpz2.ServerError(c, "未获取到角色信息")
+		httpz.ServerError(c, "未获取到角色信息")
 		return
 	}
 	for _, role := range roles {
 		if minSort >= role.Sort {
-			httpz2.ServerError(c, "不能删除比自己角色等级高或相等的角色")
+			httpz.ServerError(c, "不能删除比自己角色等级高或相等的角色")
 			return
 		}
 	}
 	err = rc.roleService.BatchDeleteRoleByIds(roleIds)
 	if err != nil {
-		httpz2.ServerError(c, "删除角色失败")
+		httpz.ServerError(c, "删除角色失败")
 		return
 	}
 	rc.userService.ClearUserInfoCache()
-	httpz2.Success(c, nil)
+	httpz.Success(c, nil)
 }

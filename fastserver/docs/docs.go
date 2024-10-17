@@ -86,13 +86,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -131,13 +131,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -168,7 +168,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.IdListRequest"
+                            "$ref": "#/definitions/httpz.IdListRequest"
                         }
                     }
                 ],
@@ -176,13 +176,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -230,13 +230,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -268,13 +268,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -342,13 +342,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -379,7 +379,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.IdListRequest"
+                            "$ref": "#/definitions/httpz.IdListRequest"
                         }
                     }
                 ],
@@ -387,13 +387,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -434,13 +434,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -471,7 +471,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.IdListRequest"
+                            "$ref": "#/definitions/httpz.IdListRequest"
                         }
                     }
                 ],
@@ -479,13 +479,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -533,13 +533,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -571,13 +571,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -616,13 +616,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -661,13 +661,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -699,13 +699,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -744,13 +744,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -788,7 +788,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.IdListRequest"
+                            "$ref": "#/definitions/httpz.IdListRequest"
                         }
                     }
                 ],
@@ -796,13 +796,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -858,13 +858,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -903,13 +903,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -940,7 +940,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.IdListRequest"
+                            "$ref": "#/definitions/httpz.IdListRequest"
                         }
                     }
                 ],
@@ -948,13 +948,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -1002,13 +1002,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -1047,13 +1047,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -1091,7 +1091,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.IdListRequest"
+                            "$ref": "#/definitions/httpz.IdListRequest"
                         }
                     }
                 ],
@@ -1099,13 +1099,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -1225,13 +1225,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -1272,13 +1272,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -1317,13 +1317,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -1354,7 +1354,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.IdListRequest"
+                            "$ref": "#/definitions/httpz.IdListRequest"
                         }
                     }
                 ],
@@ -1362,13 +1362,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -1416,13 +1416,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -1454,13 +1454,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.ResponseBody"
+                            "$ref": "#/definitions/httpz.ResponseBody"
                         }
                     }
                 }
@@ -1788,7 +1788,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.IdListRequest": {
+        "httpz.IdListRequest": {
             "type": "object",
             "properties": {
                 "Ids": {
@@ -1837,7 +1837,7 @@ const docTemplate = `{
                 }
             }
         },
-        "util.ResponseBody": {
+        "httpz.ResponseBody": {
             "type": "object",
             "properties": {
                 "Code": {

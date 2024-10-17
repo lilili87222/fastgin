@@ -1,231 +1,255 @@
 <template>
-  <div>
+  <div class="app-container">
     <el-card class="container-card" shadow="always">
-      <el-form size="mini" :inline="true" :model="params" class="demo-form-inline">
-        <el-form-item label="请求人">
-          <el-input v-model.trim="params.username" clearable placeholder="请求人" @clear="search" />
-        </el-form-item>
-        <el-form-item label="IP地址">
-          <el-input v-model.trim="params.ip" clearable placeholder="IP地址" @clear="search" />
-        </el-form-item>
-        <el-form-item label="请求路径">
-          <el-input v-model.trim="params.path" clearable placeholder="请求路径" @clear="search" />
-        </el-form-item>
-        <el-form-item label="请求状态">
-          <el-input v-model.trim="params.status" clearable placeholder="请求状态" @clear="search" />
-        </el-form-item>
-        <el-form-item>
-          <el-button :loading="loading" icon="el-icon-search" type="primary" @click="search">查询</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">批量删除</el-button>
-        </el-form-item>
-      </el-form>
-
-      <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center" />
-        <el-table-column show-overflow-tooltip sortable prop="username" label="请求人" />
-        <el-table-column show-overflow-tooltip sortable prop="ip" label="IP地址" />
-        <el-table-column show-overflow-tooltip sortable prop="path" label="请求路径" />
-        <el-table-column show-overflow-tooltip sortable prop="status" label="请求状态" align="center">
-          <template slot-scope="scope">
-            <el-tag size="small" :type="scope.row.status | statusTagFilter" disable-transitions>{{ scope.row.status }}</el-tag>
+      <SearchForm
+        :searchColumn="searchColumn"
+        :searchAction="searchAction"
+        @onClear="onClear"
+        @onDelete="onDelete"
+        @onSearch="onSearch"
+      ></SearchForm>
+      <el-table
+        border
+        v-loading="loading"
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
+        stripe
+        :data="tableData"
+      >
+        <el-table-column type="selection" min-width="55" align="center" />
+        <el-table-column
+          v-for="item in tableColumn"
+          :prop="item.prop"
+          :min-width="item.minWidth"
+          sortable
+          :label="item.label"
+          align="center"
+        >
+          <template #default="scope">
+            <template v-if="item.prop === 'Status'">
+              <el-tag
+                :type="statusTagFilter(scope.row.Status)"
+                disable-transitions
+                >{{ scope.row.Status }}</el-tag
+              >
+            </template>
+            <template v-else-if="item.prop === 'TimeCost'">
+              <el-tag
+                :type="timeCostTagFilter(scope.row.TimeCost)"
+                disable-transitions
+                >{{ scope.row.TimeCost }}</el-tag
+              >
+            </template>
+            <template v-else-if="item.prop === 'StartTime'">
+              {{ parseGoTime(scope.row.StartTime) }}
+            </template>
+            <template v-else>
+              {{ scope.row[item.prop] }}
+            </template>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip sortable prop="startTime" label="发起时间">
-          <template slot-scope="scope">
-            {{ parseGoTime(scope.row.startTime) }}
-          </template>
-        </el-table-column>
-        <el-table-column show-overflow-tooltip sortable prop="timeCost" label="请求耗时(ms)" align="center">
-          <template slot-scope="scope">
-            <el-tag size="small" :type="scope.row.timeCost | timeCostTagFilter" disable-transitions>{{ scope.row.timeCost }}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column show-overflow-tooltip sortable prop="desc" label="说明" />
-        <el-table-column fixed="right" label="操作" align="center" width="80">
-          <template slot-scope="scope">
-            <el-tooltip content="删除" effect="dark" placement="top">
-              <el-popconfirm title="确定删除吗？" @onConfirm="singleDelete(scope.row.ID)">
-                <el-button slot="reference" size="mini" icon="el-icon-delete" circle type="danger" />
-              </el-popconfirm>
-            </el-tooltip>
+        <el-table-column
+          fixed="right"
+          label="操作"
+          align="center"
+          min-width="100"
+        >
+          <template #default="scope">
+            <el-popconfirm
+              title="确定删除吗？"
+              @confirm="singleDelete(scope.row.Id)"
+            >
+              <template #reference>
+                <el-button type="danger" class="custom-btn">删除</el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
 
-      <el-pagination
-        :current-page="params.pageNum"
-        :page-size="params.pageSize"
+      <Pagination
+        v-show="total > 0"
         :total="total"
-        :page-sizes="[1, 5, 10, 30]"
-        layout="total, prev, pager, next, sizes"
-        background
-        style="margin-top: 10px;float:right;margin-bottom: 10px;"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
+        v-model:page="params.PageNum"
+        v-model:limit="params.PageSize"
+        @pagination="onPaginaion"
+      ></Pagination>
     </el-card>
   </div>
 </template>
 
-<script>
-import { getOperationLogs, batchDeleteOperationLogByIds } from '@/api/log/operationLog'
-import { parseGoTime } from '@/utils/index'
+<script setup lang="ts">
+import { computed, onMounted, ref } from "vue";
+import {
+  getOperationLogs,
+  batchDeleteOperationLogByIds,
+} from "@/api/log/operationLog.js";
+import SearchForm from "@/components/SearchForm/index.vue";
+import Pagination from "@/components/Pagination/index.vue";
+import type { TLogs, TLogsQuery } from "@/types/log/operation-log";
+import { parseGoTime } from "@/utils/index";
 
-export default {
-  name: 'OperationLog',
-  filters: {
-    statusTagFilter(val) {
-      if (val === 200) {
-        return 'success'
-      } else if (val === 400) {
-        return 'warning'
-      } else if (val === 401) {
-        return 'danger'
-      } else if (val === 403) {
-        return 'danger'
-      } else if (val === 500) {
-        return 'danger'
-      } else {
-        return 'info'
-      }
-    },
-    timeCostTagFilter(val) {
-      if (val <= 200) {
-        return 'success'
-      } else if (val > 200 && val <= 1000) {
-        return ''
-      } else if (val > 1000 && val <= 2000) {
-        return 'warning'
-      } else {
-        return 'danger'
-      }
-    }
+const searchColumn = [
+  { prop: "user_name", label: "请求人", placeholder: "请求人" },
+  { prop: "ip", label: "IP地址", placeholder: "IP地址" },
+  { prop: "path", label: "请求路径", placeholder: "请求路径" },
+  { prop: "status", label: "请求状态", placeholder: "请求状态" },
+];
+
+const tableColumn = [
+  { prop: "UserName", label: "请求人", minWidth: 95 },
+  { prop: "Ip", label: "IP地址", minWidth: 105 },
+  { prop: "Path", label: "请求路径", minWidth: 105 },
+  { prop: "Status", label: "请求状态", minWidth: 105 },
+  { prop: "StartTime", label: "发起时间", minWidth: 105 },
+  { prop: "TimeCost", label: "请求耗时", minWidth: 105 },
+  { prop: "Desc", label: "说明", minWidth: 80 },
+];
+
+// 查询参数
+const params = ref<TLogsQuery>({
+  PageNum: 1,
+  PageSize: 10,
+});
+
+// 表格数据
+const tableData = ref<TLogs[]>([]);
+const total = ref(0);
+const loading = ref(false);
+
+onMounted(() => {
+  getTableData();
+});
+
+// 获取表格数据
+const getTableData = () => {
+  loading.value = true;
+  getOperationLogs(params.value)
+    .then((res) => {
+      const { Data } = res;
+      tableData.value = Data.Data;
+      total.value = Data.Total;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
+};
+
+// 表格多选
+const multipleSelection = ref<TLogs[]>([]);
+
+const searchAction = computed(() => [
+  { label: "查询", event: "search", type: "primary" },
+  {
+    label: "批量删除",
+    event: "delete",
+    type: "danger",
+    disable: multipleSelection.value.length === 0,
   },
-  data() {
-    return {
-      // 查询参数
-      params: {
-        username: '',
-        ip: '',
-        path: '',
-        status: '',
-        pageNum: 1,
-        pageSize: 10
-      },
-      // 表格数据
-      tableData: [],
-      total: 0,
-      loading: false,
+]);
 
-      // 删除按钮弹出框
-      popoverVisible: false,
-      // 表格多选
-      multipleSelection: []
-    }
-  },
-  created() {
-    this.getTableData()
-  },
-  methods: {
-    parseGoTime,
-    // 查询
-    search() {
-      this.params.pageNum = 1
-      this.getTableData()
-    },
+//切换页面
+const onPaginaion = (val: any) => {
+  params.value.PageNum = val.page;
+  params.value.PageSize = val.limit;
+  getTableData();
+};
 
-    // 获取表格数据
-    async getTableData() {
-      this.loading = true
-      try {
-        const { data } = await getOperationLogs(this.params)
-        this.tableData = data.logs
-        this.total = data.total
-      } finally {
-        this.loading = false
-      }
-    },
+//清空
+const onClear = (form: TLogsQuery) => {
+  params.value = form;
+  params.value.PageNum = 1;
+  params.value.PageSize = 10;
+  getTableData();
+};
 
-    // 批量删除
-    batchDelete() {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(async res => {
-        this.loading = true
-        const operationLogIds = []
-        this.multipleSelection.forEach(x => {
-          operationLogIds.push(x.ID)
-        })
-        let msg = ''
-        try {
-          const { message } = await batchDeleteOperationLogByIds({ operationLogIds: operationLogIds })
-          msg = message
-        } finally {
-          this.loading = false
-        }
+//搜索
+const onSearch = (form: TLogsQuery) => {
+  params.value = form;
+  params.value.PageNum = 1;
+  params.value.PageSize = 10;
+  getTableData();
+};
 
-        this.getTableData()
-        this.$message({
-          showClose: true,
-          message: msg,
-          type: 'success'
-        })
-      }).catch(() => {
-        this.$message({
-          showClose: true,
-          type: 'info',
-          message: '已取消删除'
-        })
+//批量删除
+const onDelete = () => {
+  ElMessageBox.confirm("此操作将永久删除, 是否继续?", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(() => {
+      loading.value = true;
+      const Ids: number[] = [];
+      multipleSelection.value.forEach((x: any) => {
+        Ids.push(x.Id);
+      });
+      batchDeleteOperationLogByIds({
+        Ids,
       })
-    },
+        .then((res) => {
+          getTableData();
+          ElMessage.success(res.Message);
+        })
+        .finally(() => {
+          loading.value = false;
+        });
+    })
+    .catch(() => {
+      ElMessage.info("已取消删除");
+    });
+};
 
-    // 表格多选
-    handleSelectionChange(val) {
-      this.multipleSelection = val
-    },
-
-    // 单个删除
-    async singleDelete(Id) {
-      this.loading = true
-      let msg = ''
-      try {
-        const { message } = await batchDeleteOperationLogByIds({ operationLogIds: [Id] })
-        msg = message
-      } finally {
-        this.loading = false
-      }
-
-      this.getTableData()
-      this.$message({
-        showClose: true,
-        message: msg,
-        type: 'success'
-      })
-    },
-
-    // 分页
-    handleSizeChange(val) {
-      this.params.pageSize = val
-      this.getTableData()
-    },
-    handleCurrentChange(val) {
-      this.params.pageNum = val
-      this.getTableData()
-    }
+const statusTagFilter = (val: number) => {
+  switch (val) {
+    case 200:
+      return "success";
+    case 400:
+    case 401:
+    case 403:
+    case 500:
+      return "danger";
+    default:
+      return "info";
   }
-}
+};
+const timeCostTagFilter = (val: number) => {
+  if (val <= 200) {
+    return "success";
+  } else if (val > 200 && val <= 1000) {
+    return "";
+  } else if (val > 1000 && val <= 2000) {
+    return "warning";
+  } else {
+    return "danger";
+  }
+};
+
+// 表格多选
+const handleSelectionChange = (val: TLogs[]) => {
+  multipleSelection.value = val;
+};
+
+// 单个删除
+const singleDelete = (Id: number) => {
+  loading.value = true;
+  batchDeleteOperationLogByIds({
+    Ids: [Id],
+  })
+    .then((res) => {
+      getTableData();
+      ElMessage.success(res.Message);
+    })
+    .finally(() => (loading.value = false));
+};
 </script>
 
 <style scoped>
-  .container-card{
-    margin: 10px;
-  }
+.container-card {
+  margin: 10px;
+}
 
-  .delete-popover{
-    margin-left: 10px;
-  }
+.delete-popover {
+  margin-left: 10px;
+}
 </style>

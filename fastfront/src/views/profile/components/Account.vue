@@ -1,192 +1,91 @@
 <template>
-  <div>
-    <el-card style="margin-bottom:20px;max-width: 580px;">
-      <div slot="header" class="clearfix">
-        <span>修改账户密码</span>
-      </div>
-
-      <el-form ref="dialogForm" size="small" :model="dialogFormData" :rules="dialogFormRules" label-width="100px">
-
-        <el-form-item label="原密码" prop="oldPassword">
-          <el-input v-model.trim="dialogFormData.oldPassword" autocomplete="on" :type="passwordTypeOld" placeholder="请输入原密码" />
-          <span class="show-pwd" @click="showPwdOld">
-            <svg-icon :icon-class="passwordTypeOld === 'password' ? 'eye' : 'eye-open'" />
-          </span>
-        </el-form-item>
-
-        <el-form-item label="新密码" prop="newPassword">
-          <el-input v-model.trim="dialogFormData.newPassword" autocomplete="on" :type="passwordTypeNew" placeholder="请输入新密码" />
-          <span class="show-pwd" @click="showPwdNew">
-            <svg-icon :icon-class="passwordTypeNew === 'password' ? 'eye' : 'eye-open'" />
-          </span>
-        </el-form-item>
-
-        <el-form-item label="确认密码" prop="confirmPassword">
-          <el-input v-model.trim="dialogFormData.confirmPassword" autocomplete="on" :type="passwordTypeConfirm" placeholder="请确认新密码" />
-          <span class="show-pwd" @click="showPwdConfirm">
-            <svg-icon :icon-class="passwordTypeConfirm === 'password' ? 'eye' : 'eye-open'" />
-          </span>
-        </el-form-item>
-
-        <el-form-item>
-          <el-button :loading="submitLoading" type="primary" @click="submitForm">确定</el-button>
-          <el-button @click="cancelForm">取消</el-button>
-        </el-form-item>
-
-      </el-form>
-    </el-card>
-  </div>
+  <el-form :model="form" label-width="120px" :rules="rules" ref="formRef">
+    <el-form-item label="用户名">
+      {{ userName }}
+    </el-form-item>
+    <el-form-item label="旧密码" prop="OldPassword">
+      <el-input
+        v-model.trim="form.OldPassword"
+        type="password"
+        placeholder="请输入旧密码"
+      />
+    </el-form-item>
+    <el-form-item label="新密码" prop="newPassword">
+      <el-input
+        v-model.trim="form.newPassword"
+        type="password"
+        placeholder="请输入新密码"
+      />
+    </el-form-item>
+    <el-form-item label="重复密码" prop="confirmPassword">
+      <el-input
+        v-model.trim="form.confirmPassword"
+        type="password"
+        placeholder="请再次输入密码"
+      />
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" @click="submitForm">修改密码</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
-<script>
-import { changePwd } from '@/api/system/user'
-import store from '@/store'
-import JSEncrypt from 'jsencrypt'
+<script setup lang="ts">
+import { ref } from "vue";
+import { ElMessage } from "element-plus";
+import store from "@/store";
+import { changePwd } from "@/api/system/user";
 
-export default {
-  data() {
-    const confirmPass = (rule, value, callback) => {
-      if (value) {
-        if (this.dialogFormData.newPassword !== value) {
-          callback(new Error('两次输入的密码不一致'))
+const formRef = ref();
+const userName = ref(store.user().name); // 模拟获取用户名
+const form = ref({
+  OldPassword: "",
+  confirmPassword: "",
+  newPassword: "",
+});
+
+const rules = ref({
+  OldPassword: [
+    { required: true, message: "请输入旧密码", trigger: "blur" },
+    { min: 6, message: "密码不能少于6位", trigger: "blur" },
+  ],
+  newPassword: [
+    { required: true, message: "请输入新密码", trigger: "blur" },
+    { min: 6, message: "密码不能少于6位", trigger: "blur" },
+  ],
+  confirmPassword: [
+    { required: true, message: "请再次输入密码", trigger: "blur" },
+    {
+      validator: (rule, value, callback) => {
+        if (value === "") {
+          callback(new Error("请再次输入密码"));
+        } else if (value !== form.value.newPassword) {
+          callback(new Error("两次输入的密码不一致"));
         } else {
-          callback()
+          callback();
         }
-      } else {
-        callback(new Error('请再次输入新密码'))
-      }
-    }
-    return {
-      submitLoading: false,
-      dialogFormData: {
-        oldPassword: '',
-        newPassword: '',
-        confirmPassword: ''
       },
-      dialogFormRules: {
-        oldPassword: [
-          { required: true, message: '请输入旧密码', trigger: 'blur' },
-          { min: 6, max: 30, message: '长度在 6 到 30 个字符', trigger: 'blur' }
-        ],
-        newPassword: [
-          { required: true, message: '请输入新密码', trigger: 'blur' },
-          { min: 6, max: 30, message: '长度在 6 到 30 个字符', trigger: 'blur' }
-        ],
-        confirmPassword: [
-          { required: true, validator: confirmPass, trigger: 'blur' }
-        ]
-      },
-      publicKey: `-----BEGIN PUBLIC KEY-----
-MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDbOYcY8HbDaNM9ooYXoc9s+R5o
-R05ZL1BsVKadQBgOVH/kj7PQuD+ABEFVgB6rJNi287fRuZeZR+MCoG72H+AYsAhR
-sEaB5SuI7gDEstXuTyjhx5bz0wUujbDK4VMgRfPO6MQo+A0c95OadDEvEQDG3KBQ
-wLXapv+ZfsjG7NgdawIDAQAB
------END PUBLIC KEY-----`,
-      passwordTypeOld: 'password',
-      passwordTypeNew: 'password',
-      passwordTypeConfirm: 'password'
+      trigger: "blur",
+    },
+  ],
+});
+
+const submitForm = () => {
+  formRef.value.validate((valid: boolean) => {
+    if (valid) {
+      changePwd(form.value).then((res) => {
+        console.log(res);
+        ElMessage({
+          message: "用户信息已成功更新",
+          type: "success",
+          duration: 5000,
+        });
+        setTimeout(async () => {
+          await store.user().logout();
+          location.reload(); // 为了重新实例化vue-router对象 避免bug
+        }, 1500);
+      });
     }
-  },
-  methods: {
-    submitForm() {
-      this.$refs['dialogForm'].validate(async valid => {
-        if (valid) {
-          this.dialogFormDataCopy = { ...this.dialogFormData }
-
-          // 密码RSA加密处理
-          const encryptor = new JSEncrypt()
-          // 设置公钥
-          encryptor.setPublicKey(this.publicKey)
-          // 加密密码
-          //const oldPasswd = encryptor.encrypt(this.dialogFormData.oldPassword)
-         // const newPasswd = encryptor.encrypt(this.dialogFormData.newPassword)
-         // const confirmPasswd = encryptor.encrypt(this.dialogFormData.confirmPassword)
-
-          const oldPasswd = this.dialogFormData.oldPassword
-          const newPasswd = this.dialogFormData.newPassword
-          const confirmPasswd = this.dialogFormData.confirmPassword
-          this.dialogFormDataCopy.oldPassword = oldPasswd
-          this.dialogFormDataCopy.newPassword = newPasswd
-          this.dialogFormDataCopy.confirmPassword = confirmPasswd
-
-          this.submitLoading = true
-          const { code, message } = await changePwd(this.dialogFormDataCopy)
-
-          this.submitLoading = false
-          if (code !== 200) {
-            return this.$message({
-              showClose: true,
-              message: message,
-              type: 'error'
-            })
-          }
-          this.resetForm()
-          this.$message({
-            showClose: true,
-            message: '密码修改成功，请重新登录',
-            type: 'success'
-          })
-          // 重新登录
-          setTimeout(() => {
-            store.dispatch('user/logout').then(() => {
-              location.reload() // 为了重新实例化vue-router对象 避免bug
-            })
-          }, 1500)
-        } else {
-          this.$message({
-            showClose: true,
-            message: '表单校验失败',
-            type: 'error'
-          })
-          return false
-        }
-      })
-    },
-    cancelForm() {
-      this.resetForm()
-    },
-    resetForm() {
-      this.$refs['dialogForm'].resetFields()
-      this.dialogFormData = {
-        oldPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-      }
-    },
-    showPwdOld() {
-      if (this.passwordTypeOld === 'password') {
-        this.passwordTypeOld = ''
-      } else {
-        this.passwordTypeOld = 'password'
-      }
-    },
-    showPwdNew() {
-      if (this.passwordTypeNew === 'password') {
-        this.passwordTypeNew = ''
-      } else {
-        this.passwordTypeNew = 'password'
-      }
-    },
-    showPwdConfirm() {
-      if (this.passwordTypeConfirm === 'password') {
-        this.passwordTypeConfirm = ''
-      } else {
-        this.passwordTypeConfirm = 'password'
-      }
-    }
-  }
-}
+  });
+};
 </script>
-
-<style scoped>
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 3px;
-    font-size: 16px;
-    color: #889aa4;
-    cursor: pointer;
-    user-select: none;
-  }
-
-</style>

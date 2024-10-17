@@ -13,10 +13,22 @@ type DictionaryController struct {
 	service *service.DictionaryService
 }
 
+// NewDictionaryController creates a new DictionaryController
 func NewDictionaryController() *DictionaryController {
 	return &DictionaryController{service: service.NewDictionaryService()}
 }
 
+// Create godoc
+// @Summary Create a new dictionary entry
+// @Description Create a new dictionary entry
+// @Tags Dictionary
+// @Accept json
+// @Produce json
+// @Param dictionary body model.Dictionary true "Dictionary entry"
+// @Success 200 {object} model.Dictionary
+// @Failure 400 {object} httpz.ResponseBody
+// @Failure 500 {object} httpz.ResponseBody
+// @Router /dictionary/index [post]
 func (ctrl *DictionaryController) Create(c *gin.Context) {
 	var entity model.Dictionary
 	if err := c.ShouldBindJSON(&entity); err != nil {
@@ -30,6 +42,16 @@ func (ctrl *DictionaryController) Create(c *gin.Context) {
 	httpz.Success(c, entity)
 }
 
+// GetByID godoc
+// @Summary Get a dictionary entry by ID
+// @Description Get a dictionary entry by ID
+// @Tags Dictionary
+// @Produce json
+// @Param id path int true "Dictionary ID"
+// @Success 200 {object} model.Dictionary
+// @Failure 400 {object} httpz.ResponseBody
+// @Failure 500 {object} httpz.ResponseBody
+// @Router /dictionary/index/{id} [get]
 func (ctrl *DictionaryController) GetByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -44,6 +66,18 @@ func (ctrl *DictionaryController) GetByID(c *gin.Context) {
 	httpz.Success(c, entity)
 }
 
+// Update godoc
+// @Summary Update a dictionary entry
+// @Description Update a dictionary entry
+// @Tags Dictionary
+// @Accept json
+// @Produce json
+// @Param id path int true "Dictionary ID"
+// @Param dictionary body model.Dictionary true "Dictionary entry"
+// @Success 200 {object} model.Dictionary
+// @Failure 400 {object} httpz.ResponseBody
+// @Failure 500 {object} httpz.ResponseBody
+// @Router /dictionary/index/{id} [patch]
 func (ctrl *DictionaryController) Update(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -63,6 +97,16 @@ func (ctrl *DictionaryController) Update(c *gin.Context) {
 	httpz.Success(c, entity)
 }
 
+// Delete godoc
+// @Summary Delete a dictionary entry
+// @Description Delete a dictionary entry
+// @Tags Dictionary
+// @Produce json
+// @Param id path int true "Dictionary ID"
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
+// @Failure 500 {object} httpz.ResponseBody
+// @Router /dictionary/index/{id} [delete]
 func (ctrl *DictionaryController) Delete(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -76,6 +120,17 @@ func (ctrl *DictionaryController) Delete(c *gin.Context) {
 	httpz.Success(c, nil)
 }
 
+// List godoc
+// @Summary List dictionary entries
+// @Description List dictionary entries
+// @Tags Dictionary
+// @Produce json
+// @Param page query int false "Page number"
+// @Param size query int false "Page size"
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
+// @Failure 500 {object} httpz.ResponseBody
+// @Router /dictionary/index [get]
 func (ctrl *DictionaryController) List(c *gin.Context) {
 	params, e := httpz.GetFormData(c)
 	if e != nil {
@@ -90,6 +145,18 @@ func (ctrl *DictionaryController) List(c *gin.Context) {
 	}
 	httpz.Success(c, gin.H{"Data": data, "Total": total, "PageNum": sr.PageNum, "PageSize": sr.PageSize})
 }
+
+// DeleteBatch godoc
+// @Summary Batch delete dictionary entries
+// @Description Batch delete dictionary entries
+// @Tags Dictionary
+// @Accept json
+// @Produce json
+// @Param ids body httpz.IdListRequest true "List of dictionary IDs"
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
+// @Failure 500 {object} httpz.ResponseBody
+// @Router /dictionary/index [delete]
 func (ctrl *DictionaryController) DeleteBatch(c *gin.Context) {
 	var req httpz.IdListRequest
 	// 参数绑定

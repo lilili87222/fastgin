@@ -1,7 +1,7 @@
 package controller
 
 import (
-	httpz2 "fastgin/common/httpz"
+	"fastgin/common/httpz"
 	"fastgin/config"
 	"fastgin/database"
 	"fastgin/modules/sys/dto"
@@ -37,21 +37,21 @@ func NewApiController() *ApiController {
 // @Param creator query string false "Creator"
 // @Param PageNum query int false "Page number"
 // @Param PageSize query int false "Page size"
-// @Success 200 {object} util.ResponseBody
-// @Failure 400 {object} util.ResponseBody
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/api/index [get]
 func (ac *ApiController) List(c *gin.Context) {
-	params, e := httpz2.GetFormData(c)
+	params, e := httpz.GetFormData(c)
 	if e != nil {
-		httpz2.BadRequest(c, e.Error())
+		httpz.BadRequest(c, e.Error())
 		return
 	}
-	data, total, err := database.SearchTable[model.Api](httpz2.NewSearchRequest(params))
+	data, total, err := database.SearchTable[model.Api](httpz.NewSearchRequest(params))
 	if err != nil {
-		httpz2.ServerError(c, "获取接口列表失败: "+err.Error())
+		httpz.ServerError(c, "获取接口列表失败: "+err.Error())
 		return
 	}
-	httpz2.Success(c, gin.H{"Data": data, "Total": total})
+	httpz.Success(c, gin.H{"Data": data, "Total": total})
 }
 
 // GetApiTree retrieves the API tree
@@ -61,16 +61,16 @@ func (ac *ApiController) List(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Success 200 {object} util.ResponseBody
-// @Failure 400 {object} util.ResponseBody
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/api/tree [get]
 func (ac *ApiController) GetApiTree(c *gin.Context) {
 	tree, err := ac.apiService.GetApiTree()
 	if err != nil {
-		httpz2.ServerError(c, "获取接口树失败")
+		httpz.ServerError(c, "获取接口树失败")
 		return
 	}
-	httpz2.Success(c, tree)
+	httpz.Success(c, tree)
 }
 
 // Create creates a new API
@@ -81,24 +81,24 @@ func (ac *ApiController) GetApiTree(c *gin.Context) {
 // @Produce json
 // @Param Authorization header string true "Bearer token"
 // @Param api body dto.CreateApiRequest true "Create API request"
-// @Success 200 {object} util.ResponseBody
-// @Failure 400 {object} util.ResponseBody
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/api/index [post]
 func (ac *ApiController) Create(c *gin.Context) {
 	var req dto.CreateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
-		httpz2.BadRequest(c, err.Error())
+		httpz.BadRequest(c, err.Error())
 		return
 	}
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		httpz2.BadRequest(c, errStr)
+		httpz.BadRequest(c, errStr)
 		return
 	}
 	//ur := service.NewUserService()
 	ctxUser, err := ac.userService.GetCurrentUser(c)
 	if err != nil {
-		httpz2.ServerError(c, "获取当前用户信息失败")
+		httpz.ServerError(c, "获取当前用户信息失败")
 		return
 	}
 	api := model.Api{
@@ -112,10 +112,10 @@ func (ac *ApiController) Create(c *gin.Context) {
 	//api.Creator = ctxUser.UserName
 	err = ac.apiService.CreateApi(&api)
 	if err != nil {
-		httpz2.ServerError(c, "创建接口失败: "+err.Error())
+		httpz.ServerError(c, "创建接口失败: "+err.Error())
 		return
 	}
-	httpz2.Success(c, nil)
+	httpz.Success(c, nil)
 }
 
 // Update updates an existing API by Id
@@ -127,8 +127,8 @@ func (ac *ApiController) Create(c *gin.Context) {
 // @Param Authorization header string true "Bearer token"
 // @Param apiId path int true "API Id"
 // @Param api body dto.CreateApiRequest true "Update API request"
-// @Success 200 {object} util.ResponseBody
-// @Failure 400 {object} util.ResponseBody
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/api/index/{apiId} [put]
 func (ac *ApiController) Update(c *gin.Context) {
 	//type UpdateApiRequest struct {
@@ -139,22 +139,22 @@ func (ac *ApiController) Update(c *gin.Context) {
 	//}
 	var req dto.CreateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
-		httpz2.BadRequest(c, err.Error())
+		httpz.BadRequest(c, err.Error())
 		return
 	}
 	if err := config.Validate.Struct(&req); err != nil {
 		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		httpz2.BadRequest(c, errStr)
+		httpz.BadRequest(c, errStr)
 		return
 	}
 	apiId, _ := strconv.Atoi(c.Param("apiId"))
 	if apiId <= 0 {
-		httpz2.BadRequest(c, "接口ID不正确")
+		httpz.BadRequest(c, "接口ID不正确")
 		return
 	}
 	ctxUser, err := ac.userService.GetCurrentUser(c)
 	if err != nil {
-		httpz2.ServerError(c, "获取当前用户信息失败")
+		httpz.ServerError(c, "获取当前用户信息失败")
 		return
 	}
 	api := model.Api{
@@ -168,10 +168,10 @@ func (ac *ApiController) Update(c *gin.Context) {
 	api.Id = uint(apiId)
 	err = ac.apiService.UpdateApiById(&api)
 	if err != nil {
-		httpz2.ServerError(c, "更新接口失败: "+err.Error())
+		httpz.ServerError(c, "更新接口失败: "+err.Error())
 		return
 	}
-	httpz2.Success(c, nil)
+	httpz.Success(c, nil)
 }
 
 // BatchDelete deletes multiple APIs by their Ids
@@ -181,20 +181,20 @@ func (ac *ApiController) Update(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param apiIds body dto.IdListRequest true "BatchDelete API request"
-// @Success 200 {object} util.ResponseBody
-// @Failure 400 {object} util.ResponseBody
+// @Param apiIds body httpz.IdListRequest true "BatchDelete API request"
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/api/index [delete]
 func (ac *ApiController) BatchDelete(c *gin.Context) {
-	var req httpz2.IdListRequest
+	var req httpz.IdListRequest
 	if err := c.ShouldBind(&req); err != nil {
-		httpz2.BadRequest(c, err.Error())
+		httpz.BadRequest(c, err.Error())
 		return
 	}
 	err := database.DeleteByIds[model.Api](req.Ids)
 	if err != nil {
-		httpz2.ServerError(c, "删除接口失败: "+err.Error())
+		httpz.ServerError(c, "删除接口失败: "+err.Error())
 		return
 	}
-	httpz2.Success(c, nil)
+	httpz.Success(c, nil)
 }

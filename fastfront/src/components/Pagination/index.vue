@@ -1,101 +1,138 @@
 <template>
-  <div :class="{'hidden':hidden}" class="pagination-container">
+  <div :class="{ hidden: hidden }" class="pagination-container">
     <el-pagination
       :background="background"
-      :current-page.sync="currentPage"
-      :page-size.sync="pageSize"
+      v-model:current-page="currentPage"
+      v-model:page-size="PageSize"
       :layout="layout"
-      :page-sizes="pageSizes"
+      :page-sizes="PageSizes"
       :total="total"
       v-bind="$attrs"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
+      :pager-count="5"
     />
   </div>
 </template>
 
 <script>
-import { scrollTo } from '@/utils/scroll-to'
+import { defineComponent } from "vue";
+import { scrollTo } from "@/utils/scroll-to";
 
-export default {
-  name: 'Pagination',
+export default defineComponent({
+  name: "Pagination",
   props: {
     total: {
       required: true,
-      type: Number
+      type: Number,
     },
     page: {
       type: Number,
-      default: 1
+      default: 1,
     },
     limit: {
       type: Number,
-      default: 20
+      default: 20,
     },
-    pageSizes: {
+    PageSizes: {
       type: Array,
       default() {
-        return [10, 20, 30, 50]
-      }
+        return [10, 20, 30, 50];
+      },
     },
     layout: {
       type: String,
-      default: 'total, sizes, prev, pager, next, jumper'
+      default: "total, sizes, prev, pager, next, jumper",
     },
     background: {
       type: Boolean,
-      default: true
+      default: true,
     },
     autoScroll: {
       type: Boolean,
-      default: true
+      default: true,
     },
     hidden: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     currentPage: {
       get() {
-        return this.page
+        return this.page;
       },
       set(val) {
-        this.$emit('update:page', val)
-      }
+        this.$emit("update:page", val);
+      },
     },
-    pageSize: {
+    PageSize: {
       get() {
-        return this.limit
+        return this.limit;
       },
       set(val) {
-        this.$emit('update:limit', val)
-      }
-    }
+        this.$emit("update:limit", val);
+      },
+    },
   },
   methods: {
     handleSizeChange(val) {
-      this.$emit('pagination', { page: this.currentPage, limit: val })
+      this.$emit("pagination", { page: this.currentPage, limit: val });
       if (this.autoScroll) {
-        scrollTo(0, 800)
+        scrollTo(0, 800);
       }
     },
     handleCurrentChange(val) {
-      this.$emit('pagination', { page: val, limit: this.pageSize })
+      this.$emit("pagination", { page: val, limit: this.PageSize });
       if (this.autoScroll) {
-        scrollTo(0, 800)
+        scrollTo(0, 800);
       }
-    }
-  }
-}
+    },
+  },
+});
 </script>
 
 <style scoped>
 .pagination-container {
+  display: flex;
+  justify-content: center;
   background: #fff;
-  padding: 32px 16px;
+  padding: 22px 6px;
 }
 .pagination-container.hidden {
   display: none;
+}
+/* 移动端样式 */
+@media (max-width: 768px) {
+  .pagination-container {
+    padding: 16px 8px; /* 减少内边距 */
+  }
+
+  .el-pagination {
+    font-size: 12px;
+  }
+
+  /* 隐藏不必要的分页组件部分 */
+  :deep(.el-pagination__sizes) {
+    display: none !important; /* 使用 !important 确保样式生效 */
+  }
+  :deep(.el-pagination__total) {
+    display: none !important; /* 使用 !important 确保样式生效 */
+  }
+  :deep(.el-pagination__jump) {
+    display: none !important; /* 使用 !important 确保样式生效 */
+  }
+  .el-pagination__pager {
+    margin: 0 5px;
+  }
+
+  .el-pagination .el-pager li {
+    padding: 0 8px;
+  }
+
+  .el-button {
+    padding: 10px; /* 调整按钮的内边距 */
+    margin: 0 4px; /* 调整按钮的间距 */
+  }
 }
 </style>

@@ -1,7 +1,7 @@
 package controller
 
 import (
-	httpz2 "fastgin/common/httpz"
+	"fastgin/common/httpz"
 	"fastgin/modules/sys/service"
 	"github.com/gin-gonic/gin"
 )
@@ -29,21 +29,21 @@ func NewOperationLogController() *OperationLogController {
 // @Param status query int false "status"
 // @Param PageNum query int false "Page number"
 // @Param PageSize query int false "Page size"
-// @Success 200 {object} util.ResponseBody
-// @Failure 400 {object} util.ResponseBody
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/log/index [get]
 func (oc *OperationLogController) List(c *gin.Context) {
-	params, e := httpz2.GetFormData(c)
+	params, e := httpz.GetFormData(c)
 	if e != nil {
-		httpz2.BadRequest(c, e.Error())
+		httpz.BadRequest(c, e.Error())
 		return
 	}
-	data, total, err := oc.logService.Search(httpz2.NewSearchRequest(params))
+	data, total, err := oc.logService.Search(httpz.NewSearchRequest(params))
 	if err != nil {
-		httpz2.ServerError(c, "获取操作日志列表失败: "+err.Error())
+		httpz.ServerError(c, "获取操作日志列表失败: "+err.Error())
 		return
 	}
-	httpz2.Success(c, gin.H{"Data": data, "Total": total})
+	httpz.Success(c, gin.H{"Data": data, "Total": total})
 }
 
 // BatchDeleteByIds deletes multiple operation logs by their Ids
@@ -53,21 +53,21 @@ func (oc *OperationLogController) List(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param operationLogIds body dto.IdListRequest true "BatchDelete operation log request"
-// @Success 200 {object} util.ResponseBody
-// @Failure 400 {object} util.ResponseBody
+// @Param operationLogIds body httpz.IdListRequest true "BatchDelete operation log request"
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/log/index [delete]
 func (oc *OperationLogController) BatchDeleteByIds(c *gin.Context) {
-	var req httpz2.IdListRequest
+	var req httpz.IdListRequest
 	// 参数绑定
 	if err := c.ShouldBind(&req); err != nil {
-		httpz2.BadRequest(c, err.Error())
+		httpz.BadRequest(c, err.Error())
 		return
 	}
 	err := oc.logService.BatchDelete(req.Ids)
 	if err != nil {
-		httpz2.ServerError(c, "删除日志失败: "+err.Error())
+		httpz.ServerError(c, "删除日志失败: "+err.Error())
 		return
 	}
-	httpz2.Success(c, nil)
+	httpz.Success(c, nil)
 }

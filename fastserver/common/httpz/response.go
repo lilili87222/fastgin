@@ -11,26 +11,6 @@ type ResponseBody struct {
 	Data    any    `json:"Data"`
 }
 
-//func SuccessBody(data any) ResponseBody {
-//	return ResponseBody{
-//		Code:    http.StatusOK,
-//		Message: "Operation is successful",
-//		Data:    data,
-//	}
-//}
-//func BadRequestBody(message string) ResponseBody {
-//	return ResponseBody{
-//		Code:    http.StatusBadRequest,
-//		Message: message,
-//	}
-//}
-//func ServerErrorBody(message string) ResponseBody {
-//	return ResponseBody{
-//		Code:    http.StatusInternalServerError,
-//		Message: message,
-//	}
-//}
-
 // 返回前端
 func Response(c *gin.Context, httpStatus int, data any, message string) {
 	c.JSON(httpStatus, ResponseBody{

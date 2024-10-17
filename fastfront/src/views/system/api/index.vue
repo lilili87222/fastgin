@@ -1,349 +1,262 @@
 <template>
-  <div>
-    <el-card class="container-card" shadow="always">
-      <el-form size="mini" :inline="true" :model="params" class="demo-form-inline">
-        <el-form-item label="访问路径">
-          <el-input v-model.trim="params.path" clearable placeholder="访问路径" @clear="search" />
-        </el-form-item>
-        <el-form-item label="所属类别">
-          <el-input v-model.trim="params.category" clearable placeholder="所属类别" @clear="search" />
-        </el-form-item>
-        <el-form-item label="请求方法">
-          <el-select v-model.trim="params.method" clearable placeholder="请求方式" @change="search" @clear="search">
-            <el-option label="GET[获取资源]" value="GET" />
-            <el-option label="POST[新增资源]" value="POST" />
-            <el-option label="PUT[全部更新]" value="PUT" />
-            <el-option label="PATCH[增量更新]" value="PATCH" />
-            <el-option label="DELETE[删除资源]" value="DELETE" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="创建人">
-          <el-input v-model.trim="params.creator" clearable placeholder="创建人" @clear="search" />
-        </el-form-item>
-        <el-form-item>
-          <el-button :loading="loading" icon="el-icon-search" type="primary" @click="search">查询</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button :loading="loading" icon="el-icon-plus" type="warning" @click="create">新增</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">批量删除</el-button>
-        </el-form-item>
-      </el-form>
+  <div class="app-container">
+    <el-card shadow="always">
+      <SearchForm
+        :searchColumn="searchColumn"
+        :searchAction="searchAction"
+        @onAdd="onAdd"
+        @onClear="onClear"
+        @onDelete="onDelete"
+        @onSearch="onSearch"
+      ></SearchForm>
+      <el-table
+        border
+        v-loading="loading"
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
+        stripe
+        :data="tableData"
+      >
+        <el-table-column type="selection" min-width="55" align="center" />
+        <el-table-column
+          v-for="item in tableColumn"
+          :prop="item.prop"
+          :min-width="item.minWidth"
+          sortable
+          :label="item.label"
+          align="center"
+        >
+          <template #default="scope">
+            <template v-if="item.prop === 'Method'">
+              <el-tag
+                :type="methodsTagFilter(scope.row.Method)"
+                disable-transitions
+                >{{ scope.row.Method }}
+              </el-tag>
+            </template>
 
-      <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center" />
-        <el-table-column show-overflow-tooltip sortable prop="path" label="访问路径" />
-        <el-table-column show-overflow-tooltip sortable prop="category" label="所属类别" />
-        <el-table-column show-overflow-tooltip sortable prop="method" label="请求方式" align="center">
-          <template slot-scope="scope">
-            <el-tag size="small" :type="scope.row.method | methodTagFilter" disable-transitions>{{ scope.row.method }}</el-tag>
+            <template v-else>
+              {{ scope.row[item.prop] }}
+            </template>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip sortable prop="creator" label="创建人" />
-        <el-table-column show-overflow-tooltip sortable prop="desc" label="说明" />
-        <el-table-column fixed="right" label="操作" align="center" width="120">
-          <template slot-scope="scope">
-            <el-tooltip content="编辑" effect="dark" placement="top">
-              <el-button size="mini" icon="el-icon-edit" circle type="primary" @click="update(scope.row)" />
-            </el-tooltip>
-            <el-tooltip class="delete-popover" content="删除" effect="dark" placement="top">
-              <el-popconfirm title="确定删除吗？" @onConfirm="singleDelete(scope.row.ID)">
-                <el-button slot="reference" size="mini" icon="el-icon-delete" circle type="danger" />
-              </el-popconfirm>
-            </el-tooltip>
+        <el-table-column
+          fixed="right"
+          label="操作"
+          align="center"
+          min-width="120"
+        >
+          <template #default="scope">
+            <el-button
+              @click="update(scope.row)"
+              type="primary"
+              class="custom-btn"
+              >编辑</el-button
+            >
+            <el-popconfirm
+              title="确定删除吗？"
+              @confirm="singleDelete(scope.row.Id)"
+            >
+              <template #reference>
+                <el-button type="danger" class="custom-btn">删除</el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
 
-      <el-pagination
-        :current-page="params.pageNum"
-        :page-size="params.pageSize"
+      <Pagination
+        v-show="total > 0"
         :total="total"
-        :page-sizes="[1, 5, 10, 30]"
-        layout="total, prev, pager, next, sizes"
-        background
-        style="margin-top: 10px;float:right;margin-bottom: 10px;"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
-
-      <el-dialog :title="dialogFormTitle" :visible.sync="dialogFormVisible">
-        <el-form ref="dialogForm" size="small" :model="dialogFormData" :rules="dialogFormRules" label-width="120px">
-          <el-form-item label="访问路径" prop="path">
-            <el-input v-model.trim="dialogFormData.path" placeholder="访问路径" />
-          </el-form-item>
-          <el-form-item label="所属类别" prop="category">
-            <el-input v-model.trim="dialogFormData.category" placeholder="所属类别" />
-          </el-form-item>
-          <el-form-item label="请求方式" prop="method">
-            <el-select v-model.trim="dialogFormData.method" placeholder="请选择请求方式">
-              <el-option label="GET[获取资源]" value="GET" />
-              <el-option label="POST[新增资源]" value="POST" />
-              <el-option label="PUT[全部更新]" value="PUT" />
-              <el-option label="PATCH[增量更新]" value="PATCH" />
-              <el-option label="DELETE[删除资源]" value="DELETE" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="说明" prop="desc">
-            <el-input v-model.trim="dialogFormData.desc" type="textarea" placeholder="说明" show-word-limit maxlength="100" />
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button size="mini" @click="cancelForm()">取 消</el-button>
-          <el-button size="mini" :loading="submitLoading" type="primary" @click="submitForm()">确 定</el-button>
-        </div>
-      </el-dialog>
-
+        v-model:page="params.PageNum"
+        v-model:limit="params.PageSize"
+        @pagination="onPaginaion"
+      ></Pagination>
+      <Dialog ref="DrawerRef" @getApiData="getApiData"></Dialog>
     </el-card>
   </div>
 </template>
 
-<script>
-import { getApis, createApi, updateApiById, batchDeleteApiByIds } from '@/api/system/api'
+<script setup lang="ts">
+import { computed, onMounted, ref } from "vue";
 
-export default {
-  name: 'Api',
-  filters: {
-    methodTagFilter(val) {
-      if (val === 'GET') {
-        return ''
-      } else if (val === 'POST') {
-        return 'success'
-      } else if (val === 'PUT') {
-        return 'info'
-      } else if (val === 'PATCH') {
-        return 'warning'
-      } else if (val === 'DELETE') {
-        return 'danger'
-      } else {
-        return 'info'
-      }
-    }
+import { batchDeleteApiByIds, getApis } from "@/api/system/api";
+import SearchForm from "@/components/SearchForm/index.vue";
+import Pagination from "@/components/Pagination/index.vue";
+import type { TApiQuery, TApiTableData } from "@/types/system/api";
+
+import Dialog from "./dialog.vue";
+
+const searchColumn = [
+  { prop: "Path", label: "访问路径", placeholder: "访问路径" },
+  { prop: "Category", label: "所属类别", placeholder: "所属类别" },
+  {
+    prop: "Method",
+    label: "请求方式",
+    placeholder: "请求方式",
+    type: "select",
+    options: [
+      { label: "GET[获取资源]", value: "GET" },
+      { label: "POST[新增资源]", value: "POST" },
+      { label: "PUT[全部更新]", value: "PUT" },
+      { label: "PATCH[增量更新]", value: "PATCH" },
+      { label: "DELETE[删除资源]", value: "DELETE" },
+    ],
   },
-  data() {
-    return {
-      // 查询参数
-      params: {
-        path: '',
-        method: '',
-        category: '',
-        creator: '',
-        pageNum: 1,
-        pageSize: 10
-      },
-      // 表格数据
-      tableData: [],
-      total: 0,
-      loading: false,
+  { prop: "Creator", label: "创建人", placeholder: "创建人" },
+];
 
-      // dialog对话框
-      submitLoading: false,
-      dialogFormTitle: '',
-      dialogType: '',
-      dialogFormVisible: false,
-      dialogFormData: {
-        path: '',
-        category: '',
-        method: '',
-        desc: ''
-      },
-      dialogFormRules: {
-        path: [
-          { required: true, message: '请输入访问路径', trigger: 'blur' },
-          { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
-        ],
-        category: [
-          { required: true, message: '请输入所属类别', trigger: 'blur' },
-          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-        ],
-        method: [
-          { required: true, message: '请选择请求方式', trigger: 'change' }
-        ],
-        desc: [
-          { required: false, message: '说明', trigger: 'blur' },
-          { min: 0, max: 100, message: '长度在 0 到 100 个字符', trigger: 'blur' }
-        ]
-      },
+const tableColumn = [
+  { prop: "Path", label: "访问路径", minWidth: 115 },
+  { prop: "Category", label: "所属类别", minWidth: 55 },
+  { prop: "Method", label: "请求方式", minWidth: 55 },
+  { prop: "Creator", label: "创建人", minWidth: 65 },
+  { prop: "Desc", label: "说明", minWidth: 110 },
+];
 
-      // 删除按钮弹出框
-      popoverVisible: false,
-      // 表格多选
-      multipleSelection: []
-    }
+// 查询参数
+const params = ref<TApiQuery>({
+  PageNum: 1,
+  PageSize: 10,
+});
+// 表格数据
+const tableData = ref<TApiTableData[]>([]);
+const total = ref(0);
+const loading = ref(false);
+
+onMounted(() => {
+  getTableData();
+});
+
+// 获取表格数据
+const getTableData = () => {
+  loading.value = true;
+  getApis(params.value)
+    .then((res) => {
+      tableData.value = res.Data.Data;
+      total.value = res.Data.Total;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
+};
+
+const DrawerRef = ref();
+//新增
+const onAdd = () => {
+  DrawerRef.value.openDrawer({}, "create");
+};
+//编辑
+const update = (row: TApiTableData) => {
+  DrawerRef.value.openDrawer({ ...row }, "update");
+};
+
+//清空
+const onClear = (form: TApiQuery) => {
+  params.value = form;
+  params.value.PageNum = 1;
+  params.value.PageSize = 10;
+  getTableData();
+};
+
+const getApiData = () => {
+  getTableData();
+};
+
+// 表格多选
+const multipleSelection = ref<TApiTableData[]>([]);
+const searchAction = computed(() => [
+  { label: "查询", event: "search", type: "primary" },
+  { label: "新增", event: "add", type: "warning" },
+  {
+    label: "批量删除",
+    event: "delete",
+    type: "danger",
+    disable: multipleSelection.value.length === 0,
   },
-  created() {
-    this.getTableData()
-  },
-  methods: {
-    // 查询
-    search() {
-      this.params.pageNum = 1
-      this.getTableData()
-    },
+]);
 
-    // 获取表格数据
-    async getTableData() {
-      this.loading = true
-      try {
-        const { data } = await getApis(this.params)
-        this.tableData = data.apis
-        this.total = data.total
-      } finally {
-        this.loading = false
-      }
-    },
+//分页
+const onPaginaion = (val: any) => {
+  params.value.PageNum = val.page;
+  params.value.PageSize = val.limit;
+  getTableData();
+};
 
-    // 新增
-    create() {
-      this.dialogFormTitle = '新增接口'
-      this.dialogType = 'create'
-      this.dialogFormVisible = true
-    },
+//搜索
+const onSearch = (form: TApiQuery) => {
+  params.value = form;
+  params.value.PageNum = 1;
+  params.value.PageSize = 10;
+  getTableData();
+};
 
-    // 修改
-    update(row) {
-      this.dialogFormData.ID = row.ID
-      this.dialogFormData.path = row.path
-      this.dialogFormData.category = row.category
-      this.dialogFormData.method = row.method
-      this.dialogFormData.desc = row.desc
-
-      this.dialogFormTitle = '修改接口'
-      this.dialogType = 'update'
-      this.dialogFormVisible = true
-    },
-
-    // 提交表单
-    submitForm() {
-      this.$refs['dialogForm'].validate(async valid => {
-        if (valid) {
-          let msg = ''
-          this.submitLoading = true
-          try {
-            if (this.dialogType === 'create') {
-              const { message } = await createApi(this.dialogFormData)
-              msg = message
-            } else {
-              const { message } = await updateApiById(this.dialogFormData.ID, this.dialogFormData)
-              msg = message
-            }
-          } finally {
-            this.submitLoading = false
-          }
-
-          this.resetForm()
-          this.getTableData()
-          this.$message({
-            showClose: true,
-            message: msg,
-            type: 'success'
-          })
-        } else {
-          this.$message({
-            showClose: true,
-            message: '表单校验失败',
-            type: 'error'
-          })
-          return false
-        }
+//批量删除
+const onDelete = () => {
+  ElMessageBox.confirm("此操作将永久删除, 是否继续?", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(async (res) => {
+      loading.value = true;
+      const Ids: number[] = [];
+      multipleSelection.value.forEach((x: any) => {
+        Ids.push(x.Id);
+      });
+      batchDeleteApiByIds({
+        Ids,
       })
-    },
-
-    // 提交表单
-    cancelForm() {
-      this.resetForm()
-    },
-
-    resetForm() {
-      this.dialogFormVisible = false
-      this.$refs['dialogForm'].resetFields()
-      this.dialogFormData = {
-        path: '',
-        category: '',
-        method: '',
-        desc: ''
-      }
-    },
-
-    // 批量删除
-    batchDelete() {
-      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(async res => {
-        this.loading = true
-        const apiIds = []
-        this.multipleSelection.forEach(x => {
-          apiIds.push(x.ID)
+        .then((res) => {
+          getTableData();
+          ElMessage.success(res.Message);
         })
-        let msg = ''
-        try {
-          const { message } = await batchDeleteApiByIds({ apiIds: apiIds })
-          msg = message
-        } finally {
-          this.loading = false
-        }
+        .finally(() => {
+          loading.value = false;
+        });
+    })
+    .catch(() => {
+      ElMessage.info("已取消删除");
+    });
+};
 
-        this.getTableData()
-        this.$message({
-          showClose: true,
-          message: msg,
-          type: 'success'
-        })
-      }).catch(() => {
-        this.$message({
-          showClose: true,
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
-    },
-
-    // 表格多选
-    handleSelectionChange(val) {
-      this.multipleSelection = val
-    },
-
-    // 单个删除
-    async singleDelete(Id) {
-      this.loading = true
-      let msg = ''
-      try {
-        const { message } = await batchDeleteApiByIds({ apiIds: [Id] })
-        msg = message
-      } finally {
-        this.loading = false
-      }
-
-      this.getTableData()
-      this.$message({
-        showClose: true,
-        message: msg,
-        type: 'success'
-      })
-    },
-
-    // 分页
-    handleSizeChange(val) {
-      this.params.pageSize = val
-      this.getTableData()
-    },
-    handleCurrentChange(val) {
-      this.params.pageNum = val
-      this.getTableData()
-    }
+const methodsTagFilter = (val: string) => {
+  if (val === "GET") {
+    return "primary";
+  } else if (val === "POST") {
+    return "success";
+  } else if (val === "PUT") {
+    return "info";
+  } else if (val === "PATCH") {
+    return "warning";
+  } else if (val === "DELETE") {
+    return "danger";
+  } else {
+    return "info";
   }
-}
+};
+
+// 表格多选
+const handleSelectionChange = (val: TApiTableData[]) => {
+  multipleSelection.value = val;
+};
+
+// 单个删除
+const singleDelete = (Id) => {
+  loading.value = true;
+  batchDeleteApiByIds({
+    Ids: [Id],
+  })
+    .then((res) => {
+      getTableData();
+      ElMessage.success(res.Message);
+    })
+    .finally(() => (loading.value = false));
+};
 </script>
 
 <style scoped>
-  .container-card{
-    margin: 10px;
-  }
-
-  .delete-popover{
-    margin-left: 10px;
-  }
+.delete-popover {
+  margin-left: 10px;
+}
 </style>
