@@ -9,9 +9,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitDictionaryRoutes(r *gin.RouterGroup) gin.IRoutes {
+func InitDictionary(r *gin.RouterGroup) gin.IRoutes {
 	insertApi()
 	insertMenu()
+	return registRoutes(r)
+}
+func registRoutes(r *gin.RouterGroup) gin.IRoutes {
 	controller := controller.NewDictionaryController()
 	router := r.Group("/dictionary")
 	{

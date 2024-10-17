@@ -95,5 +95,5 @@ func initApiRoutes() {
 	route.InitOperationLogRoutes(AuthGroup) // 注册操作日志路由, jwt认证中间件,casbin鉴权中间件
 	route.InitSystemRoutes(AuthGroup)       // 注册系统路由, jwt认证中间件,casbin鉴权中间件
 
-	appRoute.InitDictionaryRoutes(AuthGroup)
+	appRoute.InitDictionary(AuthGroup)
 }
