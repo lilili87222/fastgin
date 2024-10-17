@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fastgin/config"
 	_ "fastgin/docs" // Import the generated docs
+	appRoute "fastgin/modules/app/route"
 	"fastgin/modules/sys/middleware"
 	"fastgin/modules/sys/route"
 	"fastgin/modules/sys/script"
@@ -79,12 +80,13 @@ func initRoutes(engine *gin.Engine) {
 	AuthGroup.Use(middleware.GetJwtMiddleware().MiddlewareFunc()) // jwt认证中间件
 	AuthGroup.Use(middleware.CasbinMiddleware())                  //// 开启casbin鉴权中间件
 
-	InitSysModule()
+	script.InitSysModuleDatabase()
+	initApiRoutes()
+
 	config.Log.Info("初始化路由完成！")
 }
 
-func InitSysModule() {
-	script.InitData()
+func initApiRoutes() {
 	route.InitBaseRoutes(PublicGroup)       // 注册基础路由, 不需要jwt认证中间件,不需要casbin中间件
 	route.InitUserRoutes(AuthGroup)         // 注册用户路由, jwt认证中间件,casbin鉴权中间件
 	route.InitRoleRoutes(AuthGroup)         // 注册角色路由, jwt认证中间件,casbin鉴权中间件
@@ -92,4 +94,6 @@ func InitSysModule() {
 	route.InitApiRoutes(AuthGroup)          // 注册接口路由, jwt认证中间件,casbin鉴权中间件
 	route.InitOperationLogRoutes(AuthGroup) // 注册操作日志路由, jwt认证中间件,casbin鉴权中间件
 	route.InitSystemRoutes(AuthGroup)       // 注册系统路由, jwt认证中间件,casbin鉴权中间件
+
+	appRoute.InitDictionaryRoutes(AuthGroup)
 }

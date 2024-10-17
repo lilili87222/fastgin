@@ -11,7 +11,7 @@ import (
 )
 
 // 初始化mysql数据
-func InitData() {
+func InitSysModuleDatabase() {
 	tableNames, e := database.GetTableNames(database.DB, config.Instance.Database.MysqlConfig.Database)
 	if e != nil {
 		config.Log.Errorf("获取数据库表名失败：%v", e)
@@ -96,6 +96,7 @@ func InitData() {
 	treeStr := "tree"
 	exampleStr := "example"
 	logOperationStr := "/log/operation-log"
+	appOperationStr := "/app/operation"
 	documentationStr := "documentation"
 	var uint6 uint = 6
 	menus := []model.Menu{
@@ -182,6 +183,18 @@ func InitData() {
 			Component: "/log/operation-log/index",
 			Sort:      21,
 			ParentId:  &uint6,
+			Roles:     roles[:2],
+			Creator:   "系统",
+		}, {
+			Model:     model.Model{Id: 8},
+			Name:      "App",
+			Title:     "应用功能",
+			Icon:      &exampleStr,
+			Path:      "/app",
+			Component: "Layout",
+			Redirect:  &appOperationStr,
+			Sort:      20,
+			ParentId:  &uint0,
 			Roles:     roles[:2],
 			Creator:   "系统",
 		},

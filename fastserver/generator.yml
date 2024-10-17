@@ -2,10 +2,10 @@ generator:
   create-view: true # 是否生成视图vue,当是否的时候只生成api，model，controller，service，dao
   tables: ["web_dictionary"] # 要生成的代码的表
   module-name: "user" # 模块名称
-  out-dir: app # 保存路径
+  out-dir: modules/app2 # 保存路径
   run-sql: true # 是否执行sql
   table-prefix: "web_" # 表前缀
-  module: "fastgin/app" # 表前缀
+  module: "fastgin/modules/app2" # 表前缀
 
 database:
   # 数据库类型(mysql,sqlite3)
@@ -22,7 +22,7 @@ database:
     # 密码
     password: root
     # 数据库名
-    database: go_web_mini
+    database: fastgin
     # 主机地址
     host: localhost
     # 端口

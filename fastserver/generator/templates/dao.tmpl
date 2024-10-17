@@ -3,13 +3,13 @@ package dao
 import (
 "fastgin/database"
 "gorm.io/gorm"
-"{{.Module}}/model"
+ _ "{{.Module}}/model"
 )
 
 type {{.ModelName}}DAO struct {
  db *gorm.DB
 }
 
-func NewDictionaryDAO() *{{.ModelName}}DAO {
+func New{{.ModelName}}DAO() *{{.ModelName}}DAO {
  return &{{.ModelName}}DAO{db: database.DB}
 }

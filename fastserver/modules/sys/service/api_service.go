@@ -131,7 +131,7 @@ func (s *ApiService) BatchDeleteApiByIds(apiIds []uint) error {
 	return err
 }
 
-func (s *ApiService) GetApiDescByPath(path string, method string) (string, error) {
+func (s *ApiService) GetApiDescByPath(path string, method string) (model.Api, error) {
 	return s.apiDao.GetApiDescByPath(path, method)
 }
 

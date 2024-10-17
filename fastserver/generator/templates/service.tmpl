@@ -1,9 +1,10 @@
 package service
 
 import (
-"{{.Module}}/dao"
-"{{.Module}}/model"
-"fastgin/database"
+ "fastgin/common/httpz"
+ "fastgin/database"
+ "{{.Module}}/dao"
+ "{{.Module}}/model"
 )
 
 type {{.ModelName}}Service struct {
@@ -30,7 +31,7 @@ func (s *{{.ModelName}}Service) Delete(id uint) error {
  return database.Delete[model.{{.ModelName}}](id)
 }
 
-func (s *{{.ModelName}}Service) Search(req *database.SearchRequest) ([]model.{{.ModelName}}, int64, error) {
+func (s *{{.ModelName}}Service) Search(req *httpz.SearchRequest) ([]model.{{.ModelName}}, int64, error) {
  return database.SearchTable[model.{{.ModelName}}](req)
 }
 func (s *{{.ModelName}}Service) DeleteBatch(ids []uint) error {

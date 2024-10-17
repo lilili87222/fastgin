@@ -1,19 +1,21 @@
 package route
 
 import (
-	"fastgin/sys/controller"
-	"github.com/gin-gonic/gin"
+"{{.Module}}/controller"
+"github.com/gin-gonic/gin"
 )
 
-func Init{{.TableName | ToCamelCase}}Routes(r *gin.RouterGroup) gin.IRoutes {
-	controller := controller.New{{.TableName | ToCamelCase}}Controller()
-	router := r.Group("/api")
+func Init{{.ModelName}}Routes(r *gin.RouterGroup) gin.IRoutes {
+	controller := controller.New{{.ModelName}}Controller()
+	router := r.Group("/{{.ModelName}}")
 	{
-		router.GET("/index", controller.List)
 		router.POST("/index", controller.Create)
-		router.PATCH("/index/:apiId", controller.UpdateById)
-		router.DELETE("/index", controller.BatchDeleteByIds)
-	}
+		router.GET("/index/:id", controller.GetByID)
+		router.PATCH("/index/:id", controller.Update)
+		router.DELETE("/index/:id", controller.Delete)
 
+		router.GET("/index", controller.List)
+		router.DELETE("/index", controller.DeleteBatch)
+	}
 	return r
 }

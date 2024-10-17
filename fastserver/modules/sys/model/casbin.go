@@ -6,9 +6,3 @@ type RoleCasbin struct {
 	Path    string // 访问路径
 	Method  string // 请求方式
 }
-
-//type RoleCasbin struct {
-//	Keyword string `json:"keyword"` // 角色关键字
-//	Path    string `json:"path"`    // 访问路径
-//	Method  string `json:"method"`  // 请求方式
-//}

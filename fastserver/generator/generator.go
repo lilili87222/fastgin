@@ -21,7 +21,7 @@ func GenerateAll() {
 	InitConfig()
 	InitDatabase()
 	genConfig := Instance.Generator
-	dirs := []string{"model", "dao", "service", "controller"}
+	dirs := []string{"model", "dao", "service", "controller", "route"}
 	for _, dir := range dirs {
 		fileDir := filepath.Join(genConfig.OutDir, dir)
 		if _, err := os.Stat(fileDir); os.IsNotExist(err) {
@@ -54,6 +54,9 @@ func Generate(tc TableConfig) error {
 		return err
 	}
 	if err := GenerateFromTemplate(tc, "controller"); err != nil {
+		return err
+	}
+	if err := GenerateFromTemplate(tc, "route"); err != nil {
 		return err
 	}
 	return nil
