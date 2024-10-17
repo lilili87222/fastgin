@@ -29,11 +29,9 @@ func main() {
 	config.InitLogger()
 
 	// 初始化数据库
-	database.InitDatabase()
+	database.InitDatabaseConnection()
 	// 初始化casbin策略管理器
 	config.InitCasbinEnforcer(database.DB)
-	// 初始化数据
-	database.InitData()
 
 	// 初始化Validator数据校验
 	config.InitValidate()

@@ -1,9 +1,10 @@
-package database
+package script
 
 import (
 	"errors"
 	"fastgin/common/util"
 	"fastgin/config"
+	"fastgin/database"
 	"fastgin/modules/sys/model"
 	"gorm.io/gorm"
 	"slices"
@@ -11,7 +12,28 @@ import (
 
 // 初始化mysql数据
 func InitData() {
-	if !config.Instance.Database.InitData {
+	tableNames, e := database.GetTableNames(database.DB, config.Instance.Database.MysqlConfig.Database)
+	if e != nil {
+		config.Log.Errorf("获取数据库表名失败：%v", e)
+		panic(e)
+	}
+	insertData := false
+	tableList := []database.ITableModel{&model.User{}, &model.Role{}, &model.Menu{}, &model.Api{}, &model.OperationLog{}}
+	for _, tableModel := range tableList {
+		if slices.Contains(tableNames, tableModel.TableName()) {
+			continue
+		} else {
+			if e := database.DB.AutoMigrate(tableModel); e != nil {
+				config.Log.Errorf("初始化数据库表失败：%v", e)
+				panic(e)
+			} else {
+				insertData = true
+			}
+		}
+	}
+	config.Log.Infof("初始化数据库完成!")
+
+	if !insertData {
 		return
 	}
 	// 是否初始化数据
@@ -49,14 +71,14 @@ func InitData() {
 	}
 
 	for _, role := range roles {
-		err := DB.First(&role, role.Id).Error
+		err := database.DB.First(&role, role.Id).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			newRoles = append(newRoles, role)
 		}
 	}
 
 	if len(newRoles) > 0 {
-		err := DB.Create(&newRoles).Error
+		err := database.DB.Create(&newRoles).Error
 		if err != nil {
 			config.Log.Errorf("写入系统角色数据失败：%v", err)
 		}
@@ -165,13 +187,13 @@ func InitData() {
 		},
 	}
 	for _, menu := range menus {
-		err := DB.First(&menu, menu.Id).Error
+		err := database.DB.First(&menu, menu.Id).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			newMenus = append(newMenus, menu)
 		}
 	}
 	if len(newMenus) > 0 {
-		err := DB.Create(&newMenus).Error
+		err := database.DB.Create(&newMenus).Error
 		if err != nil {
 			config.Log.Errorf("写入系统菜单数据失败：%v", err)
 		}
@@ -231,14 +253,14 @@ func InitData() {
 	}
 
 	for _, user := range users {
-		err := DB.First(&user, user.Id).Error
+		err := database.DB.First(&user, user.Id).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			newUsers = append(newUsers, user)
 		}
 	}
 
 	if len(newUsers) > 0 {
-		err := DB.Create(&newUsers).Error
+		err := database.DB.Create(&newUsers).Error
 		if err != nil {
 			config.Log.Errorf("写入用户数据失败：%v", err)
 		}
@@ -463,12 +485,33 @@ func InitData() {
 			Desc:     "批量删除操作日志",
 			Creator:  "系统",
 		},
+		{
+			Method:   "GET",
+			Path:     "/system/info",
+			Category: "system",
+			Desc:     "获取系统信息",
+			Creator:  "系统",
+		},
+		{
+			Method:   "GET",
+			Path:     "/system/stop",
+			Category: "system",
+			Desc:     "停止web服务",
+			Creator:  "系统",
+		},
+		{
+			Method:   "GET",
+			Path:     "/system/restart",
+			Category: "system",
+			Desc:     "重启web服务",
+			Creator:  "系统",
+		},
 	}
 	newApi := make([]model.Api, 0)
 	newRoleCasbin := make([]model.RoleCasbin, 0)
 	for i, api := range apis {
 		api.Id = uint(i + 1)
-		err := DB.First(&api, api.Id).Error
+		err := database.DB.First(&api, api.Id).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			newApi = append(newApi, api)
 
@@ -504,7 +547,7 @@ func InitData() {
 	}
 
 	if len(newApi) > 0 {
-		if err := DB.Create(&newApi).Error; err != nil {
+		if err := database.DB.Create(&newApi).Error; err != nil {
 			config.Log.Errorf("写入api数据失败：%v", err)
 		}
 	}

@@ -2,7 +2,6 @@ package database
 
 import (
 	"fastgin/config"
-	"fastgin/modules/sys/model"
 	"fmt"
 	"github.com/glebarez/sqlite"
 	"gorm.io/driver/mysql"
@@ -13,7 +12,7 @@ import (
 // 全局mysql数据库变量
 var DB *gorm.DB
 
-func InitDatabase() {
+func InitDatabaseConnection() {
 	config.Log.Infof("选中的数据库类型" + config.Instance.Database.Type)
 	if config.Instance.Database.Type == "mysql" {
 		initMysql()
@@ -57,8 +56,6 @@ func initMysql() {
 		db.Debug()
 	}
 	DB = db
-	createTables()
-
 }
 
 // 初始化sqllite数据库
@@ -73,20 +70,9 @@ func initSqlLite() {
 		panic(fmt.Errorf("初始化sqlite数据库异常: %v", err))
 	}
 	DB = db
-	createTables()
 	//config.Log.Infof("初始化sqlite数据库完成!")
 }
 
-// 自动迁移表结构
-func createTables() {
-	if config.Instance.Database.CreateTables {
-		config.Log.Infof("初始化数据库完成!")
-		DB.AutoMigrate(
-			&model.User{},
-			&model.Role{},
-			&model.Menu{},
-			&model.Api{},
-			&model.OperationLog{},
-		)
-	}
+type ITableModel interface {
+	TableName() string
 }
