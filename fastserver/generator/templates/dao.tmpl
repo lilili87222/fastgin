@@ -1,32 +1,15 @@
 package dao
 
 import (
- "{{.Module}}/model"
- "gorm.io/gorm"
+"fastgin/database"
+"gorm.io/gorm"
+"{{.Module}}/model"
 )
 
 type {{.ModelName}}DAO struct {
  db *gorm.DB
 }
 
-func New{{.ModelName}}DAO(db *gorm.DB) *{{.ModelName}}DAO {
- return &{{.ModelName}}DAO{db: db}
-}
-
-func (dao *{{.ModelName}}DAO) Create(entity *model.{{.ModelName}}) error {
- return dao.db.Create(entity).Error
-}
-
-func (dao *{{.ModelName}}DAO) GetByID(id uint) (*model.{{.ModelName}}, error) {
- var entity model.{{.ModelName}}
- err := dao.db.First(&entity, id).Error
- return &entity, err
-}
-
-func (dao *{{.ModelName}}DAO) Update(entity *model.{{.ModelName}}) error {
- return dao.db.Save(entity).Error
-}
-
-func (dao *{{.ModelName}}DAO) Delete(id uint) error {
- return dao.db.Delete(&model.{{.ModelName}}{}, id).Error
+func NewDictionaryDAO() *{{.ModelName}}DAO {
+ return &{{.ModelName}}DAO{db: database.DB}
 }

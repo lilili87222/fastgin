@@ -1,30 +1,38 @@
 package service
 
 import (
- "{{.Module}}/dao"
- "{{.Module}}/model"
+"{{.Module}}/dao"
+"{{.Module}}/model"
+"fastgin/database"
 )
 
 type {{.ModelName}}Service struct {
  dao *dao.{{.ModelName}}DAO
 }
 
-func New{{.ModelName}}Service(dao *dao.{{.ModelName}}DAO) *{{.ModelName}}Service {
- return &{{.ModelName}}Service{dao: dao}
+func New{{.ModelName}}Service() *{{.ModelName}}Service {
+ return &{{.ModelName}}Service{dao: dao.New{{.ModelName}}DAO()}
 }
 
 func (s *{{.ModelName}}Service) Create(entity *model.{{.ModelName}}) error {
- return s.dao.Create(entity)
+ return database.Create(entity)
 }
 
-func (s *{{.ModelName}}Service) GetByID(id uint) (*model.{{.ModelName}}, error) {
- return s.dao.GetByID(id)
+func (s *{{.ModelName}}Service) GetByID(id uint) (model.{{.ModelName}}, error) {
+ return database.GetById[model.{{.ModelName}}](id)
 }
 
 func (s *{{.ModelName}}Service) Update(entity *model.{{.ModelName}}) error {
- return s.dao.Update(entity)
+ return database.Update(entity)
 }
 
 func (s *{{.ModelName}}Service) Delete(id uint) error {
- return s.dao.Delete(id)
+ return database.Delete[model.{{.ModelName}}](id)
+}
+
+func (s *{{.ModelName}}Service) Search(req *database.SearchRequest) ([]model.{{.ModelName}}, int64, error) {
+ return database.SearchTable[model.{{.ModelName}}](req)
+}
+func (s *{{.ModelName}}Service) DeleteBatch(ids []uint) error {
+ return database.DeleteByIds[model.{{.ModelName}}](ids)
 }

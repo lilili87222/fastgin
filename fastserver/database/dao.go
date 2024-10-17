@@ -1,7 +1,7 @@
 package database
 
 import (
-	"fastgin/sys/dto"
+	"fastgin/common/httpz"
 	"fmt"
 )
 
@@ -50,7 +50,7 @@ func ListAll[T any](orders ...string) ([]T, error) {
 	return items, err
 }
 
-func SearchTable[T any](req *dto.SearchRequest) ([]T, int64, error) {
+func SearchTable[T any](req *httpz.SearchRequest) ([]T, int64, error) {
 	var list []T
 	db := DB.Model(new(T)).Order("created_at DESC")
 	for key, value := range req.KeyValues {

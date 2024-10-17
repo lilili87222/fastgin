@@ -3,8 +3,8 @@ package boost
 import (
 	"fastgin/config"
 	_ "fastgin/docs" // Import the generated docs
-	"fastgin/sys/middleware"
-	"fastgin/sys/route"
+	"fastgin/modules/sys/middleware"
+	"fastgin/modules/sys/route"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"

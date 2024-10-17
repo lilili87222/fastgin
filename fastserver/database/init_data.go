@@ -2,9 +2,9 @@ package database
 
 import (
 	"errors"
+	"fastgin/common/util"
 	"fastgin/config"
-	"fastgin/sys/model"
-	"fastgin/util"
+	"fastgin/modules/sys/model"
 	"gorm.io/gorm"
 	"slices"
 )

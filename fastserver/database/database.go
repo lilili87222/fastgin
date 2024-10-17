@@ -2,7 +2,7 @@ package database
 
 import (
 	"fastgin/config"
-	"fastgin/sys/model"
+	"fastgin/modules/sys/model"
 	"fmt"
 	"github.com/glebarez/sqlite"
 	"gorm.io/driver/mysql"
