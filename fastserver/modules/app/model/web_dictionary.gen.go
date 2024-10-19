@@ -13,14 +13,26 @@ import (
 const TableNameDictionary = "web_dictionary"
 
 // Dictionary mapped from table <web_dictionary>
+//type Dictionary struct {
+//	ID        int32          `gorm:"column:id;primaryKey;autoIncrement:true;comment:ID" json:"id"` // ID
+//	CreatedAt time.Time      `gorm:"column:created_at;comment:创建时间" json:"created_at"`             // 创建时间
+//	UpdatedAt time.Time      `gorm:"column:updated_at;comment:更新时间" json:"updated_at"`             // 更新时间
+//	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;comment:删除时间" json:"deleted_at"`             // 删除时间
+//	Key       string         `gorm:"column:key;comment:配置的Key" json:"key"`                         // 配置的Key
+//	Value     string         `gorm:"column:value;comment:配置的值" json:"value"`                       // 配置的值
+//	Desc      string         `gorm:"column:desc;comment:说明" json:"desc"`                           // 说明
+//}
+
+// Dictionary mapped from table <web_dictionary>
+// @Description Dictionary represents a dictionary entry in the system
 type Dictionary struct {
-	ID        int32          `gorm:"column:id;primaryKey;autoIncrement:true;comment:ID" json:"id"` // ID
-	CreatedAt time.Time      `gorm:"column:created_at;comment:创建时间" json:"created_at"`             // 创建时间
-	UpdatedAt time.Time      `gorm:"column:updated_at;comment:更新时间" json:"updated_at"`             // 更新时间
-	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;comment:删除时间" json:"deleted_at"`             // 删除时间
-	Key       string         `gorm:"column:key;comment:配置的Key" json:"key"`                         // 配置的Key
-	Value     string         `gorm:"column:value;comment:配置的值" json:"value"`                       // 配置的值
-	Desc      string         `gorm:"column:desc;comment:说明" json:"desc"`                           // 说明
+	ID        int32          `gorm:"column:id;primaryKey;autoIncrement:true;comment:ID" ` // ID
+	CreatedAt time.Time      `gorm:"column:created_at;comment:创建时间"`             // 创建时间
+	UpdatedAt time.Time      `gorm:"column:updated_at;comment:更新时间" `             // 更新时间
+	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;comment:删除时间" `             // 删除时间
+	Key       string         `gorm:"column:key;comment:配置的Key" `                         // 配置的Key
+	Value     string         `gorm:"column:value;comment:配置的值" `                       // 配置的值
+	Desc      string         `gorm:"column:desc;comment:说明" `                           // 说明
 }
 
 // TableName Dictionary's table name

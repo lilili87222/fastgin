@@ -1,22 +1,18 @@
 package route
 
 import (
-	"fastgin/config"
-	"fastgin/database"
 	"fastgin/modules/app/controller"
-	"fastgin/modules/sys/dao"
 	"fastgin/modules/sys/model"
+	"fastgin/modules/sys/service"
 	"github.com/gin-gonic/gin"
 )
 
 func InitDictionary(r *gin.RouterGroup) gin.IRoutes {
-	insertApi()
-	insertMenu()
-	return registRoutes(r)
-}
-func registRoutes(r *gin.RouterGroup) gin.IRoutes {
+	groupName := "dictionary"
+	insertApiAndMenu(groupName)
+
 	controller := controller.NewDictionaryController()
-	router := r.Group("/dictionary")
+	router := r.Group(groupName)
 	{
 		router.POST("/index", controller.Create)
 		router.GET("/index/:id", controller.GetByID)
@@ -28,113 +24,65 @@ func registRoutes(r *gin.RouterGroup) gin.IRoutes {
 	}
 	return r
 }
-func insertApi() {
-	apiDao := dao.ApiDao{}
+func insertApiAndMenu(groupName string) {
+	tableDesc := "字典"
+	if tableDesc == "" {
+		tableDesc = groupName
+	}
 	var apis = []model.Api{
 		{
 			Method:   "POST",
-			Path:     "/dictionary/index",
-			Category: "dictionary",
-			Desc:     "新增字典",
+			Path:     "/" + groupName + "/index",
+			Category: groupName,
+			Desc:     "新增" + tableDesc,
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
-			Path:     "/dictionary/index/:id",
-			Category: "dictionary",
-			Desc:     "获取字典",
+			Path:     "/" + groupName + "/index/:id",
+			Category: groupName,
+			Desc:     "获取" + tableDesc,
 			Creator:  "系统",
 		},
 		{
 			Method:   "PATCH",
-			Path:     "/dictionary/index/:id",
-			Category: "dictionary",
-			Desc:     "更新字典",
+			Path:     "/" + groupName + "/index/:id",
+			Category: groupName,
+			Desc:     "更新" + tableDesc,
 			Creator:  "系统",
 		},
 		{
 			Method:   "DELETE",
-			Path:     "/dictionary/index/:id",
-			Category: "dictionary",
-			Desc:     "删除字典",
+			Path:     "/" + groupName + "/index/:id",
+			Category: groupName,
+			Desc:     "删除" + tableDesc,
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
-			Path:     "/dictionary/index",
-			Category: "dictionary",
-			Desc:     "搜索字典",
+			Path:     "/" + groupName + "/index",
+			Category: groupName,
+			Desc:     "搜索" + tableDesc,
 			Creator:  "系统",
 		},
 		{
 			Method:   "DELETE",
-			Path:     "/dictionary/index",
-			Category: "dictionary",
-			Desc:     "批量删除字典",
+			Path:     "/" + groupName + "/index",
+			Category: groupName,
+			Desc:     "批量删除" + tableDesc,
 			Creator:  "系统",
 		},
 	}
-
-	newRoleCasbin := make([]model.RoleCasbin, 0)
-	for _, api := range apis {
-		oldApi, _ := apiDao.GetApiDescByPath(api.Path, api.Method)
-		if oldApi.Id == 0 {
-			database.Create(&api)
-			newRoleCasbin = append(newRoleCasbin, model.RoleCasbin{
-				Keyword: "admin",
-				Path:    api.Path,
-				Method:  api.Method,
-			})
-		}
-	}
-	if len(newRoleCasbin) > 0 {
-		rules := make([][]string, 0)
-		for _, c := range newRoleCasbin {
-			rules = append(rules, []string{
-				c.Keyword, c.Path, c.Method,
-			})
-		}
-		isAdd, err := config.CasbinEnforcer.AddPolicies(rules)
-		if !isAdd {
-			config.Log.Errorf("写入casbin数据失败：%v", err)
-		}
+	menu := model.Menu{
+		Name:      "Dictionary",
+		Title:     tableDesc + "管理",
+		Icon:      nil,
+		Path:      groupName,
+		Component: "/app/" + groupName + "/index",
+		Sort:      11,
+		Creator:   "系统",
 	}
 
-}
-func insertMenu() {
-	exist := false
-	menuList, _ := database.ListAll[model.Menu]()
-	for _, menu := range menuList {
-		if menu.Component == "/app/dictionary/index" {
-			exist = true
-		}
-	}
-	if !exist {
-		roles := []model.Role{
-			{
-				Model:   model.Model{Id: 1},
-				Name:    "管理员",
-				Keyword: "admin",
-				Desc:    new(string),
-				Sort:    1,
-				Status:  1,
-				Creator: "系统",
-			},
-		}
-		appMenuId := uint(8)
-		menus := []model.Menu{
-			{
-				Name:      "Dictionary",
-				Title:     "字典管理",
-				Icon:      nil,
-				Path:      "dictionary",
-				Component: "/app/dictionary/index",
-				Sort:      11,
-				ParentId:  &appMenuId,
-				Roles:     roles,
-				Creator:   "系统",
-			},
-		}
-		database.Create(menus)
-	}
+	service.NewApiService().InsertApisToAdmin(apis)
+	service.NewMenuService().InsertAppMenuToAdmin(menu)
 }

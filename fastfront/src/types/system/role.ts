@@ -16,7 +16,7 @@ export interface TRoleTableData {
 
 //角色管理 添加/编辑表单数据类型
 export interface TRoleFormData {
-  Id: number;
+  Id?: number;
   Name: string;
   Keyword: string;
   Desc: string;

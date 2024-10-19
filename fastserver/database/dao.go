@@ -57,7 +57,8 @@ func SearchTable[T any](req *httpz.SearchRequest) ([]T, int64, error) {
 		if key == "status" {
 			continue
 		}
-		db = db.Where(key+" LIKE ?", fmt.Sprintf("%%%s%%", value))
+		q := fmt.Sprintf("`%s` like \"%%%s%%\"", key, value)
+		db = db.Where(q)
 	}
 	if req.KeyValues["status"] != "" {
 		db = db.Where("status = ?", req.KeyValues["status"])

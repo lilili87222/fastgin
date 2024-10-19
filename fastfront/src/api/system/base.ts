@@ -1,24 +1,17 @@
-import request from "@/utils/request";
-import type { ApiResponse } from "../type";
+import type { TLogin } from "@/types/system/user";
+import { requestApi } from "../type";
 
-export function login(data) {
-  return request({
-    url: "/api/public/login",
-    method: "post",
-    data,
-  }) as Promise<ApiResponse<any>>;
+// 登录
+export function login(data: TLogin) {
+  return requestApi<TLogin>("/api/public/login", "post", data);
 }
 
+// 刷新令牌
 export function refreshToken() {
-  return request({
-    url: "/api/public/refreshToken",
-    method: "post",
-  }) as Promise<ApiResponse<any>>;
+  return requestApi<any>("/api/public/refreshToken", "post");
 }
 
+// 登出
 export function logout() {
-  return request({
-    url: "/api/auth/user/logout",
-    method: "post",
-  }) as Promise<ApiResponse<any>>;
+  return requestApi<any>("/api/auth/user/logout", "post");
 }

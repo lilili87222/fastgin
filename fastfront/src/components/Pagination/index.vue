@@ -96,12 +96,14 @@ export default defineComponent({
 .pagination-container {
   display: flex;
   justify-content: center;
-  background: #fff;
   padding: 22px 6px;
+  overflow-x: auto; /* 允许在 X 轴上滚动 */
 }
+
 .pagination-container.hidden {
   display: none;
 }
+
 /* 移动端样式 */
 @media (max-width: 768px) {
   .pagination-container {
@@ -113,15 +115,12 @@ export default defineComponent({
   }
 
   /* 隐藏不必要的分页组件部分 */
-  :deep(.el-pagination__sizes) {
-    display: none !important; /* 使用 !important 确保样式生效 */
-  }
-  :deep(.el-pagination__total) {
-    display: none !important; /* 使用 !important 确保样式生效 */
-  }
+  :deep(.el-pagination__sizes),
+  :deep(.el-pagination__total),
   :deep(.el-pagination__jump) {
     display: none !important; /* 使用 !important 确保样式生效 */
   }
+
   .el-pagination__pager {
     margin: 0 5px;
   }

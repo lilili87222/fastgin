@@ -17,7 +17,7 @@ export interface TApiQuery {
 }
 
 export interface TApiFormData {
-  Id: number;
+  Id?: number;
   Method: string;
   Path: string;
   Category: string;

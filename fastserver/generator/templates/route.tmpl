@@ -2,12 +2,17 @@ package route
 
 import (
 "{{.Module}}/controller"
+"fastgin/modules/sys/model"
+"fastgin/modules/sys/service"
 "github.com/gin-gonic/gin"
 )
 
-func Init{{.ModelName}}Routes(r *gin.RouterGroup) gin.IRoutes {
+func Init{{.ModelName}}(r *gin.RouterGroup) gin.IRoutes {
+	groupName := "{{.LowModelName}}"
+	insertApiAndMenu(groupName)
+
 	controller := controller.New{{.ModelName}}Controller()
-	router := r.Group("/{{.ModelName}}")
+	router := r.Group(groupName)
 	{
 		router.POST("/index", controller.Create)
 		router.GET("/index/:id", controller.GetByID)
@@ -18,4 +23,66 @@ func Init{{.ModelName}}Routes(r *gin.RouterGroup) gin.IRoutes {
 		router.DELETE("/index", controller.DeleteBatch)
 	}
 	return r
+}
+func insertApiAndMenu(groupName string) {
+	tableDesc := "{{.TableComment}}"
+	if tableDesc == "" {
+		tableDesc = groupName
+	}
+	var apis = []model.Api{
+		{
+			Method:   "POST",
+			Path:     "/" + groupName + "/index",
+			Category: groupName,
+			Desc:     "新增" + tableDesc,
+			Creator:  "系统",
+		},
+		{
+			Method:   "GET",
+			Path:     "/" + groupName + "/index/:id",
+			Category: groupName,
+			Desc:     "获取" + tableDesc,
+			Creator:  "系统",
+		},
+		{
+			Method:   "PATCH",
+			Path:     "/" + groupName + "/index/:id",
+			Category: groupName,
+			Desc:     "更新" + tableDesc,
+			Creator:  "系统",
+		},
+		{
+			Method:   "DELETE",
+			Path:     "/" + groupName + "/index/:id",
+			Category: groupName,
+			Desc:     "删除" + tableDesc,
+			Creator:  "系统",
+		},
+		{
+			Method:   "GET",
+			Path:     "/" + groupName + "/index",
+			Category: groupName,
+			Desc:     "搜索" + tableDesc,
+			Creator:  "系统",
+		},
+		{
+			Method:   "DELETE",
+			Path:     "/" + groupName + "/index",
+			Category: groupName,
+			Desc:     "批量删除" + tableDesc,
+			Creator:  "系统",
+		},
+	}
+	menu := model.Menu{
+		Name:      "{{.ModelName}}",
+		Title:     tableDesc + "管理",
+		Icon:      nil,
+		Path:      groupName,
+		Component: "/app/" + groupName + "/index",
+		Sort:      11,
+		Creator:   "系统",
+	}
+
+	service.NewApiService().InsertApisToAdmin(apis)
+	service.NewMenuService().InsertAppMenuToAdmin(menu)
 }

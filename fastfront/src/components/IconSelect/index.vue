@@ -1,23 +1,47 @@
 <template>
-  <div class="icon-body">
-    <div class="icon-list">
-      <div
-        v-for="(item, index) in nameArr"
-        :key="index"
-        @click="selectedIcon(item)"
-        :class="{ highlight: props.iconVal && item === props.iconVal }"
-      >
-        <svg-icon :icon-class="item" />
-        <span class="name">{{ item }}</span>
+  <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tab-pane label="SVG" name="SVG">
+      <div class="icon-body">
+        <div class="icon-list">
+          <div
+            v-for="(item, index) in nameArr"
+            :key="index"
+            @click="selectedIcon(item)"
+            :class="{ highlight: props.iconVal && item === props.iconVal }"
+          >
+            <svg-icon :icon-class="item" />
+
+            <span class="name">{{ item }}</span>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </el-tab-pane>
+    <el-tab-pane label="Element Icons" name="ElementIcons">
+      <div class="icon-body">
+        <div class="icon-list">
+          <div
+            v-for="item of elementIcons"
+            :key="item"
+            @click="selectedIcon(item)"
+            :class="{ highlight: props.iconVal && item === props.iconVal }"
+          >
+            <el-icon>
+              <component :is="item" class="svg-icon disabled"></component>
+            </el-icon>
+            <span class="name">{{ item }}</span>
+          </div>
+        </div>
+      </div>
+    </el-tab-pane>
+  </el-tabs>
 </template>
 
 <script setup lang="ts">
+import ElementPlusIconsVue from "@/views/icons/element-icons";
 import nameArr from "./requireIcons";
+import { ref } from "vue";
 
-const emits = defineEmits(["selectIcon"]);
+const emits = defineEmits(["selectIcon", "selectName"]);
 
 const props = defineProps({
   iconVal: {
@@ -26,9 +50,15 @@ const props = defineProps({
   },
 });
 
+const activeName = ref("SVG");
+const elementIcons = Object.keys(ElementPlusIconsVue);
 // 点击图标时触发
 const selectedIcon = (name: string) => {
   emits("selectIcon", name);
+};
+
+const handleClick = (tab: any) => {
+  emits("selectName", tab.paneName);
 };
 </script>
 

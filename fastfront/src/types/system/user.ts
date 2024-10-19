@@ -23,7 +23,7 @@ export type TUserQuery = {
 
 //用户管理 新增 编辑 表单数据类型
 export type TUserFormData = {
-  Id: number;
+  Id?: number;
   UserName: string;
   Password: string;
   NickName: string;
@@ -33,3 +33,8 @@ export type TUserFormData = {
   Introduction: string;
   RoleIds: string;
 };
+
+export interface TLogin {
+  username: string;
+  password: string;
+}

@@ -113,3 +113,27 @@ func GenMenuTree(parentId uint, menus []*model.Menu) []*model.Menu {
 	}
 	return tree
 }
+
+func (s *MenuService) InsertAppMenuToAdmin(menu model.Menu) {
+	menuList, _ := database.ListAll[model.Menu]()
+	for _, m := range menuList {
+		if m.Component == menu.Component {
+			return
+		}
+	}
+	roles := []model.Role{
+		{
+			Model:   model.Model{Id: 1},
+			Name:    "管理员",
+			Keyword: "admin",
+			Desc:    new(string),
+			Sort:    1,
+			Status:  1,
+			Creator: "系统",
+		},
+	}
+	appMenuId := uint(8)
+	menu.ParentId = &appMenuId
+	menu.Roles = roles
+	database.Create(&menu)
+}

@@ -138,3 +138,31 @@ func (s *ApiService) GetApiDescByPath(path string, method string) (model.Api, er
 func (s *ApiService) GetApisById(apiIds []uint) ([]model.Api, error) {
 	return database.GetByIds[model.Api](apiIds)
 }
+
+func (s *ApiService) InsertApisToAdmin(apis []model.Api) {
+	apiDao := dao.ApiDao{}
+	newRoleCasbin := make([]model.RoleCasbin, 0)
+	for _, api := range apis {
+		oldApi, _ := apiDao.GetApiDescByPath(api.Path, api.Method)
+		if oldApi.Id == 0 {
+			database.Create(&api)
+			newRoleCasbin = append(newRoleCasbin, model.RoleCasbin{
+				Keyword: "admin",
+				Path:    api.Path,
+				Method:  api.Method,
+			})
+		}
+	}
+	if len(newRoleCasbin) > 0 {
+		rules := make([][]string, 0)
+		for _, c := range newRoleCasbin {
+			rules = append(rules, []string{
+				c.Keyword, c.Path, c.Method,
+			})
+		}
+		isAdd, err := config.CasbinEnforcer.AddPolicies(rules)
+		if !isAdd {
+			config.Log.Errorf("write casbin fail：%v", err)
+		}
+	}
+}

@@ -1,6 +1,7 @@
 package generator
 
 import (
+	"fastgin/database"
 	"fmt"
 	"gorm.io/gen"
 	"os"
@@ -15,6 +16,8 @@ type TableConfig struct {
 	OutDir          string
 	Module          string
 	ModelName       string
+	LowModelName    string
+	TableComment    string
 }
 
 func GenerateAll() {
@@ -39,6 +42,8 @@ func GenerateAll() {
 		tableConfig.PrefixTableName = tableName
 		tableConfig.TableName = strings.TrimPrefix(tableName, genConfig.TablePrefix)
 		tableConfig.ModelName = ToCamelCase(tableConfig.TableName)
+		tableConfig.LowModelName = strings.ToLower(tableConfig.ModelName)
+		tableConfig.TableComment, _ = database.GetTableComment(DB, tableName)
 		err := Generate(tableConfig)
 		if err != nil {
 			panic(err)
@@ -72,6 +77,7 @@ func GenerateModel(tc TableConfig) {
 func GenerateFromTemplate(tc TableConfig, templateName string) error {
 	tmpl, err := template.New(templateName + ".tmpl").Funcs(template.FuncMap{
 		"ToCamelCase": ToCamelCase,
+		"ToLower":     strings.ToLower,
 	}).ParseFiles("generator/templates/" + templateName + ".tmpl")
 	if err != nil {
 		return err

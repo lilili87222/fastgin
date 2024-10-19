@@ -55,3 +55,23 @@ func GetTableInfo(db *gorm.DB, databaseName, tableName string) ([]ColumnInfo, er
 	}
 	return tableInfo, nil
 }
+func GetTableComment(db *gorm.DB, tableName string) (string, error) {
+	var tableComment string
+	query := fmt.Sprintf("SELECT TABLE_COMMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA =(SELECT DATABASE()) AND TABLE_NAME = '%s'", tableName)
+
+	if err := db.Raw(query).Scan(&tableComment).Error; err != nil {
+		log.Printf("Error fetching table comment from table %s in database: %v", tableName, err)
+		return "", err
+	}
+	return tableComment, nil
+}
+func GetCurrentDatabaseName(db *gorm.DB) (string, error) {
+	var databaseName string
+	query := "SELECT DATABASE()"
+
+	if err := db.Raw(query).Scan(&databaseName).Error; err != nil {
+		log.Printf("Error fetching current database name: %v", err)
+		return "", err
+	}
+	return databaseName, nil
+}

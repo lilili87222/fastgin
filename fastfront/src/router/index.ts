@@ -33,18 +33,19 @@ export const constantRoutes: RouteRecordRaw[] = [
     component: () => import("@/views/error-page/401.vue"),
     meta: { hidden: true },
   },
-  // {
-  //   path: "/theme",
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: "index",
-  //       component: () => import("@/views/theme/index.vue"),
-  //       name: "Theme",
-  //       meta: { title: "主题", icon: "theme", hidden: true },
-  //     },
-  //   ],
-  // },
+  {
+    path: "/theme",
+    component: Layout,
+    meta: { hidden: true },
+    children: [
+      {
+        path: "index",
+        component: () => import("@/views/theme/index.vue"),
+        name: "Theme",
+        meta: { title: "主题", icon: "theme", hidden: true },
+      },
+    ],
+  },
   // {
   //   path: "/icons",
   //   component: Layout,

@@ -28,7 +28,7 @@ func NewDictionaryController() *DictionaryController {
 // @Success 200 {object} model.Dictionary
 // @Failure 400 {object} httpz.ResponseBody
 // @Failure 500 {object} httpz.ResponseBody
-// @Router /dictionary/index [post]
+// @Router /api/auth/dictionary/index [post]
 func (ctrl *DictionaryController) Create(c *gin.Context) {
 	var entity model.Dictionary
 	if err := c.ShouldBindJSON(&entity); err != nil {
@@ -51,7 +51,7 @@ func (ctrl *DictionaryController) Create(c *gin.Context) {
 // @Success 200 {object} model.Dictionary
 // @Failure 400 {object} httpz.ResponseBody
 // @Failure 500 {object} httpz.ResponseBody
-// @Router /dictionary/index/{id} [get]
+// @Router /api/auth//dictionary/index/{id} [get]
 func (ctrl *DictionaryController) GetByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -77,7 +77,7 @@ func (ctrl *DictionaryController) GetByID(c *gin.Context) {
 // @Success 200 {object} model.Dictionary
 // @Failure 400 {object} httpz.ResponseBody
 // @Failure 500 {object} httpz.ResponseBody
-// @Router /dictionary/index/{id} [patch]
+// @Router /api/auth//dictionary/index/{id} [patch]
 func (ctrl *DictionaryController) Update(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -106,7 +106,7 @@ func (ctrl *DictionaryController) Update(c *gin.Context) {
 // @Success 200 {object} httpz.ResponseBody
 // @Failure 400 {object} httpz.ResponseBody
 // @Failure 500 {object} httpz.ResponseBody
-// @Router /dictionary/index/{id} [delete]
+// @Router /api/auth//dictionary/index/{id} [delete]
 func (ctrl *DictionaryController) Delete(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -130,7 +130,7 @@ func (ctrl *DictionaryController) Delete(c *gin.Context) {
 // @Success 200 {object} httpz.ResponseBody
 // @Failure 400 {object} httpz.ResponseBody
 // @Failure 500 {object} httpz.ResponseBody
-// @Router /dictionary/index [get]
+// @Router /api/auth//dictionary/index [get]
 func (ctrl *DictionaryController) List(c *gin.Context) {
 	params, e := httpz.GetFormData(c)
 	if e != nil {
@@ -156,7 +156,7 @@ func (ctrl *DictionaryController) List(c *gin.Context) {
 // @Success 200 {object} httpz.ResponseBody
 // @Failure 400 {object} httpz.ResponseBody
 // @Failure 500 {object} httpz.ResponseBody
-// @Router /dictionary/index [delete]
+// @Router /api/auth//dictionary/index [delete]
 func (ctrl *DictionaryController) DeleteBatch(c *gin.Context) {
 	var req httpz.IdListRequest
 	// 参数绑定

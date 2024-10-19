@@ -147,7 +147,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
-import { getSystemInfo, restarServer, stopServer } from "@/api/server";
+import { getSystemInfo, restartServer, stopServer } from "@/api/server";
 import SearchForm from "@/components/SearchForm/index.vue";
 import type { TSystemInfo } from "@/types/dashboard";
 
@@ -233,7 +233,7 @@ const copyToClipboard = async (text: any) => {
 
 //重启
 const onRestart = () => {
-  restarServer().then((res) => {
+  restartServer().then((res) => {
     ElMessage.success(res.Message || "重启成功");
   });
 };

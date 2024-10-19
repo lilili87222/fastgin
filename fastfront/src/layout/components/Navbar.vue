@@ -37,9 +37,9 @@
             <router-link to="/profile/index">
               <el-dropdown-item>个人中心</el-dropdown-item>
             </router-link>
-            <router-link to="/theme/index">
+            <!-- <router-link to="/theme/index">
               <el-dropdown-item>主题配置</el-dropdown-item>
-            </router-link>
+            </router-link> -->
             <router-link to="/">
               <el-dropdown-item>首页</el-dropdown-item>
             </router-link>
