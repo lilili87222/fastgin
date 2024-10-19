@@ -136,7 +136,6 @@ const rules = reactive<FormRules<TUserFormData>>({
 });
 
 const formData = ref<TUserFormData>({
-  Id: 0,
   UserName: "",
   Password: "",
   NickName: "",
@@ -191,6 +190,16 @@ const showPwd = () => {
 
 //关闭
 const drawerClose = () => {
+  formData.value = {
+    UserName: "",
+    Password: "",
+    NickName: "",
+    Status: 1,
+    Mobile: "",
+    Avatar: "",
+    Introduction: "",
+    RoleIds: "",
+  };
   formRef.value.resetFields();
 };
 
@@ -202,7 +211,7 @@ const cancelClick = () => {
 const formRef = ref();
 //提交
 const submitForm = () => {
-  formRef.value.validate((valid) => {
+  formRef.value.validate((valid: boolean) => {
     if (valid) {
       let data = { ...formData.value };
       if (formData.value.Password !== "") {
@@ -223,6 +232,7 @@ const submitForm = () => {
           drawer.value = false;
         });
       } else {
+        if (!data.Id) return;
         updateUserById(data.Id, data).then((res) => {
           ElMessage.success(res.Message);
           formRef.value.resetFields();

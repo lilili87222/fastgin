@@ -37,13 +37,24 @@
               :placeholder="item.placeholder"
             >
               <template #prefix>
-                <svg-icon :icon-class="formData[item.prop] || ''" />
+                <template v-if="activeName === 'SVG'">
+                  <svg-icon :icon-class="formData[item.prop] || ''" />
+                </template>
+                <template v-else>
+                  <el-icon>
+                    <component
+                      :is="formData[item.prop]"
+                      class="svg-icon disabled"
+                    ></component>
+                  </el-icon>
+                </template>
               </template>
             </el-input>
 
             <IconSelect
               :iconVal="formData[item.prop] || ' '"
               @selectIcon="handleIconSelect"
+              @select-name="handleIconName"
             />
           </template>
           <template
@@ -61,22 +72,18 @@
             </el-radio-group>
           </template>
           <template v-else-if="item.prop === 'ParentId'">
-            <div>
-              <el-input
-                v-model="selectLabel"
-                placeholder="请输入搜索内容"
-                @focus="showTree = true"
-                @input="filterTree"
-                clearable
-              />
-              <el-tree
-                v-if="showTree"
-                :data="treeselect"
-                :props="defaultProps"
-                @node-click="handleNodeClick"
-                style="margin-top: 10px; max-height: 300px; overflow-y: auto"
-              />
-            </div>
+            <el-tree-select
+              ref="treeSelectRef"
+              v-model="formData[item.prop]"
+              :data="treeselect"
+              check-strictly
+              filterable
+              show-checkbox
+              node-key="Id"
+              :props="defaultProps"
+              style="width: 100%"
+              @node-click="handleNodeClick"
+            />
           </template>
           <template v-else>
             <el-input
@@ -160,11 +167,9 @@ const fromCol = [
 
 const dialogType = ref("");
 const treeselect = ref([]);
-const showTree = ref(false);
 //打开
 const openDrawer = (row: TMenuFormData, type: string, treeselectData: any) => {
   formData.value = row;
-  selectLabel.value = findParentTitleById(row.Id, treeselectData);
   dialogType.value = type;
   treeselect.value = treeselectData;
   drawer.value = true;
@@ -174,61 +179,16 @@ defineExpose({
   openDrawer,
 });
 
-//获取父级目录名称
-const findParentTitleById = (id: number, items: any[]) => {
-  for (const item of items) {
-    if (item.Children && item.Children.length > 0) {
-      const found = item.Children.find(
-        (child: { Id: number }) => child.Id === id
-      );
-      if (found) {
-        return item.Title;
-      }
-      const parentTitle = findParentTitleById(id, item.Children);
-      if (parentTitle) {
-        return parentTitle;
-      }
-    }
-  }
-  return null;
-};
-
-const selectLabel = ref("");
-//更新数据
-const handleNodeClick = (node) => {
-  selectLabel.value = node.Title;
-  formData.value.ParentId = node.Title === "顶级类目" ? 0 : node.Id; // 选中后更新输入框的值
-  showTree.value = false;
-};
-
 const formData = ref<any>({});
 
-// 过滤树形数据
-const filterTree = () => {
-  treeselect.value = selectLabel.value
-    ? searchNodes(treeselect.value, selectLabel.value)
-    : treeselect.value;
-};
-const searchNodes = (data, query) => {
-  return data
-    .map((node) => {
-      const children = node.Children ? searchNodes(node.Children, query) : [];
-      return {
-        ...node,
-        children,
-      };
-    })
-    .filter((node) => {
-      return (
-        node.title.includes(query) || // 根据标签匹配
-        node.children.length > 0 // 如果子节点符合查询条件
-      );
-    });
+const handleNodeClick = (data: any) => {
+  formData.value.ParentId = data.Id;
 };
 
+const treeSelectRef = ref();
 //关闭
 const drawerClose = () => {
-  selectLabel.value = "";
+  formData.value = {};
   formRef.value.resetFields();
 };
 
@@ -238,31 +198,33 @@ const cancelClick = () => {
 };
 
 const formRef = ref();
-const dialogFormDataCopy = ref<any>({});
 
 //图标选择
+const activeName = ref("SVG");
 const handleIconSelect = (iconName: string) => {
   formData.value.Icon = iconName;
 };
 
+const handleIconName = (iconName: string) => {
+  formData.value.Icon = "";
+  activeName.value = iconName;
+};
+
 //提交
 const submitForm = () => {
-  formRef.value.validate((valid) => {
+  formRef.value.validate((valid: boolean) => {
     if (valid) {
-      dialogFormDataCopy.value = { ...formData.value };
+      let data = { ...formData.value };
 
       if (dialogType.value === "create") {
-        createRole(dialogFormDataCopy.value).then((res) => {
+        createRole(data).then((res) => {
           ElMessage.success(res.Message);
           formRef.value.resetFields();
           emits("getMenuData");
           drawer.value = false;
         });
       } else {
-        updateRoleById(
-          dialogFormDataCopy.value.Id,
-          dialogFormDataCopy.value
-        ).then((res) => {
+        updateRoleById(data.Id, data).then((res) => {
           ElMessage.success(res.Message);
           formRef.value.resetFields();
           emits("getMenuData");

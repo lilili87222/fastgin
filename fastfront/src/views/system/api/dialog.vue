@@ -110,7 +110,6 @@ defineExpose({
 });
 
 const formData = ref<TApiFormData>({
-  Id: 0,
   Path: "",
   Category: "",
   Method: "",
@@ -120,6 +119,12 @@ const formData = ref<TApiFormData>({
 const formRef = ref();
 //关闭
 const drawerClose = () => {
+  formData.value = {
+    Path: "",
+    Category: "",
+    Method: "",
+    Desc: "",
+  };
   formRef.value.resetFields();
 };
 //取消
@@ -129,7 +134,7 @@ const cancelClick = () => {
 
 //提交
 const submitForm = () => {
-  formRef.value.validate((valid) => {
+  formRef.value.validate((valid: boolean) => {
     if (valid) {
       let data = { ...formData.value };
       if (dialogType.value === "create") {
@@ -140,6 +145,7 @@ const submitForm = () => {
           drawer.value = false;
         });
       } else {
+        if (!data.Id) return;
         updateApiById(data.Id, data).then((res) => {
           ElMessage.success(res.Message);
           formRef.value.resetFields();

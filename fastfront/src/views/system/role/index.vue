@@ -45,7 +45,7 @@
           fixed="right"
           label="操作"
           align="center"
-          min-width="120"
+          min-width="130"
         >
           <template #default="scope">
             <el-button

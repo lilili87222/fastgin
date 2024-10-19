@@ -113,7 +113,7 @@ const getTree = () => {
 const roleId = ref(0);
 //打开
 const openDrawer = (row: TRoleFormData) => {
-  roleId.value = row.Id;
+  roleId.value = row.Id || 0;
   getTree();
   getMenuData();
   getApiData();
