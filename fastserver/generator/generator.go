@@ -6,6 +6,8 @@ import (
 	"gorm.io/gen"
 	"os"
 	"path/filepath"
+	"slices"
+	"strconv"
 	"strings"
 	"text/template"
 )
@@ -14,10 +16,13 @@ type TableConfig struct {
 	TableName       string
 	PrefixTableName string
 	OutDir          string
+	OutDirFront     string
 	Module          string
 	ModelName       string
 	LowModelName    string
 	TableComment    string
+	GenerateFront   bool
+	Columns         []TableColumn
 }
 
 func GenerateAll() {
@@ -36,6 +41,8 @@ func GenerateAll() {
 		TableName:       "",
 		OutDir:          genConfig.OutDir,
 		Module:          genConfig.Module,
+		OutDirFront:     genConfig.OutDirFront,
+		GenerateFront:   genConfig.GenerateFront,
 	}
 
 	for _, tableName := range genConfig.Tables {
@@ -44,12 +51,26 @@ func GenerateAll() {
 		tableConfig.ModelName = ToCamelCase(tableConfig.TableName)
 		tableConfig.LowModelName = strings.ToLower(tableConfig.ModelName)
 		tableConfig.TableComment, _ = database.GetTableComment(DB, tableName)
+
+		tableInfos, e := database.GetTableInfo(DB, tableName)
+		if e != nil {
+			panic(e)
+		}
+		tableConfig.Columns = ToTableColumns(tableInfos)
+
 		err := Generate(tableConfig)
 		if err != nil {
 			panic(err)
 		}
+		if genConfig.GenerateFront {
+			err := GenerateView(tableConfig)
+			if err != nil {
+				panic(err)
+			}
+		}
 	}
 }
+
 func Generate(tc TableConfig) error {
 	GenerateModel(tc)
 	if err := GenerateFromTemplate(tc, "dao"); err != nil {
@@ -90,6 +111,38 @@ func GenerateFromTemplate(tc TableConfig, templateName string) error {
 	defer file.Close()
 	return tmpl.Execute(file, tc)
 }
+func GenerateView(tc TableConfig) error {
+	if err := GenerateViewFromTemplate(tc, "api.ts", "api/app"); err != nil {
+		return err
+	}
+	if err := GenerateViewFromTemplate(tc, "types.ts", "types/app"); err != nil {
+		return err
+	}
+	if err := GenerateViewFromTemplate(tc, "dialog.vue", "views/app/"+tc.LowModelName); err != nil {
+		return err
+	}
+	if err := GenerateViewFromTemplate(tc, "index.vue", "views/app/"+tc.LowModelName); err != nil {
+		return err
+	}
+	return nil
+}
+func GenerateViewFromTemplate(tc TableConfig, templateName string, outputDir string) error {
+	outputPath := filepath.Join(tc.OutDirFront, outputDir, templateName)
+
+	tmpl, err := template.New(templateName + ".gohtml").Funcs(template.FuncMap{
+		"ToCamelCase": ToCamelCase,
+		"ToLower":     strings.ToLower,
+	}).ParseFiles("generator/templates/" + templateName + ".gohtml")
+	if err != nil {
+		return err
+	}
+	file, err := os.Create(outputPath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	return tmpl.Execute(file, tc)
+}
 
 func ToCamelCase(s string) string {
 	parts := strings.Split(s, "_")
@@ -97,4 +150,54 @@ func ToCamelCase(s string) string {
 		parts[i] = strings.Title(part)
 	}
 	return strings.Join(parts, "")
+}
+func ToTableColumns(infos []database.ColumnInfo) []TableColumn {
+	excludeColumns := []string{"created_at", "updated_at", "deleted_at"}
+	var columns []TableColumn
+	for _, info := range infos {
+		typeInfos := strings.Split(info.ColumnType, "(")
+		typeSize := 0
+		if len(typeInfos) > 1 {
+			typeSize, _ = strconv.Atoi(strings.Split(typeInfos[1], ")")[0])
+		}
+		column := TableColumn{
+			Name:         info.ColumnName,
+			Type:         typeInfos[0],
+			TypeSize:     typeSize,
+			IsPriKey:     info.IsPriKey(),
+			IsNullable:   info.IsNullableField(),
+			DefaultValue: info.ColumnDefault,
+			Comment:      info.ColumnComment,
+		}
+		column.Type = mysqlDataType2TypescriptType(column.Type)
+		if slices.Contains(excludeColumns, column.Name) {
+			continue
+		}
+		columns = append(columns, column)
+	}
+	return columns
+}
+func mysqlDataType2TypescriptType(mysqlType string) string {
+	switch mysqlType {
+	case "int", "tinyint", "smallint", "mediumint", "bigint":
+		return "number"
+	case "float", "double", "decimal":
+		return "number"
+	case "char", "varchar", "text", "tinytext", "mediumtext", "longtext":
+		return "string"
+	case "date", "time", "datetime", "timestamp":
+		return "Date"
+	default:
+		return "any"
+	}
+}
+
+type TableColumn struct {
+	Name         string
+	Type         string
+	TypeSize     int
+	IsPriKey     bool
+	IsNullable   bool
+	DefaultValue string
+	Comment      string
 }

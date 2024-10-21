@@ -44,13 +44,16 @@ type ColumnInfo struct {
 func (c ColumnInfo) IsPriKey() bool {
 	return c.ColumnKey == "PRI"
 }
+func (c ColumnInfo) IsNullableField() bool {
+	return c.IsNullable == "YES"
+}
 
 // GetTableInfo retrieves the information of the specified table from the specified database, including column comments.
-func GetTableInfo(db *gorm.DB, databaseName, tableName string) ([]ColumnInfo, error) {
+func GetTableInfo(db *gorm.DB, tableName string) ([]ColumnInfo, error) {
 	var tableInfo []ColumnInfo
-	query := fmt.Sprintf("SELECT column_name, column_type, is_nullable, column_key, column_default, extra, column_comment FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '%s' AND TABLE_NAME = '%s'", databaseName, tableName)
+	query := fmt.Sprintf("SELECT column_name, column_type, is_nullable, column_key, column_default, extra, column_comment FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA =(SELECT DATABASE()) AND TABLE_NAME = '%s'", tableName)
 	if err := db.Raw(query).Scan(&tableInfo).Error; err != nil {
-		log.Printf("Error fetching table info from table %s in database %s: %v", tableName, databaseName, err)
+		log.Printf("Error fetching table info from table %s in database : %v", tableName, err)
 		return nil, err
 	}
 	return tableInfo, nil

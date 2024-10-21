@@ -1,11 +1,12 @@
 generator:
   create-view: true # 是否生成视图vue,当是否的时候只生成api，model，controller，service，dao
-  tables: ["sys_api","sys_casbin_rule","sys_menu","sys_operation_log","sys_role","sys_user"] # 要生成的代码的表
+  tables: ["web_dictionary"] # 要生成的代码的表
   out-dir: modules/app2 # 保存路径
   out-dir-front: F:\go_workspace\fastgin\fastfront\src
   run-sql: true # 是否执行sql
   table-prefix: "sys_" # 表前缀
   module: "fastgin/modules/app2" # 模块名
+  generate-front: true # 是否生成前端代码
 
 database:
   # 数据库类型(mysql,sqlite3)

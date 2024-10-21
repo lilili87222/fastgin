@@ -41,37 +41,35 @@
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import type { DrawerProps } from "element-plus";
-import type { TDictionaryForm } from "@/types/app/dictionary";
+import type { T{{.ModelName}}Form } from "@/types/app/{{.LowModelName}}";
 import {
-  createDictionary,
-  getDictionaryDetail,
-  updateDictionaryById,
-} from "@/api/app/dictionary";
+  create{{.ModelName}},
+  get{{.ModelName}}Detail,
+  update{{.ModelName}}ById,
+} from "@/api/app/{{.LowModelName}}";
 
 const drawer = ref(false);
 const direction = ref<DrawerProps["direction"]>("rtl");
 
-const emits = defineEmits(["getDictData"]);
+const emits = defineEmits(["getDictionaryData"]);
 
 const rules = {
-  value: [
-    { required: true, message: "请输入字典名称", trigger: "blur" },
-    { min: 1, max: 100, message: "长度在 1 到 100 个字符", trigger: "blur" },
-  ],
-  key: [
-    { required: true, message: "请输入字典类型", trigger: "blur" },
-    { min: 1, max: 50, message: "长度在 1 到 50 个字符", trigger: "blur" },
-  ],
-  des: [
-    { required: false, message: "说明", trigger: "blur" },
-    { min: 0, max: 100, message: "长度在 0 到 100 个字符", trigger: "blur" },
-  ],
+    {{- range .Columns }}
+    {{ .Name }}: [
+      {{- if .IsNullable }}
+      { required: false, message: "{{ .Comment }}", trigger: "blur" },
+      {{- else }}
+      { required: true, message: "请输入{{ .Comment }}", trigger: "blur" },
+      {{- end }}
+      { min: 1, max: {{ .TypeSize }}, message: "长度在 1 到 {{ .TypeSize }} 个字符", trigger: "blur" },
+    ],
+    {{- end }}
 };
 
 const fromCol = [
-  { prop: "value", label: "字典名称", placeholder: "字典名称" },
-  { prop: "key", label: "字典类型", placeholder: "字典类型" },
-  { prop: "des", label: "说明", placeholder: "说明" },
+  {{- range .Columns }}
+  { prop: "{{ .Name }}", label: "{{ .Comment }}", placeholder: "{{ .Comment }}" },
+  {{- end }}
 ];
 
 const dialogType = ref("");
@@ -79,7 +77,7 @@ const dialogType = ref("");
 const openDrawer = (type: string, Id?: number) => {
   dialogType.value = type;
   if (type === "update" && Id) {
-    getDictionaryDetail(Id).then((res) => {
+    get{{.ModelName}}Detail(Id).then((res) => {
       formData.value = res.data;
     });
   }
@@ -90,7 +88,7 @@ defineExpose({
   openDrawer,
 });
 
-const formData = ref<TDictionaryForm>({
+const formData = ref<T{{.ModelName}}Form>({
   value: "",
   key: "",
   des: "",
@@ -115,18 +113,18 @@ const submitForm = () => {
     if (valid) {
       let data = { ...formData.value };
       if (dialogType.value === "create") {
-        createDictionary(data).then((res) => {
+        create{{.ModelName}}(data).then((res) => {
           ElMessage.success(res.message);
           formRef.value.resetFields();
-          emits("getDictData");
+          emits("get{{.ModelName}}Data");
           drawer.value = false;
         });
       } else {
         if (!data.id) return;
-        updateDictionaryById(data.id, data).then((res) => {
+        update{{.ModelName}}ById(data.id, data).then((res) => {
           ElMessage.success(res.message);
           formRef.value.resetFields();
-          emits("getDictData");
+          emits("get{{.ModelName}}Data");
           drawer.value = false;
         });
       }

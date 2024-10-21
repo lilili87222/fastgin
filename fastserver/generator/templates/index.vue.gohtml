@@ -70,7 +70,7 @@
         v-model:limit="params.page_size"
         @pagination="onPaginaion"
       ></Pagination>
-      <Dialog ref="DrawerRef" @getDictData="getDictData"></Dialog>
+      <Dialog ref="DrawerRef" @getDictionaryData="getDictionaryData"></Dialog>
     </el-card>
   </div>
 </template>
@@ -79,41 +79,39 @@
 import { computed, onMounted, ref } from "vue";
 
 import {
-  batchDeleteDictionaryById,
-  batchDeleteDictionaryByIds,
-  getDictionary,
-} from "@/api/app/dictionary";
+  batchDelete{{.ModelName}}ById,
+  batchDelete{{.ModelName}}ByIds,
+  get{{.ModelName}},
+} from "@/api/app/{{.LowModelName}}";
 import SearchForm from "@/components/SearchForm/index.vue";
 import Pagination from "@/components/Pagination/index.vue";
 import type {
-  TDictionaryTable,
-  TDictionaryQuery,
-} from "@/types/app/dictionary";
+  T{{.ModelName}}Table,
+  T{{.ModelName}}Query,
+} from "@/types/app/{{.LowModelName}}";
 import { parseGoTime } from "@/utils/index";
 
 import Dialog from "./dialog.vue";
 
 const searchColumn = [
-  { prop: "value", label: "字典名称", placeholder: "字典名称" },
-  { prop: "key", label: "字典类型", placeholder: "字典类型" },
-  { prop: "des", label: "说明", placeholder: "说明" },
+  {{- range .Columns }}
+  { prop: "{{ .Name }}", label: "{{ .Comment }}", placeholder: "{{ .Comment }}" },
+  {{- end }}
 ];
 
 const tableColumn = [
-  { prop: "value", label: "字典名称", minWidth: 110 },
-  { prop: "key", label: "字典类型", minWidth: 110 },
-  { prop: "des", label: "说明", minWidth: 85 },
-  { prop: "created_at", label: "创建时间", minWidth: 110 },
-  { prop: "updated_at", label: "更新时间", minWidth: 110 },
+  {{- range .Columns }}
+  { prop: "{{ .Name }}", label: "{{ .Comment }}", minWidth: 110 },
+  {{- end }}
 ];
 
 // 查询参数
-const params = ref<TDictionaryQuery>({
+const params = ref<T{{.ModelName}}Query>({
   page_num: 1,
   page_size: 10,
 });
 // 表格数据
-const tableData = ref<TDictionaryTable[]>([]);
+const tableData = ref<T{{.ModelName}}Table[]>([]);
 const total = ref(0);
 const loading = ref(false);
 
@@ -124,7 +122,7 @@ onMounted(() => {
 // 获取表格数据
 const getTableData = () => {
   loading.value = true;
-  getDictionary(params.value)
+  get{{.ModelName}}(params.value)
     .then((res) => {
       tableData.value = res.data.data;
       total.value = res.data.total;
@@ -145,19 +143,19 @@ const update = (Id: number) => {
 };
 
 //清空
-const onClear = (form: TDictionaryQuery) => {
+const onClear = (form: T{{.ModelName}}Query) => {
   params.value = form;
   params.value.page_num = 1;
   params.value.page_size = 10;
   getTableData();
 };
 
-const getDictData = () => {
+const getDictionaryData = () => {
   getTableData();
 };
 
 // 表格多选
-const multipleSelection = ref<TDictionaryTable[]>([]);
+const multipleSelection = ref<T{{.ModelName}}Table[]>([]);
 const searchAction = computed(() => [
   { label: "查询", event: "search", type: "primary" },
   { label: "新增", event: "add", type: "warning" },
@@ -177,7 +175,7 @@ const onPaginaion = (val: any) => {
 };
 
 //搜索
-const onSearch = (form: TDictionaryQuery) => {
+const onSearch = (form: T{{.ModelName}}Query) => {
   params.value = form;
   params.value.page_num = 1;
   params.value.page_size = 10;
@@ -197,7 +195,7 @@ const onDelete = () => {
       multipleSelection.value.forEach((x: any) => {
         Ids.push(x.id);
       });
-      batchDeleteDictionaryByIds({
+      batchDelete{{.ModelName}}ByIds({
         Ids,
       })
         .then((res) => {
@@ -214,14 +212,14 @@ const onDelete = () => {
 };
 
 // 表格多选
-const handleSelectionChange = (val: TDictionaryTable[]) => {
+const handleSelectionChange = (val: T{{.ModelName}}Table[]) => {
   multipleSelection.value = val;
 };
 
 // 单个删除
 const singleDelete = (Id) => {
   loading.value = true;
-  batchDeleteDictionaryById(Id)
+  batchDelete{{.ModelName}}ById(Id)
     .then((res) => {
       getTableData();
       ElMessage.success(res.message);

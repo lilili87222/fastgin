@@ -34,55 +34,57 @@ func insertApiAndMenu(groupName string) {
 			Method:   "POST",
 			Path:     "/" + groupName + "/index",
 			Category: groupName,
-			Desc:     "新增" + tableDesc,
+			Des:     "新增" + tableDesc,
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/" + groupName + "/index/:id",
 			Category: groupName,
-			Desc:     "获取" + tableDesc,
+			Des:     "获取" + tableDesc,
 			Creator:  "系统",
 		},
 		{
 			Method:   "PATCH",
 			Path:     "/" + groupName + "/index/:id",
 			Category: groupName,
-			Desc:     "更新" + tableDesc,
+			Des:     "更新" + tableDesc,
 			Creator:  "系统",
 		},
 		{
 			Method:   "DELETE",
 			Path:     "/" + groupName + "/index/:id",
 			Category: groupName,
-			Desc:     "删除" + tableDesc,
+			Des:     "删除" + tableDesc,
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/" + groupName + "/index",
 			Category: groupName,
-			Desc:     "搜索" + tableDesc,
+			Des:     "搜索" + tableDesc,
 			Creator:  "系统",
 		},
 		{
 			Method:   "DELETE",
 			Path:     "/" + groupName + "/index",
 			Category: groupName,
-			Desc:     "批量删除" + tableDesc,
+			Des:     "批量删除" + tableDesc,
 			Creator:  "系统",
 		},
 	}
+	service.NewApiService().InsertApisToAdmin(apis)
+
+	{{ if .GenerateFront }}
 	menu := model.Menu{
 		Name:      "{{.ModelName}}",
 		Title:     tableDesc + "管理",
-		Icon:      nil,
+		Icon:      "",
 		Path:      groupName,
 		Component: "/app/" + groupName + "/index",
 		Sort:      11,
 		Creator:   "系统",
 	}
-
-	service.NewApiService().InsertApisToAdmin(apis)
 	service.NewMenuService().InsertAppMenuToAdmin(menu)
+	{{ end }}
 }
