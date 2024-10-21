@@ -70,7 +70,7 @@
         v-model:limit="params.page_size"
         @pagination="onPaginaion"
       ></Pagination>
-      <Dialog ref="DrawerRef" @getDictData="getDictData"></Dialog>
+      <Dialog ref="DrawerRef" @getDictionaryData="getDictionaryData"></Dialog>
     </el-card>
   </div>
 </template>
@@ -152,7 +152,7 @@ const onClear = (form: TDictionaryQuery) => {
   getTableData();
 };
 
-const getDictData = () => {
+const getDictionaryData = () => {
   getTableData();
 };
 

@@ -21,10 +21,21 @@
           :label="item.label"
           :prop="item.prop"
         >
-          <el-input
-            v-model="formData[item.prop]"
-            :placeholder="item.placeholder"
-          ></el-input>
+          <template v-if="item.prop === 'des'">
+            <el-input
+              v-model="formData[item.prop]"
+              type="textarea"
+              placeholder="说明"
+              show-word-limit
+              maxlength="100"
+            />
+          </template>
+          <template v-else>
+            <el-input
+              v-model="formData[item.prop]"
+              :placeholder="item.placeholder"
+            ></el-input>
+          </template>
         </el-form-item>
       </el-form>
     </template>
@@ -51,7 +62,7 @@ import {
 const drawer = ref(false);
 const direction = ref<DrawerProps["direction"]>("rtl");
 
-const emits = defineEmits(["getDictData"]);
+const emits = defineEmits(["getDictionaryData"]);
 
 const rules = {
   value: [
@@ -118,7 +129,7 @@ const submitForm = () => {
         createDictionary(data).then((res) => {
           ElMessage.success(res.message);
           formRef.value.resetFields();
-          emits("getDictData");
+          emits("getDictionaryData");
           drawer.value = false;
         });
       } else {
@@ -126,7 +137,7 @@ const submitForm = () => {
         updateDictionaryById(data.id, data).then((res) => {
           ElMessage.success(res.message);
           formRef.value.resetFields();
-          emits("getDictData");
+          emits("getDictionaryData");
           drawer.value = false;
         });
       }
