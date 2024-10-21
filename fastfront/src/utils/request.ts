@@ -46,25 +46,35 @@ service.interceptors.response.use(
       // 根据HTTP状态码进行不同的错误处理
       switch (error.response.status) {
         case 401:
-          if (error.response.data.message.indexOf("JWT认证失败") !== -1) {
-            // 弹出确认框，让用户选择重新登录或留在当前页面
-            ElMessageBox.confirm(
-              "登录超时, 重新登录或继续停留在当前页？",
-              "登录状态已失效",
-              {
-                confirmButtonText: "重新登录",
-                cancelButtonText: "继续停留",
-                type: "warning",
-              }
-            ).then(async () => {
-              // 重置令牌并刷新页面
-              await store.user().resetToken();
-              location.reload();
-            });
+          const errorMessage = error.response.data.message;
+          if (errorMessage.includes("JWT认证失败")) {
+            if (errorMessage.includes("密码错误")) {
+              // 针对密码错误的提示
+              ElMessage({
+                message: "密码错误，请检查并重试。",
+                type: "error",
+                duration: 5 * 1000,
+              });
+            } else {
+              // 弹出确认框，让用户选择重新登录或留在当前页面
+              ElMessageBox.confirm(
+                "登录超时, 重新登录或继续停留在当前页？",
+                "登录状态已失效",
+                {
+                  confirmButtonText: "重新登录",
+                  cancelButtonText: "继续停留",
+                  type: "warning",
+                }
+              ).then(async () => {
+                // 重置令牌并刷新页面
+                await store.user().resetToken();
+                location.reload();
+              });
+            }
           } else {
-            // 显示错误消息
+            // 针对其他 401 错误的处理
             ElMessage({
-              message: error.response.data.message,
+              message: errorMessage || "认证失败，请重试。",
               type: "error",
               duration: 5 * 1000,
             });

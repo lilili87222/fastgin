@@ -1,13 +1,13 @@
 //日志列表 数据类型
 export type TLogs = {
   user_name: string;
-  Ip: string;
-  Path: string;
-  Status: number;
-  StartTime: string;
-  TimeCost: number;
-  Desc: string;
-  Id: number;
+  ip: string;
+  path: string;
+  status: number;
+  start_time: string;
+  time_cost: number;
+  des: string;
+  id: number;
 };
 //日志列表请求参数
 export type TLogsQuery = {

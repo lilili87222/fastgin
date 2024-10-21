@@ -108,9 +108,9 @@ const searchColumn = [
 
 const tableColumn = [
   { prop: "path", label: "访问路径", minWidth: 115 },
-  { prop: "category", label: "所属类别", minWidth: 55 },
-  { prop: "method", label: "请求方式", minWidth: 55 },
-  { prop: "creator", label: "创建人", minWidth: 65 },
+  { prop: "category", label: "所属类别", minWidth: 115 },
+  { prop: "method", label: "请求方式", minWidth: 115 },
+  { prop: "creator", label: "创建人", minWidth: 95 },
   { prop: "des", label: "说明", minWidth: 110 },
 ];
 

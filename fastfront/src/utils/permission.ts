@@ -1,16 +1,16 @@
-import store from '@/store';
+import store from "@/store";
 
 /**
  * @param {Array} value
  * @returns {Boolean}
  * @example see @/views/permission/directive.vue
  */
-export default function checkPermission(value) {
+export default function checkPermission(value: string | any[]) {
   if (value && value instanceof Array && value.length > 0) {
-    const roles = store.user && store.user().roles;
+    const roles = store.user().roles.map((role) => role.keyword);
     const permissionRoles = value;
 
-    const hasPermission = roles.some(role => {
+    const hasPermission = roles.some((role: any) => {
       return permissionRoles.includes(role);
     });
 

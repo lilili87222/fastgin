@@ -72,12 +72,14 @@ export default defineComponent({
       },
       set(val) {
         this.$emit("update:limit", val);
+        // 当页面大小改变时，重置为第一页
+        this.$emit("update:page", 1);
       },
     },
   },
   methods: {
     handleSizeChange(val) {
-      this.$emit("pagination", { page: this.currentPage, limit: val });
+      this.$emit("pagination", { page: 1, limit: val }); //当页面大小改变时，重置为第一页
       if (this.autoScroll) {
         scrollTo(0, 800);
       }
@@ -95,7 +97,7 @@ export default defineComponent({
 <style scoped>
 .pagination-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   padding: 22px 6px;
   overflow-x: auto; /* 允许在 X 轴上滚动 */
 }

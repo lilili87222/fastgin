@@ -21,14 +21,10 @@
           :label="item.label"
           :prop="item.prop"
         >
-          <template v-if="item.prop === 'Method'"> </template>
-
-          <template v-else>
-            <el-input
-              v-model="formData[item.prop]"
-              :placeholder="item.placeholder"
-            ></el-input>
-          </template>
+          <el-input
+            v-model="formData[item.prop]"
+            :placeholder="item.placeholder"
+          ></el-input>
         </el-form-item>
       </el-form>
     </template>
@@ -58,24 +54,24 @@ const direction = ref<DrawerProps["direction"]>("rtl");
 const emits = defineEmits(["getDictData"]);
 
 const rules = {
-  Value: [
+  value: [
     { required: true, message: "请输入字典名称", trigger: "blur" },
     { min: 1, max: 100, message: "长度在 1 到 100 个字符", trigger: "blur" },
   ],
-  Key: [
+  key: [
     { required: true, message: "请输入字典类型", trigger: "blur" },
     { min: 1, max: 50, message: "长度在 1 到 50 个字符", trigger: "blur" },
   ],
-  Desc: [
+  des: [
     { required: false, message: "说明", trigger: "blur" },
     { min: 0, max: 100, message: "长度在 0 到 100 个字符", trigger: "blur" },
   ],
 };
 
 const fromCol = [
-  { prop: "Value", label: "字典名称", placeholder: "字典名称" },
-  { prop: "Key", label: "字典类型", placeholder: "字典类型" },
-  { prop: "Desc", label: "说明", placeholder: "说明" },
+  { prop: "value", label: "字典名称", placeholder: "字典名称" },
+  { prop: "key", label: "字典类型", placeholder: "字典类型" },
+  { prop: "des", label: "说明", placeholder: "说明" },
 ];
 
 const dialogType = ref("");
@@ -95,15 +91,15 @@ defineExpose({
 });
 
 const formData = ref<TDictionaryForm>({
-  Value: "",
-  Key: "",
-  Desc: "",
+  value: "",
+  key: "",
+  des: "",
 });
 
 const formRef = ref();
 //关闭
 const drawerClose = () => {
-  formData.value = { Value: "", Key: "", Desc: "" };
+  formData.value = { value: "", key: "", des: "" };
   formRef.value.resetFields();
 };
 //取消
@@ -126,8 +122,8 @@ const submitForm = () => {
           drawer.value = false;
         });
       } else {
-        if (!data.ID) return;
-        updateDictionaryById(data.ID, data).then((res) => {
+        if (!data.id) return;
+        updateDictionaryById(data.id, data).then((res) => {
           ElMessage.success(res.message);
           formRef.value.resetFields();
           emits("getDictData");
