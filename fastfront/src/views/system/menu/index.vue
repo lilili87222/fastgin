@@ -10,8 +10,8 @@
       ></SearchForm>
       <el-table
         border
-        :tree-props="{ children: 'Children' }"
-        row-key="Id"
+        :tree-props="{ children: 'children' }"
+        row-key="id"
         v-loading="loading"
         style="width: 100%"
         @selection-change="handleSelectionChange"
@@ -27,25 +27,25 @@
           align="center"
         >
           <template #default="scope">
-            <template v-if="item.prop === 'Status'">
+            <template v-if="item.prop === 'status'">
               <el-tag
                 size="small"
-                :type="scope.row.Status === 1 ? 'success' : 'danger'"
-                >{{ scope.row.Status === 1 ? "否" : "是" }}</el-tag
+                :type="scope.row.status === 1 ? 'success' : 'danger'"
+                >{{ scope.row.status === 1 ? "否" : "是" }}</el-tag
               >
             </template>
-            <template v-else-if="item.prop === 'Hidden'">
+            <template v-else-if="item.prop === 'hidden'">
               <el-tag
                 size="small"
-                :type="scope.row.Hidden === 1 ? 'danger' : 'success'"
-                >{{ scope.row.Hidden === 1 ? "是" : "否" }}</el-tag
+                :type="scope.row.hidden === 1 ? 'danger' : 'success'"
+                >{{ scope.row.hidden === 1 ? "是" : "否" }}</el-tag
               >
             </template>
-            <template v-else-if="item.prop === 'NoCache'">
+            <template v-else-if="item.prop === 'noCache'">
               <el-tag
                 size="small"
-                :type="scope.row.NoCache === 1 ? 'danger' : 'success'"
-                >{{ scope.row.NoCache === 1 ? "否" : "是" }}</el-tag
+                :type="scope.row.noCache === 1 ? 'danger' : 'success'"
+                >{{ scope.row.noCache === 1 ? "否" : "是" }}</el-tag
               >
             </template>
             <template v-else>
@@ -68,7 +68,7 @@
             >
             <el-popconfirm
               title="确定删除吗？"
-              @confirm="singleDelete(scope.row.Id)"
+              @confirm="singleDelete(scope.row.id)"
             >
               <template #reference>
                 <el-button type="danger" class="custom-btn">删除</el-button>
@@ -88,14 +88,14 @@ import { computed, onMounted, ref } from "vue";
 
 import { batchDeleteMenuByIds, getMenuTree } from "@/api/system/menu";
 import SearchForm from "@/components/SearchForm/index.vue";
-import type { TMenuQuery, TMenuTableData } from "@/types/system/menu";
+import type { TMenuQuery, TMenuTable } from "@/types/system/menu";
 
 import Dialog from "./dialog.vue";
 
 const searchColumn = [];
 
 // 表格多选
-const multipleSelection = ref<TMenuTableData[]>([]);
+const multipleSelection = ref<TMenuTable[]>([]);
 
 const searchAction = computed(() => [
   { label: "新增", event: "add", type: "warning" },
@@ -112,17 +112,17 @@ const getMenuData = () => {
 };
 
 const tableColumn = [
-  { prop: "Title", label: "菜单标题", minWidth: 105 },
-  { prop: "Name", label: "名称", minWidth: 80 },
-  { prop: "Icon", label: "图标", minWidth: 80 },
-  { prop: "Path", label: "路由地址", minWidth: 105 },
-  { prop: "Component", label: "组件路径", minWidth: 105 },
-  { prop: "Redirect", label: "重定向", minWidth: 105 },
-  { prop: "Sort", label: "排序", minWidth: 80 },
-  { prop: "Status", label: "禁用", minWidth: 80 },
-  { prop: "Hidden", label: "隐藏", minWidth: 80 },
-  { prop: "NoCache", label: "缓存", minWidth: 80 },
-  { prop: "ActiveMenu", label: "高亮菜单", minWidth: 105 },
+  { prop: "title", label: "菜单标题", minWidth: 105 },
+  { prop: "name", label: "名称", minWidth: 80 },
+  { prop: "icon", label: "图标", minWidth: 80 },
+  { prop: "path", label: "路由地址", minWidth: 105 },
+  { prop: "component", label: "组件路径", minWidth: 105 },
+  { prop: "redirect", label: "重定向", minWidth: 105 },
+  { prop: "sort", label: "排序", minWidth: 80 },
+  { prop: "status", label: "禁用", minWidth: 80 },
+  { prop: "hidden", label: "隐藏", minWidth: 80 },
+  { prop: "noCache", label: "缓存", minWidth: 80 },
+  { prop: "activeMenu", label: "高亮菜单", minWidth: 105 },
 ];
 
 // 查询参数
@@ -131,7 +131,7 @@ const params = ref<TMenuQuery>({
   page_size: 10,
 });
 // 表格数据
-const tableData = ref<TMenuTableData[]>([]);
+const tableData = ref<TMenuTable[]>([]);
 const total = ref(0);
 const loading = ref(false);
 
@@ -147,7 +147,7 @@ const getTableData = () => {
     .then((res) => {
       const { data: Data } = res;
       tableData.value = Data;
-      treeselectData.value = [{ Id: 0, Title: "顶级类目", Children: Data }];
+      treeselectData.value = [{ id: 0, title: "顶级类目", children: Data }];
       total.value = Data.Total;
     })
     .finally(() => {
@@ -169,7 +169,7 @@ const onAdd = () => {
   DrawerRef.value.openDrawer({}, "create", treeselectData.value);
 };
 // 编辑
-const update = (row: TMenuTableData) => {
+const update = (row: TMenuTable) => {
   DrawerRef.value.openDrawer({ ...row }, "update", treeselectData.value);
 };
 
@@ -203,7 +203,7 @@ const onDelete = () => {
 };
 
 // 表格多选
-const handleSelectionChange = (val: TMenuTableData[]) => {
+const handleSelectionChange = (val: TMenuTable[]) => {
   multipleSelection.value = val;
 };
 

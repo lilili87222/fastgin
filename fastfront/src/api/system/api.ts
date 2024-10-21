@@ -1,4 +1,4 @@
-import type { TApiFormData, TApiQuery } from "@/types/system/api";
+import type { TApiForm, TApiQuery } from "@/types/system/api";
 import { requestApi } from "../type";
 
 // 获取接口列表
@@ -12,13 +12,13 @@ export function getApiTree() {
 }
 
 // 创建接口
-export function createApi(data: TApiFormData) {
-  return requestApi<TApiFormData>("/api/auth/api/index", "post", data);
+export function createApi(data: TApiForm) {
+  return requestApi<TApiForm>("/api/auth/api/index", "post", data);
 }
 
 // 更新接口
-export function updateApiById(Id: number, data: TApiFormData) {
-  return requestApi<TApiFormData>(`/api/auth/api/index/${Id}`, "patch", data);
+export function updateApiById(Id: number, data: TApiForm) {
+  return requestApi<TApiForm>(`/api/auth/api/index/${Id}`, "patch", data);
 }
 
 // 批量删除接口

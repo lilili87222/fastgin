@@ -21,7 +21,7 @@
           :label="item.label"
           :prop="item.prop"
         >
-          <template v-if="item.prop === 'Status'">
+          <template v-if="item.prop === 'status'">
             <el-select
               v-model="formData[item.prop]"
               placeholder="请选择状态"
@@ -32,7 +32,7 @@
             </el-select>
           </template>
 
-          <template v-else-if="item.prop === 'Sort'">
+          <template v-else-if="item.prop === 'sort'">
             <el-input-number
               v-model="formData[item.prop]"
               controls-position="right"
@@ -40,7 +40,7 @@
               :max="999"
             />
           </template>
-          <template v-else-if="item.prop === 'Desc'">
+          <template v-else-if="item.prop === 'des'">
             <el-input
               v-model="formData[item.prop]"
               type="textarea"
@@ -71,29 +71,29 @@
 import { reactive, ref } from "vue";
 import type { DrawerProps, FormRules } from "element-plus";
 import { createRole, updateRoleById } from "@/api/system/role";
-import type { TRoleFormData } from "@/types/system/role";
+import type { TRoleForm } from "@/types/system/role";
 
 const drawer = ref(false);
 const direction = ref<DrawerProps["direction"]>("rtl");
 const emits = defineEmits(["getRoleData"]);
 
-const rules = reactive<FormRules<TRoleFormData>>({
-  Name: [
+const rules = reactive<FormRules<TRoleForm>>({
+  name: [
     { required: true, message: "请输入角色名称", trigger: "blur" },
     { min: 1, max: 20, message: "长度在 1 到 20 个字符", trigger: "blur" },
   ],
-  Keyword: [
+  keyword: [
     { required: true, message: "请输入关键字", trigger: "blur" },
     { min: 1, max: 20, message: "长度在 1 到 20 个字符", trigger: "blur" },
   ],
-  Status: [{ required: true, message: "请选择角色状态", trigger: "change" }],
-  Desc: [
+  status: [{ required: true, message: "请选择角色状态", trigger: "change" }],
+  des: [
     { required: false, message: "说明", trigger: "blur" },
     { min: 0, max: 100, message: "长度在 0 到 100 个字符", trigger: "blur" },
   ],
 });
 
-const formData = ref<TRoleFormData>({
+const formData = ref<TRoleForm>({
   name: "",
   keyword: "",
   status: 1,
@@ -102,21 +102,21 @@ const formData = ref<TRoleFormData>({
 });
 
 const fromCol = [
-  { prop: "Name", label: "角色名称", placeholder: "角色名称" },
+  { prop: "name", label: "角色名称", placeholder: "角色名称" },
 
-  { prop: "Keyword", label: "关键字", placeholder: "关键字" },
+  { prop: "keyword", label: "关键字", placeholder: "关键字" },
   {
-    prop: "Status",
+    prop: "status",
     label: "角色状态",
     placeholder: "角色状态",
   },
   {
-    prop: "Sort",
+    prop: "sort",
     label: "等级(1最高)",
     placeholder: "等级(1最高)",
   },
   {
-    prop: "Desc",
+    prop: "des",
     label: "说明",
     placeholder: "说明",
   },
@@ -124,7 +124,7 @@ const fromCol = [
 
 const dialogType = ref("");
 //打开
-const openDrawer = (row: TRoleFormData, type: string) => {
+const openDrawer = (row: TRoleForm, type: string) => {
   formData.value = row;
   dialogType.value = type;
   drawer.value = true;

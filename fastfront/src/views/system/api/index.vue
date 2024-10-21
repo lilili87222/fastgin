@@ -27,11 +27,11 @@
           align="center"
         >
           <template #default="scope">
-            <template v-if="item.prop === 'Method'">
+            <template v-if="item.prop === 'method'">
               <el-tag
-                :type="methodsTagFilter(scope.row.Method)"
+                :type="methodsTagFilter(scope.row.method)"
                 disable-transitions
-                >{{ scope.row.Method }}
+                >{{ scope.row.method }}
               </el-tag>
             </template>
 
@@ -55,7 +55,7 @@
             >
             <el-popconfirm
               title="确定删除吗？"
-              @confirm="singleDelete(scope.row.Id)"
+              @confirm="singleDelete(scope.row.id)"
             >
               <template #reference>
                 <el-button type="danger" class="custom-btn">删除</el-button>
@@ -83,15 +83,15 @@ import { computed, onMounted, ref } from "vue";
 import { batchDeleteApiByIds, getApis } from "@/api/system/api";
 import SearchForm from "@/components/SearchForm/index.vue";
 import Pagination from "@/components/Pagination/index.vue";
-import type { TApiQuery, TApiTableData } from "@/types/system/api";
+import type { TApiQuery, TApiTable } from "@/types/system/api";
 
 import Dialog from "./dialog.vue";
 
 const searchColumn = [
-  { prop: "Path", label: "访问路径", placeholder: "访问路径" },
-  { prop: "Category", label: "所属类别", placeholder: "所属类别" },
+  { prop: "path", label: "访问路径", placeholder: "访问路径" },
+  { prop: "category", label: "所属类别", placeholder: "所属类别" },
   {
-    prop: "Method",
+    prop: "method",
     label: "请求方式",
     placeholder: "请求方式",
     type: "select",
@@ -103,15 +103,15 @@ const searchColumn = [
       { label: "DELETE[删除资源]", value: "DELETE" },
     ],
   },
-  { prop: "Creator", label: "创建人", placeholder: "创建人" },
+  { prop: "creator", label: "创建人", placeholder: "创建人" },
 ];
 
 const tableColumn = [
-  { prop: "Path", label: "访问路径", minWidth: 115 },
-  { prop: "Category", label: "所属类别", minWidth: 55 },
-  { prop: "Method", label: "请求方式", minWidth: 55 },
-  { prop: "Creator", label: "创建人", minWidth: 65 },
-  { prop: "Desc", label: "说明", minWidth: 110 },
+  { prop: "path", label: "访问路径", minWidth: 115 },
+  { prop: "category", label: "所属类别", minWidth: 55 },
+  { prop: "method", label: "请求方式", minWidth: 55 },
+  { prop: "creator", label: "创建人", minWidth: 65 },
+  { prop: "des", label: "说明", minWidth: 110 },
 ];
 
 // 查询参数
@@ -120,7 +120,7 @@ const params = ref<TApiQuery>({
   page_size: 10,
 });
 // 表格数据
-const tableData = ref<TApiTableData[]>([]);
+const tableData = ref<TApiTable[]>([]);
 const total = ref(0);
 const loading = ref(false);
 
@@ -133,8 +133,8 @@ const getTableData = () => {
   loading.value = true;
   getApis(params.value)
     .then((res) => {
-      tableData.value = res.data.Data;
-      total.value = res.data.Total;
+      tableData.value = res.data.data;
+      total.value = res.data.total;
     })
     .finally(() => {
       loading.value = false;
@@ -147,7 +147,7 @@ const onAdd = () => {
   DrawerRef.value.openDrawer({}, "create");
 };
 //编辑
-const update = (row: TApiTableData) => {
+const update = (row: TApiTable) => {
   DrawerRef.value.openDrawer({ ...row }, "update");
 };
 
@@ -164,7 +164,7 @@ const getApiData = () => {
 };
 
 // 表格多选
-const multipleSelection = ref<TApiTableData[]>([]);
+const multipleSelection = ref<TApiTable[]>([]);
 const searchAction = computed(() => [
   { label: "查询", event: "search", type: "primary" },
   { label: "新增", event: "add", type: "warning" },
@@ -202,7 +202,7 @@ const onDelete = () => {
       loading.value = true;
       const Ids: number[] = [];
       multipleSelection.value.forEach((x: any) => {
-        Ids.push(x.Id);
+        Ids.push(x.id);
       });
       batchDeleteApiByIds({
         Ids,
@@ -237,7 +237,7 @@ const methodsTagFilter = (val: string) => {
 };
 
 // 表格多选
-const handleSelectionChange = (val: TApiTableData[]) => {
+const handleSelectionChange = (val: TApiTable[]) => {
   multipleSelection.value = val;
 };
 

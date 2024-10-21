@@ -67,7 +67,7 @@
         Login</el-button
       >
 
-      <div style="position: relative">
+      <!-- <div style="position: relative">
         <div class="tips">
           <span>Username : admin</span>
           <span>Password : any</span>
@@ -84,17 +84,17 @@
         >
           Or connect with
         </el-button>
-      </div>
+      </div> -->
     </el-form>
 
-    <el-dialog title="Or connect with" v-model="showDialog">
+    <!-- <el-dialog title="Or connect with" v-model="showDialog">
       Can not be simulated on local, so please combine you own business
       simulation! ! !
       <br />
       <br />
       <br />
       <social-sign />
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -291,6 +291,7 @@ $cursor: #fff;
       background: transparent;
       border: 0px;
       -webkit-appearance: none;
+      appearance: none;
       border-radius: 0px;
       box-shadow: none;
     }

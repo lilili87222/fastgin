@@ -1,5 +1,5 @@
 //菜单管理 表格数据
-export interface TMenuTableData {
+export interface TMenuTable {
   id: number;
   created_at: Date;
   updated_at: Date;
@@ -19,11 +19,11 @@ export interface TMenuTableData {
   active_menu: null;
   parent_id: number;
   creator: string;
-  children: TMenuTableData[];
+  children: TMenuTable[];
   roles: null;
 }
 
-export interface TMenuFormData {
+export interface TMenuForm {
   id: number;
   title: string;
   name: string;

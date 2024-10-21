@@ -21,7 +21,7 @@
           :label="item.label"
           :prop="item.prop"
         >
-          <template v-if="item.prop === 'Sort'">
+          <template v-if="item.prop === 'sort'">
             <el-input-number
               v-model="formData[item.prop]"
               controls-position="right"
@@ -30,7 +30,7 @@
             />
           </template>
 
-          <template v-else-if="item.prop === 'Icon'">
+          <template v-else-if="item.prop === 'icon'">
             <el-input
               v-model="formData[item.prop]"
               readonly
@@ -58,20 +58,15 @@
             />
           </template>
           <template
-            v-else-if="['Status', 'Hidden', 'NoCache'].includes(item.prop)"
+            v-else-if="['status', 'hidden', 'noCache'].includes(item.prop)"
           >
             <el-radio-group v-model="formData[item.prop]">
               <el-radio-button label="是" :value="2" />
               <el-radio-button label="否" :value="1" />
             </el-radio-group>
           </template>
-          <template v-else-if="item.prop === 'Hidden'">
-            <el-radio-group v-model="formData[item.prop]">
-              <el-radio-button label="是" :value="1" />
-              <el-radio-button label="否" :value="2" />
-            </el-radio-group>
-          </template>
-          <template v-else-if="item.prop === 'ParentId'">
+
+          <template v-else-if="item.prop === 'parentId'">
             <el-tree-select
               ref="treeSelectRef"
               v-model="formData[item.prop]"
@@ -109,66 +104,66 @@ import type { DrawerProps, FormRules } from "element-plus";
 
 import { createRole, updateRoleById } from "@/api/system/role";
 import IconSelect from "@/components/IconSelect/index.vue";
-import type { TMenuFormData } from "@/types/system/menu";
+import type { TMenuForm } from "@/types/system/menu";
 
 const drawer = ref(false);
 const direction = ref<DrawerProps["direction"]>("rtl");
 const emits = defineEmits(["getMenuData"]);
 
 const defaultProps = ref({
-  children: "Children",
-  label: "Title",
+  children: "children",
+  label: "title",
 });
 
 const rules = reactive<FormRules>({
-  Title: [
+  title: [
     { required: true, message: "请输入标题", trigger: "blur" },
     { min: 1, max: 50, message: "长度在 1 到 50 个字符", trigger: "blur" },
   ],
-  Name: [
+  name: [
     { required: true, message: "请输入名称", trigger: "blur" },
     { min: 1, max: 100, message: "长度在 1 到 100 个字符", trigger: "blur" },
   ],
-  Path: [
+  path: [
     { required: true, message: "请输入访问路径", trigger: "blur" },
     { min: 1, max: 100, message: "长度在 1 到 100 个字符", trigger: "blur" },
   ],
-  Icon: [{ required: true, message: "请选择图标", trigger: "blur" }],
-  Sort: [{ required: true, message: "请输入排序", trigger: "blur" }],
-  Component: [
+  icon: [{ required: true, message: "请选择图标", trigger: "blur" }],
+  sort: [{ required: true, message: "请输入排序", trigger: "blur" }],
+  component: [
     { required: true, message: "请输入组件路径", trigger: "blur" },
     { min: 0, max: 100, message: "长度在 0 到 100 个字符", trigger: "blur" },
   ],
-  Redirect: [
+  redirect: [
     { required: false, message: "请输入重定向", trigger: "blur" },
     { min: 0, max: 100, message: "长度在 0 到 100 个字符", trigger: "blur" },
   ],
-  ActiveMenu: [
+  activeMenu: [
     { required: false, message: "请输入高亮菜单", trigger: "blur" },
     { min: 0, max: 100, message: "长度在 0 到 100 个字符", trigger: "blur" },
   ],
-  ParentId: [{ required: true, message: "请选择上级目录", trigger: "change" }],
+  parentId: [{ required: true, message: "请选择上级目录", trigger: "change" }],
 });
 
 const fromCol = [
-  { prop: "Title", label: "菜单标题", placeholder: "菜单标题" },
-  { prop: "Name", label: "名称", placeholder: "名称" },
-  { prop: "Sort", label: "排序", placeholder: "排序" },
-  { prop: "Icon", label: "图标", placeholder: "图标" },
-  { prop: "Path", label: "路由地址", placeholder: "路由地址" },
-  { prop: "Component", label: "组件路径", placeholder: "组件路径" },
-  { prop: "Redirect", label: "重定向", placeholder: "重定向" },
-  { prop: "Status", label: "禁用", placeholder: "禁用" }, //1 否 2是
-  { prop: "Hidden", label: "隐藏", placeholder: "隐藏" }, //2否 1 是
-  { prop: "NoCache", label: "缓存", placeholder: "缓存" }, //2 是 1 否
-  { prop: "ActiveMenu", label: "高亮菜单", placeholder: "高亮菜单" },
-  { prop: "ParentId", label: "上级目录", placeholder: "上级目录" },
+  { prop: "title", label: "菜单标题", placeholder: "菜单标题" },
+  { prop: "name", label: "名称", placeholder: "名称" },
+  { prop: "sort", label: "排序", placeholder: "排序" },
+  { prop: "icon", label: "图标", placeholder: "图标" },
+  { prop: "path", label: "路由地址", placeholder: "路由地址" },
+  { prop: "component", label: "组件路径", placeholder: "组件路径" },
+  { prop: "redirect", label: "重定向", placeholder: "重定向" },
+  { prop: "status", label: "禁用", placeholder: "禁用" }, //1 否 2是
+  { prop: "hidden", label: "隐藏", placeholder: "隐藏" }, //2否 1 是
+  { prop: "noCache", label: "缓存", placeholder: "缓存" }, //2 是 1 否
+  { prop: "activeMenu", label: "高亮菜单", placeholder: "高亮菜单" },
+  { prop: "parentId", label: "上级目录", placeholder: "上级目录" },
 ];
 
 const dialogType = ref("");
 const treeselect = ref([]);
 //打开
-const openDrawer = (row: TMenuFormData, type: string, treeselectData: any) => {
+const openDrawer = (row: TMenuForm, type: string, treeselectData: any) => {
   formData.value = row;
   dialogType.value = type;
   treeselect.value = treeselectData;
@@ -182,7 +177,7 @@ defineExpose({
 const formData = ref<any>({});
 
 const handleNodeClick = (data: any) => {
-  formData.value.ParentId = data.Id;
+  formData.value.parentId = data.id;
 };
 
 const treeSelectRef = ref();
@@ -202,11 +197,11 @@ const formRef = ref();
 //图标选择
 const activeName = ref("SVG");
 const handleIconSelect = (iconName: string) => {
-  formData.value.Icon = iconName;
+  formData.value.icon = iconName;
 };
 
 const handleIconName = (iconName: string) => {
-  formData.value.Icon = "";
+  formData.value.icon = "";
   activeName.value = iconName;
 };
 
@@ -224,7 +219,7 @@ const submitForm = () => {
           drawer.value = false;
         });
       } else {
-        updateRoleById(data.Id, data).then((res) => {
+        updateRoleById(data.id, data).then((res) => {
           ElMessage.success(res.message);
           formRef.value.resetFields();
           emits("getMenuData");

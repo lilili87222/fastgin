@@ -1,8 +1,5 @@
 import { requestApi } from "../type";
-import type {
-  TDictionaryFormData,
-  TDictionaryQuery,
-} from "@/types/app/dictionary";
+import type { TDictionaryForm, TDictionaryQuery } from "@/types/app/dictionary";
 
 // 获取字典列表
 export function getDictionary(params: TDictionaryQuery) {
@@ -19,8 +16,8 @@ export function getDictionaryDetail(Id: number) {
 }
 
 // 新增字典列表
-export function createDictionary(data: TDictionaryFormData) {
-  return requestApi<TDictionaryFormData>(
+export function createDictionary(data: TDictionaryForm) {
+  return requestApi<TDictionaryForm>(
     "/api/auth/dictionary/index",
     "post",
     data
@@ -28,8 +25,8 @@ export function createDictionary(data: TDictionaryFormData) {
 }
 
 // 更新字典
-export function updateDictionaryById(Id: number, data: TDictionaryFormData) {
-  return requestApi<TDictionaryFormData>(
+export function updateDictionaryById(Id: number, data: TDictionaryForm) {
+  return requestApi<TDictionaryForm>(
     `/api/auth/dictionary/index/${Id}`,
     "patch",
     data

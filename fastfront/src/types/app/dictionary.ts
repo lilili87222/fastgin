@@ -1,4 +1,4 @@
-export interface TDictionaryTableData {
+export interface TDictionaryTable {
   ID: number;
   CreatedAt: Date;
   UpdatedAt: Date;
@@ -8,13 +8,13 @@ export interface TDictionaryTableData {
   Desc: string;
 }
 export interface TDictionaryQuery {
-  PageNum: number;
-  PageSize: number;
+  page_num: number;
+  page_size: number;
   Key?: string;
   Value?: string;
   Desc?: string;
 }
-export interface TDictionaryFormData {
+export interface TDictionaryForm {
   ID?: number;
   Key: string;
   Value: string;

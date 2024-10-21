@@ -27,12 +27,12 @@
           align="center"
         >
           <template #default="scope">
-            <template v-if="item.prop === 'Status'">
+            <template v-if="item.prop === 'status'">
               <el-tag
                 size="small"
-                :type="scope.row.Status === 1 ? 'success' : 'danger'"
+                :type="scope.row.status === 1 ? 'success' : 'danger'"
                 disable-transitions
-                >{{ scope.row.Status === 1 ? "正常" : "禁用" }}</el-tag
+                >{{ scope.row.status === 1 ? "正常" : "禁用" }}</el-tag
               >
             </template>
 
@@ -56,7 +56,7 @@
             >
             <el-popconfirm
               title="确定删除吗？"
-              @confirm="singleDelete(scope.row.Id)"
+              @confirm="singleDelete(scope.row.id)"
             >
               <template #reference>
                 <el-button type="danger" class="custom-btn">删除</el-button>
@@ -84,8 +84,8 @@ import { batchDeleteUserByIds, getUsers } from "@/api/system/user";
 import { getRoles } from "@/api/system/role";
 import SearchForm from "@/components/SearchForm/index.vue";
 import Pagination from "@/components/Pagination/index.vue";
-import type { TUserQuery, TUserTableData } from "@/types/system/user";
-import type { TRoleTableData } from "@/types/system/role";
+import type { TUserQuery, TUserTable } from "@/types/system/user";
+import type { TRoleTable } from "@/types/system/role";
 
 import Dialog from "./dialog.vue";
 
@@ -106,12 +106,12 @@ const searchColumn = [
 ];
 
 const tableColumn = [
-  { prop: "UserName", label: "用户名", minWidth: 95 },
-  { prop: "NickName", label: "昵称", minWidth: 80 },
-  { prop: "Status", label: "状态", minWidth: 80 },
-  { prop: "Mobile", label: "手机号", minWidth: 95 },
-  { prop: "Creator", label: "创建人", minWidth: 95 },
-  { prop: "Introduction", label: "说明", minWidth: 80 },
+  { prop: "user_name", label: "用户名", minWidth: 95 },
+  { prop: "nick_name", label: "昵称", minWidth: 80 },
+  { prop: "status", label: "状态", minWidth: 80 },
+  { prop: "mobile", label: "手机号", minWidth: 95 },
+  { prop: "creator", label: "创建人", minWidth: 95 },
+  { prop: "des", label: "说明", minWidth: 80 },
 ];
 
 // 查询参数
@@ -120,7 +120,7 @@ const params = ref<TUserQuery>({
   page_size: 10,
 });
 // 表格数据
-const tableData = ref<TUserTableData[]>([]);
+const tableData = ref<TUserTable[]>([]);
 const total = ref(0);
 const loading = ref(false);
 
@@ -129,10 +129,10 @@ onMounted(() => {
   getRole();
 });
 
-const roleList = ref<TRoleTableData[]>([]);
+const roleList = ref<TRoleTable[]>([]);
 const getRole = () => {
   getRoles().then((res) => {
-    roleList.value = res.data.Data;
+    roleList.value = res.data.data;
   });
 };
 
@@ -141,9 +141,8 @@ const getTableData = () => {
   loading.value = true;
   getUsers(params.value)
     .then((res) => {
-      const { data: Data } = res;
-      tableData.value = Data.Data;
-      total.value = Data.Total;
+      tableData.value = res.data.data;
+      total.value = res.data.total;
     })
     .finally(() => {
       loading.value = false;
@@ -151,7 +150,7 @@ const getTableData = () => {
 };
 
 // 表格多选
-const multipleSelection = ref<TUserTableData[]>([]);
+const multipleSelection = ref<TUserTable[]>([]);
 
 const searchAction = computed(() => [
   { label: "查询", event: "search", type: "primary" },
@@ -194,7 +193,7 @@ const onDelete = () => {
       loading.value = true;
       const Ids: number[] = [];
       multipleSelection.value.forEach((x: any) => {
-        Ids.push(x.Id);
+        Ids.push(x.id);
       });
       batchDeleteUserByIds({
         Ids,
@@ -213,7 +212,7 @@ const onDelete = () => {
 };
 
 // 表格多选
-const handleSelectionChange = (val: TUserTableData[]) => {
+const handleSelectionChange = (val: TUserTable[]) => {
   multipleSelection.value = val;
 };
 
@@ -224,7 +223,7 @@ const onAdd = () => {
 };
 
 // 编辑弹窗
-const update = (row: TUserTableData) => {
+const update = (row: TUserTable) => {
   DrawerRef.value.openDrawer({ ...row }, "update", roleList.value);
 };
 

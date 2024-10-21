@@ -45,7 +45,7 @@
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import type { DrawerProps } from "element-plus";
-import type { TDictionaryFormData } from "@/types/app/dictionary";
+import type { TDictionaryForm } from "@/types/app/dictionary";
 import {
   createDictionary,
   getDictionaryDetail,
@@ -94,7 +94,7 @@ defineExpose({
   openDrawer,
 });
 
-const formData = ref<TDictionaryFormData>({
+const formData = ref<TDictionaryForm>({
   Value: "",
   Key: "",
   Desc: "",

@@ -1,4 +1,4 @@
-import type { TMenuFormData } from "@/types/system/menu";
+import type { TMenuForm } from "@/types/system/menu";
 import { requestApi } from "../type";
 
 // 获取菜单树
@@ -12,13 +12,13 @@ export function getMenus() {
 }
 
 // 创建菜单
-export function createMenu(data: TMenuFormData) {
-  return requestApi<TMenuFormData>("/api/auth/menu/index", "post", data);
+export function createMenu(data: TMenuForm) {
+  return requestApi<TMenuForm>("/api/auth/menu/index", "post", data);
 }
 
 // 更新菜单
-export function updateMenuById(Id: number, data: TMenuFormData) {
-  return requestApi<TMenuFormData>("/api/auth/menu/index/" + Id, "patch", data);
+export function updateMenuById(Id: number, data: TMenuForm) {
+  return requestApi<TMenuForm>("/api/auth/menu/index/" + Id, "patch", data);
 }
 
 // 批量删除菜单

@@ -26,22 +26,22 @@
           align="center"
         >
           <template #default="scope">
-            <template v-if="item.prop === 'Status'">
+            <template v-if="item.prop === 'status'">
               <el-tag
-                :type="statusTagFilter(scope.row.Status)"
+                :type="statusTagFilter(scope.row.status)"
                 disable-transitions
-                >{{ scope.row.Status }}</el-tag
+                >{{ scope.row.status }}</el-tag
               >
             </template>
-            <template v-else-if="item.prop === 'TimeCost'">
+            <template v-else-if="item.prop === 'time_cost'">
               <el-tag
-                :type="timeCostTagFilter(scope.row.TimeCost)"
+                :type="timeCostTagFilter(scope.row.time_cost)"
                 disable-transitions
-                >{{ scope.row.TimeCost }}</el-tag
+                >{{ scope.row.time_cost }}</el-tag
               >
             </template>
-            <template v-else-if="item.prop === 'StartTime'">
-              {{ parseGoTime(scope.row.StartTime) }}
+            <template v-else-if="item.prop === 'start_time'">
+              {{ parseGoTime(scope.row.start_time) }}
             </template>
             <template v-else>
               {{ scope.row[item.prop] }}
@@ -57,7 +57,7 @@
           <template #default="scope">
             <el-popconfirm
               title="确定删除吗？"
-              @confirm="singleDelete(scope.row.Id)"
+              @confirm="singleDelete(scope.row.id)"
             >
               <template #reference>
                 <el-button type="danger" class="custom-btn">删除</el-button>
@@ -70,8 +70,8 @@
       <Pagination
         v-show="total > 0"
         :total="total"
-        v-model:page="params.PageNum"
-        v-model:limit="params.PageSize"
+        v-model:page="params.page_num"
+        v-model:limit="params.page_size"
         @pagination="onPaginaion"
       ></Pagination>
     </el-card>
@@ -97,19 +97,19 @@ const searchColumn = [
 ];
 
 const tableColumn = [
-  { prop: "UserName", label: "请求人", minWidth: 95 },
-  { prop: "Ip", label: "IP地址", minWidth: 105 },
-  { prop: "Path", label: "请求路径", minWidth: 105 },
-  { prop: "Status", label: "请求状态", minWidth: 105 },
-  { prop: "StartTime", label: "发起时间", minWidth: 105 },
-  { prop: "TimeCost", label: "请求耗时", minWidth: 105 },
-  { prop: "Desc", label: "说明", minWidth: 80 },
+  { prop: "user_name", label: "请求人", minWidth: 95 },
+  { prop: "ip", label: "IP地址", minWidth: 105 },
+  { prop: "path", label: "请求路径", minWidth: 105 },
+  { prop: "status", label: "请求状态", minWidth: 105 },
+  { prop: "start_time", label: "发起时间", minWidth: 105 },
+  { prop: "time_cost", label: "请求耗时", minWidth: 105 },
+  { prop: "des", label: "说明", minWidth: 80 },
 ];
 
 // 查询参数
 const params = ref<TLogsQuery>({
-  PageNum: 1,
-  PageSize: 10,
+  page_num: 1,
+  page_size: 10,
 });
 
 // 表格数据
@@ -126,9 +126,8 @@ const getTableData = () => {
   loading.value = true;
   getOperationLogs(params.value)
     .then((res) => {
-      const { data: Data } = res;
-      tableData.value = Data.Data;
-      total.value = Data.Total;
+      tableData.value = res.data.data;
+      total.value = res.data.total;
     })
     .finally(() => {
       loading.value = false;
@@ -150,24 +149,24 @@ const searchAction = computed(() => [
 
 //切换页面
 const onPaginaion = (val: any) => {
-  params.value.PageNum = val.page;
-  params.value.PageSize = val.limit;
+  params.value.page_num = val.page;
+  params.value.page_size = val.limit;
   getTableData();
 };
 
 //清空
 const onClear = (form: TLogsQuery) => {
   params.value = form;
-  params.value.PageNum = 1;
-  params.value.PageSize = 10;
+  params.value.page_num = 1;
+  params.value.page_size = 10;
   getTableData();
 };
 
 //搜索
 const onSearch = (form: TLogsQuery) => {
   params.value = form;
-  params.value.PageNum = 1;
-  params.value.PageSize = 10;
+  params.value.page_num = 1;
+  params.value.page_size = 10;
   getTableData();
 };
 
@@ -182,7 +181,7 @@ const onDelete = () => {
       loading.value = true;
       const Ids: number[] = [];
       multipleSelection.value.forEach((x: any) => {
-        Ids.push(x.Id);
+        Ids.push(x.id);
       });
       batchDeleteOperationLogByIds({
         Ids,

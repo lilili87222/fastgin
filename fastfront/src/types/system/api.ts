@@ -1,5 +1,5 @@
 //接口管理 表格数据
-export interface TApiTableData {
+export interface TApiTable {
   id: number;
   des: string;
   category: string;
@@ -16,7 +16,7 @@ export interface TApiQuery {
   page_size: number;
 }
 
-export interface TApiFormData {
+export interface TApiForm {
   id?: number;
   method: string;
   path: string;

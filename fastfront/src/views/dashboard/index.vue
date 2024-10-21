@@ -188,23 +188,21 @@ const systemInfo = reactive<TSystemInfo>({
     num_goroutine: 0,
     os: "",
   },
-  appVersion: "",
 });
 
 const diskPercent = ref(0);
 const ramPercent = ref(0);
 const fetchData = () => {
   getSystemInfo().then((res) => {
-    const { data: Data } = res;
-    systemInfo.cpu = Data.cpu;
-    systemInfo.memory = Data.mem;
-    ramPercent.value = Number(Data.mem.used_percent.toFixed(2));
+    const { data } = res.data;
+    systemInfo.cpu = data.cpu;
+    systemInfo.memory = data.mem;
+    ramPercent.value = Number(data.mem.used_percent.toFixed(2));
     delete systemInfo.memory.used_percent;
-    systemInfo.disk = Data.disk;
-    diskPercent.value = Number(Data.disk.used_percent.toFixed(2));
+    systemInfo.disk = data.disk;
+    diskPercent.value = Number(data.disk.used_percent.toFixed(2));
     delete systemInfo.disk.used_percent;
-    systemInfo.os = Data.os;
-    systemInfo.appVersion = Data.app_version;
+    systemInfo.os = data.os;
   });
 };
 

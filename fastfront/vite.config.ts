@@ -21,25 +21,26 @@ export default defineConfig(({ command, mode }) => {
   console.log("vite.config env.NODE_ENV=", env.NODE_ENV);
 
   const optimizeDepsElementPlusIncludes = ["element-plus/es"];
-
-  fs.readdirSync("node_modules/element-plus/es/components").forEach(
-    (dirname) => {
-      const cssPath = `node_modules/element-plus/es/components/${dirname}/style/css.mjs`;
-      try {
-        fs.accessSync(cssPath);
-        optimizeDepsElementPlusIncludes.push(
-          `element-plus/es/components/${dirname}/style/css`
-        );
-      } catch (err) {
-        // 文件不存在时不做任何处理
+  fs.readdirSync("node_modules/element-plus/es/components").map((dirname) => {
+    fs.access(
+      `node_modules/element-plus/es/components/${dirname}/style/css.mjs`,
+      (err) => {
+        if (!err) {
+          optimizeDepsElementPlusIncludes.push(
+            `element-plus/es/components/${dirname}/style/css`
+          );
+        }
       }
-    }
-  );
+    );
+  });
 
   return {
     base: "/", // 注意，必须以"/"结尾，BASE_URL配置
     define: {
       "process.env": env,
+    },
+    optimizeDeps: {
+      include: optimizeDepsElementPlusIncludes,
     },
     resolve: {
       alias: {

@@ -6,7 +6,6 @@ import type {
 } from "axios";
 import store from "@/store";
 import { getToken } from "@/utils/auth";
-import { ElMessageBox, ElMessage } from "element-plus";
 import router from "@/router"; // 确保导入router
 
 // 创建一个axios实例
@@ -47,7 +46,7 @@ service.interceptors.response.use(
       // 根据HTTP状态码进行不同的错误处理
       switch (error.response.status) {
         case 401:
-          if (error.response.data.Message.indexOf("JWT认证失败") !== -1) {
+          if (error.response.data.message.indexOf("JWT认证失败") !== -1) {
             // 弹出确认框，让用户选择重新登录或留在当前页面
             ElMessageBox.confirm(
               "登录超时, 重新登录或继续停留在当前页？",
@@ -65,7 +64,7 @@ service.interceptors.response.use(
           } else {
             // 显示错误消息
             ElMessage({
-              message: error.response.data.Message,
+              message: error.response.data.message,
               type: "error",
               duration: 5 * 1000,
             });
@@ -78,7 +77,7 @@ service.interceptors.response.use(
         default:
           // 显示通用错误消息
           ElMessage({
-            message: error.response.data.Message || error.message,
+            message: error.response.data.message || error.message,
             type: "error",
             duration: 5 * 1000,
           });

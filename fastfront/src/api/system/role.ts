@@ -1,4 +1,4 @@
-import type { TRoleFormData, TRoleQuery } from "@/types/system/role";
+import type { TRoleForm, TRoleQuery } from "@/types/system/role";
 import { requestApi } from "../type";
 
 // 获取角色列表
@@ -7,17 +7,13 @@ export function getRoles(params?: TRoleQuery) {
 }
 
 // 创建角色
-export function createRole(data: TRoleFormData) {
-  return requestApi<TRoleFormData>("/api/auth/role/index", "post", data);
+export function createRole(data: TRoleForm) {
+  return requestApi<TRoleForm>("/api/auth/role/index", "post", data);
 }
 
 // 更新角色
-export function updateRoleById(roleId: number, data: TRoleFormData) {
-  return requestApi<TRoleFormData>(
-    "/api/auth/role/index/" + roleId,
-    "patch",
-    data
-  );
+export function updateRoleById(roleId: number, data: TRoleForm) {
+  return requestApi<TRoleForm>("/api/auth/role/index/" + roleId, "patch", data);
 }
 
 // 获取角色的权限菜单

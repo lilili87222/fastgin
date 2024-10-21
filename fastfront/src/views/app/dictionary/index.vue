@@ -27,9 +27,9 @@
           align="center"
         >
           <template #default="scope">
-            <template v-if="item.prop === 'Method'"> </template>
+            <template v-if="item.prop === 'method'"> </template>
             <template
-              v-else-if="['CreatedAt', 'UpdatedAt'].includes(item.prop)"
+              v-else-if="['created_at', 'updated_at'].includes(item.prop)"
             >
               {{ parseGoTime(scope.row[item.prop]) }}
             </template>
@@ -66,8 +66,8 @@
       <Pagination
         v-show="total > 0"
         :total="total"
-        v-model:page="params.PageNum"
-        v-model:limit="params.PageSize"
+        v-model:page="params.page_num"
+        v-model:limit="params.page_size"
         @pagination="onPaginaion"
       ></Pagination>
       <Dialog ref="DrawerRef" @getDictData="getDictData"></Dialog>
@@ -86,7 +86,7 @@ import {
 import SearchForm from "@/components/SearchForm/index.vue";
 import Pagination from "@/components/Pagination/index.vue";
 import type {
-  TDictionaryTableData,
+  TDictionaryTable,
   TDictionaryQuery,
 } from "@/types/app/dictionary";
 import { parseGoTime } from "@/utils/index";
@@ -94,26 +94,26 @@ import { parseGoTime } from "@/utils/index";
 import Dialog from "./dialog.vue";
 
 const searchColumn = [
-  { prop: "Value", label: "字典名称", placeholder: "字典名称" },
-  { prop: "Key", label: "字典类型", placeholder: "字典类型" },
-  { prop: "Desc", label: "说明", placeholder: "说明" },
+  { prop: "value", label: "字典名称", placeholder: "字典名称" },
+  { prop: "key", label: "字典类型", placeholder: "字典类型" },
+  { prop: "des", label: "说明", placeholder: "说明" },
 ];
 
 const tableColumn = [
-  { prop: "Value", label: "字典名称", minWidth: 110 },
-  { prop: "Key", label: "字典类型", minWidth: 110 },
-  { prop: "Desc", label: "说明", minWidth: 85 },
-  { prop: "CreatedAt", label: "创建时间", minWidth: 110 },
-  { prop: "UpdatedAt", label: "更新时间", minWidth: 110 },
+  { prop: "value", label: "字典名称", minWidth: 110 },
+  { prop: "key", label: "字典类型", minWidth: 110 },
+  { prop: "des", label: "说明", minWidth: 85 },
+  { prop: "created_at", label: "创建时间", minWidth: 110 },
+  { prop: "updated_at", label: "更新时间", minWidth: 110 },
 ];
 
 // 查询参数
 const params = ref<TDictionaryQuery>({
-  PageNum: 1,
-  PageSize: 10,
+  page_num: 1,
+  page_size: 10,
 });
 // 表格数据
-const tableData = ref<TDictionaryTableData[]>([]);
+const tableData = ref<TDictionaryTable[]>([]);
 const total = ref(0);
 const loading = ref(false);
 
@@ -147,8 +147,8 @@ const update = (Id: number) => {
 //清空
 const onClear = (form: TDictionaryQuery) => {
   params.value = form;
-  params.value.PageNum = 1;
-  params.value.PageSize = 10;
+  params.value.page_num = 1;
+  params.value.page_size = 10;
   getTableData();
 };
 
@@ -157,7 +157,7 @@ const getDictData = () => {
 };
 
 // 表格多选
-const multipleSelection = ref<TDictionaryTableData[]>([]);
+const multipleSelection = ref<TDictionaryTable[]>([]);
 const searchAction = computed(() => [
   { label: "查询", event: "search", type: "primary" },
   { label: "新增", event: "add", type: "warning" },
@@ -171,16 +171,16 @@ const searchAction = computed(() => [
 
 //分页
 const onPaginaion = (val: any) => {
-  params.value.PageNum = val.page;
-  params.value.PageSize = val.limit;
+  params.value.page_num = val.page;
+  params.value.page_size = val.limit;
   getTableData();
 };
 
 //搜索
 const onSearch = (form: TDictionaryQuery) => {
   params.value = form;
-  params.value.PageNum = 1;
-  params.value.PageSize = 10;
+  params.value.page_num = 1;
+  params.value.page_size = 10;
   getTableData();
 };
 
@@ -195,7 +195,7 @@ const onDelete = () => {
       loading.value = true;
       const Ids: number[] = [];
       multipleSelection.value.forEach((x: any) => {
-        Ids.push(x.ID);
+        Ids.push(x.id);
       });
       batchDeleteDictionaryByIds({
         Ids,
@@ -214,7 +214,7 @@ const onDelete = () => {
 };
 
 // 表格多选
-const handleSelectionChange = (val: TDictionaryTableData[]) => {
+const handleSelectionChange = (val: TDictionaryTable[]) => {
   multipleSelection.value = val;
 };
 

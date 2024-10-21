@@ -1,4 +1,4 @@
-import type { TUserFormData, TUserQuery } from "@/types/system/user";
+import type { TUserForm, TUserQuery } from "@/types/system/user";
 import { requestApi } from "../type";
 
 // 获取当前登录用户信息
@@ -21,13 +21,13 @@ export function changePwd(data: { oldPassword: string; newPassword: string }) {
 }
 
 // 创建用户
-export function createUser(data: TUserFormData) {
-  return requestApi<TUserFormData>("/api/auth/user/index", "post", data);
+export function createUser(data: TUserForm) {
+  return requestApi<TUserForm>("/api/auth/user/index", "post", data);
 }
 
 // 更新用户
-export function updateUserById(id: number, data: TUserFormData) {
-  return requestApi<TUserFormData>("/api/auth/user/index/" + id, "patch", data);
+export function updateUserById(id: number, data: TUserForm) {
+  return requestApi<TUserForm>("/api/auth/user/index/" + id, "patch", data);
 }
 
 // 批量删除用户

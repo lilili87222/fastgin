@@ -21,7 +21,7 @@
           :label="item.label"
           :prop="item.prop"
         >
-          <template v-if="item.prop === 'Method'">
+          <template v-if="item.prop === 'method'">
             <el-select
               v-model="formData[item.prop]"
               placeholder="请选择请求方式"
@@ -34,7 +34,7 @@
             </el-select>
           </template>
 
-          <template v-else-if="item.prop === 'Desc'">
+          <template v-else-if="item.prop === 'des'">
             <el-input
               v-model="formData[item.prop]"
               type="textarea"
@@ -67,7 +67,7 @@ import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import type { DrawerProps } from "element-plus";
 import { createApi, updateApiById } from "@/api/system/api";
-import type { TApiFormData } from "@/types/system/api";
+import type { TApiForm } from "@/types/system/api";
 
 const drawer = ref(false);
 const direction = ref<DrawerProps["direction"]>("rtl");
@@ -75,31 +75,31 @@ const direction = ref<DrawerProps["direction"]>("rtl");
 const emits = defineEmits(["getApiData"]);
 
 const rules = {
-  Path: [
+  path: [
     { required: true, message: "请输入访问路径", trigger: "blur" },
     { min: 1, max: 100, message: "长度在 1 到 100 个字符", trigger: "blur" },
   ],
-  Category: [
+  category: [
     { required: true, message: "请输入所属类别", trigger: "blur" },
     { min: 1, max: 50, message: "长度在 1 到 50 个字符", trigger: "blur" },
   ],
-  Method: [{ required: true, message: "请选择请求方式", trigger: "change" }],
-  Desc: [
+  method: [{ required: true, message: "请选择请求方式", trigger: "change" }],
+  des: [
     { required: false, message: "说明", trigger: "blur" },
     { min: 0, max: 100, message: "长度在 0 到 100 个字符", trigger: "blur" },
   ],
 };
 
 const fromCol = [
-  { prop: "Path", label: "访问路径", placeholder: "访问路径" },
-  { prop: "Category", label: "所属类别", placeholder: "所属类别" },
-  { prop: "Method", label: "请求方式", placeholder: "请求方式" },
-  { prop: "Desc", label: "说明", placeholder: "说明" },
+  { prop: "path", label: "访问路径", placeholder: "访问路径" },
+  { prop: "category", label: "所属类别", placeholder: "所属类别" },
+  { prop: "method", label: "请求方式", placeholder: "请求方式" },
+  { prop: "des", label: "说明", placeholder: "说明" },
 ];
 
 const dialogType = ref("");
 //打开
-const openDrawer = (row: TApiFormData, type: string) => {
+const openDrawer = (row: TApiForm, type: string) => {
   formData.value = row;
   dialogType.value = type;
   drawer.value = true;
@@ -109,7 +109,7 @@ defineExpose({
   openDrawer,
 });
 
-const formData = ref<TApiFormData>({
+const formData = ref<TApiForm>({
   path: "",
   category: "",
   method: "",

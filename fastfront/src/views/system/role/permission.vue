@@ -9,10 +9,10 @@
           <el-tree
             ref="roleMenuTree"
             v-loading="menuTreeLoading"
-            :props="{ children: 'Children', label: 'Title' }"
+            :props="{ children: 'children', label: 'title' }"
             :data="menuData"
             show-checkbox
-            node-key="Id"
+            node-key="id"
             check-strictly
             :default-checked-keys="defaultCheckedRoleMenu"
           />
@@ -21,10 +21,10 @@
           <el-tree
             ref="roleApiTree"
             v-loading="apiTreeLoading"
-            :props="{ children: 'Children', label: 'Desc' }"
+            :props="{ children: 'children', label: 'des' }"
             :data="apiData"
             show-checkbox
-            node-key="Id"
+            node-key="id"
             :default-checked-keys="defaultCheckedRoleApi"
           />
         </el-tab-pane>
@@ -52,9 +52,9 @@ import {
 } from "@/api/system/role";
 import { getApiTree } from "@/api/system/api";
 import { getMenuTree } from "@/api/system/menu";
-import type { TRoleFormData } from "@/types/system/role";
-import type { TMenuTableData } from "@/types/system/menu";
-import type { TApiTableData } from "@/types/system/api";
+import type { TRoleForm } from "@/types/system/role";
+import type { TMenuTable } from "@/types/system/menu";
+import type { TApiTable } from "@/types/system/api";
 
 const drawer = ref(false);
 const direction = ref<DrawerProps["direction"]>("rtl");
@@ -63,7 +63,7 @@ const emits = defineEmits(["getRoleData"]);
 const activeName = ref("menu");
 
 //获取角色接口
-const apiData = ref<TApiTableData[]>([]);
+const apiData = ref<TApiTable[]>([]);
 const apiTreeLoading = ref(false);
 const getApiData = () => {
   apiTreeLoading.value = true;
@@ -74,7 +74,7 @@ const getApiData = () => {
 };
 
 //获取角色菜单
-const menuData = ref<TMenuTableData[]>([]);
+const menuData = ref<TMenuTable[]>([]);
 const menuTreeLoading = ref(false);
 const getMenuData = () => {
   menuTreeLoading.value = true;
@@ -93,8 +93,8 @@ const getTree = () => {
   getRoleMenusById(roleId.value).then((res) => {
     const menus = res.data;
     const menuIds: number[] = [];
-    menus.forEach((x: { Id: any }) => {
-      menuIds.push(x.Id);
+    menus.forEach((x: { id: any }) => {
+      menuIds.push(x.id);
     });
     defaultCheckedRoleMenu.value = menuIds;
     roleMenuTree.value.setCheckedKeys(defaultCheckedRoleMenu.value);
@@ -102,8 +102,8 @@ const getTree = () => {
   getRoleApisById(roleId.value).then((res) => {
     const apis = res.data;
     const apiIds: number[] = [];
-    apis.forEach((x: { Id: any }) => {
-      apiIds.push(x.Id);
+    apis.forEach((x: { id: any }) => {
+      apiIds.push(x.id);
     });
     defaultCheckedRoleApi.value = apiIds;
     roleApiTree.value.setCheckedKeys(defaultCheckedRoleApi.value);
@@ -112,7 +112,7 @@ const getTree = () => {
 
 const roleId = ref(0);
 //打开
-const openDrawer = (row: TRoleFormData) => {
+const openDrawer = (row: TRoleForm) => {
   roleId.value = row.id || 0;
   getTree();
   getMenuData();

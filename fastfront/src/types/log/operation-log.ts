@@ -11,8 +11,8 @@ export type TLogs = {
 };
 //日志列表请求参数
 export type TLogsQuery = {
-  PageNum: number;
-  PageSize: number;
+  page_size: number;
+  page_num: number;
   user_name?: string;
   ip?: string;
   path?: string;

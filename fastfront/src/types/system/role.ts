@@ -1,5 +1,5 @@
 //角色管理 表格数据类型
-export interface TRoleTableData {
+export interface TRoleTable {
   id: number;
   created_at: Date;
   updated_at: Date;
@@ -15,7 +15,7 @@ export interface TRoleTableData {
 }
 
 //角色管理 添加/编辑表单数据类型
-export interface TRoleFormData {
+export interface TRoleForm {
   id?: number;
   name: string;
   keyword: string;

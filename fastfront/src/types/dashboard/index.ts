@@ -3,7 +3,6 @@ export type TSystemInfo = {
   memory: TMemory;
   disk: TDisk;
   os: TOs;
-  appVersion: string;
 };
 
 export type TCpu = {

@@ -25,7 +25,7 @@
             @click="selectedIcon(item)"
             :class="{ highlight: props.iconVal && item === props.iconVal }"
           >
-            <el-icon>
+            <el-icon style="width: 30px; height: 20px">
               <component :is="item" class="svg-icon disabled"></component>
             </el-icon>
             <span class="name">{{ item }}</span>

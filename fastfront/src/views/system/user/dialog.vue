@@ -21,7 +21,7 @@
           :label="item.label"
           :prop="item.prop"
         >
-          <template v-if="item.prop === 'Status'">
+          <template v-if="item.prop === 'status'">
             <el-select
               v-model="formData[item.prop]"
               placeholder="请选择状态"
@@ -31,7 +31,7 @@
               <el-option label="禁用" :value="2" />
             </el-select>
           </template>
-          <template v-else-if="item.prop === 'RoleIds'">
+          <template v-else-if="item.prop === 'role_ids'">
             <el-select
               v-model="formData[item.prop]"
               multiple
@@ -46,7 +46,7 @@
               />
             </el-select>
           </template>
-          <template v-else-if="item.prop === 'Password'">
+          <template v-else-if="item.prop === 'password'">
             <el-input
               v-model="formData[item.prop]"
               autocomplete="off"
@@ -59,7 +59,7 @@
               />
             </span>
           </template>
-          <template v-else-if="item.prop === 'Introduction'">
+          <template v-else-if="item.prop === 'des'">
             <el-input
               v-model="formData[item.prop]"
               type="textarea"
@@ -92,8 +92,8 @@ import type { DrawerProps, FormRules } from "element-plus";
 import JSEncrypt from "jsencrypt";
 
 import { createUser, updateUserById } from "@/api/system/user";
-import type { TUserFormData } from "@/types/system/user";
-import type { TRoleTableData } from "@/types/system/role";
+import type { TUserForm } from "@/types/system/user";
+import type { TRoleTable } from "@/types/system/role";
 
 import { publicKey } from "./const";
 
@@ -113,30 +113,30 @@ const drawer = ref(false);
 const direction = ref<DrawerProps["direction"]>("rtl");
 const emits = defineEmits(["getUserData"]);
 
-const rules = reactive<FormRules<TUserFormData>>({
-  UserName: [
+const rules = reactive<FormRules<TUserForm>>({
+  user_name: [
     { required: true, message: "请输入用户名", trigger: "blur" },
     { min: 2, max: 20, message: "长度在 2 到 20 个字符", trigger: "blur" },
   ],
-  Password: [
+  password: [
     { required: true, message: "请输入", trigger: "blur" },
     { min: 6, max: 30, message: "长度在 6 到 30 个字符", trigger: "blur" },
   ],
-  RoleIds: [{ required: true, message: "请选择角色", trigger: "change" }],
-  NickName: [
+  role_ids: [{ required: true, message: "请选择角色", trigger: "change" }],
+  nick_name: [
     { required: false, message: "请输入昵称", trigger: "blur" },
     { min: 2, max: 20, message: "长度在 2 到 20 个字符", trigger: "blur" },
   ],
-  Mobile: [{ required: true, validator: checkPhone, trigger: "blur" }],
-  Status: [{ required: true, message: "请选择状态", trigger: "change" }],
-  Introduction: [
+  mobile: [{ required: true, validator: checkPhone, trigger: "blur" }],
+  status: [{ required: true, message: "请选择状态", trigger: "change" }],
+  des: [
     { required: false, message: "说明", trigger: "blur" },
     { min: 0, max: 100, message: "长度在 0 到 100 个字符", trigger: "blur" },
   ],
 });
 
-const formData = ref<TUserFormData>({
-  UserName: "",
+const formData = ref<TUserForm>({
+  user_name: "",
   password: "",
   nick_name: "",
   status: 1,
@@ -149,26 +149,22 @@ const formData = ref<TUserFormData>({
 const dialogType = ref("");
 
 const fromCol = computed(() => [
-  { prop: "UserName", label: "用户名", placeholder: "用户名" },
+  { prop: "user_name", label: "用户名", placeholder: "用户名" },
   {
-    prop: "Password",
+    prop: "password",
     label: dialogType.value === "create" ? "新密码" : "重置密码",
     placeholder: dialogType.value === "create" ? "新密码" : "重置密码",
   },
-  { prop: "RoleIds", label: "角色", placeholder: "角色" },
-  { prop: "Status", label: "状态", placeholder: "状态" },
-  { prop: "NickName", label: "昵称", placeholder: "昵称" },
-  { prop: "Mobile", label: "手机号", placeholder: "手机号" },
-  { prop: "Introduction", label: "说明", placeholder: "说明" },
+  { prop: "role_ids", label: "角色", placeholder: "角色" },
+  { prop: "status", label: "状态", placeholder: "状态" },
+  { prop: "nick_name", label: "昵称", placeholder: "昵称" },
+  { prop: "mobile", label: "手机号", placeholder: "手机号" },
+  { prop: "des", label: "说明", placeholder: "说明" },
 ]);
 
-const roleList = ref<TRoleTableData[]>([]);
+const roleList = ref<TRoleTable[]>([]);
 //打开
-const openDrawer = (
-  row: TUserFormData,
-  type: string,
-  roleLists: TRoleTableData[]
-) => {
+const openDrawer = (row: TUserForm, type: string, roleLists: TRoleTable[]) => {
   formData.value = row;
   dialogType.value = type;
   roleList.value = roleLists;
@@ -191,7 +187,7 @@ const showPwd = () => {
 //关闭
 const drawerClose = () => {
   formData.value = {
-    UserName: "",
+    user_name: "",
     password: "",
     nick_name: "",
     status: 1,

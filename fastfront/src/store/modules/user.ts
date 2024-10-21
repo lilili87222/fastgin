@@ -37,9 +37,8 @@ export default defineStore({
       return new Promise((resolve, reject) => {
         apiLogin({ user_name: username.trim(), password: password })
           .then((response) => {
-            const { data: Data } = response;
-            this.token = Data.Token;
-            setToken(Data.Token);
+            this.token = response.data.data.token;
+            setToken(response.data.data.token);
             resolve();
           })
           .catch((error) => {
@@ -53,25 +52,25 @@ export default defineStore({
       return new Promise((resolve, reject) => {
         apiGetInfo(this.token)
           .then((response) => {
-            const { data: Data } = response;
+            const { data } = response.data;
 
-            if (!Data) {
+            if (!data) {
               reject("Verification failed, please Login again.");
             }
 
-            const { Id, Roles, UserName, Avatar, Introduction } = Data;
+            const { id, roles, user_name, avatar, Introduction } = data;
 
             // roles must be a non-empty array
-            if (!Roles || Roles.length <= 0) {
+            if (!roles || roles.length <= 0) {
               reject("getInfo: roles must be a non-null array!");
             }
-            this.userId = Id;
-            this.roles = Roles;
-            this.name = UserName;
-            this.avatar = Avatar;
+            this.userId = id;
+            this.roles = roles;
+            this.name = user_name;
+            this.avatar = avatar;
             this.introduction = Introduction;
 
-            resolve(Data);
+            resolve(data);
           })
           .catch((error) => {
             reject(error);

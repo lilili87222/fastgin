@@ -1,5 +1,5 @@
 //用户管理 表格数据类型
-export interface TUserTableData {
+export interface TUserTable {
   id: number;
   user_name: string;
   mobile: string;
@@ -22,7 +22,7 @@ export type TUserQuery = {
 };
 
 //用户管理 新增 编辑 表单数据类型
-export type TUserFormData = {
+export type TUserForm = {
   id?: number;
   user_name: string;
   password: string;
@@ -35,6 +35,6 @@ export type TUserFormData = {
 };
 
 export interface TLogin {
-  username: string;
+  user_name: string;
   password: string;
 }

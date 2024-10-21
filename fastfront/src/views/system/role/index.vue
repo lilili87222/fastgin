@@ -27,12 +27,12 @@
           align="center"
         >
           <template #default="scope">
-            <template v-if="item.prop === 'Status'">
+            <template v-if="item.prop === 'status'">
               <el-tag
                 size="small"
-                :type="scope.row.Status === 1 ? 'success' : 'danger'"
+                :type="scope.row.status === 1 ? 'success' : 'danger'"
                 disable-transitions
-                >{{ scope.row.Status === 1 ? "正常" : "禁用" }}</el-tag
+                >{{ scope.row.status === 1 ? "正常" : "禁用" }}</el-tag
               >
             </template>
 
@@ -62,7 +62,7 @@
             >
             <el-popconfirm
               title="确定删除吗？"
-              @confirm="singleDelete(scope.row.Id)"
+              @confirm="singleDelete(scope.row.id)"
             >
               <template #reference>
                 <el-button type="danger" class="custom-btn">删除</el-button>
@@ -90,16 +90,16 @@ import { computed, onMounted, ref } from "vue";
 import { batchDeleteRoleByIds, getRoles } from "@/api/system/role";
 import SearchForm from "@/components/SearchForm/index.vue";
 import Pagination from "@/components/Pagination/index.vue";
-import type { TRoleQuery, TRoleTableData } from "@/types/system/role";
+import type { TRoleQuery, TRoleTable } from "@/types/system/role";
 
 import Dialog from "./dialog.vue";
 import Permission from "./permission.vue";
 
 const searchColumn = [
-  { prop: "Name", label: "角色名称", placeholder: "用户名" },
-  { prop: "Keyword", label: "关键字", placeholder: "昵称" },
+  { prop: "name", label: "角色名称", placeholder: "用户名" },
+  { prop: "keyword", label: "关键字", placeholder: "昵称" },
   {
-    prop: "Status",
+    prop: "status",
     label: "角色状态",
     placeholder: "角色状态",
     type: "select",
@@ -117,7 +117,7 @@ const params = ref<TRoleQuery>({
 });
 
 // 表格数据
-const tableData = ref<TRoleTableData[]>([]);
+const tableData = ref<TRoleTable[]>([]);
 const total = ref(0);
 const loading = ref(false);
 
@@ -130,9 +130,8 @@ const getTableData = () => {
   loading.value = true;
   getRoles(params.value)
     .then((res) => {
-      const { data: Data } = res;
-      tableData.value = Data.Data;
-      total.value = Data.Total;
+      tableData.value = res.data.data;
+      total.value = res.data.total;
     })
     .finally(() => {
       loading.value = false;
@@ -146,13 +145,13 @@ const onAdd = () => {
 };
 
 //编辑
-const update = (row: TRoleTableData) => {
+const update = (row: TRoleTable) => {
   DrawerRef.value.openDrawer({ ...row }, "update");
 };
 
 const PermissionRef = ref();
 //权限
-const openPermission = (row: TRoleTableData) => {
+const openPermission = (row: TRoleTable) => {
   PermissionRef.value.openDrawer({ ...row });
 };
 
@@ -169,7 +168,7 @@ const getRoleData = () => {
 };
 
 // 表格多选
-const multipleSelection = ref<TRoleTableData[]>([]);
+const multipleSelection = ref<TRoleTable[]>([]);
 
 const searchAction = computed(() => [
   { label: "查询", event: "search", type: "primary" },
@@ -190,12 +189,12 @@ const onPaginaion = (val: any) => {
 };
 
 const tableColumn = [
-  { prop: "Name", label: "角色名称", minWidth: 105 },
-  { prop: "Keyword", label: "关键字", minWidth: 95 },
-  { prop: "Sort", label: "等级", minWidth: 80 },
-  { prop: "Status", label: "角色状态", minWidth: 105 },
-  { prop: "Creator", label: "创建人", minWidth: 95 },
-  { prop: "Desc", label: "说明", minWidth: 80 },
+  { prop: "name", label: "角色名称", minWidth: 105 },
+  { prop: "keyword", label: "关键字", minWidth: 95 },
+  { prop: "sort", label: "等级", minWidth: 80 },
+  { prop: "status", label: "角色状态", minWidth: 105 },
+  { prop: "creator", label: "创建人", minWidth: 95 },
+  { prop: "des", label: "说明", minWidth: 80 },
 ];
 
 //搜索
@@ -217,7 +216,7 @@ const onDelete = () => {
       loading.value = true;
       const Ids: number[] = [];
       multipleSelection.value.forEach((x: any) => {
-        Ids.push(x.Id);
+        Ids.push(x.id);
       });
       batchDeleteRoleByIds({
         Ids,
@@ -236,7 +235,7 @@ const onDelete = () => {
 };
 
 // 表格多选
-const handleSelectionChange = (val: TRoleTableData[]) => {
+const handleSelectionChange = (val: TRoleTable[]) => {
   multipleSelection.value = val;
 };
 
