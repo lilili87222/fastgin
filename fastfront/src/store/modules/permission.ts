@@ -83,8 +83,8 @@ export default defineStore({
       try {
         // 获取用户菜单树
         const id = store.user().userId;
-        const res = (await getUserMenuTreeByUserId(id)) as any;
-        const menuTree = res.data; // 确保这里的数据结构正确
+        const res = await getUserMenuTreeByUserId(id);
+        const menuTree = res.data;
 
         // 将菜单树转换为路由配置
         const accessedRoutes = getRoutesFromMenuTree(menuTree);

@@ -1,22 +1,22 @@
 export interface TDictionaryTable {
   ID: number;
-  CreatedAt: Date;
-  UpdatedAt: Date;
-  DeletedAt: null;
-  Key: string;
-  Value: string;
-  Desc: string;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: null;
+  key: string;
+  value: string;
+  des: string;
 }
 export interface TDictionaryQuery {
   page_num: number;
   page_size: number;
-  Key?: string;
-  Value?: string;
-  Desc?: string;
+  key?: string;
+  value?: string;
+  des?: string;
 }
 export interface TDictionaryForm {
-  ID?: number;
-  Key: string;
-  Value: string;
-  Desc: string;
+  id?: number;
+  key: string;
+  value: string;
+  des: string;
 }

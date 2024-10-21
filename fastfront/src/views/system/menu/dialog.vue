@@ -66,7 +66,7 @@
             </el-radio-group>
           </template>
 
-          <template v-else-if="item.prop === 'parentId'">
+          <template v-else-if="item.prop === 'parent_id'">
             <el-tree-select
               ref="treeSelectRef"
               v-model="formData[item.prop]"
@@ -74,7 +74,7 @@
               check-strictly
               filterable
               show-checkbox
-              node-key="Id"
+              node-key="id"
               :props="defaultProps"
               style="width: 100%"
               @node-click="handleNodeClick"
@@ -142,7 +142,7 @@ const rules = reactive<FormRules>({
     { required: false, message: "请输入高亮菜单", trigger: "blur" },
     { min: 0, max: 100, message: "长度在 0 到 100 个字符", trigger: "blur" },
   ],
-  parentId: [{ required: true, message: "请选择上级目录", trigger: "change" }],
+  parent_id: [{ required: true, message: "请选择上级目录", trigger: "change" }],
 });
 
 const fromCol = [
@@ -157,7 +157,7 @@ const fromCol = [
   { prop: "hidden", label: "隐藏", placeholder: "隐藏" }, //2否 1 是
   { prop: "noCache", label: "缓存", placeholder: "缓存" }, //2 是 1 否
   { prop: "activeMenu", label: "高亮菜单", placeholder: "高亮菜单" },
-  { prop: "parentId", label: "上级目录", placeholder: "上级目录" },
+  { prop: "parent_id", label: "上级目录", placeholder: "上级目录" },
 ];
 
 const dialogType = ref("");
@@ -177,7 +177,7 @@ defineExpose({
 const formData = ref<any>({});
 
 const handleNodeClick = (data: any) => {
-  formData.value.parentId = data.id;
+  formData.value.parent_id = data.id;
 };
 
 const treeSelectRef = ref();

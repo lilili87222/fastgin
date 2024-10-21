@@ -194,15 +194,17 @@ const diskPercent = ref(0);
 const ramPercent = ref(0);
 const fetchData = () => {
   getSystemInfo().then((res) => {
-    const { data } = res.data;
-    systemInfo.cpu = data.cpu;
-    systemInfo.memory = data.mem;
-    ramPercent.value = Number(data.mem.used_percent.toFixed(2));
+    const { cpu, mem, disk, os } = res.data;
+    systemInfo.cpu = cpu;
+    systemInfo.memory = { ...mem };
+    ramPercent.value = Number(mem.used_percent.toFixed(2));
     delete systemInfo.memory.used_percent;
-    systemInfo.disk = data.disk;
-    diskPercent.value = Number(data.disk.used_percent.toFixed(2));
+
+    systemInfo.disk = { ...disk };
+    diskPercent.value = Number(disk.used_percent.toFixed(2));
     delete systemInfo.disk.used_percent;
-    systemInfo.os = data.os;
+
+    systemInfo.os = os;
   });
 };
 

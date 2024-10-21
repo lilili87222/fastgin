@@ -46,14 +46,14 @@
         >
           <template #default="scope">
             <el-button
-              @click="update(scope.row.ID)"
+              @click="update(scope.row.id)"
               type="primary"
               class="custom-btn"
               >编辑</el-button
             >
             <el-popconfirm
               title="确定删除吗？"
-              @confirm="singleDelete(scope.row.ID)"
+              @confirm="singleDelete(scope.row.id)"
             >
               <template #reference>
                 <el-button type="danger" class="custom-btn">删除</el-button>
@@ -126,8 +126,8 @@ const getTableData = () => {
   loading.value = true;
   getDictionary(params.value)
     .then((res) => {
-      tableData.value = res.data.Data;
-      total.value = res.data.Total;
+      tableData.value = res.data.data;
+      total.value = res.data.total;
     })
     .finally(() => {
       loading.value = false;

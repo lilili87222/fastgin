@@ -1,60 +1,67 @@
 <template>
   <div :class="classObj" class="app-wrapper">
-    <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
+    <div
+      v-if="device === 'mobile' && sidebar.opened"
+      class="drawer-bg"
+      @click="handleClickOutside"
+    />
     <sidebar class="sidebar-container" />
     <div :class="{ hasTagsView: needTagsView }" class="main-container">
       <div :class="{ 'fixed-header': fixedHeader }">
-        <navbar />
+        <navbar @openSetting="openSetting" />
         <tags-view v-if="needTagsView" />
       </div>
       <app-main />
-      <right-panel v-if="showSettings">
-        <settings />
-      </right-panel>
+      <globalDrawer ref="globalDrawerRef"></globalDrawer>
     </div>
   </div>
 </template>
 
 <script>
-import RightPanel from '@/components/RightPanel';
-import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components';
-import ResizeMixin from './mixin/ResizeHandler';
-import { mapState } from 'pinia';
-import store from '@/store';
-import { defineComponent } from 'vue';
+import RightPanel from "@/components/RightPanel";
+import { AppMain, Navbar, Settings, Sidebar, TagsView } from "./components";
+import ResizeMixin from "./mixin/ResizeHandler";
+import globalDrawer from "./globalDrawer.vue";
+import { mapState } from "pinia";
+import store from "@/store";
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'LayoutIndex',
+  name: "LayoutIndex",
   components: {
     AppMain,
     Navbar,
     RightPanel,
     Settings,
+    globalDrawer,
     Sidebar,
-    TagsView
+    TagsView,
   },
   mixins: [ResizeMixin],
   computed: {
-    ...mapState(store.app, ['sidebar', 'device']),
+    ...mapState(store.app, ["sidebar", "device"]),
     ...mapState(store.settings, {
-      showSettings: 'showSettings',
-      needTagsView: 'tagsView',
-      fixedHeader: 'fixedHeader'
+      showSettings: "showSettings",
+      needTagsView: "tagsView",
+      fixedHeader: "fixedHeader",
     }),
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,
         openSidebar: this.sidebar.opened,
         withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === 'mobile'
+        mobile: this.device === "mobile",
       };
-    }
+    },
   },
   methods: {
+    openSetting() {
+      this.$refs.globalDrawerRef.openDrawer();
+    },
     handleClickOutside() {
       store.app().closeSidebar({ withoutAnimation: false });
-    }
-  }
+    },
+  },
 });
 </script>
 
@@ -94,7 +101,7 @@ export default defineComponent({
 }
 
 .hideSidebar .fixed-header {
-  width: calc(100% - 54px)
+  width: calc(100% - 54px);
 }
 
 .mobile .fixed-header {
