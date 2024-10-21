@@ -76,10 +76,10 @@ func GenerateModel(tc TableConfig) {
 	g.Execute()
 }
 func GenerateFromTemplate(tc TableConfig, templateName string) error {
-	tmpl, err := template.New(templateName + ".tmpl").Funcs(template.FuncMap{
+	tmpl, err := template.New(templateName + ".tpl").Funcs(template.FuncMap{
 		"ToCamelCase": ToCamelCase,
 		"ToLower":     strings.ToLower,
-	}).ParseFiles("generator/templates/" + templateName + ".tmpl")
+	}).ParseFiles("generator/templates/" + templateName + ".tpl")
 	if err != nil {
 		return err
 	}

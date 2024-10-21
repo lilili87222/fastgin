@@ -39,7 +39,7 @@ func (uc *UserController) GetUserInfo(c *gin.Context) {
 		httpz.ServerError(c, "获取当前用户信息失败: "+err.Error())
 		return
 	}
-	//userMap, e := util.StructToMap(user, true, "ID", "UserName", "Mobile", "Avatar", "NickName", "Introduction", "Roles")
+	//userMap, e := util.StructToMap(user, true, "ID", "UserName", "Mobile", "Avatar", "NickName", "Des", "Roles")
 	//if e != nil {
 	//	fmt.Println(e.Error())
 	//}
@@ -247,7 +247,7 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 		Mobile:   req.Mobile,
 		Avatar:   req.Avatar,
 		NickName: req.NickName,
-		Des:      req.Introduction,
+		Des:      req.Des,
 		Status:   req.Status,
 		Creator:  ctxUser.UserName,
 		Roles:    roles,
@@ -349,7 +349,7 @@ func (uc *UserController) Update(c *gin.Context) {
 		Mobile:    req.Mobile,
 		Avatar:    req.Avatar,
 		NickName:  req.NickName,
-		Des:       req.Introduction,
+		Des:       req.Des,
 		Status:    req.Status,
 		Creator:   ctxUser.UserName,
 		Roles:     roles,

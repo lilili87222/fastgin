@@ -8,14 +8,14 @@ type RegisterAndLoginRequest struct {
 
 // 创建用户结构体
 type CreateUserRequest struct {
-	Username     string   `form:"user_name" json:"user_name" validate:"required,min=2,max=20"`
-	Password     string   `form:"password" json:"password" validate:"required,min=5,max=20"`
-	Mobile       string   `form:"mobile" json:"mobile" validate:"required,checkMobile"`
-	Avatar       string   `form:"avatar" json:"avatar"`
-	NickName     string   `form:"nick_name" json:"nick_name" validate:"min=0,max=20"`
-	Introduction string   `form:"des" json:"des" validate:"min=0,max=255"`
-	Status       uint     `form:"status" json:"status" validate:"oneof=1 2"`
-	RoleIds      []uint64 `form:"role_ids" json:"role_ids" validate:"required"`
+	Username string   `form:"user_name" json:"user_name" validate:"required,min=2,max=20"`
+	Password string   `form:"password" json:"password"`
+	Mobile   string   `form:"mobile" json:"mobile" validate:"required,checkMobile"`
+	Avatar   string   `form:"avatar" json:"avatar"`
+	NickName string   `form:"nick_name" json:"nick_name" validate:"min=0,max=20"`
+	Des      string   `form:"des" json:"des" validate:"min=0,max=255"`
+	Status   uint     `form:"status" json:"status" validate:"oneof=1 2"`
+	RoleIds  []uint64 `form:"role_ids" json:"role_ids" validate:"required"`
 }
 
 // 获取用户列表结构体

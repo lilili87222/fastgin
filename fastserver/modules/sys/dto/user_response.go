@@ -18,6 +18,6 @@ type UsersDto struct {
 //	Mobile       string        `json:"Mobile"`
 //	Avatar       string        `json:"Avatar"`
 //	NickName     string        `json:"NickName"`
-//	Introduction string        `json:"Introduction"`
+//	Des string        `json:"Des"`
 //	Roles        []*model.Role `json:"Roles"`
 //}
