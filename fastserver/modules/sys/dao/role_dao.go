@@ -9,10 +9,10 @@ type RoleDao struct {
 }
 
 // 获取角色的权限菜单
-func (r *RoleDao) GetRoleWithMenus(roleId uint) (*model.Role, error) {
+func (r *RoleDao) GetRoleWithMenus(roleId uint64) (*model.Role, error) {
 	return database.GetByIdPreload[*model.Role](roleId, "Menus")
 }
-func (r *RoleDao) GetRoleWithUsers(roleId uint) (model.Role, error) {
+func (r *RoleDao) GetRoleWithUsers(roleId uint64) (model.Role, error) {
 	return database.GetByIdPreload[model.Role](roleId, "Users")
 }
 
@@ -22,7 +22,7 @@ func (r *RoleDao) UpdateRoleMenus(role *model.Role) error {
 }
 
 // 删除角色
-func (r *RoleDao) BatchDeleteRoleByIds(roleIds []uint) ([]model.Role, error) {
+func (r *RoleDao) BatchDeleteRoleByIds(roleIds []uint64) ([]model.Role, error) {
 	roles, err := database.GetByIds[model.Role](roleIds)
 	if err != nil {
 		return nil, err

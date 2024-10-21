@@ -1,46 +1,46 @@
 //菜单管理 表格数据
 export interface TMenuTableData {
-  Id: number;
-  CreatedAt: Date;
-  UpdatedAt: Date;
-  DeletedAt: null;
-  Name: string;
-  Title: string;
-  Icon: string;
-  Path: string;
-  Redirect: null | string;
-  Component: string;
-  Sort: number;
-  Status: number;
-  Hidden: number;
-  NoCache: number;
-  AlwaysShow: number;
-  Breadcrumb: number;
-  ActiveMenu: null;
-  ParentId: number;
-  Creator: string;
-  Children: TMenuTableData[];
-  Roles: null;
+  id: number;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: null;
+  name: string;
+  title: string;
+  icon: string;
+  path: string;
+  redirect: null | string;
+  component: string;
+  sort: number;
+  status: number;
+  hidden: number;
+  no_cache: number;
+  always_show: number;
+  breadcrumb: number;
+  active_menu: null;
+  parent_id: number;
+  creator: string;
+  children: TMenuTableData[];
+  roles: null;
 }
 
 export interface TMenuFormData {
-  Id: number;
-  Title: string;
-  Name: string;
-  Sort: number;
-  Icon: string;
-  Path: string;
-  Component: string;
-  Redirect: string;
-  Status: number;
-  Hidden: number;
-  NoCache: number;
-  ActiveMenu: string;
-  ParentId: number;
+  id: number;
+  title: string;
+  name: string;
+  sort: number;
+  icon: string;
+  path: string;
+  component: string;
+  redirect: string;
+  status: number;
+  hidden: number;
+  no_cache: number;
+  active_menu: string;
+  parent_id: number;
 }
 
 //菜单管理 查询参数
 export interface TMenuQuery {
-  PageNum: number;
-  PageSize: number;
+  page_num: number;
+  page_size: number;
 }

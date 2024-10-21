@@ -41,29 +41,28 @@ func InitSysModuleDatabase() {
 	newRoles := make([]model.Role, 0)
 	roles := []model.Role{
 		{
-			//Model:   model.Model{Id: 1},
-			Model:   model.Model{Id: 1},
+			ID:      1,
 			Name:    "管理员",
 			Keyword: "admin",
-			Desc:    new(string),
+			Des:     "",
 			Sort:    1,
 			Status:  1,
 			Creator: "系统",
 		},
 		{
-			Model:   model.Model{Id: 2},
+			ID:      2,
 			Name:    "普通用户",
 			Keyword: "user",
-			Desc:    new(string),
+			Des:     "",
 			Sort:    3,
 			Status:  1,
 			Creator: "系统",
 		},
 		{
-			Model:   model.Model{Id: 3},
+			ID:      3,
 			Name:    "访客",
 			Keyword: "guest",
-			Desc:    new(string),
+			Des:     "",
 			Sort:    5,
 			Status:  1,
 			Creator: "系统",
@@ -71,14 +70,14 @@ func InitSysModuleDatabase() {
 	}
 
 	for _, role := range roles {
-		err := database.DB.First(&role, role.Id).Error
+		err := database.DB.First(role, role.ID).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			newRoles = append(newRoles, role)
 		}
 	}
 
 	if len(newRoles) > 0 {
-		err := database.DB.Create(&newRoles).Error
+		err := database.DB.Create(newRoles).Error
 		if err != nil {
 			config.Log.Errorf("写入系统角色数据失败：%v", err)
 		}
@@ -86,8 +85,8 @@ func InitSysModuleDatabase() {
 
 	// 2写入菜单
 	newMenus := make([]model.Menu, 0)
-	var uint0 uint = 0
-	var uint1 uint = 1
+	//var uint0 uint = 0
+	//var uint1 uint = 1
 	componentStr := "component"
 	systemUserStr := "/system/user"
 	userStr := "user"
@@ -98,115 +97,115 @@ func InitSysModuleDatabase() {
 	logOperationStr := "/log/operation-log"
 	appOperationStr := "/app/operation"
 	documentationStr := "documentation"
-	var uint6 uint = 6
+	//var uint6 uint = 6
 	menus := []model.Menu{
 		{
-			Model:     model.Model{Id: 1},
+			ID:        1,
 			Name:      "System",
 			Title:     "系统管理",
-			Icon:      &componentStr,
+			Icon:      componentStr,
 			Path:      "/system",
 			Component: "Layout",
-			Redirect:  &systemUserStr,
+			Redirect:  systemUserStr,
 			Sort:      10,
-			ParentId:  &uint0,
+			ParentID:  0,
 			Roles:     roles[:1],
 			Creator:   "系统",
 		},
 		{
-			Model:     model.Model{Id: 2},
+			ID:        2,
 			Name:      "User",
 			Title:     "用户管理",
-			Icon:      &userStr,
+			Icon:      userStr,
 			Path:      "user",
 			Component: "/system/user/index",
 			Sort:      11,
-			ParentId:  &uint1,
+			ParentID:  1,
 			Roles:     roles[:1],
 			Creator:   "系统",
 		},
 		{
-			Model:     model.Model{Id: 3},
+			ID:        3,
 			Name:      "Role",
 			Title:     "角色管理",
-			Icon:      &peoplesStr,
+			Icon:      peoplesStr,
 			Path:      "role",
 			Component: "/system/role/index",
 			Sort:      12,
-			ParentId:  &uint1,
+			ParentID:  1,
 			Roles:     roles[:1],
 			Creator:   "系统",
 		},
 		{
-			Model:     model.Model{Id: 4},
+			ID:        4,
 			Name:      "Menu",
 			Title:     "菜单管理",
-			Icon:      &treeTableStr,
+			Icon:      treeTableStr,
 			Path:      "menu",
 			Component: "/system/menu/index",
 			Sort:      13,
-			ParentId:  &uint1,
+			ParentID:  1,
 			Roles:     roles[:1],
 			Creator:   "系统",
 		},
 		{
-			Model:     model.Model{Id: 5},
+			ID:        5,
 			Name:      "Api",
 			Title:     "接口管理",
-			Icon:      &treeStr,
+			Icon:      treeStr,
 			Path:      "api",
 			Component: "/system/api/index",
 			Sort:      14,
-			ParentId:  &uint1,
+			ParentID:  1,
 			Roles:     roles[:1],
 			Creator:   "系统",
 		},
 		{
-			Model:     model.Model{Id: 6},
+			ID:        6,
 			Name:      "Log",
 			Title:     "日志管理",
-			Icon:      &exampleStr,
+			Icon:      exampleStr,
 			Path:      "/log",
 			Component: "Layout",
-			Redirect:  &logOperationStr,
+			Redirect:  logOperationStr,
 			Sort:      20,
-			ParentId:  &uint0,
+			ParentID:  0,
 			Roles:     roles[:2],
 			Creator:   "系统",
 		},
 		{
-			Model:     model.Model{Id: 7},
+			ID:        7,
 			Name:      "OperationLog",
 			Title:     "操作日志",
-			Icon:      &documentationStr,
+			Icon:      documentationStr,
 			Path:      "operation-log",
 			Component: "/log/operation-log/index",
 			Sort:      21,
-			ParentId:  &uint6,
+			ParentID:  6,
 			Roles:     roles[:2],
 			Creator:   "系统",
 		}, {
-			Model:     model.Model{Id: 8},
+			ID:        8,
 			Name:      "App",
 			Title:     "应用功能",
-			Icon:      &exampleStr,
+			Icon:      exampleStr,
 			Path:      "/app",
 			Component: "Layout",
-			Redirect:  &appOperationStr,
+			Redirect:  appOperationStr,
 			Sort:      20,
-			ParentId:  &uint0,
+			ParentID:  0,
 			Roles:     roles[:2],
 			Creator:   "系统",
 		},
 	}
 	for _, menu := range menus {
-		err := database.DB.First(&menu, menu.Id).Error
+		err := database.DB.First(menu, menu.ID).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			newMenus = append(newMenus, menu)
 		}
 	}
 	if len(newMenus) > 0 {
-		err := database.DB.Create(&newMenus).Error
+		err := database.DB.Create(newMenus).Error
 		if err != nil {
 			config.Log.Errorf("写入系统菜单数据失败：%v", err)
 		}
@@ -216,64 +215,64 @@ func InitSysModuleDatabase() {
 	newUsers := make([]model.User, 0)
 	users := []model.User{
 		{
-			Model:        model.Model{Id: 1},
-			UserName:     "admin",
-			Password:     util.GenPasswd("123456"),
-			Mobile:       "18888888888",
-			Avatar:       "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
-			NickName:     new(string),
-			Introduction: new(string),
-			Status:       1,
-			Creator:      "系统",
-			Roles:        roles[:1],
+			ID:       1,
+			UserName: "admin",
+			Password: util.GenPasswd("123456"),
+			Mobile:   "18888888888",
+			Avatar:   "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+			NickName: "",
+			Des:      "",
+			Status:   1,
+			Creator:  "系统",
+			Roles:    roles[:1],
 		},
 		{
-			Model:        model.Model{Id: 2},
-			UserName:     "faker",
-			Password:     util.GenPasswd("123456"),
-			Mobile:       "19999999999",
-			Avatar:       "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
-			NickName:     new(string),
-			Introduction: new(string),
-			Status:       1,
-			Creator:      "系统",
-			Roles:        roles[:2],
+			ID:       2,
+			UserName: "faker",
+			Password: util.GenPasswd("123456"),
+			Mobile:   "19999999999",
+			Avatar:   "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+			NickName: "",
+			Des:      "",
+			Status:   1,
+			Creator:  "系统",
+			Roles:    roles[:2],
 		},
 		{
-			Model:        model.Model{Id: 3},
-			UserName:     "nike",
-			Password:     util.GenPasswd("123456"),
-			Mobile:       "13333333333",
-			Avatar:       "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
-			NickName:     new(string),
-			Introduction: new(string),
-			Status:       1,
-			Creator:      "系统",
-			Roles:        roles[1:2],
+			ID:       3,
+			UserName: "nike",
+			Password: util.GenPasswd("123456"),
+			Mobile:   "13333333333",
+			Avatar:   "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+			NickName: "",
+			Des:      "",
+			Status:   1,
+			Creator:  "系统",
+			Roles:    roles[1:2],
 		},
 		{
-			Model:        model.Model{Id: 4},
-			UserName:     "bob",
-			Password:     util.GenPasswd("123456"),
-			Mobile:       "15555555555",
-			Avatar:       "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
-			NickName:     new(string),
-			Introduction: new(string),
-			Status:       1,
-			Creator:      "系统",
-			Roles:        roles[2:3],
+			ID:       4,
+			UserName: "bob",
+			Password: util.GenPasswd("123456"),
+			Mobile:   "15555555555",
+			Avatar:   "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+			NickName: "",
+			Des:      "",
+			Status:   1,
+			Creator:  "系统",
+			Roles:    roles[2:3],
 		},
 	}
 
 	for _, user := range users {
-		err := database.DB.First(&user, user.Id).Error
+		err := database.DB.First(user, user.ID).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			newUsers = append(newUsers, user)
 		}
 	}
 
 	if len(newUsers) > 0 {
-		err := database.DB.Create(&newUsers).Error
+		err := database.DB.Create(newUsers).Error
 		if err != nil {
 			config.Log.Errorf("写入用户数据失败：%v", err)
 		}
@@ -285,246 +284,246 @@ func InitSysModuleDatabase() {
 		//	Method:   "POST",
 		//	Path:     "/base/login",
 		//	Category: "base",
-		//	Desc:     "用户登录",
+		//	Des:     "用户登录",
 		//	Creator:  "系统",
 		//},
 		{
 			Method:   "POST",
 			Path:     "/user/logout",
 			Category: "user",
-			Desc:     "用户登出",
+			Des:      "用户登出",
 			Creator:  "系统",
 		},
 		{
 			Method:   "POST",
 			Path:     "/user/refreshToken",
 			Category: "user",
-			Desc:     "刷新JWT令牌",
+			Des:      "刷新JWT令牌",
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/user/info",
 			Category: "user",
-			Desc:     "获取当前登录用户信息",
+			Des:      "获取当前登录用户信息",
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/user/index",
 			Category: "user",
-			Desc:     "获取用户列表",
+			Des:      "获取用户列表",
 			Creator:  "系统",
 		},
 		{
 			Method:   "PUT",
 			Path:     "/user/changePwd",
 			Category: "user",
-			Desc:     "更新用户登录密码",
+			Des:      "更新用户登录密码",
 			Creator:  "系统",
 		},
 		{
 			Method:   "POST",
 			Path:     "/user/index",
 			Category: "user",
-			Desc:     "创建用户",
+			Des:      "创建用户",
 			Creator:  "系统",
 		},
 		{
 			Method:   "PATCH",
 			Path:     "/user/index/:userId",
 			Category: "user",
-			Desc:     "更新用户",
+			Des:      "更新用户",
 			Creator:  "系统",
 		},
 		{
 			Method:   "DELETE",
 			Path:     "/user/index",
 			Category: "user",
-			Desc:     "批量删除用户",
+			Des:      "批量删除用户",
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/role/index",
 			Category: "role",
-			Desc:     "获取角色列表",
+			Des:      "获取角色列表",
 			Creator:  "系统",
 		},
 		{
 			Method:   "POST",
 			Path:     "/role/index",
 			Category: "role",
-			Desc:     "创建角色",
+			Des:      "创建角色",
 			Creator:  "系统",
 		},
 		{
 			Method:   "PATCH",
 			Path:     "/role/index/:roleId",
 			Category: "role",
-			Desc:     "更新角色",
+			Des:      "更新角色",
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/role/menus/:roleId",
 			Category: "role",
-			Desc:     "获取角色的权限菜单",
+			Des:      "获取角色的权限菜单",
 			Creator:  "系统",
 		},
 		{
 			Method:   "PATCH",
 			Path:     "/role/menus/:roleId",
 			Category: "role",
-			Desc:     "更新角色的权限菜单",
+			Des:      "更新角色的权限菜单",
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/role/apis/:roleId",
 			Category: "role",
-			Desc:     "获取角色的权限接口",
+			Des:      "获取角色的权限接口",
 			Creator:  "系统",
 		},
 		{
 			Method:   "PATCH",
 			Path:     "/role/apis/:roleId",
 			Category: "role",
-			Desc:     "更新角色的权限接口",
+			Des:      "更新角色的权限接口",
 			Creator:  "系统",
 		},
 		{
 			Method:   "DELETE",
 			Path:     "/role/index",
 			Category: "role",
-			Desc:     "批量删除角色",
+			Des:      "批量删除角色",
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/menu/index",
 			Category: "menu",
-			Desc:     "获取菜单列表",
+			Des:      "获取菜单列表",
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/menu/tree",
 			Category: "menu",
-			Desc:     "获取菜单树",
+			Des:      "获取菜单树",
 			Creator:  "系统",
 		},
 		{
 			Method:   "POST",
 			Path:     "/menu/index",
 			Category: "menu",
-			Desc:     "创建菜单",
+			Des:      "创建菜单",
 			Creator:  "系统",
 		},
 		{
 			Method:   "PATCH",
 			Path:     "/menu/index/:menuId",
 			Category: "menu",
-			Desc:     "更新菜单",
+			Des:      "更新菜单",
 			Creator:  "系统",
 		},
 		{
 			Method:   "DELETE",
 			Path:     "/menu/index",
 			Category: "menu",
-			Desc:     "批量删除菜单",
+			Des:      "批量删除菜单",
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/menu/user/:userId",
 			Category: "menu",
-			Desc:     "获取用户的可访问菜单列表",
+			Des:      "获取用户的可访问菜单列表",
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/menu/user_tree/:userId",
 			Category: "menu",
-			Desc:     "获取用户的可访问菜单树",
+			Des:      "获取用户的可访问菜单树",
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/api/index",
 			Category: "api",
-			Desc:     "获取接口列表",
+			Des:      "获取接口列表",
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/api/tree",
 			Category: "api",
-			Desc:     "获取接口树",
+			Des:      "获取接口树",
 			Creator:  "系统",
 		},
 		{
 			Method:   "POST",
 			Path:     "/api/index",
 			Category: "api",
-			Desc:     "创建接口",
+			Des:      "创建接口",
 			Creator:  "系统",
 		},
 		{
 			Method:   "PATCH",
 			Path:     "/api/index/:roleId",
 			Category: "api",
-			Desc:     "更新接口",
+			Des:      "更新接口",
 			Creator:  "系统",
 		},
 		{
 			Method:   "DELETE",
 			Path:     "/api/index",
 			Category: "api",
-			Desc:     "批量删除接口",
+			Des:      "批量删除接口",
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/log/index",
 			Category: "log",
-			Desc:     "获取操作日志列表",
+			Des:      "获取操作日志列表",
 			Creator:  "系统",
 		},
 		{
 			Method:   "DELETE",
 			Path:     "/log/index",
 			Category: "log",
-			Desc:     "批量删除操作日志",
+			Des:      "批量删除操作日志",
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/system/info",
 			Category: "system",
-			Desc:     "获取系统信息",
+			Des:      "获取系统信息",
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/system/stop",
 			Category: "system",
-			Desc:     "停止web服务",
+			Des:      "停止web服务",
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/system/restart",
 			Category: "system",
-			Desc:     "重启web服务",
+			Des:      "重启web服务",
 			Creator:  "系统",
 		},
 	}
 	newApi := make([]model.Api, 0)
 	newRoleCasbin := make([]model.RoleCasbin, 0)
 	for i, api := range apis {
-		api.Id = uint(i + 1)
-		err := database.DB.First(&api, api.Id).Error
+		api.ID = uint64(i + 1)
+		err := database.DB.First(api, api.ID).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			newApi = append(newApi, api)
 
@@ -560,7 +559,7 @@ func InitSysModuleDatabase() {
 	}
 
 	if len(newApi) > 0 {
-		if err := database.DB.Create(&newApi).Error; err != nil {
+		if err := database.DB.Create(newApi).Error; err != nil {
 			config.Log.Errorf("写入api数据失败：%v", err)
 		}
 	}

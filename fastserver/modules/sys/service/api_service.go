@@ -60,7 +60,7 @@ func (s *ApiService) CreateApi(api *model.Api) error {
 
 func (s *ApiService) UpdateApiById(api *model.Api) error {
 	//oldApi, err := s.apiDao.GetApisById([]uint{apiId})
-	oldApi, err := database.GetById[model.Api](api.Id)
+	oldApi, err := database.GetById[model.Api](api.ID)
 	if err != nil {
 		return errors.New("根据接口ID获取接口信息失败")
 	}
@@ -98,7 +98,7 @@ func (s *ApiService) UpdateApiById(api *model.Api) error {
 	return nil
 }
 
-func (s *ApiService) BatchDeleteApiByIds(apiIds []uint) error {
+func (s *ApiService) BatchDeleteApiByIds(apiIds []uint64) error {
 	//apis, err := s.apiDao.GetApisById(apiIds)
 	apis, err := database.GetByIds[model.Api](apiIds)
 	if err != nil {
@@ -135,7 +135,7 @@ func (s *ApiService) GetApiDescByPath(path string, method string) (model.Api, er
 	return s.apiDao.GetApiDescByPath(path, method)
 }
 
-func (s *ApiService) GetApisById(apiIds []uint) ([]model.Api, error) {
+func (s *ApiService) GetApisById(apiIds []uint64) ([]model.Api, error) {
 	return database.GetByIds[model.Api](apiIds)
 }
 
@@ -144,7 +144,7 @@ func (s *ApiService) InsertApisToAdmin(apis []model.Api) {
 	newRoleCasbin := make([]model.RoleCasbin, 0)
 	for _, api := range apis {
 		oldApi, _ := apiDao.GetApiDescByPath(api.Path, api.Method)
-		if oldApi.Id == 0 {
+		if oldApi.ID == 0 {
 			database.Create(&api)
 			newRoleCasbin = append(newRoleCasbin, model.RoleCasbin{
 				Keyword: "admin",

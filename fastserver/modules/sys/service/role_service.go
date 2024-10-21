@@ -22,7 +22,7 @@ func NewRoleService() *RoleService {
 //}
 
 // 根据角色ID获取角色
-func (r *RoleService) GetRolesByIds(roleIds []uint) ([]model.Role, error) {
+func (r *RoleService) GetRolesByIds(roleIds []uint64) ([]model.Role, error) {
 	return database.GetByIds[model.Role](roleIds)
 	//return r.roleDao.GetRolesByIds(roleIds)
 }
@@ -40,7 +40,7 @@ func (r *RoleService) UpdateRoleById(role *model.Role) error {
 }
 
 // 获取角色的权限菜单
-func (r *RoleService) GetRoleMenusById(roleId uint) ([]*model.Menu, error) {
+func (r *RoleService) GetRoleMenusById(roleId uint64) ([]*model.Menu, error) {
 	role, err := database.GetByIdPreload[model.Role](roleId, "Menus")
 	return role.Menus, err
 }
@@ -111,7 +111,7 @@ func (r *RoleService) UpdateRoleApis(roleKeyword string, reqRolePolicies [][]str
 }
 
 // 删除角色
-func (r *RoleService) BatchDeleteRoleByIds(roleIds []uint) error {
+func (r *RoleService) BatchDeleteRoleByIds(roleIds []uint64) error {
 	roles, err := r.roleDao.BatchDeleteRoleByIds(roleIds)
 	// 删除成功就删除casbin policy
 	if err == nil {

@@ -1,34 +1,34 @@
 //角色管理 表格数据类型
 export interface TRoleTableData {
-  Id: number;
-  CreatedAt: Date;
-  UpdatedAt: Date;
-  DeletedAt: null;
-  Name: string;
-  Keyword: string;
-  Desc: string;
-  Status: number;
-  Sort: number;
-  Creator: string;
-  Users: null;
-  Menus: null;
+  id: number;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: null;
+  name: string;
+  keyword: string;
+  des: string;
+  status: number;
+  sort: number;
+  creator: string;
+  users: null;
+  menus: null;
 }
 
 //角色管理 添加/编辑表单数据类型
 export interface TRoleFormData {
-  Id?: number;
-  Name: string;
-  Keyword: string;
-  Desc: string;
-  Status: number;
-  Sort: number;
+  id?: number;
+  name: string;
+  keyword: string;
+  des: string;
+  status: number;
+  sort: number;
 }
 
 //角色管理 搜索表单数据类型
 export interface TRoleQuery {
-  PageNum: number;
-  PageSize: number;
-  Name?: string;
-  Keyword?: string;
-  Status?: number;
+  page_num: number;
+  page_size: number;
+  name?: string;
+  keyword?: string;
+  status?: number;
 }

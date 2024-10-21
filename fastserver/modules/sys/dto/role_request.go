@@ -4,9 +4,9 @@ package dto
 type CreateRoleRequest struct {
 	Name    string `json:"Name" form:"Name" validate:"required,min=1,max=20"`
 	Keyword string `json:"Keyword" form:"Keyword" validate:"required,min=1,max=20"`
-	Desc    string `json:"Desc" form:"Desc" validate:"min=0,max=100"`
+	Des     string `json:"Desc" form:"Desc" validate:"min=0,max=100"`
 	Status  uint   `json:"Status" form:"Status" validate:"oneof=1 2"`
-	Sort    uint   `json:"Sort" form:"Sort" validate:"gte=1,lte=999"`
+	Sort    int32  `json:"Sort" form:"Sort" validate:"gte=1,lte=999"`
 }
 
 // 获取用户角色结构体

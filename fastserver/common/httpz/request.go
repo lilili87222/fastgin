@@ -11,19 +11,19 @@ type SearchRequest struct {
 	KeyValues map[string]string
 }
 type IdListRequest struct {
-	Ids []uint `json:"Ids" form:"Ids"`
+	Ids []uint64 `json:"ids" form:"ids"`
 }
 
 func NewSearchRequest(params map[string]string) *SearchRequest {
 	req := &SearchRequest{}
-	if pageNum, err := strconv.Atoi(params["PageNum"]); err == nil {
+	if pageNum, err := strconv.Atoi(params["page_num"]); err == nil {
 		req.PageNum = pageNum
 	}
-	if pageSize, err := strconv.Atoi(params["PageSize"]); err == nil {
+	if pageSize, err := strconv.Atoi(params["page_size"]); err == nil {
 		req.PageSize = pageSize
 	}
-	delete(params, "PageNum")
-	delete(params, "PageSize")
+	delete(params, "page_num")
+	delete(params, "page_size")
 	req.KeyValues = params
 	return req
 }

@@ -54,14 +54,14 @@ func OperationLogMiddleware() gin.HandlerFunc {
 
 		operationLog := model.OperationLog{
 			UserName:   username,
-			Ip:         c.ClientIP(),
-			IpLocation: "",
+			IP:         c.ClientIP(),
+			IPLocation: "",
 			Method:     method,
 			Path:       path,
-			Desc:       apiDesc.Desc,
-			Status:     c.Writer.Status(),
+			Des:        apiDesc.Des,
+			Status:     int32(c.Writer.Status()),
 			StartTime:  startTime,
-			TimeCost:   timeCost,
+			TimeCost:   int32(timeCost),
 			//UserAgent:  c.Request.UserAgent(),
 		}
 

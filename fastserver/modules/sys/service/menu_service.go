@@ -44,12 +44,12 @@ func (s *MenuService) UpdateMenuById(menu *model.Menu) error {
 }
 
 // 批量删除菜单
-func (s *MenuService) BatchDeleteMenuByIds(menuIds []uint) error {
+func (s *MenuService) BatchDeleteMenuByIds(menuIds []uint64) error {
 	return s.menuDao.BatchDeleteMenuByIds(menuIds)
 }
 
 // 根据用户ID获取用户的权限(可访问)菜单列表
-func (s *MenuService) GetUserMenusByUserId(userId uint) ([]*model.Menu, error) {
+func (s *MenuService) GetUserMenusByUserId(userId uint64) ([]*model.Menu, error) {
 	userDao := dao.NewUserDao()
 	roleDao := dao.RoleDao{}
 	user, err := userDao.GetUserWithRoles(userId)
@@ -59,9 +59,9 @@ func (s *MenuService) GetUserMenusByUserId(userId uint) ([]*model.Menu, error) {
 
 	allRoleMenus := make([]*model.Menu, 0)
 	for _, role := range user.Roles {
-		//userRole, err := userDao.GetRoleWithMenus(role.Id)
-		userRole, err := roleDao.GetRoleWithMenus(role.Id)
-		//userRole, err := s.menuDao.GetRoleWithMenus(role.Id)
+		//userRole, err := userDao.GetRoleWithMenus(role.ID)
+		userRole, err := roleDao.GetRoleWithMenus(role.ID)
+		//userRole, err := s.menuDao.GetRoleWithMenus(role.ID)
 		if err != nil {
 			return nil, err
 		}
@@ -70,13 +70,13 @@ func (s *MenuService) GetUserMenusByUserId(userId uint) ([]*model.Menu, error) {
 
 	allRoleMenusId := make([]int, 0)
 	for _, menu := range allRoleMenus {
-		allRoleMenusId = append(allRoleMenusId, int(menu.Id))
+		allRoleMenusId = append(allRoleMenusId, int(menu.ID))
 	}
 	allRoleMenusIdUniq := funk.UniqInt(allRoleMenusId)
 	allRoleMenusUniq := make([]*model.Menu, 0)
 	for _, id := range allRoleMenusIdUniq {
 		for _, menu := range allRoleMenus {
-			if id == int(menu.Id) {
+			if id == int(menu.ID) {
 				allRoleMenusUniq = append(allRoleMenusUniq, menu)
 				break
 			}
@@ -94,7 +94,7 @@ func (s *MenuService) GetUserMenusByUserId(userId uint) ([]*model.Menu, error) {
 }
 
 // 根据用户ID获取用户的权限(可访问)菜单树
-func (s *MenuService) GetUserMenuTreeByUserId(userId uint) ([]*model.Menu, error) {
+func (s *MenuService) GetUserMenuTreeByUserId(userId uint64) ([]*model.Menu, error) {
 	menus, err := s.GetUserMenusByUserId(userId)
 	if err != nil {
 		return nil, err
@@ -102,11 +102,11 @@ func (s *MenuService) GetUserMenuTreeByUserId(userId uint) ([]*model.Menu, error
 	return GenMenuTree(0, menus), nil
 }
 
-func GenMenuTree(parentId uint, menus []*model.Menu) []*model.Menu {
+func GenMenuTree(parentId uint64, menus []*model.Menu) []*model.Menu {
 	tree := make([]*model.Menu, 0)
 	for _, m := range menus {
-		if *m.ParentId == parentId {
-			children := GenMenuTree(m.Id, menus)
+		if m.ParentID == parentId {
+			children := GenMenuTree(m.ID, menus)
 			m.Children = children
 			tree = append(tree, m)
 		}
@@ -123,17 +123,17 @@ func (s *MenuService) InsertAppMenuToAdmin(menu model.Menu) {
 	}
 	roles := []model.Role{
 		{
-			Model:   model.Model{Id: 1},
+			ID:      1,
 			Name:    "管理员",
 			Keyword: "admin",
-			Desc:    new(string),
+			Des:     "",
 			Sort:    1,
 			Status:  1,
 			Creator: "系统",
 		},
 	}
-	appMenuId := uint(8)
-	menu.ParentId = &appMenuId
+	//appMenuId := uint64(8)
+	menu.ParentID = 8
 	menu.Roles = roles
 	database.Create(&menu)
 }

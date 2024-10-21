@@ -127,8 +127,8 @@ const tableColumn = [
 
 // 查询参数
 const params = ref<TMenuQuery>({
-  PageNum: 1,
-  PageSize: 10,
+  page_num: 1,
+  page_size: 10,
 });
 // 表格数据
 const tableData = ref<TMenuTableData[]>([]);
@@ -145,7 +145,7 @@ const getTableData = () => {
   loading.value = true;
   getMenuTree()
     .then((res) => {
-      const { Data } = res;
+      const { data: Data } = res;
       tableData.value = Data;
       treeselectData.value = [{ Id: 0, Title: "顶级类目", Children: Data }];
       total.value = Data.Total;
@@ -158,8 +158,8 @@ const getTableData = () => {
 //搜索
 const onSearch = (form: TMenuQuery) => {
   params.value = form;
-  params.value.PageNum = 1;
-  params.value.PageSize = 10;
+  params.value.page_num = 1;
+  params.value.page_size = 10;
   getTableData();
 };
 
@@ -191,7 +191,7 @@ const onDelete = () => {
       })
         .then((res) => {
           getTableData();
-          ElMessage.success(res.Message);
+          ElMessage.success(res.message);
         })
         .finally(() => {
           loading.value = false;
@@ -216,7 +216,7 @@ const singleDelete = (Id: number) => {
     .then((res) => {
       getTableData();
 
-      ElMessage.success(res.Message);
+      ElMessage.success(res.message);
     })
     .finally(() => (loading.value = false));
 };

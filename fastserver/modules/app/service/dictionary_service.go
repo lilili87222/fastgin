@@ -19,7 +19,7 @@ func (s *DictionaryService) Create(entity *model.Dictionary) error {
 	return database.Create(entity)
 }
 
-func (s *DictionaryService) GetByID(id uint) (model.Dictionary, error) {
+func (s *DictionaryService) GetByID(id uint64) (model.Dictionary, error) {
 	return database.GetById[model.Dictionary](id)
 }
 
@@ -27,13 +27,13 @@ func (s *DictionaryService) Update(entity *model.Dictionary) error {
 	return database.Update(entity)
 }
 
-func (s *DictionaryService) Delete(id uint) error {
+func (s *DictionaryService) Delete(id uint64) error {
 	return database.Delete[model.Dictionary](id)
 }
 
 func (s *DictionaryService) Search(req *httpz.SearchRequest) ([]model.Dictionary, int64, error) {
 	return database.SearchTable[model.Dictionary](req)
 }
-func (s *DictionaryService) DeleteBatch(ids []uint) error {
+func (s *DictionaryService) DeleteBatch(ids []uint64) error {
 	return database.DeleteByIds[model.Dictionary](ids)
 }

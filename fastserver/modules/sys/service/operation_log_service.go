@@ -12,7 +12,7 @@ type OperationLogService struct {
 func NewLogService() *OperationLogService {
 	return &OperationLogService{}
 }
-func (s *OperationLogService) BatchDelete(ids []uint) error {
+func (s *OperationLogService) BatchDelete(ids []uint64) error {
 	return database.DeleteByIds[model.OperationLog](ids)
 }
 func (s *OperationLogService) Search(req *httpz.SearchRequest) ([]model.OperationLog, int64, error) {

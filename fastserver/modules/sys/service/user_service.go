@@ -68,7 +68,7 @@ func (us *UserService) GetCurrentUser(c *gin.Context) (model.User, error) {
 		return cacheUser.(model.User), nil
 	}
 
-	user, err := us.userDao.GetUserWithRoles(u.Id)
+	user, err := us.userDao.GetUserWithRoles(u.ID)
 	if err != nil {
 		userInfoCache.Delete(u.UserName)
 	} else {
@@ -78,7 +78,7 @@ func (us *UserService) GetCurrentUser(c *gin.Context) (model.User, error) {
 }
 
 // 获取当前用户角色排序最小值（最高等级角色）以及当前用户信息
-func (us *UserService) GetCurrentUserMinRoleSort(c *gin.Context) (uint, model.User, error) {
+func (us *UserService) GetCurrentUserMinRoleSort(c *gin.Context) (int32, model.User, error) {
 	ctxUser, err := us.GetCurrentUser(c)
 	if err != nil {
 		return 999, ctxUser, err
@@ -90,11 +90,11 @@ func (us *UserService) GetCurrentUserMinRoleSort(c *gin.Context) (uint, model.Us
 	}
 
 	currentRoleSortMin := slices.Min(currentRoleSorts)
-	return uint(currentRoleSortMin), ctxUser, nil
+	return int32(currentRoleSortMin), ctxUser, nil
 }
 
 // 获取单个用户
-func (us *UserService) GetUserById(id uint) (model.User, error) {
+func (us *UserService) GetUserById(id uint64) (model.User, error) {
 	return us.userDao.GetUserWithRoles(id)
 }
 
@@ -105,9 +105,9 @@ func (us *UserService) GetUsers(req *httpz.SearchRequest) ([]model.User, int64, 
 }
 func (us *UserService) GetUsersWithRoleIds(req *httpz.SearchRequest) ([]dto.UsersDto, int64, error) {
 	userList, i, err := us.GetUsers(req)
-	var ids []uint
+	var ids []uint64
 	for _, user := range userList {
-		ids = append(ids, user.Id)
+		ids = append(ids, user.ID)
 	}
 	userRoleList, e := us.userDao.GetUsersWithRoles(ids)
 	if e != nil {
@@ -156,7 +156,7 @@ func (us *UserService) UpdateUser(user *model.User) error {
 }
 
 // 批量删除
-func (us *UserService) BatchDeleteUserByIds(ids []uint) error {
+func (us *UserService) BatchDeleteUserByIds(ids []uint64) error {
 	users, err := us.userDao.GetUsersWithRoles(ids)
 	if err != nil {
 		return err
@@ -172,7 +172,7 @@ func (us *UserService) BatchDeleteUserByIds(ids []uint) error {
 }
 
 // 根据用户ID获取用户角色排序最小值
-func (us *UserService) GetUserMinRoleSortsByIds(ids []uint) ([]int, error) {
+func (us *UserService) GetUserMinRoleSortsByIds(ids []uint64) ([]int, error) {
 	userList, err := us.userDao.GetUsersWithRoles(ids)
 	if err != nil {
 		return nil, err
@@ -199,7 +199,7 @@ func (us *UserService) SetUserInfoCache(username string, user model.User) {
 }
 
 // 根据角色ID更新拥有该角色的用户信息缓存
-func (us *UserService) UpdateUserInfoCacheByRoleId(roleId uint) error {
+func (us *UserService) UpdateUserInfoCacheByRoleId(roleId uint64) error {
 	roleDao := dao.RoleDao{}
 	role, err := roleDao.GetRoleWithUsers(roleId)
 	if err != nil {

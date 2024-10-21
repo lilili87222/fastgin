@@ -68,7 +68,8 @@ func Generate(tc TableConfig) error {
 }
 func GenerateModel(tc TableConfig) {
 	g := gen.NewGenerator(gen.Config{
-		OutPath: filepath.Join(tc.OutDir, "model"),
+		OutPath:          filepath.Join(tc.OutDir, "model"),
+		FieldWithTypeTag: true,
 	})
 	g.UseDB(DB)
 	g.GenerateModelAs(tc.PrefixTableName, tc.ModelName)

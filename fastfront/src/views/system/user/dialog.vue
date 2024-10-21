@@ -40,9 +40,9 @@
             >
               <el-option
                 v-for="item in roleList"
-                :key="item.Id"
-                :label="item.Name"
-                :value="item.Id"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
               />
             </el-select>
           </template>
@@ -137,13 +137,13 @@ const rules = reactive<FormRules<TUserFormData>>({
 
 const formData = ref<TUserFormData>({
   UserName: "",
-  Password: "",
-  NickName: "",
-  Status: 1,
-  Mobile: "",
-  Avatar: "",
-  Introduction: "",
-  RoleIds: "",
+  password: "",
+  nick_name: "",
+  status: 1,
+  mobile: "",
+  avatar: "",
+  des: "",
+  role_ids: "",
 });
 
 const dialogType = ref("");
@@ -192,13 +192,13 @@ const showPwd = () => {
 const drawerClose = () => {
   formData.value = {
     UserName: "",
-    Password: "",
-    NickName: "",
-    Status: 1,
-    Mobile: "",
-    Avatar: "",
-    Introduction: "",
-    RoleIds: "",
+    password: "",
+    nick_name: "",
+    status: 1,
+    mobile: "",
+    avatar: "",
+    des: "",
+    role_ids: "",
   };
   formRef.value.resetFields();
 };
@@ -214,7 +214,7 @@ const submitForm = () => {
   formRef.value.validate((valid: boolean) => {
     if (valid) {
       let data = { ...formData.value };
-      if (formData.value.Password !== "") {
+      if (formData.value.password !== "") {
         // // 密码RSA加密处理
         // const encryptor = new JSEncrypt();
         // // 设置公钥
@@ -226,15 +226,15 @@ const submitForm = () => {
       }
       if (dialogType.value === "create") {
         createUser(data).then((res) => {
-          ElMessage.success(res.Message);
+          ElMessage.success(res.message);
           formRef.value.resetFields();
           emits("getUserData");
           drawer.value = false;
         });
       } else {
-        if (!data.Id) return;
-        updateUserById(data.Id, data).then((res) => {
-          ElMessage.success(res.Message);
+        if (!data.id) return;
+        updateUserById(data.id, data).then((res) => {
+          ElMessage.success(res.message);
           formRef.value.resetFields();
           emits("getUserData");
           drawer.value = false;

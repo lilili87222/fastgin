@@ -3,7 +3,7 @@ package dto
 import "fastgin/modules/sys/model"
 
 type ApiTreeDto struct {
-	Id       int          `json:"Id"`
+	Id       int          `json:"ID"`
 	Desc     string       `json:"Desc"`
 	Category string       `json:"Category"`
 	Children []*model.Api `json:"Children"`

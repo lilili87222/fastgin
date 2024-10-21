@@ -75,8 +75,8 @@
       <Pagination
         v-show="total > 0"
         :total="total"
-        v-model:page="params.PageNum"
-        v-model:limit="params.PageSize"
+        v-model:page="params.page_num"
+        v-model:limit="params.page_size"
         @pagination="onPaginaion"
       ></Pagination>
       <Dialog ref="DrawerRef" @getRoleData="getRoleData"></Dialog>
@@ -112,8 +112,8 @@ const searchColumn = [
 
 // 查询参数
 const params = ref<TRoleQuery>({
-  PageNum: 1,
-  PageSize: 10,
+  page_num: 1,
+  page_size: 10,
 });
 
 // 表格数据
@@ -130,7 +130,7 @@ const getTableData = () => {
   loading.value = true;
   getRoles(params.value)
     .then((res) => {
-      const { Data } = res;
+      const { data: Data } = res;
       tableData.value = Data.Data;
       total.value = Data.Total;
     })
@@ -159,8 +159,8 @@ const openPermission = (row: TRoleTableData) => {
 //清空
 const onClear = (form: TRoleQuery) => {
   params.value = form;
-  params.value.PageNum = 1;
-  params.value.PageSize = 10;
+  params.value.page_num = 1;
+  params.value.page_size = 10;
   getTableData();
 };
 
@@ -184,8 +184,8 @@ const searchAction = computed(() => [
 
 //分页
 const onPaginaion = (val: any) => {
-  params.value.PageNum = val.page;
-  params.value.PageSize = val.limit;
+  params.value.page_num = val.page;
+  params.value.page_size = val.limit;
   getTableData();
 };
 
@@ -201,8 +201,8 @@ const tableColumn = [
 //搜索
 const onSearch = (form: TRoleQuery) => {
   params.value = form;
-  params.value.PageNum = 1;
-  params.value.PageSize = 10;
+  params.value.page_num = 1;
+  params.value.page_size = 10;
   getTableData();
 };
 
@@ -224,7 +224,7 @@ const onDelete = () => {
       })
         .then((res) => {
           getTableData();
-          ElMessage.success(res.Message);
+          ElMessage.success(res.message);
         })
         .finally(() => {
           loading.value = false;
@@ -248,7 +248,7 @@ const singleDelete = (Id: number) => {
   })
     .then((res) => {
       getTableData();
-      ElMessage.success(res.Message);
+      ElMessage.success(res.message);
     })
     .finally(() => (loading.value = false));
 };

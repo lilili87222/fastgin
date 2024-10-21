@@ -6,9 +6,9 @@ import (
 )
 
 type ResponseBody struct {
-	Code    int    `json:"Code"`
-	Message string `json:"Message"`
-	Data    any    `json:"Data"`
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    any    `json:"data"`
 }
 
 // 返回前端

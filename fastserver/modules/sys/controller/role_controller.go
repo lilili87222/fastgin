@@ -89,7 +89,7 @@ func (rc *RoleController) CreateRole(c *gin.Context) {
 	role := model.Role{
 		Name:    req.Name,
 		Keyword: req.Keyword,
-		Desc:    &req.Desc,
+		Des:     req.Des,
 		Status:  req.Status,
 		Sort:    req.Sort,
 		Creator: ctxUser.UserName,
@@ -102,14 +102,14 @@ func (rc *RoleController) CreateRole(c *gin.Context) {
 	httpz.Success(c, nil)
 }
 
-// Update updates an existing role by Id
+// Update updates an existing role by ID
 // @Summary Update role
-// @Description Update an existing role by Id
+// @Description Update an existing role by ID
 // @Tags Role
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param roleId path int true "Role Id"
+// @Param roleId path int true "Role ID"
 // @Param role body dto.CreateRoleRequest true "Update role request"
 // @Success 200 {object} httpz.ResponseBody
 // @Failure 400 {object} httpz.ResponseBody
@@ -136,7 +136,7 @@ func (rc *RoleController) Update(c *gin.Context) {
 		httpz.ServerError(c, err.Error())
 		return
 	}
-	roles, err := rc.roleService.GetRolesByIds([]uint{uint(roleId)})
+	roles, err := rc.roleService.GetRolesByIds([]uint64{uint64(roleId)})
 	if err != nil {
 		httpz.ServerError(c, err.Error())
 		return
@@ -156,12 +156,12 @@ func (rc *RoleController) Update(c *gin.Context) {
 	role := model.Role{
 		Name:    req.Name,
 		Keyword: req.Keyword,
-		Desc:    &req.Desc,
+		Des:     req.Des,
 		Status:  req.Status,
 		Sort:    req.Sort,
 		Creator: ctxUser.UserName,
 	}
-	role.Id = uint(roleId)
+	role.ID = uint64(roleId)
 	err = rc.roleService.UpdateRoleById(&role)
 	if err != nil {
 		httpz.ServerError(c, "更新角色失败: "+err.Error())
@@ -204,14 +204,14 @@ func (rc *RoleController) Update(c *gin.Context) {
 	httpz.Success(c, nil)
 }
 
-// GetRoleMenusById retrieves the menus for a role by Id
-// @Summary Get role menus by Id
-// @Description Get the menus for a role by Id
+// GetRoleMenusById retrieves the menus for a role by ID
+// @Summary Get role menus by ID
+// @Description Get the menus for a role by ID
 // @Tags Role
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param roleId path int true "Role Id"
+// @Param roleId path int true "Role ID"
 // @Success 200 {object} httpz.ResponseBody
 // @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/role/menus/{roleId} [get]
@@ -221,7 +221,7 @@ func (rc *RoleController) GetRoleMenusById(c *gin.Context) {
 		httpz.BadRequest(c, "角色ID不正确")
 		return
 	}
-	menus, err := rc.roleService.GetRoleMenusById(uint(roleId))
+	menus, err := rc.roleService.GetRoleMenusById(uint64(roleId))
 	if err != nil {
 		httpz.ServerError(c, "获取角色的权限菜单失败: "+err.Error())
 		return
@@ -229,14 +229,14 @@ func (rc *RoleController) GetRoleMenusById(c *gin.Context) {
 	httpz.Success(c, menus)
 }
 
-// UpdateRoleMenusById updates the menus for a role by Id
-// @Summary Update role menus by Id
-// @Description Update the menus for a role by Id
+// UpdateRoleMenusById updates the menus for a role by ID
+// @Summary Update role menus by ID
+// @Description Update the menus for a role by ID
 // @Tags Role
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param roleId path int true "Role Id"
+// @Param roleId path int true "Role ID"
 // @Param menus body httpz.IdListRequest true "Update role menus request"
 // @Success 200 {object} httpz.ResponseBody
 // @Failure 400 {object} httpz.ResponseBody
@@ -261,7 +261,7 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 		return
 	}
 	// 根据path中的角色Id获取该角色信息
-	roles, err := rc.roleService.GetRolesByIds([]uint{uint(roleId)})
+	roles, err := rc.roleService.GetRolesByIds([]uint64{uint64(roleId)})
 	if err != nil {
 		httpz.ServerError(c, err.Error())
 		return
@@ -289,16 +289,16 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 
 	// 获取当前用户所拥有的权限菜单
 	mr := service.NewMenuService()
-	ctxUserMenus, err := mr.GetUserMenusByUserId(ctxUser.Id)
+	ctxUserMenus, err := mr.GetUserMenusByUserId(ctxUser.ID)
 	if err != nil {
 		httpz.ServerError(c, "获取当前用户的可访问菜单列表失败: "+err.Error())
 		return
 	}
 
 	// 获取当前用户所拥有的权限菜单Id
-	ctxUserMenusIds := make([]uint, 0)
+	ctxUserMenusIds := make([]uint64, 0)
 	for _, menu := range ctxUserMenus {
-		ctxUserMenusIds = append(ctxUserMenusIds, menu.Id)
+		ctxUserMenusIds = append(ctxUserMenusIds, menu.ID)
 	}
 
 	// 前端传来最新的MenuIds集合
@@ -318,7 +318,7 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 
 		for _, id := range menuIds {
 			for _, menu := range ctxUserMenus {
-				if id == menu.Id {
+				if id == menu.ID {
 					reqMenus = append(reqMenus, menu)
 					break
 				}
@@ -334,7 +334,7 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 		}
 		for _, menuId := range menuIds {
 			for _, menu := range menus {
-				if menuId == menu.Id {
+				if menuId == menu.ID {
 					reqMenus = append(reqMenus, menu)
 				}
 			}
@@ -353,14 +353,14 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 
 }
 
-// GetRoleApisById retrieves the APIs for a role by Id
-// @Summary Get role APIs by Id
-// @Description Get the APIs for a role by Id
+// GetRoleApisById retrieves the APIs for a role by ID
+// @Summary Get role APIs by ID
+// @Description Get the APIs for a role by ID
 // @Tags Role
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param roleId path int true "Role Id"
+// @Param roleId path int true "Role ID"
 // @Success 200 {object} httpz.ResponseBody
 // @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/role/apis/{roleId} [get]
@@ -370,7 +370,7 @@ func (rc *RoleController) GetRoleApisById(c *gin.Context) {
 		httpz.BadRequest(c, "角色ID不正确")
 		return
 	}
-	roles, err := rc.roleService.GetRolesByIds([]uint{uint(roleId)})
+	roles, err := rc.roleService.GetRolesByIds([]uint64{uint64(roleId)})
 	if err != nil {
 		httpz.ServerError(c, err.Error())
 		return
@@ -388,14 +388,14 @@ func (rc *RoleController) GetRoleApisById(c *gin.Context) {
 	httpz.Success(c, apis)
 }
 
-// UpdateRoleApisById updates the APIs for a role by Id
-// @Summary Update role APIs by Id
-// @Description Update the APIs for a role by Id
+// UpdateRoleApisById updates the APIs for a role by ID
+// @Summary Update role APIs by ID
+// @Description Update the APIs for a role by ID
 // @Tags Role
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param roleId path int true "Role Id"
+// @Param roleId path int true "Role ID"
 // @Param apis body httpz.IdListRequest true "Update role APIs request"
 // @Success 200 {object} httpz.ResponseBody
 // @Failure 400 {object} httpz.ResponseBody
@@ -416,7 +416,7 @@ func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
 		httpz.BadRequest(c, "角色ID不正确")
 		return
 	}
-	roles, err := rc.roleService.GetRolesByIds([]uint{uint(roleId)})
+	roles, err := rc.roleService.GetRolesByIds([]uint64{uint64(roleId)})
 	if err != nil {
 		httpz.ServerError(c, err.Error())
 		return

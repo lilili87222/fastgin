@@ -68,8 +68,8 @@
       <Pagination
         v-show="total > 0"
         :total="total"
-        v-model:page="params.PageNum"
-        v-model:limit="params.PageSize"
+        v-model:page="params.page_num"
+        v-model:limit="params.page_size"
         @pagination="onPaginaion"
       ></Pagination>
       <Dialog ref="DrawerRef" @getApiData="getApiData"></Dialog>
@@ -116,8 +116,8 @@ const tableColumn = [
 
 // 查询参数
 const params = ref<TApiQuery>({
-  PageNum: 1,
-  PageSize: 10,
+  page_num: 1,
+  page_size: 10,
 });
 // 表格数据
 const tableData = ref<TApiTableData[]>([]);
@@ -133,8 +133,8 @@ const getTableData = () => {
   loading.value = true;
   getApis(params.value)
     .then((res) => {
-      tableData.value = res.Data.Data;
-      total.value = res.Data.Total;
+      tableData.value = res.data.Data;
+      total.value = res.data.Total;
     })
     .finally(() => {
       loading.value = false;
@@ -154,8 +154,8 @@ const update = (row: TApiTableData) => {
 //清空
 const onClear = (form: TApiQuery) => {
   params.value = form;
-  params.value.PageNum = 1;
-  params.value.PageSize = 10;
+  params.value.page_num = 1;
+  params.value.page_size = 10;
   getTableData();
 };
 
@@ -178,16 +178,16 @@ const searchAction = computed(() => [
 
 //分页
 const onPaginaion = (val: any) => {
-  params.value.PageNum = val.page;
-  params.value.PageSize = val.limit;
+  params.value.page_num = val.page;
+  params.value.page_size = val.limit;
   getTableData();
 };
 
 //搜索
 const onSearch = (form: TApiQuery) => {
   params.value = form;
-  params.value.PageNum = 1;
-  params.value.PageSize = 10;
+  params.value.page_num = 1;
+  params.value.page_size = 10;
   getTableData();
 };
 
@@ -209,7 +209,7 @@ const onDelete = () => {
       })
         .then((res) => {
           getTableData();
-          ElMessage.success(res.Message);
+          ElMessage.success(res.message);
         })
         .finally(() => {
           loading.value = false;
@@ -249,7 +249,7 @@ const singleDelete = (Id) => {
   })
     .then((res) => {
       getTableData();
-      ElMessage.success(res.Message);
+      ElMessage.success(res.message);
     })
     .finally(() => (loading.value = false));
 };

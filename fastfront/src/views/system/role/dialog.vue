@@ -94,11 +94,11 @@ const rules = reactive<FormRules<TRoleFormData>>({
 });
 
 const formData = ref<TRoleFormData>({
-  Name: "",
-  Keyword: "",
-  Status: 1,
-  Sort: 999,
-  Desc: "",
+  name: "",
+  keyword: "",
+  status: 1,
+  sort: 999,
+  des: "",
 });
 
 const fromCol = [
@@ -137,11 +137,11 @@ defineExpose({
 //关闭
 const drawerClose = () => {
   formData.value = {
-    Name: "",
-    Keyword: "",
-    Status: 1,
-    Sort: 999,
-    Desc: "",
+    name: "",
+    keyword: "",
+    status: 1,
+    sort: 999,
+    des: "",
   };
   formRef.value.resetFields();
 };
@@ -158,15 +158,15 @@ const submitForm = () => {
       let data = { ...formData.value };
       if (dialogType.value === "create") {
         createRole(data).then((res) => {
-          ElMessage.success(res.Message);
+          ElMessage.success(res.message);
           formRef.value.resetFields();
           emits("getRoleData");
           drawer.value = false;
         });
       } else {
-        if (!data.Id) return;
-        updateRoleById(data.Id, data).then((res) => {
-          ElMessage.success(res.Message);
+        if (!data.id) return;
+        updateRoleById(data.id, data).then((res) => {
+          ElMessage.success(res.message);
           formRef.value.resetFields();
           emits("getRoleData");
           drawer.value = false;

@@ -118,14 +118,14 @@ func (ac *ApiController) Create(c *gin.Context) {
 	httpz.Success(c, nil)
 }
 
-// Update updates an existing API by Id
+// Update updates an existing API by ID
 // @Summary Update API
-// @Description Update an existing API by Id
+// @Description Update an existing API by ID
 // @Tags API
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param apiId path int true "API Id"
+// @Param apiId path int true "API ID"
 // @Param api body dto.CreateApiRequest true "Update API request"
 // @Success 200 {object} httpz.ResponseBody
 // @Failure 400 {object} httpz.ResponseBody
@@ -165,7 +165,7 @@ func (ac *ApiController) Update(c *gin.Context) {
 		Creator: ctxUser.UserName,
 	}
 	copier.Copy(&api, &req)
-	api.Id = uint(apiId)
+	api.ID = uint64(apiId)
 	err = ac.apiService.UpdateApiById(&api)
 	if err != nil {
 		httpz.ServerError(c, "更新接口失败: "+err.Error())

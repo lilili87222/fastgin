@@ -58,7 +58,7 @@ func (ctrl *DictionaryController) GetByID(c *gin.Context) {
 		httpz.BadRequest(c, "Invalid ID")
 		return
 	}
-	entity, err := ctrl.service.GetByID(uint(id))
+	entity, err := ctrl.service.GetByID(uint64(id))
 	if err != nil {
 		httpz.ServerError(c, err.Error())
 		return
@@ -113,7 +113,7 @@ func (ctrl *DictionaryController) Delete(c *gin.Context) {
 		httpz.BadRequest(c, "Invalid ID")
 		return
 	}
-	if err := ctrl.service.Delete(uint(id)); err != nil {
+	if err := ctrl.service.Delete(uint64(id)); err != nil {
 		httpz.ServerError(c, err.Error())
 		return
 	}

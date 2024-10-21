@@ -1,39 +1,39 @@
 //接口管理 表格数据
 export interface TApiTableData {
-  Id: number;
-  Desc: string;
-  Category: string;
-  Children: Child[];
+  id: number;
+  des: string;
+  category: string;
+  children: Child[];
 }
 
 //接口管理 查询参数
 export interface TApiQuery {
-  Method?: string;
-  Creator?: string;
-  Category?: string;
-  Path?: string;
-  PageNum: number;
-  PageSize: number;
+  method?: string;
+  creator?: string;
+  category?: string;
+  path?: string;
+  page_num: number;
+  page_size: number;
 }
 
 export interface TApiFormData {
-  Id?: number;
-  Method: string;
-  Path: string;
-  Category: string;
-  Desc: string;
+  id?: number;
+  method: string;
+  path: string;
+  category: string;
+  des: string;
 }
 
 export interface Child {
-  Id: number;
-  CreatedAt: Date;
-  UpdatedAt: Date;
-  DeletedAt: null;
-  Method: Method;
-  Path: string;
-  Category: string;
-  Desc: string;
-  Creator: string;
+  id: number;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: null;
+  method: Method;
+  path: string;
+  category: string;
+  des: string;
+  creator: string;
 }
 
 export enum Method {

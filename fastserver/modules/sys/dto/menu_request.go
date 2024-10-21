@@ -15,5 +15,5 @@ type CreateMenuRequest struct {
 	AlwaysShow uint   `json:"AlwaysShow" form:"alwaysShow" validate:"oneof=1 2"`
 	Breadcrumb uint   `json:"Breadcrumb" form:"breadcrumb" validate:"oneof=1 2"`
 	ActiveMenu string `json:"ActiveMenu" form:"activeMenu" validate:"min=0,max=100"`
-	ParentId   uint   `json:"ParentId" form:"parentId"`
+	ParentId   uint64 `json:"ParentId" form:"parentId"`
 }

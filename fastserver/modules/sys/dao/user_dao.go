@@ -17,7 +17,7 @@ func (ur *UserDao) GetUserByUsername(username string) (model.User, error) {
 	return user, err
 }
 
-func (ur *UserDao) GetUserWithRoles(id uint) (model.User, error) {
+func (ur *UserDao) GetUserWithRoles(id uint64) (model.User, error) {
 	return database.GetByIdPreload[model.User](id, "Roles")
 }
 func (ur *UserDao) ChangePwd(username string, hashNewPasswd string) error {
@@ -32,7 +32,7 @@ func (ur *UserDao) UpdateUser(user *model.User) error {
 	return database.DB.Model(user).Association("Roles").Replace(user.Roles)
 }
 
-func (ur *UserDao) BatchDeleteUserByIds(ids []uint) error {
+func (ur *UserDao) BatchDeleteUserByIds(ids []uint64) error {
 	users, e := ur.GetUsersWithRoles(ids)
 	if e != nil {
 		return e
@@ -40,7 +40,7 @@ func (ur *UserDao) BatchDeleteUserByIds(ids []uint) error {
 	return database.DB.Select("Roles").Unscoped().Delete(&users).Error
 }
 
-func (ur *UserDao) GetUsersWithRoles(ids []uint) ([]model.User, error) {
+func (ur *UserDao) GetUsersWithRoles(ids []uint64) ([]model.User, error) {
 	var users []model.User
 	err := database.DB.Where("id IN (?)", ids).Preload("Roles").Find(&users).Error
 	return users, err

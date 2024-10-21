@@ -7,7 +7,6 @@ import (
 	"fastgin/modules/sys/dto"
 	"fastgin/modules/sys/model"
 	"fastgin/modules/sys/service"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/thoas/go-funk"
@@ -40,15 +39,15 @@ func (uc *UserController) GetUserInfo(c *gin.Context) {
 		httpz.ServerError(c, "获取当前用户信息失败: "+err.Error())
 		return
 	}
-	userMap, e := util.StructToMap(user, true, "Id", "UserName", "Mobile", "Avatar", "NickName", "Introduction", "Roles")
-	if e != nil {
-		fmt.Println(e.Error())
-	}
+	//userMap, e := util.StructToMap(user, true, "ID", "UserName", "Mobile", "Avatar", "NickName", "Introduction", "Roles")
+	//if e != nil {
+	//	fmt.Println(e.Error())
+	//}
 	//fmt.Println(util.Struct2Json(userMap))
 	//fmt.Println(util.Struct2Json(user))
 	//userInfoDto := dto.UserInfoDto{}
 	//copier.Copy(&userInfoDto, &user)
-	httpz.Success(c, userMap)
+	httpz.Success(c, user)
 }
 
 // 获取用户列表
@@ -230,7 +229,7 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 	}
 	// 前端传来用户角色排序最小值（最高等级角色）
 	//reqRoleSortMin := uint(funk.MinInt(reqRoleSorts))
-	reqRoleSortMin := uint(slices.Min(reqRoleSorts))
+	reqRoleSortMin := int32(slices.Min(reqRoleSorts))
 
 	// 当前用户的角色排序最小值 需要小于 前端传来的角色排序最小值（用户不能创建比自己等级高的或者相同等级的用户）
 	if currentRoleSortMin >= reqRoleSortMin {
@@ -243,15 +242,15 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 		req.Password = "123456"
 	}
 	user := model.User{
-		UserName:     req.Username,
-		Password:     util.GenPasswd(req.Password),
-		Mobile:       req.Mobile,
-		Avatar:       req.Avatar,
-		NickName:     &req.NickName,
-		Introduction: &req.Introduction,
-		Status:       req.Status,
-		Creator:      ctxUser.UserName,
-		Roles:        roles,
+		UserName: req.Username,
+		Password: util.GenPasswd(req.Password),
+		Mobile:   req.Mobile,
+		Avatar:   req.Avatar,
+		NickName: req.NickName,
+		Des:      req.Introduction,
+		Status:   req.Status,
+		Creator:  ctxUser.UserName,
+		Roles:    roles,
 	}
 
 	err = uc.userService.CreateUser(&user)
@@ -270,7 +269,7 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param userId path int true "User Id"
+// @Param userId path int true "User ID"
 // @Param CreateUserRequest body dto.CreateUserRequest true "Update user request"
 // @Success 200 {object} httpz.ResponseBody
 // @Failure 400 {object} httpz.ResponseBody
@@ -297,7 +296,7 @@ func (uc *UserController) Update(c *gin.Context) {
 	}
 
 	// 根据path中的userId获取用户信息
-	oldUser, err := uc.userService.GetUserById(uint(userId))
+	oldUser, err := uc.userService.GetUserById(uint64(userId))
 	if err != nil {
 		httpz.ServerError(c, "获取需要更新的用户信息失败: "+err.Error())
 		return
@@ -314,10 +313,10 @@ func (uc *UserController) Update(c *gin.Context) {
 	// 获取当前用户角色的排序，和前端传来的角色排序做比较
 	var currentRoleSorts []int
 	// 当前用户角色ID集合
-	var currentRoleIds []uint
+	var currentRoleIds []uint64
 	for _, role := range currentRoles {
 		currentRoleSorts = append(currentRoleSorts, int(role.Sort))
-		currentRoleIds = append(currentRoleIds, role.Id)
+		currentRoleIds = append(currentRoleIds, role.ID)
 	}
 	// 当前用户角色排序最小值（最高等级角色）
 	currentRoleSortMin := slices.Min(currentRoleSorts)
@@ -343,19 +342,20 @@ func (uc *UserController) Update(c *gin.Context) {
 	reqRoleSortMin := slices.Min(reqRoleSorts)
 
 	user := model.User{
-		Model:        oldUser.Model,
-		UserName:     req.Username,
-		Password:     oldUser.Password,
-		Mobile:       req.Mobile,
-		Avatar:       req.Avatar,
-		NickName:     &req.NickName,
-		Introduction: &req.Introduction,
-		Status:       req.Status,
-		Creator:      ctxUser.UserName,
-		Roles:        roles,
+		ID:        oldUser.ID,
+		CreatedAt: oldUser.CreatedAt,
+		UserName:  req.Username,
+		Password:  oldUser.Password,
+		Mobile:    req.Mobile,
+		Avatar:    req.Avatar,
+		NickName:  req.NickName,
+		Des:       req.Introduction,
+		Status:    req.Status,
+		Creator:   ctxUser.UserName,
+		Roles:     roles,
 	}
 	// 判断是更新自己还是更新别人
-	if userId == int(ctxUser.Id) {
+	if userId == int(ctxUser.ID) {
 		// 如果是更新自己
 		// 不能禁用自己
 		if req.Status == 2 {
@@ -382,7 +382,7 @@ func (uc *UserController) Update(c *gin.Context) {
 		// 如果是更新别人
 		// 用户不能更新比自己角色等级高的或者相同等级的用户
 		// 根据path中的userIdID获取用户角色排序最小值
-		minRoleSorts, err := uc.userService.GetUserMinRoleSortsByIds([]uint{uint(userId)})
+		minRoleSorts, err := uc.userService.GetUserMinRoleSortsByIds([]uint64{uint64(userId)})
 		if err != nil || len(minRoleSorts) == 0 {
 			httpz.ServerError(c, "根据用户ID获取用户角色排序最小值失败")
 			return
@@ -466,7 +466,7 @@ func (uc *UserController) BatchDeleteUserByIds(c *gin.Context) {
 	currentRoleSortMin := int(minSort)
 
 	// 不能删除自己
-	if slices.Contains(reqUserIds, ctxUser.Id) {
+	if slices.Contains(reqUserIds, ctxUser.ID) {
 		httpz.ServerError(c, "用户不能删除自己")
 		return
 	}

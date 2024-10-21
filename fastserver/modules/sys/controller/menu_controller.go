@@ -121,14 +121,14 @@ func (mc *MenuController) Create(c *gin.Context) {
 	httpz.Success(c, nil)
 }
 
-// Update updates an existing menu by Id
+// Update updates an existing menu by ID
 // @Summary Update menu
-// @Description Update an existing menu by Id
+// @Description Update an existing menu by ID
 // @Tags Menu
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param menuId path int true "Menu Id"
+// @Param menuId path int true "Menu ID"
 // @Param menu body dto.CreateMenuRequest true "Update menu request"
 // @Success 200 {object} httpz.ResponseBody
 // @Failure 400 {object} httpz.ResponseBody
@@ -177,7 +177,7 @@ func (mc *MenuController) Update(c *gin.Context) {
 		httpz.ServerError(c, "更新菜单失败: "+e.Error())
 		return
 	}
-	menu.Id = uint(menuId)
+	menu.ID = uint64(menuId)
 	err = mc.menuService.UpdateMenuById(&menu)
 	if err != nil {
 		httpz.ServerError(c, "更新菜单失败: "+err.Error())
@@ -211,14 +211,14 @@ func (mc *MenuController) BatchDeleteByIds(c *gin.Context) {
 	httpz.Success(c, nil)
 }
 
-// GetUserMenusByUserId retrieves the accessible menus for a user by user Id
-// @Summary Get user menus by user Id
-// @Description Get the accessible menus for a user by user Id
+// GetUserMenusByUserId retrieves the accessible menus for a user by user ID
+// @Summary Get user menus by user ID
+// @Description Get the accessible menus for a user by user ID
 // @Tags Menu
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param userId path int true "User Id"
+// @Param userId path int true "User ID"
 // @Success 200 {object} httpz.ResponseBody
 // @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/menu/user/{userId} [get]
@@ -228,7 +228,7 @@ func (mc *MenuController) GetUserMenusByUserId(c *gin.Context) {
 		httpz.BadRequest(c, "用户ID不正确")
 		return
 	}
-	menus, err := mc.menuService.GetUserMenusByUserId(uint(userId))
+	menus, err := mc.menuService.GetUserMenusByUserId(uint64(userId))
 	if err != nil {
 		httpz.ServerError(c, "获取用户的可访问菜单列表失败: "+err.Error())
 		return
@@ -237,14 +237,14 @@ func (mc *MenuController) GetUserMenusByUserId(c *gin.Context) {
 	httpz.Success(c, menus)
 }
 
-// GetUserMenuTreeByUserId retrieves the accessible menu tree for a user by user Id
-// @Summary Get user menu tree by user Id
-// @Description Get the accessible menu tree for a user by user Id
+// GetUserMenuTreeByUserId retrieves the accessible menu tree for a user by user ID
+// @Summary Get user menu tree by user ID
+// @Description Get the accessible menu tree for a user by user ID
 // @Tags Menu
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Bearer token"
-// @Param userId path int true "User Id"
+// @Param userId path int true "User ID"
 // @Success 200 {object} httpz.ResponseBody
 // @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/menu/user_tree/{userId} [get]
@@ -254,7 +254,7 @@ func (mc *MenuController) GetUserMenuTreeByUserId(c *gin.Context) {
 		httpz.BadRequest(c, "用户ID不正确")
 		return
 	}
-	menuTree, err := mc.menuService.GetUserMenuTreeByUserId(uint(userId))
+	menuTree, err := mc.menuService.GetUserMenuTreeByUserId(uint64(userId))
 	if err != nil {
 		httpz.ServerError(c, "获取用户的可访问菜单树失败: "+err.Error())
 		return

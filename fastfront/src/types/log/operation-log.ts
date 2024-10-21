@@ -1,6 +1,6 @@
 //日志列表 数据类型
 export type TLogs = {
-  UserName: string;
+  user_name: string;
   Ip: string;
   Path: string;
   Status: number;

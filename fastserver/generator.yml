@@ -1,10 +1,10 @@
 generator:
   create-view: true # 是否生成视图vue,当是否的时候只生成api，model，controller，service，dao
-  tables: ["web_dictionary"] # 要生成的代码的表
+  tables: ["sys_api","sys_casbin_rule","sys_menu","sys_operation_log","sys_role","sys_user"] # 要生成的代码的表
   module-name: "user" # 模块名称
   out-dir: modules/app2 # 保存路径
   run-sql: true # 是否执行sql
-  table-prefix: "web_" # 表前缀
+  table-prefix: "sys_" # 表前缀
   module: "fastgin/modules/app2" # 表前缀
 
 database:

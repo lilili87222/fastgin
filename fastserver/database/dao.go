@@ -8,29 +8,29 @@ import (
 func Create(itemPoint any) error {
 	return DB.Create(itemPoint).Error
 }
-func Delete[T any](id uint) error {
+func Delete[T any](id uint64) error {
 	return DB.Delete(new(T), id).Error
 }
 func Update(api any) error {
 	return DB.Model(api).Save(api).Error
 }
-func GetById[T any](id uint) (T, error) {
+func GetById[T any](id uint64) (T, error) {
 	var item T
 	err := DB.First(&item, id).Error
 	return item, err
 }
 
-func DeleteByIds[T any](ids []uint) error {
+func DeleteByIds[T any](ids []uint64) error {
 	return DB.Where("id IN (?)", ids).Unscoped().Delete(new(T)).Error
 }
 
-func GetByIds[T any](ids []uint) ([]T, error) {
+func GetByIds[T any](ids []uint64) ([]T, error) {
 	var apis []T
 	err := DB.Where("id IN (?)", ids).Find(&apis).Error
 	return apis, err
 }
 
-func GetByIdPreload[T any](id uint, preloads ...string) (T, error) {
+func GetByIdPreload[T any](id uint64, preloads ...string) (T, error) {
 	var item T
 	db := DB
 	for _, preload := range preloads {

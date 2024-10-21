@@ -110,20 +110,20 @@ defineExpose({
 });
 
 const formData = ref<TApiFormData>({
-  Path: "",
-  Category: "",
-  Method: "",
-  Desc: "",
+  path: "",
+  category: "",
+  method: "",
+  des: "",
 });
 
 const formRef = ref();
 //关闭
 const drawerClose = () => {
   formData.value = {
-    Path: "",
-    Category: "",
-    Method: "",
-    Desc: "",
+    path: "",
+    category: "",
+    method: "",
+    des: "",
   };
   formRef.value.resetFields();
 };
@@ -139,15 +139,15 @@ const submitForm = () => {
       let data = { ...formData.value };
       if (dialogType.value === "create") {
         createApi(data).then((res) => {
-          ElMessage.success(res.Message);
+          ElMessage.success(res.message);
           formRef.value.resetFields();
           emits("getApiData");
           drawer.value = false;
         });
       } else {
-        if (!data.Id) return;
-        updateApiById(data.Id, data).then((res) => {
-          ElMessage.success(res.Message);
+        if (!data.id) return;
+        updateApiById(data.id, data).then((res) => {
+          ElMessage.success(res.message);
           formRef.value.resetFields();
           emits("getApiData");
           drawer.value = false;

@@ -68,7 +68,7 @@ const apiTreeLoading = ref(false);
 const getApiData = () => {
   apiTreeLoading.value = true;
   getApiTree().then((res) => {
-    apiData.value = res.Data;
+    apiData.value = res.data;
     apiTreeLoading.value = false;
   });
 };
@@ -79,7 +79,7 @@ const menuTreeLoading = ref(false);
 const getMenuData = () => {
   menuTreeLoading.value = true;
   getMenuTree().then((res) => {
-    menuData.value = res.Data;
+    menuData.value = res.data;
     menuTreeLoading.value = false;
   });
 };
@@ -91,7 +91,7 @@ const defaultCheckedRoleApi = ref<number[]>([]);
 //获取当前角色拥有的菜单和接口
 const getTree = () => {
   getRoleMenusById(roleId.value).then((res) => {
-    const menus = res.Data;
+    const menus = res.data;
     const menuIds: number[] = [];
     menus.forEach((x: { Id: any }) => {
       menuIds.push(x.Id);
@@ -100,7 +100,7 @@ const getTree = () => {
     roleMenuTree.value.setCheckedKeys(defaultCheckedRoleMenu.value);
   });
   getRoleApisById(roleId.value).then((res) => {
-    const apis = res.Data;
+    const apis = res.data;
     const apiIds: number[] = [];
     apis.forEach((x: { Id: any }) => {
       apiIds.push(x.Id);
@@ -113,7 +113,7 @@ const getTree = () => {
 const roleId = ref(0);
 //打开
 const openDrawer = (row: TRoleFormData) => {
-  roleId.value = row.Id || 0;
+  roleId.value = row.id || 0;
   getTree();
   getMenuData();
   getApiData();
@@ -137,10 +137,10 @@ const submitForm = async () => {
   menuIds = [...new Set(menuIds)];
   const apiIds = roleApiTree.value.getCheckedKeys(true);
   await updateRoleMenusById(roleId.value, { menuIds }).then((res) => {
-    ElMessage.success(res.Message);
+    ElMessage.success(res.message);
   });
   await updateRoleApisById(roleId.value, { apiIds }).then((res) => {
-    ElMessage.success(res.Message);
+    ElMessage.success(res.message);
   });
   emits("getRoleData");
   drawer.value = false;
