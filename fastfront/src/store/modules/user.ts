@@ -35,9 +35,9 @@ export default defineStore({
     login(userInfo): Promise<void> {
       const { username, password } = userInfo;
       return new Promise((resolve, reject) => {
-        apiLogin({ username: username.trim(), password: password })
+        apiLogin({ user_name: username.trim(), password: password })
           .then((response) => {
-            const { Data } = response;
+            const { data: Data } = response;
             this.token = Data.Token;
             setToken(Data.Token);
             resolve();
@@ -53,7 +53,7 @@ export default defineStore({
       return new Promise((resolve, reject) => {
         apiGetInfo(this.token)
           .then((response) => {
-            const { Data } = response;
+            const { data: Data } = response;
 
             if (!Data) {
               reject("Verification failed, please Login again.");

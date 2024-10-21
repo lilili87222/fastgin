@@ -40,7 +40,7 @@ func (s *ApiService) GetApiTree() ([]*dto.ApiTreeDto, error) {
 	for i, category := range categoryUniq {
 		apiTree[i] = &dto.ApiTreeDto{
 			Id:       -i,
-			Desc:     category,
+			Des:      category,
 			Category: category,
 			Children: nil,
 		}

@@ -126,7 +126,7 @@ const getTableData = () => {
   loading.value = true;
   getOperationLogs(params.value)
     .then((res) => {
-      const { Data } = res;
+      const { data: Data } = res;
       tableData.value = Data.Data;
       total.value = Data.Total;
     })
@@ -189,7 +189,7 @@ const onDelete = () => {
       })
         .then((res) => {
           getTableData();
-          ElMessage.success(res.Message);
+          ElMessage.success(res.message);
         })
         .finally(() => {
           loading.value = false;
@@ -238,7 +238,7 @@ const singleDelete = (Id: number) => {
   })
     .then((res) => {
       getTableData();
-      ElMessage.success(res.Message);
+      ElMessage.success(res.message);
     })
     .finally(() => (loading.value = false));
 };

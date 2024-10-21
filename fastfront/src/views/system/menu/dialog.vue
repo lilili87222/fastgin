@@ -218,14 +218,14 @@ const submitForm = () => {
 
       if (dialogType.value === "create") {
         createRole(data).then((res) => {
-          ElMessage.success(res.Message);
+          ElMessage.success(res.message);
           formRef.value.resetFields();
           emits("getMenuData");
           drawer.value = false;
         });
       } else {
         updateRoleById(data.Id, data).then((res) => {
-          ElMessage.success(res.Message);
+          ElMessage.success(res.message);
           formRef.value.resetFields();
           emits("getMenuData");
           drawer.value = false;

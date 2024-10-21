@@ -24,8 +24,8 @@ type Role struct {
 	Status    uint           `gorm:"column:status;type:tinyint(1);default:1;comment:'1正常, 2禁用'" json:"status"`                                          // '1正常, 2禁用'
 	Sort      int32          `gorm:"column:sort;type:int(3);default:999;comment:'角色排序(排序越大权限越低, 不能查看比自己序号小的角色, 不能编辑同序号用户权限, 排序为1表示超级管理员)'" json:"sort"` // '角色排序(排序越大权限越低, 不能查看比自己序号小的角色, 不能编辑同序号用户权限, 排序为1表示超级管理员)'
 	Creator   string         `gorm:"column:creator;type:varchar(20)" json:"creator"`
-	Users     []*User        `gorm:"many2many:sys_user_role" `
-	Menus     []*Menu        `gorm:"many2many:sys_role_menu;" ` // 角色菜单多对多关系
+	Users     []*User        `gorm:"many2many:sys_user_role" json:"users"`
+	Menus     []*Menu        `gorm:"many2many:sys_role_menu;" json:"menus" ` // 角色菜单多对多关系
 }
 
 // TableName Role's table name

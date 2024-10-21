@@ -195,7 +195,7 @@ const diskPercent = ref(0);
 const ramPercent = ref(0);
 const fetchData = () => {
   getSystemInfo().then((res) => {
-    const { Data } = res;
+    const { data: Data } = res;
     systemInfo.cpu = Data.cpu;
     systemInfo.memory = Data.mem;
     ramPercent.value = Number(Data.mem.used_percent.toFixed(2));
@@ -234,14 +234,14 @@ const copyToClipboard = async (text: any) => {
 //重启
 const onRestart = () => {
   restartServer().then((res) => {
-    ElMessage.success(res.Message || "重启成功");
+    ElMessage.success(res.message || "重启成功");
   });
 };
 
 //停止
 const onStop = () => {
   stopServer().then((res) => {
-    ElMessage.success(res.Message || "停止成功");
+    ElMessage.success(res.message || "停止成功");
   });
 };
 </script>

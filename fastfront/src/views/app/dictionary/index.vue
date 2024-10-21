@@ -126,8 +126,8 @@ const getTableData = () => {
   loading.value = true;
   getDictionary(params.value)
     .then((res) => {
-      tableData.value = res.Data.Data;
-      total.value = res.Data.Total;
+      tableData.value = res.data.Data;
+      total.value = res.data.Total;
     })
     .finally(() => {
       loading.value = false;
@@ -202,7 +202,7 @@ const onDelete = () => {
       })
         .then((res) => {
           getTableData();
-          ElMessage.success(res.Message);
+          ElMessage.success(res.message);
         })
         .finally(() => {
           loading.value = false;
@@ -224,7 +224,7 @@ const singleDelete = (Id) => {
   batchDeleteDictionaryById(Id)
     .then((res) => {
       getTableData();
-      ElMessage.success(res.Message);
+      ElMessage.success(res.message);
     })
     .finally(() => (loading.value = false));
 };

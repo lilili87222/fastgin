@@ -105,7 +105,7 @@ func (ac *ApiController) Create(c *gin.Context) {
 		//Method:   req.Method,
 		//Path:     req.Path,
 		//Category: req.Category,
-		//Desc:     req.Desc,
+		//Des:     req.Des,
 		Creator: ctxUser.UserName,
 	}
 	copier.Copy(&api, &req)
@@ -135,7 +135,7 @@ func (ac *ApiController) Update(c *gin.Context) {
 	//	Method   string `json:"Method" form:"Method" validate:"min=1,max=20"`
 	//	Path     string `json:"Path" form:"Path" validate:"min=1,max=100"`
 	//	Category string `json:"Category" form:"Category" validate:"min=1,max=50"`
-	//	Desc     string `json:"Desc" form:"Desc" validate:"min=0,max=100"`
+	//	Des     string `json:"Des" form:"Des" validate:"min=0,max=100"`
 	//}
 	var req dto.CreateApiRequest
 	if err := c.ShouldBind(&req); err != nil {
@@ -161,7 +161,7 @@ func (ac *ApiController) Update(c *gin.Context) {
 		//Method:   req.Method,
 		//Path:     req.Path,
 		//Category: req.Category,
-		//Desc:     req.Desc,
+		//Des:     req.Des,
 		Creator: ctxUser.UserName,
 	}
 	copier.Copy(&api, &req)

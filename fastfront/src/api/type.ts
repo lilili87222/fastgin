@@ -1,8 +1,9 @@
 import request from "@/utils/request";
 
 export interface ApiResponse<T> {
-  Data: T | null; // 数据可以是泛型 T 或 null
-  Message: string;
+  data: T | null; // 数据可以是泛型 T 或 null
+  message: string;
+  code:number
 }
 
 //封装请求 返回指定数据结构

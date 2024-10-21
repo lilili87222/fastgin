@@ -84,7 +84,7 @@ const openDrawer = (type: string, Id?: number) => {
   dialogType.value = type;
   if (type === "update" && Id) {
     getDictionaryDetail(Id).then((res) => {
-      formData.value = res.Data;
+      formData.value = res.data;
     });
   }
   drawer.value = true;
@@ -120,7 +120,7 @@ const submitForm = () => {
       let data = { ...formData.value };
       if (dialogType.value === "create") {
         createDictionary(data).then((res) => {
-          ElMessage.success(res.Message);
+          ElMessage.success(res.message);
           formRef.value.resetFields();
           emits("getDictData");
           drawer.value = false;
@@ -128,7 +128,7 @@ const submitForm = () => {
       } else {
         if (!data.ID) return;
         updateDictionaryById(data.ID, data).then((res) => {
-          ElMessage.success(res.Message);
+          ElMessage.success(res.message);
           formRef.value.resetFields();
           emits("getDictData");
           drawer.value = false;

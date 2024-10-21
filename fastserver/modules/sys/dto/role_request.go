@@ -2,20 +2,20 @@ package dto
 
 // 新增角色结构体
 type CreateRoleRequest struct {
-	Name    string `json:"Name" form:"Name" validate:"required,min=1,max=20"`
-	Keyword string `json:"Keyword" form:"Keyword" validate:"required,min=1,max=20"`
-	Des     string `json:"Desc" form:"Desc" validate:"min=0,max=100"`
-	Status  uint   `json:"Status" form:"Status" validate:"oneof=1 2"`
-	Sort    int32  `json:"Sort" form:"Sort" validate:"gte=1,lte=999"`
+	Name    string `json:"name" form:"name" validate:"required,min=1,max=20"`
+	Keyword string `json:"keyword" form:"keyword" validate:"required,min=1,max=20"`
+	Des     string `json:"des" form:"des" validate:"min=0,max=100"`
+	Status  uint   `json:"status" form:"status" validate:"oneof=1 2"`
+	Sort    int32  `json:"sort" form:"sort" validate:"gte=1,lte=999"`
 }
 
 // 获取用户角色结构体
 type RoleListRequest struct {
-	Name     string `json:"Name" form:"Name"`
-	Keyword  string `json:"Keyword" form:"Keyword"`
-	Status   uint   `json:"Status" form:"Status"`
-	PageNum  uint   `json:"PageNum" form:"PageNum"`
-	PageSize uint   `json:"PageSize" form:"PageSize"`
+	Name     string `json:"name" form:"name"`
+	Keyword  string `json:"keyword" form:"keyword"`
+	Status   uint   `json:"status" form:"status"`
+	PageNum  uint   `json:"page_num" form:"page_num"`
+	PageSize uint   `json:"page_size" form:"page_size"`
 }
 
 // 批量删除角色结构体

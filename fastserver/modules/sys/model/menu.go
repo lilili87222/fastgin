@@ -33,8 +33,8 @@ type Menu struct {
 	ActiveMenu string         `gorm:"column:active_menu;type:varchar(100);comment:'在其它路由时，想在侧边栏高亮的路由'" json:"active_menu"`                   // '在其它路由时，想在侧边栏高亮的路由'
 	ParentID   uint64         `gorm:"column:parent_id;type:bigint(20) unsigned;comment:'父菜单编号(编号为0时表示根菜单)'" json:"parent_id"`                // '父菜单编号(编号为0时表示根菜单)'
 	Creator    string         `gorm:"column:creator;type:varchar(20);comment:'创建人'" json:"creator"`                                          // '创建人'
-	Children   []*Menu        `gorm:"-"`                                                                                                     // 子菜单集合
-	Roles      []Role         `gorm:"many2many:sys_role_menu;"`                                                                              // 角色菜单多对多关系
+	Children   []*Menu        `gorm:"-" json:"children"`                                                                                     // 子菜单集合
+	Roles      []Role         `gorm:"many2many:sys_role_menu;" json:"roles"`                                                                 // 角色菜单多对多关系
 }
 
 // TableName Menu's table name
