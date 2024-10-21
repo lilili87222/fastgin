@@ -6,7 +6,7 @@
     @close="drawerClose"
   >
     <template #header>
-      <h4>{{ dialogType === "create" ? "新增字典" : "编辑字典" }}</h4>
+      <h4>{ dialogType === "create" ? "新增字典" : "编辑字典" }</h4>
     </template>
     <template #default>
       <el-form
@@ -54,21 +54,25 @@ const direction = ref<DrawerProps["direction"]>("rtl");
 const emits = defineEmits(["getDictionaryData"]);
 
 const rules = {
-    {{- range .Columns }}
-    {{ .Name }}: [
-      {{- if .IsNullable }}
-      { required: false, message: "{{ .Comment }}", trigger: "blur" },
-      {{- else }}
-      { required: true, message: "请输入{{ .Comment }}", trigger: "blur" },
-      {{- end }}
-      { min: 1, max: {{ .TypeSize }}, message: "长度在 1 到 {{ .TypeSize }} 个字符", trigger: "blur" },
-    ],
+{{- range .Columns }}
+    {{- if ne .Name "id" }}
+          {{ .Name }}: [
+            {{- if .IsNullable }}
+            { required: false, message: "{{ .Comment }}", trigger: "blur" },
+            {{- else }}
+            { required: true, message: "请输入{{ .Comment }}", trigger: "blur" },
+            {{- end }}
+            { min: 1, max: {{ .TypeSize }}, message: "长度在 1 到 {{ .TypeSize }} 个字符", trigger: "blur" },
+          ],
     {{- end }}
+{{- end }}
 };
 
 const fromCol = [
   {{- range .Columns }}
+  {{- if ne .Name "id" }}
   { prop: "{{ .Name }}", label: "{{ .Comment }}", placeholder: "{{ .Comment }}" },
+  {{- end }}
   {{- end }}
 ];
 

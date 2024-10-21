@@ -128,6 +128,7 @@ func GenerateView(tc TableConfig) error {
 }
 func GenerateViewFromTemplate(tc TableConfig, templateName string, outputDir string) error {
 	outputPath := filepath.Join(tc.OutDirFront, outputDir, templateName)
+	os.MkdirAll(filepath.Dir(outputPath), os.ModePerm)
 
 	tmpl, err := template.New(templateName + ".gohtml").Funcs(template.FuncMap{
 		"ToCamelCase": ToCamelCase,

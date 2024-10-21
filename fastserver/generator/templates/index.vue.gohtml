@@ -31,10 +31,10 @@
             <template
               v-else-if="['created_at', 'updated_at'].includes(item.prop)"
             >
-              {{ parseGoTime(scope.row[item.prop]) }}
+              { parseGoTime(scope.row[item.prop]) }
             </template>
             <template v-else>
-              {{ scope.row[item.prop] }}
+              { scope.row[item.prop] }
             </template>
           </template>
         </el-table-column>

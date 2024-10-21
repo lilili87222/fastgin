@@ -36,7 +36,7 @@ func (ctrl *{{.ModelName}}Controller) GetByID(c *gin.Context) {
   httpz.BadRequest(c, "Invalid ID")
   return
  }
- entity, err := ctrl.service.GetByID(uint(id))
+ entity, err := ctrl.service.GetByID(uint64(id))
  if err != nil {
   httpz.ServerError(c, err.Error())
   return
@@ -69,7 +69,7 @@ func (ctrl *{{.ModelName}}Controller) Delete(c *gin.Context) {
   httpz.BadRequest(c, "Invalid ID")
   return
  }
- if err := ctrl.service.Delete(uint(id)); err != nil {
+ if err := ctrl.service.Delete(uint64(id)); err != nil {
   httpz.ServerError(c, err.Error())
   return
  }
@@ -88,7 +88,7 @@ func (ctrl *{{.ModelName}}Controller) List(c *gin.Context) {
   httpz.ServerError(c, err.Error())
   return
  }
- httpz.Success(c, gin.H{"Data": data, "Total": total, "PageNum": sr.PageNum, "PageSize": sr.PageSize})
+ httpz.Success(c, gin.H{"data": data, "total": total, "page_num": sr.PageNum, "page_size": sr.PageSize})
 }
 func (ctrl *{{.ModelName}}Controller) DeleteBatch(c *gin.Context) {
  var req httpz.IdListRequest
