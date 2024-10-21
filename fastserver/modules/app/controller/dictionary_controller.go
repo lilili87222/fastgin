@@ -143,7 +143,7 @@ func (ctrl *DictionaryController) List(c *gin.Context) {
 		httpz.ServerError(c, err.Error())
 		return
 	}
-	httpz.Success(c, gin.H{"Data": data, "Total": total, "PageNum": sr.PageNum, "PageSize": sr.PageSize})
+	httpz.Success(c, gin.H{"data": data, "total": total, "page_num": sr.PageNum, "page_size": sr.PageSize})
 }
 
 // DeleteBatch godoc

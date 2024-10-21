@@ -43,7 +43,7 @@ func (oc *OperationLogController) List(c *gin.Context) {
 		httpz.ServerError(c, "获取操作日志列表失败: "+err.Error())
 		return
 	}
-	httpz.Success(c, gin.H{"Data": data, "Total": total})
+	httpz.Success(c, gin.H{"data": data, "total": total})
 }
 
 // BatchDeleteByIds deletes multiple operation logs by their Ids

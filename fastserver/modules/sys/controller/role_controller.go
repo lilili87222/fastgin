@@ -51,7 +51,7 @@ func (rc *RoleController) GetRoles(c *gin.Context) {
 		httpz.ServerError(c, "获取角色列表失败: "+err.Error())
 		return
 	}
-	httpz.Success(c, gin.H{"Data": data, "Total": total})
+	httpz.Success(c, gin.H{"data": data, "total": total})
 }
 
 // CreateRole creates a new role
