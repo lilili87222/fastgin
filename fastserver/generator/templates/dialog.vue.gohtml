@@ -21,10 +21,26 @@
           :label="item.label"
           :prop="item.prop"
         >
-          <el-input
-            v-model="formData[item.prop]"
-            :placeholder="item.placeholder"
-          ></el-input>
+
+
+          <template v-if="item.prop === 'des'">
+            <el-input
+                    v-model="formData[item.prop]"
+                    type="textarea"
+                    placeholder="说明"
+                    show-word-limit
+                    maxlength="100"
+            />
+          </template>
+          <template v-else>
+            <el-input
+                    v-model="formData[item.prop]"
+                    :placeholder="item.placeholder"
+            ></el-input>
+          </template>
+
+
+
         </el-form-item>
       </el-form>
     </template>

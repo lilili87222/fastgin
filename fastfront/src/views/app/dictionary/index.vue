@@ -94,17 +94,17 @@ import { parseGoTime } from "@/utils/index";
 import Dialog from "./dialog.vue";
 
 const searchColumn = [
-  { prop: "value", label: "字典名称", placeholder: "字典名称" },
-  { prop: "key", label: "字典类型", placeholder: "字典类型" },
+  { prop: "id", label: "ID", placeholder: "ID" },
+  { prop: "key", label: "配置的Key", placeholder: "配置的Key" },
+  { prop: "value", label: "配置的值", placeholder: "配置的值" },
   { prop: "des", label: "说明", placeholder: "说明" },
 ];
 
 const tableColumn = [
-  { prop: "value", label: "字典名称", minWidth: 110 },
-  { prop: "key", label: "字典类型", minWidth: 110 },
-  { prop: "des", label: "说明", minWidth: 85 },
-  { prop: "created_at", label: "创建时间", minWidth: 110 },
-  { prop: "updated_at", label: "更新时间", minWidth: 110 },
+  { prop: "id", label: "ID", minWidth: 110 },
+  { prop: "key", label: "配置的Key", minWidth: 110 },
+  { prop: "value", label: "配置的值", minWidth: 110 },
+  { prop: "des", label: "说明", minWidth: 110 },
 ];
 
 // 查询参数

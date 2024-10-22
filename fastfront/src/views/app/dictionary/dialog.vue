@@ -21,21 +21,10 @@
           :label="item.label"
           :prop="item.prop"
         >
-          <template v-if="item.prop === 'des'">
-            <el-input
-              v-model="formData[item.prop]"
-              type="textarea"
-              placeholder="说明"
-              show-word-limit
-              maxlength="100"
-            />
-          </template>
-          <template v-else>
-            <el-input
-              v-model="formData[item.prop]"
-              :placeholder="item.placeholder"
-            ></el-input>
-          </template>
+          <el-input
+            v-model="formData[item.prop]"
+            :placeholder="item.placeholder"
+          ></el-input>
         </el-form-item>
       </el-form>
     </template>
@@ -65,23 +54,23 @@ const direction = ref<DrawerProps["direction"]>("rtl");
 const emits = defineEmits(["getDictionaryData"]);
 
 const rules = {
-  value: [
-    { required: true, message: "请输入字典名称", trigger: "blur" },
-    { min: 1, max: 100, message: "长度在 1 到 100 个字符", trigger: "blur" },
-  ],
-  key: [
-    { required: true, message: "请输入字典类型", trigger: "blur" },
-    { min: 1, max: 50, message: "长度在 1 到 50 个字符", trigger: "blur" },
-  ],
-  des: [
-    { required: false, message: "说明", trigger: "blur" },
-    { min: 0, max: 100, message: "长度在 0 到 100 个字符", trigger: "blur" },
-  ],
+          key: [
+            { required: true, message: "请输入配置的Key", trigger: "blur" },
+            { min: 1, max: 20, message: "长度在 1 到 20 个字符", trigger: "blur" },
+          ],
+          value: [
+            { required: true, message: "请输入配置的值", trigger: "blur" },
+            { min: 1, max: 512, message: "长度在 1 到 512 个字符", trigger: "blur" },
+          ],
+          des: [
+            { required: false, message: "说明", trigger: "blur" },
+            { min: 1, max: 512, message: "长度在 1 到 512 个字符", trigger: "blur" },
+          ],
 };
 
 const fromCol = [
-  { prop: "value", label: "字典名称", placeholder: "字典名称" },
-  { prop: "key", label: "字典类型", placeholder: "字典类型" },
+  { prop: "key", label: "配置的Key", placeholder: "配置的Key" },
+  { prop: "value", label: "配置的值", placeholder: "配置的值" },
   { prop: "des", label: "说明", placeholder: "说明" },
 ];
 

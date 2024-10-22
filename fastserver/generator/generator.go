@@ -112,22 +112,22 @@ func GenerateGoFromTemplate(tc TableConfig, templateName string) error {
 	return tmpl.Execute(file, tc)
 }
 func GenerateView(tc TableConfig) error {
-	if err := GenerateViewFromTemplate(tc, "api.ts", "api/app"); err != nil {
+	if err := GenerateViewFromTemplate(tc, "api.ts", "api/app", tc.LowModelName+".ts"); err != nil {
 		return err
 	}
-	if err := GenerateViewFromTemplate(tc, "types.ts", "types/app"); err != nil {
+	if err := GenerateViewFromTemplate(tc, "types.ts", "types/app", tc.LowModelName+".ts"); err != nil {
 		return err
 	}
-	if err := GenerateViewFromTemplate(tc, "dialog.vue", "views/app/"+tc.LowModelName); err != nil {
+	if err := GenerateViewFromTemplate(tc, "dialog.vue", "views/app/"+tc.LowModelName, "dialog.vue"); err != nil {
 		return err
 	}
-	if err := GenerateViewFromTemplate(tc, "index.vue", "views/app/"+tc.LowModelName); err != nil {
+	if err := GenerateViewFromTemplate(tc, "index.vue", "views/app/"+tc.LowModelName, "index.vue"); err != nil {
 		return err
 	}
 	return nil
 }
-func GenerateViewFromTemplate(tc TableConfig, templateName string, outputDir string) error {
-	outputPath := filepath.Join(tc.OutDirFront, outputDir, templateName)
+func GenerateViewFromTemplate(tc TableConfig, templateName string, outputDir string, fileName string) error {
+	outputPath := filepath.Join(tc.OutDirFront, outputDir, fileName)
 	os.MkdirAll(filepath.Dir(outputPath), os.ModePerm)
 
 	tmpl, err := template.New(templateName+".gohtml").Funcs(template.FuncMap{
