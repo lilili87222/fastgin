@@ -233,16 +233,36 @@ const copyToClipboard = async (text: any) => {
 
 //重启
 const onRestart = () => {
-  restartServer().then((res) => {
-    ElMessage.success(res.message || "重启成功");
-  });
+  ElMessageBox.confirm("此操作将重启服务器, 是否继续?", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(() => {
+      restartServer().then((res) => {
+        ElMessage.success(res.message || "重启成功");
+      });
+    })
+    .catch(() => {
+      ElMessage.info("已取消");
+    });
 };
 
 //停止
 const onStop = () => {
-  stopServer().then((res) => {
-    ElMessage.success(res.message || "停止成功");
-  });
+  ElMessageBox.confirm("此操作将停止服务器, 是否继续?", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(() => {
+      stopServer().then((res) => {
+        ElMessage.success(res.message || "停止成功");
+      });
+    })
+    .catch(() => {
+      ElMessage.info("已取消");
+    });
 };
 </script>
 
