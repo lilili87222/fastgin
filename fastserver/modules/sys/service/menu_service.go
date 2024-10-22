@@ -114,6 +114,7 @@ func GenMenuTree(parentId uint64, menus []*model.Menu) []*model.Menu {
 	return tree
 }
 
+// InsertAppMenuToAdmin 插入应用菜单到管理员, 用于初始化应用菜单, 仅在初始化时调用, 之后不再调用, 如果一键存在，则不会重复插入
 func (s *MenuService) InsertAppMenuToAdmin(menu model.Menu) {
 	menuList, _ := database.ListAll[model.Menu]()
 	for _, m := range menuList {
@@ -133,7 +134,7 @@ func (s *MenuService) InsertAppMenuToAdmin(menu model.Menu) {
 		},
 	}
 	//appMenuId := uint64(8)
-	menu.ParentID = 8
+	//menu.ParentID = 8
 	menu.Roles = roles
 	database.Create(&menu)
 }

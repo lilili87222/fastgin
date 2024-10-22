@@ -18,7 +18,7 @@ func InitSysModuleDatabase() {
 		panic(e)
 	}
 	insertData := false
-	tableList := []database.ITableModel{&model.User{}, &model.Role{}, &model.Menu{}, &model.Api{}, &model.OperationLog{}}
+	tableList := []database.ITableModel{&model.User{}, &model.Role{}, &model.Menu{}, &model.Api{}, &model.OperationLog{}, &model.Dictionary{}}
 	for _, tableModel := range tableList {
 		if slices.Contains(tableNames, tableModel.TableName()) {
 			continue

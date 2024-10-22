@@ -139,6 +139,7 @@ func (s *ApiService) GetApisById(apiIds []uint64) ([]model.Api, error) {
 	return database.GetByIds[model.Api](apiIds)
 }
 
+// InsertApisToAdmin insert apis to admin, and add policies to casbin, if the api is exist, will not insert and add
 func (s *ApiService) InsertApisToAdmin(apis []model.Api) {
 	apiDao := dao.ApiDao{}
 	newRoleCasbin := make([]model.RoleCasbin, 0)

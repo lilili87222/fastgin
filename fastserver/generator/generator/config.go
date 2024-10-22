@@ -41,7 +41,6 @@ type GeneratorConfig struct {
 	OutDir        string   `mapstructure:"out-dir" json:"outDir"`
 	OutDirFront   string   `mapstructure:"out-dir-front" json:"outDirFront"`
 	Tables        []string `mapstructure:"tables" json:"tables"`
-	RunSql        bool     `mapstructure:"run-sql" json:"runSql"`
 	CreateView    bool     `mapstructure:"create-view" json:"createView"`
 	TablePrefix   string   `mapstructure:"table-prefix" json:"tablePrefix"`
 	Module        string   `mapstructure:"module" json:"module"`

@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-const TableNameDictionary = "web_dictionary"
+const TableNameDictionary = "sys_dictionary"
 
 // Dictionary 字典表
 type Dictionary struct {

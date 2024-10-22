@@ -3,9 +3,10 @@ package boost
 import (
 	"context"
 	"errors"
-	config2 "fastgin/boost/config"
+	"fastgin/boost/config"
+	"fastgin/common/storage"
+	"fastgin/database"
 	_ "fastgin/docs" // Import the generated docs
-	appRoute "fastgin/modules/app/route"
 	"fastgin/modules/sys/middleware"
 	"fastgin/modules/sys/route"
 	"fastgin/modules/sys/script"
@@ -22,23 +23,42 @@ import (
 )
 
 var HttpServer *http.Server
-var Engine *gin.Engine
-var AuthGroup *gin.RouterGroup
-var PublicGroup *gin.RouterGroup
 
+func preInit() {
+	// 加载配置文件到全局配置结构体
+	config.InitConfig()
+
+	// 初始化日志
+	config.InitLogger()
+
+	// 初始化数据库
+	database.InitDatabaseConnection()
+	// 初始化casbin策略管理器
+	config.InitCasbinEnforcer(database.DB)
+
+	// 创建数据库表，插入初始数据
+	script.InitSysModuleDatabase()
+
+	// 初始化Validator数据校验
+	config.InitValidate()
+
+	storage.InitStorage(config.Configs.Storage)
+}
 func StartWebService() {
+	preInit()
 	// 操作日志中间件处理日志时没有将日志发送到rabbitmq或者kafka中, 而是发送到了channel中
 	// 这里开启3个goroutine处理channel将日志记录到数据库
-	logDao := service.NewLogService()
+	logService := service.NewLogService()
 	for i := 0; i < 3; i++ {
-		go logDao.SaveOperationLogChannel(middleware.OperationLogChan)
+		go logService.SaveOperationLogChannel(middleware.OperationLogChan)
 	}
 	//设置模式
-	gin.SetMode(config2.Configs.System.Mode)
+	gin.SetMode(config.Configs.System.Mode)
 	engine := gin.Default()
-	initRoutes(engine)
+	p, a := initMiddlewares(engine)
+	initApiRoutes(engine, p, a)
 
-	HttpServer = &http.Server{Addr: fmt.Sprintf(":" + config2.Configs.System.Port), Handler: engine}
+	HttpServer = &http.Server{Addr: fmt.Sprintf(":" + config.Configs.System.Port), Handler: engine}
 
 	// 启动服务器的 goroutine
 	go func() {
@@ -61,7 +81,7 @@ func StartWebService() {
 }
 
 // 初始化
-func initRoutes(engine *gin.Engine) {
+func initMiddlewares(engine *gin.Engine) (*gin.RouterGroup, *gin.RouterGroup) {
 
 	// 创建不带中间件的路由:
 	// engine := gin.New()
@@ -73,20 +93,17 @@ func initRoutes(engine *gin.Engine) {
 	// 启用全局跨域中间件
 	engine.Use(middleware.CORSMiddleware())
 	engine.Group("/").GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	PublicGroup = engine.Group("api/public")
-	AuthGroup = engine.Group(config2.Configs.System.UrlPathPrefix)
+	PublicGroup := engine.Group("api/public")
+	AuthGroup := engine.Group(config.Configs.System.UrlPathPrefix)
 	AuthGroup.Use(middleware.OperationLogMiddleware())
-	AuthGroup.Use(middleware.RateLimitMiddleware(time.Millisecond*time.Duration(config2.Configs.RateLimit.FillInterval), config2.Configs.RateLimit.Capacity))
+	AuthGroup.Use(middleware.RateLimitMiddleware(time.Millisecond*time.Duration(config.Configs.RateLimit.FillInterval), config.Configs.RateLimit.Capacity))
 	AuthGroup.Use(middleware.GetJwtMiddleware().MiddlewareFunc()) // jwt认证中间件
 	AuthGroup.Use(middleware.CasbinMiddleware())                  //// 开启casbin鉴权中间件
-
-	script.InitSysModuleDatabase()
-	initApiRoutes()
-
-	config2.Log.Info("初始化路由完成！")
+	config.Log.Info("初始化Middleware完成！")
+	return PublicGroup, AuthGroup
 }
 
-func initApiRoutes() {
+func initApiRoutes(engine *gin.Engine, PublicGroup *gin.RouterGroup, AuthGroup *gin.RouterGroup) {
 	route.InitBaseRoutes(PublicGroup)       // 注册基础路由, 不需要jwt认证中间件,不需要casbin中间件
 	route.InitUserRoutes(AuthGroup)         // 注册用户路由, jwt认证中间件,casbin鉴权中间件
 	route.InitRoleRoutes(AuthGroup)         // 注册角色路由, jwt认证中间件,casbin鉴权中间件
@@ -94,6 +111,6 @@ func initApiRoutes() {
 	route.InitApiRoutes(AuthGroup)          // 注册接口路由, jwt认证中间件,casbin鉴权中间件
 	route.InitOperationLogRoutes(AuthGroup) // 注册操作日志路由, jwt认证中间件,casbin鉴权中间件
 	route.InitSystemRoutes(AuthGroup)       // 注册系统路由, jwt认证中间件,casbin鉴权中间件
-
-	appRoute.InitDictionary(AuthGroup)
+	route.InitDictionary(AuthGroup)
+	config.Log.Info("初始化路由完成！")
 }
