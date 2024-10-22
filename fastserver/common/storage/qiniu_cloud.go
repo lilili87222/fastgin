@@ -21,12 +21,12 @@ type QiniuConfig struct {
 	UseCdnDomains bool   `mapstructure:"use-cdn-domains" json:"use-cdn-domains" yaml:"use-cdn-domains"` // 上传是否使用CDN上传加速
 }
 
-type Qiniu struct {
+type QiniuCloud struct {
 	Config   QiniuConfig
 	qiConfig *storage.Config
 }
 
-func (q *Qiniu) UploadFile(file *multipart.FileHeader) (string, string, error) {
+func (q *QiniuCloud) UploadFile(file *multipart.FileHeader) (string, string, error) {
 	putPolicy := storage.PutPolicy{Scope: q.Config.Bucket}
 	mac := qbox.NewMac(q.Config.AccessKey, q.Config.SecretKey)
 	upToken := putPolicy.UploadToken(mac)
@@ -47,7 +47,7 @@ func (q *Qiniu) UploadFile(file *multipart.FileHeader) (string, string, error) {
 	return q.Config.ImgPath + "/" + ret.Key, ret.Key, nil
 }
 
-func (q *Qiniu) DeleteFile(key string) error {
+func (q *QiniuCloud) DeleteFile(key string) error {
 	mac := qbox.NewMac(q.Config.AccessKey, q.Config.SecretKey)
 	bucketManager := storage.NewBucketManager(mac, q.qiConfig)
 	if err := bucketManager.Delete(q.Config.Bucket, key); err != nil {
@@ -56,7 +56,7 @@ func (q *Qiniu) DeleteFile(key string) error {
 	return nil
 }
 
-func NewQiniu(config QiniuConfig) (*Qiniu, error) {
+func NewQiniu(config QiniuConfig) (*QiniuCloud, error) {
 	cfg := storage.Config{
 		UseHTTPS:      config.UseHTTPS,
 		UseCdnDomains: config.UseCdnDomains,
@@ -73,5 +73,5 @@ func NewQiniu(config QiniuConfig) (*Qiniu, error) {
 	case "ZoneXinjiapo":
 		cfg.Zone = &storage.ZoneXinjiapo
 	}
-	return &Qiniu{Config: config, qiConfig: &cfg}, nil
+	return &QiniuCloud{Config: config, qiConfig: &cfg}, nil
 }

@@ -14,20 +14,20 @@ type HuaWeiObsConfig struct {
 	SecretKey string `mapstructure:"secret-key" json:"secret-key" yaml:"secret-key"`
 }
 
-type Obs struct {
+type HuaweiObs struct {
 	config HuaWeiObsConfig
 	client *obs.ObsClient
 }
 
-func NewObs(config HuaWeiObsConfig) (*Obs, error) {
+func NewHuaweiObs(config HuaWeiObsConfig) (*HuaweiObs, error) {
 	client, e := obs.New(config.AccessKey, config.SecretKey, config.Endpoint)
 	if e != nil {
 		return nil, e
 	}
-	return &Obs{config: config, client: client}, nil
+	return &HuaweiObs{config: config, client: client}, nil
 }
 
-func (o *Obs) UploadFile(file *multipart.FileHeader) (string, string, error) {
+func (o *HuaweiObs) UploadFile(file *multipart.FileHeader) (string, string, error) {
 	// var open multipart.File
 	open, err := file.Open()
 	if err != nil {
@@ -56,7 +56,7 @@ func (o *Obs) UploadFile(file *multipart.FileHeader) (string, string, error) {
 	return filepath, filename, err
 }
 
-func (o *Obs) DeleteFile(key string) error {
+func (o *HuaweiObs) DeleteFile(key string) error {
 	input := &obs.DeleteObjectInput{
 		Bucket: o.config.Bucket,
 		Key:    key,

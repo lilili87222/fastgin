@@ -22,7 +22,7 @@ func NewStorage(c *StorageConfig) (IStorage, error) {
 	case "aliyun-oss":
 		return NewAliyunOSS(c.AliyunOSS)
 	case "huawei-obs":
-		return NewObs(c.HuaWeiObs)
+		return NewHuaweiObs(c.HuaWeiObs)
 	case "aws-s3":
 		return NewAwsS3(c.AwsS3)
 	case "cloudflare-r2":
