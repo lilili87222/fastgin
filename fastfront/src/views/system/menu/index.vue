@@ -182,12 +182,12 @@ const onDelete = () => {
   })
     .then(() => {
       loading.value = true;
-      const Ids: number[] = [];
+      const ids: number[] = [];
       multipleSelection.value.forEach((x: any) => {
-        Ids.push(x.Id);
+        ids.push(x.id);
       });
       batchDeleteMenuByIds({
-        Ids,
+        ids,
       })
         .then((res) => {
           getTableData();
@@ -208,10 +208,10 @@ const handleSelectionChange = (val: TMenuTable[]) => {
 };
 
 // 单个删除
-const singleDelete = (Id: number) => {
+const singleDelete = (id: number) => {
   loading.value = true;
   batchDeleteMenuByIds({
-    Ids: [Id],
+    ids: [id],
   })
     .then((res) => {
       getTableData();

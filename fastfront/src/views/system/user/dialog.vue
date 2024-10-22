@@ -87,7 +87,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import type { DrawerProps, FormRules } from "element-plus";
 import JSEncrypt from "jsencrypt";
 
@@ -119,7 +119,7 @@ const rules = reactive<FormRules<TUserForm>>({
     { min: 2, max: 20, message: "长度在 2 到 20 个字符", trigger: "blur" },
   ],
   password: [
-    { required: true, message: "请输入", trigger: "blur" },
+    { required: false, message: "请输入", trigger: "blur" },
     { min: 6, max: 30, message: "长度在 6 到 30 个字符", trigger: "blur" },
   ],
   role_ids: [{ required: true, message: "请选择角色", trigger: "change" }],
@@ -148,6 +148,20 @@ const formData = ref<TUserForm>({
 
 const dialogType = ref("");
 
+watch(dialogType, (newType) => {
+  rules.password =
+    newType === "create"
+      ? [
+          { required: true, message: "请输入", trigger: "blur" },
+          {
+            min: 6,
+            max: 30,
+            message: "长度在 6 到 30 个字符",
+            trigger: "blur",
+          },
+        ]
+      : [{ required: false, message: "请输入", trigger: "blur" }];
+});
 const fromCol = computed(() => [
   { prop: "user_name", label: "用户名", placeholder: "用户名" },
   {

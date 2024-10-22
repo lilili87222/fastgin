@@ -191,12 +191,12 @@ const onDelete = () => {
   })
     .then(() => {
       loading.value = true;
-      const Ids: number[] = [];
+      const ids: number[] = [];
       multipleSelection.value.forEach((x: any) => {
-        Ids.push(x.id);
+        ids.push(x.id);
       });
       batchDeleteUserByIds({
-        Ids,
+        ids,
       })
         .then((res) => {
           getTableData();
@@ -236,10 +236,10 @@ const onClear = (form: TUserQuery) => {
 };
 
 // 单个删除
-const singleDelete = (Id: number) => {
+const singleDelete = (id: number) => {
   loading.value = true;
   batchDeleteUserByIds({
-    Ids: [Id],
+    ids: [id],
   }).then((res) => {
     getTableData();
     ElMessage.success(res.message);
