@@ -3,7 +3,7 @@ package boost
 import (
 	"context"
 	"errors"
-	"fastgin/config"
+	config2 "fastgin/boost/config"
 	_ "fastgin/docs" // Import the generated docs
 	appRoute "fastgin/modules/app/route"
 	"fastgin/modules/sys/middleware"
@@ -34,11 +34,11 @@ func StartWebService() {
 		go logDao.SaveOperationLogChannel(middleware.OperationLogChan)
 	}
 	//设置模式
-	gin.SetMode(config.Instance.System.Mode)
+	gin.SetMode(config2.Instance.System.Mode)
 	engine := gin.Default()
 	initRoutes(engine)
 
-	HttpServer = &http.Server{Addr: fmt.Sprintf(":" + config.Instance.System.Port), Handler: engine}
+	HttpServer = &http.Server{Addr: fmt.Sprintf(":" + config2.Instance.System.Port), Handler: engine}
 
 	// 启动服务器的 goroutine
 	go func() {
@@ -74,16 +74,16 @@ func initRoutes(engine *gin.Engine) {
 	engine.Use(middleware.CORSMiddleware())
 	engine.Group("/").GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	PublicGroup = engine.Group("api/public")
-	AuthGroup = engine.Group(config.Instance.System.UrlPathPrefix)
+	AuthGroup = engine.Group(config2.Instance.System.UrlPathPrefix)
 	AuthGroup.Use(middleware.OperationLogMiddleware())
-	AuthGroup.Use(middleware.RateLimitMiddleware(time.Millisecond*time.Duration(config.Instance.RateLimit.FillInterval), config.Instance.RateLimit.Capacity))
+	AuthGroup.Use(middleware.RateLimitMiddleware(time.Millisecond*time.Duration(config2.Instance.RateLimit.FillInterval), config2.Instance.RateLimit.Capacity))
 	AuthGroup.Use(middleware.GetJwtMiddleware().MiddlewareFunc()) // jwt认证中间件
 	AuthGroup.Use(middleware.CasbinMiddleware())                  //// 开启casbin鉴权中间件
 
 	script.InitSysModuleDatabase()
 	initApiRoutes()
 
-	config.Log.Info("初始化路由完成！")
+	config2.Log.Info("初始化路由完成！")
 }
 
 func initApiRoutes() {

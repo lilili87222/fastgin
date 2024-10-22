@@ -2,7 +2,7 @@ package service
 
 import (
 	"errors"
-	"fastgin/config"
+	config2 "fastgin/boost/config"
 	"fastgin/database"
 	"fastgin/modules/sys/dao"
 	"fastgin/modules/sys/dto"
@@ -72,12 +72,12 @@ func (s *ApiService) UpdateApiById(api *model.Api) error {
 	}
 
 	if oldApi.Path != api.Path || oldApi.Method != api.Method {
-		policies, err := config.CasbinEnforcer.GetFilteredPolicy(1, oldApi.Path, oldApi.Method)
+		policies, err := config2.CasbinEnforcer.GetFilteredPolicy(1, oldApi.Path, oldApi.Method)
 		if err != nil {
 			return err
 		}
 		if len(policies) > 0 {
-			isRemoved, _ := config.CasbinEnforcer.RemovePolicies(policies)
+			isRemoved, _ := config2.CasbinEnforcer.RemovePolicies(policies)
 			if !isRemoved {
 				return errors.New("更新权限接口失败")
 			}
@@ -85,11 +85,11 @@ func (s *ApiService) UpdateApiById(api *model.Api) error {
 				policy[1] = api.Path
 				policy[2] = api.Method
 			}
-			isAdded, _ := config.CasbinEnforcer.AddPolicies(policies)
+			isAdded, _ := config2.CasbinEnforcer.AddPolicies(policies)
 			if !isAdded {
 				return errors.New("更新权限接口失败")
 			}
-			err = config.CasbinEnforcer.LoadPolicy()
+			err = config2.CasbinEnforcer.LoadPolicy()
 			if err != nil {
 				return errors.New("更新权限接口成功，权限接口策略加载失败")
 			}
@@ -112,18 +112,18 @@ func (s *ApiService) BatchDeleteApiByIds(apiIds []uint64) error {
 	//err = s.apiDao.BatchDelete(apiIds)
 	if err == nil {
 		for _, api := range apis {
-			policies, err := config.CasbinEnforcer.GetFilteredPolicy(1, api.Path, api.Method)
+			policies, err := config2.CasbinEnforcer.GetFilteredPolicy(1, api.Path, api.Method)
 			if err != nil {
 				return err
 			}
 			if len(policies) > 0 {
-				isRemoved, _ := config.CasbinEnforcer.RemovePolicies(policies)
+				isRemoved, _ := config2.CasbinEnforcer.RemovePolicies(policies)
 				if !isRemoved {
 					return errors.New("删除权限接口失败")
 				}
 			}
 		}
-		err = config.CasbinEnforcer.LoadPolicy()
+		err = config2.CasbinEnforcer.LoadPolicy()
 		if err != nil {
 			return errors.New("删除权限接口成功，权限接口策略加载失败")
 		}
@@ -160,9 +160,9 @@ func (s *ApiService) InsertApisToAdmin(apis []model.Api) {
 				c.Keyword, c.Path, c.Method,
 			})
 		}
-		isAdd, err := config.CasbinEnforcer.AddPolicies(rules)
+		isAdd, err := config2.CasbinEnforcer.AddPolicies(rules)
 		if !isAdd {
-			config.Log.Errorf("write casbin fail：%v", err)
+			config2.Log.Errorf("write casbin fail：%v", err)
 		}
 	}
 }

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fastgin/boost"
-	"fastgin/config"
+	config2 "fastgin/boost/config"
 	"fastgin/database"
 )
 
@@ -23,18 +23,18 @@ import (
 func main() {
 
 	// 加载配置文件到全局配置结构体
-	config.InitConfig()
+	config2.InitConfig()
 
 	// 初始化日志
-	config.InitLogger()
+	config2.InitLogger()
 
 	// 初始化数据库
 	database.InitDatabaseConnection()
 	// 初始化casbin策略管理器
-	config.InitCasbinEnforcer(database.DB)
+	config2.InitCasbinEnforcer(database.DB)
 
 	// 初始化Validator数据校验
-	config.InitValidate()
+	config2.InitValidate()
 
 	boost.StartWebService()
 

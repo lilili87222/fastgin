@@ -1,7 +1,7 @@
 package database
 
 import (
-	"fastgin/config"
+	config2 "fastgin/boost/config"
 	"fmt"
 	"github.com/glebarez/sqlite"
 	"gorm.io/driver/mysql"
@@ -13,19 +13,19 @@ import (
 var DB *gorm.DB
 
 func InitDatabaseConnection() {
-	config.Log.Infof("选中的数据库类型" + config.Instance.Database.Type)
-	if config.Instance.Database.Type == "mysql" {
+	config2.Log.Infof("选中的数据库类型" + config2.Instance.Database.Type)
+	if config2.Instance.Database.Type == "mysql" {
 		initMysql()
-	} else if config.Instance.Database.Type == "sqlite" {
+	} else if config2.Instance.Database.Type == "sqlite" {
 		initSqlLite()
 	} else {
-		panic(fmt.Errorf("mysql and sqllite support by default,不支持的数据库类型: %s", config.Instance.Database.Type))
+		panic(fmt.Errorf("mysql and sqllite support by default,不支持的数据库类型: %s", config2.Instance.Database.Type))
 	}
 }
 
 // 初始化mysql数据库
 func initMysql() {
-	mysqlConfig := config.Instance.Database.MysqlConfig
+	mysqlConfig := config2.Instance.Database.MysqlConfig
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&collation=%s&%s",
 		mysqlConfig.Username,
 		mysqlConfig.Password,
@@ -48,7 +48,7 @@ func initMysql() {
 		//},
 	})
 	if err != nil {
-		config.Log.Panicf("初始化mysql数据库异常: %v", err)
+		config2.Log.Panicf("初始化mysql数据库异常: %v", err)
 		panic(fmt.Errorf("初始化mysql数据库异常: %v", err))
 	}
 	// 开启mysql日志
@@ -60,13 +60,13 @@ func initMysql() {
 
 // 初始化sqllite数据库
 func initSqlLite() {
-	var sqlConfig = config.Instance.Database.SqlLiteConfig
+	var sqlConfig = config2.Instance.Database.SqlLiteConfig
 	db, err := gorm.Open(sqlite.Open(sqlConfig.FilePath), &gorm.Config{
 		// 禁用外键(指定外键时不会在sqlite创建真实的外键约束)
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 	if err != nil {
-		config.Log.Panicf("初始化sqlite数据库异常: %v", err)
+		config2.Log.Panicf("初始化sqlite数据库异常: %v", err)
 		panic(fmt.Errorf("初始化sqlite数据库异常: %v", err))
 	}
 	DB = db

@@ -2,7 +2,7 @@ package service
 
 import (
 	"errors"
-	"fastgin/config"
+	"fastgin/boost/config"
 	"fastgin/database"
 	"fastgin/modules/sys/dao"
 	"fastgin/modules/sys/model"

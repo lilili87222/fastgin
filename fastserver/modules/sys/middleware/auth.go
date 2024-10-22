@@ -1,9 +1,9 @@
 package middleware
 
 import (
+	config2 "fastgin/boost/config"
 	"fastgin/common/httpz"
 	"fastgin/common/util"
-	"fastgin/config"
 	"fastgin/modules/sys/dto"
 	"fastgin/modules/sys/middleware/jwt"
 	"fastgin/modules/sys/model"
@@ -21,24 +21,24 @@ func GetJwtMiddleware() *jwt.GinJWTMiddleware {
 		return jwtMiddleware
 	}
 	authMiddleware, err := jwt.New(&jwt.GinJWTMiddleware{
-		Realm:           config.Instance.Jwt.Realm,                                 // jwt标识
-		Key:             []byte(config.Instance.Jwt.Key),                           // 服务端密钥
-		Timeout:         time.Hour * time.Duration(config.Instance.Jwt.Timeout),    // token过期时间
-		MaxRefresh:      time.Hour * time.Duration(config.Instance.Jwt.MaxRefresh), // token最大刷新时间(RefreshToken过期时间=Timeout+MaxRefresh)
-		PayloadFunc:     payloadFunc,                                               // 有效载荷处理
-		IdentityHandler: identityHandler,                                           // 解析Claims
-		Authenticator:   login,                                                     // 校验token的正确性, 处理登录逻辑
-		Authorizator:    authorizator,                                              // 用户登录校验成功处理
-		Unauthorized:    unauthorized,                                              // 用户登录校验失败处理
-		LoginResponse:   loginResponse,                                             // 登录成功后的响应
-		LogoutResponse:  logoutResponse,                                            // 登出后的响应
-		RefreshResponse: refreshResponse,                                           // 刷新token后的响应
-		TokenLookup:     "header: Authorization, query: token, cookie: jwt",        // 自动在这几个地方寻找请求中的token
-		TokenHeadName:   "Bearer",                                                  // header名称
+		Realm:           config2.Instance.Jwt.Realm,                                 // jwt标识
+		Key:             []byte(config2.Instance.Jwt.Key),                           // 服务端密钥
+		Timeout:         time.Hour * time.Duration(config2.Instance.Jwt.Timeout),    // token过期时间
+		MaxRefresh:      time.Hour * time.Duration(config2.Instance.Jwt.MaxRefresh), // token最大刷新时间(RefreshToken过期时间=Timeout+MaxRefresh)
+		PayloadFunc:     payloadFunc,                                                // 有效载荷处理
+		IdentityHandler: identityHandler,                                            // 解析Claims
+		Authenticator:   login,                                                      // 校验token的正确性, 处理登录逻辑
+		Authorizator:    authorizator,                                               // 用户登录校验成功处理
+		Unauthorized:    unauthorized,                                               // 用户登录校验失败处理
+		LoginResponse:   loginResponse,                                              // 登录成功后的响应
+		LogoutResponse:  logoutResponse,                                             // 登出后的响应
+		RefreshResponse: refreshResponse,                                            // 刷新token后的响应
+		TokenLookup:     "header: Authorization, query: token, cookie: jwt",         // 自动在这几个地方寻找请求中的token
+		TokenHeadName:   "Bearer",                                                   // header名称
 		TimeFunc:        time.Now,
 	})
 	if err != nil {
-		config.Log.Panicf("初始化JWT中间件失败：%v", err)
+		config2.Log.Panicf("初始化JWT中间件失败：%v", err)
 		panic(fmt.Sprintf("初始化JWT中间件失败：%v", err))
 	}
 	jwtMiddleware = authMiddleware
@@ -117,7 +117,7 @@ func authorizator(data interface{}, c *gin.Context) bool {
 
 // 用户登录校验失败处理
 func unauthorized(c *gin.Context, code int, message string) {
-	config.Log.Debugf("JWT认证失败, 错误码: %d, 错误信息: %s", code, message)
+	config2.Log.Debugf("JWT认证失败, 错误码: %d, 错误信息: %s", code, message)
 	httpz.Response(c, code, nil, fmt.Sprintf("JWT认证失败, 错误码: %d, 错误信息: %s", code, message))
 }
 

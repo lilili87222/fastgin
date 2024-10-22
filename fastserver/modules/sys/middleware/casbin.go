@@ -1,8 +1,8 @@
 package middleware
 
 import (
+	config2 "fastgin/boost/config"
 	"fastgin/common/httpz"
-	"fastgin/config"
 	"fastgin/modules/sys/service"
 	"github.com/gin-gonic/gin"
 	"strings"
@@ -37,7 +37,7 @@ func CasbinMiddleware() gin.HandlerFunc {
 		}
 		// 获得请求路径URL
 		//obj := strings.Replace(c.Request.URL.Path, "/"+config.Instance.System.UrlPathPrefix, "", 1)
-		obj := strings.TrimPrefix(c.FullPath(), "/"+config.Instance.System.UrlPathPrefix)
+		obj := strings.TrimPrefix(c.FullPath(), "/"+config2.Instance.System.UrlPathPrefix)
 		// 获取请求方式
 		act := c.Request.Method
 
@@ -58,7 +58,7 @@ func check(subs []string, obj string, act string) bool {
 	defer checkLock.Unlock()
 	isPass := false
 	for _, sub := range subs {
-		pass, _ := config.CasbinEnforcer.Enforce(sub, obj, act)
+		pass, _ := config2.CasbinEnforcer.Enforce(sub, obj, act)
 		if pass {
 			isPass = true
 			break

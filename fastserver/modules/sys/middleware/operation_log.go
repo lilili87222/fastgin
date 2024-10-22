@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"fastgin/config"
+	"fastgin/boost/config"
 	"fastgin/modules/sys/model"
 	"fastgin/modules/sys/service"
 	"fmt"

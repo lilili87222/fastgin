@@ -1,8 +1,8 @@
 package controller
 
 import (
+	"fastgin/boost/config"
 	"fastgin/common/httpz"
-	"fastgin/config"
 	"fastgin/modules/sys/service"
 	"github.com/gin-gonic/gin"
 	"os"

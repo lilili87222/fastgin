@@ -2,8 +2,8 @@ package script
 
 import (
 	"errors"
+	config2 "fastgin/boost/config"
 	"fastgin/common/util"
-	"fastgin/config"
 	"fastgin/database"
 	"fastgin/modules/sys/model"
 	"gorm.io/gorm"
@@ -12,9 +12,9 @@ import (
 
 // 初始化mysql数据
 func InitSysModuleDatabase() {
-	tableNames, e := database.GetTableNames(database.DB, config.Instance.Database.MysqlConfig.Database)
+	tableNames, e := database.GetTableNames(database.DB, config2.Instance.Database.MysqlConfig.Database)
 	if e != nil {
-		config.Log.Errorf("获取数据库表名失败：%v", e)
+		config2.Log.Errorf("获取数据库表名失败：%v", e)
 		panic(e)
 	}
 	insertData := false
@@ -24,14 +24,14 @@ func InitSysModuleDatabase() {
 			continue
 		} else {
 			if e := database.DB.AutoMigrate(tableModel); e != nil {
-				config.Log.Errorf("初始化数据库表失败：%v", e)
+				config2.Log.Errorf("初始化数据库表失败：%v", e)
 				panic(e)
 			} else {
 				insertData = true
 			}
 		}
 	}
-	config.Log.Infof("初始化数据库完成!")
+	config2.Log.Infof("初始化数据库完成!")
 
 	if !insertData {
 		return
@@ -79,7 +79,7 @@ func InitSysModuleDatabase() {
 	if len(newRoles) > 0 {
 		err := database.DB.Create(newRoles).Error
 		if err != nil {
-			config.Log.Errorf("写入系统角色数据失败：%v", err)
+			config2.Log.Errorf("写入系统角色数据失败：%v", err)
 		}
 	}
 
@@ -207,7 +207,7 @@ func InitSysModuleDatabase() {
 	if len(newMenus) > 0 {
 		err := database.DB.Create(newMenus).Error
 		if err != nil {
-			config.Log.Errorf("写入系统菜单数据失败：%v", err)
+			config2.Log.Errorf("写入系统菜单数据失败：%v", err)
 		}
 	}
 
@@ -274,7 +274,7 @@ func InitSysModuleDatabase() {
 	if len(newUsers) > 0 {
 		err := database.DB.Create(newUsers).Error
 		if err != nil {
-			config.Log.Errorf("写入用户数据失败：%v", err)
+			config2.Log.Errorf("写入用户数据失败：%v", err)
 		}
 	}
 
@@ -560,7 +560,7 @@ func InitSysModuleDatabase() {
 
 	if len(newApi) > 0 {
 		if err := database.DB.Create(newApi).Error; err != nil {
-			config.Log.Errorf("写入api数据失败：%v", err)
+			config2.Log.Errorf("写入api数据失败：%v", err)
 		}
 	}
 
@@ -571,9 +571,9 @@ func InitSysModuleDatabase() {
 				c.Keyword, c.Path, c.Method,
 			})
 		}
-		isAdd, err := config.CasbinEnforcer.AddPolicies(rules)
+		isAdd, err := config2.CasbinEnforcer.AddPolicies(rules)
 		if !isAdd {
-			config.Log.Errorf("写入casbin数据失败：%v", err)
+			config2.Log.Errorf("写入casbin数据失败：%v", err)
 		}
 	}
 }

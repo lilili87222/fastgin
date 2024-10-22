@@ -1,8 +1,8 @@
 package controller
 
 import (
+	config2 "fastgin/boost/config"
 	"fastgin/common/httpz"
-	"fastgin/config"
 	"fastgin/database"
 	"fastgin/modules/sys/dto"
 	"fastgin/modules/sys/model"
@@ -71,8 +71,8 @@ func (rc *RoleController) CreateRole(c *gin.Context) {
 		httpz.BadRequest(c, err.Error())
 		return
 	}
-	if err := config.Validate.Struct(&req); err != nil {
-		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
+	if err := config2.Validate.Struct(&req); err != nil {
+		errStr := err.(validator.ValidationErrors)[0].Translate(config2.Trans)
 		httpz.BadRequest(c, errStr)
 		return
 	}
@@ -120,8 +120,8 @@ func (rc *RoleController) Update(c *gin.Context) {
 		httpz.BadRequest(c, err.Error())
 		return
 	}
-	if err := config.Validate.Struct(&req); err != nil {
-		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
+	if err := config2.Validate.Struct(&req); err != nil {
+		errStr := err.(validator.ValidationErrors)[0].Translate(config2.Trans)
 		httpz.BadRequest(c, errStr)
 		return
 	}
@@ -168,7 +168,7 @@ func (rc *RoleController) Update(c *gin.Context) {
 		return
 	}
 	if req.Keyword != roles[0].Keyword {
-		rolePolicies, err2 := config.CasbinEnforcer.GetFilteredPolicy(0, roles[0].Keyword)
+		rolePolicies, err2 := config2.CasbinEnforcer.GetFilteredPolicy(0, roles[0].Keyword)
 		if err2 != nil {
 			httpz.ServerError(c, "获取角色关键字关联的权限接口失败")
 			return
@@ -184,17 +184,17 @@ func (rc *RoleController) Update(c *gin.Context) {
 			rolePoliciesCopy = append(rolePoliciesCopy, policyCopy)
 			policy[0] = req.Keyword
 		}
-		isAdded, _ := config.CasbinEnforcer.AddPolicies(rolePolicies)
+		isAdded, _ := config2.CasbinEnforcer.AddPolicies(rolePolicies)
 		if !isAdded {
 			httpz.ServerError(c, "更新角色成功，但角色关键字关联的权限接口更新失败")
 			return
 		}
-		isRemoved, _ := config.CasbinEnforcer.RemovePolicies(rolePoliciesCopy)
+		isRemoved, _ := config2.CasbinEnforcer.RemovePolicies(rolePoliciesCopy)
 		if !isRemoved {
 			httpz.ServerError(c, "更新角色成功，但角色关键字关联的权限接口更新失败")
 			return
 		}
-		err := config.CasbinEnforcer.LoadPolicy()
+		err := config2.CasbinEnforcer.LoadPolicy()
 		if err != nil {
 			httpz.ServerError(c, "更新角色成功，但角色关键字关联角色的权限接口策略加载失败")
 			return
@@ -249,8 +249,8 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 		return
 	}
 	// 参数校验
-	if err := config.Validate.Struct(&req); err != nil {
-		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
+	if err := config2.Validate.Struct(&req); err != nil {
+		errStr := err.(validator.ValidationErrors)[0].Translate(config2.Trans)
 		httpz.BadRequest(c, errStr)
 		return
 	}
@@ -406,8 +406,8 @@ func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
 		httpz.BadRequest(c, err.Error())
 		return
 	}
-	if err := config.Validate.Struct(&req); err != nil {
-		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
+	if err := config2.Validate.Struct(&req); err != nil {
+		errStr := err.(validator.ValidationErrors)[0].Translate(config2.Trans)
 		httpz.BadRequest(c, errStr)
 		return
 	}
@@ -440,7 +440,7 @@ func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
 	ctxRoles := ctxUser.Roles
 	ctxRolesPolicies := make([][]string, 0)
 	for _, role := range ctxRoles {
-		policy, err2 := config.CasbinEnforcer.GetFilteredPolicy(0, role.Keyword)
+		policy, err2 := config2.CasbinEnforcer.GetFilteredPolicy(0, role.Keyword)
 		if err2 != nil {
 			httpz.ServerError(c, "获取当前用户的角色关键字关联的权限接口失败")
 			return

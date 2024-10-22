@@ -2,7 +2,7 @@ package service
 
 import (
 	"errors"
-	"fastgin/config"
+	config2 "fastgin/boost/config"
 	"fmt"
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/disk"
@@ -36,7 +36,7 @@ func (s *SystemService) GetSystemInformation() map[string]any {
 		info := map[string]any{
 			//"os":              runtime.GOOS + "/" + runtime.GOARCH,
 			"num goroutine":   runtime.NumGoroutine(),
-			"website version": config.AppVersion,
+			"website version": config2.AppVersion,
 			"start time":      systemStartTime,
 			"server time":     time.Now().Format("2006-01-02 15:04:05"),
 		}
@@ -124,10 +124,10 @@ func (s *SystemService) Restart() error {
 	cmd := exec.Command(executable)
 	err = cmd.Start()
 	if err != nil {
-		config.Log.Error("重启服务失败!", err)
+		config2.Log.Error("重启服务失败!", err)
 		return err
 	}
-	config.Log.Info("重启服务成功,将杀死老进程!")
+	config2.Log.Info("重启服务成功,将杀死老进程!")
 	// 退出当前进程
 	os.Exit(0)
 	return nil

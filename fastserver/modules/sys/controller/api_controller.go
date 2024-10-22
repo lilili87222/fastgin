@@ -1,8 +1,8 @@
 package controller
 
 import (
+	"fastgin/boost/config"
 	"fastgin/common/httpz"
-	"fastgin/config"
 	"fastgin/database"
 	"fastgin/modules/sys/dto"
 	"fastgin/modules/sys/model"
