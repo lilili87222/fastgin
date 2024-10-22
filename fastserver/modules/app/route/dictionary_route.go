@@ -1,10 +1,10 @@
 package route
 
 import (
-	"fastgin/modules/app/controller"
-	"fastgin/modules/sys/model"
-	"fastgin/modules/sys/service"
-	"github.com/gin-gonic/gin"
+"fastgin/modules/app/controller"
+"fastgin/modules/sys/model"
+"fastgin/modules/sys/service"
+"github.com/gin-gonic/gin"
 )
 
 func InitDictionary(r *gin.RouterGroup) gin.IRoutes {
@@ -25,7 +25,7 @@ func InitDictionary(r *gin.RouterGroup) gin.IRoutes {
 	return r
 }
 func insertApiAndMenu(groupName string) {
-	tableDesc := "字典"
+	tableDesc := "字典表"
 	if tableDesc == "" {
 		tableDesc = groupName
 	}
@@ -34,55 +34,57 @@ func insertApiAndMenu(groupName string) {
 			Method:   "POST",
 			Path:     "/" + groupName + "/index",
 			Category: groupName,
-			Des:      "新增" + tableDesc,
+			Des:     "新增" + tableDesc,
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/" + groupName + "/index/:id",
 			Category: groupName,
-			Des:      "获取" + tableDesc,
+			Des:     "获取" + tableDesc,
 			Creator:  "系统",
 		},
 		{
 			Method:   "PATCH",
 			Path:     "/" + groupName + "/index/:id",
 			Category: groupName,
-			Des:      "更新" + tableDesc,
+			Des:     "更新" + tableDesc,
 			Creator:  "系统",
 		},
 		{
 			Method:   "DELETE",
 			Path:     "/" + groupName + "/index/:id",
 			Category: groupName,
-			Des:      "删除" + tableDesc,
+			Des:     "删除" + tableDesc,
 			Creator:  "系统",
 		},
 		{
 			Method:   "GET",
 			Path:     "/" + groupName + "/index",
 			Category: groupName,
-			Des:      "搜索" + tableDesc,
+			Des:     "搜索" + tableDesc,
 			Creator:  "系统",
 		},
 		{
 			Method:   "DELETE",
 			Path:     "/" + groupName + "/index",
 			Category: groupName,
-			Des:      "批量删除" + tableDesc,
+			Des:     "批量删除" + tableDesc,
 			Creator:  "系统",
 		},
 	}
+	service.NewApiService().InsertApisToAdmin(apis)
+
+	
 	menu := model.Menu{
 		Name:      "Dictionary",
 		Title:     tableDesc + "管理",
-		Icon:      "documentation",
+		Icon:      "",
 		Path:      groupName,
 		Component: "/app/" + groupName + "/index",
 		Sort:      11,
 		Creator:   "系统",
 	}
-
-	service.NewApiService().InsertApisToAdmin(apis)
 	service.NewMenuService().InsertAppMenuToAdmin(menu)
+	
 }
