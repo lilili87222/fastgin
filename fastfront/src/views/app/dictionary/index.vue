@@ -193,12 +193,12 @@ const onDelete = () => {
   })
     .then(async (res) => {
       loading.value = true;
-      const Ids: number[] = [];
+      const ids: number[] = [];
       multipleSelection.value.forEach((x: any) => {
-        Ids.push(x.id);
+        ids.push(x.id);
       });
       batchDeleteDictionaryByIds({
-        Ids,
+        ids,
       })
         .then((res) => {
           getTableData();
@@ -219,9 +219,9 @@ const handleSelectionChange = (val: TDictionaryTable[]) => {
 };
 
 // 单个删除
-const singleDelete = (Id) => {
+const singleDelete = (id: number) => {
   loading.value = true;
-  batchDeleteDictionaryById(Id)
+  batchDeleteDictionaryById(id)
     .then((res) => {
       getTableData();
       ElMessage.success(res.message);
