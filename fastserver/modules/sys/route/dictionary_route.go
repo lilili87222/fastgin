@@ -77,8 +77,8 @@ func insertApiAndMenu(groupName string) {
 
 	menu := model.Menu{
 		Name:      "Dictionary",
-		Title:     tableDesc + "管理",
-		Icon:      "list",
+		Title:     "配置管理",
+		Icon:      "edit",
 		Path:      groupName,
 		Component: "/system/" + groupName + "/index",
 		Sort:      11,

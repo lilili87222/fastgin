@@ -95,7 +95,7 @@ func InitSysModuleDatabase() {
 	treeStr := "tree"
 	exampleStr := "example"
 	logOperationStr := "/log/operation-log"
-	appOperationStr := "/app/operation"
+	//appOperationStr := "/app/operation"
 	documentationStr := "documentation"
 	//var uint6 uint = 6
 	menus := []model.Menu{
@@ -188,10 +188,10 @@ func InitSysModuleDatabase() {
 			ID:        8,
 			Name:      "App",
 			Title:     "应用功能",
-			Icon:      exampleStr,
+			Icon:      "star",
 			Path:      "/app",
 			Component: "Layout",
-			Redirect:  appOperationStr,
+			Redirect:  "/app/operation",
 			Sort:      20,
 			ParentID:  0,
 			Roles:     roles[:2],
