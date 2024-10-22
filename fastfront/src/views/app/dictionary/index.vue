@@ -91,7 +91,7 @@ import type {
 } from "@/types/app/dictionary";
 import { parseGoTime } from "@/utils/index";
 
-import Dialog from "./dialog.vue";
+import Dialog from "./dialog.vue.gohtml";
 
 const searchColumn = [
   { prop: "id", label: "ID", placeholder: "ID" },
@@ -193,12 +193,12 @@ const onDelete = () => {
   })
     .then(async (res) => {
       loading.value = true;
-      const ids: number[] = [];
+      const Ids: number[] = [];
       multipleSelection.value.forEach((x: any) => {
-        ids.push(x.id);
+        Ids.push(x.id);
       });
       batchDeleteDictionaryByIds({
-        ids,
+        Ids,
       })
         .then((res) => {
           getTableData();
@@ -219,9 +219,9 @@ const handleSelectionChange = (val: TDictionaryTable[]) => {
 };
 
 // 单个删除
-const singleDelete = (id: number) => {
+const singleDelete = (Id) => {
   loading.value = true;
-  batchDeleteDictionaryById(id)
+  batchDeleteDictionaryById(Id)
     .then((res) => {
       getTableData();
       ElMessage.success(res.message);

@@ -21,21 +21,26 @@
           :label="item.label"
           :prop="item.prop"
         >
+
+
           <template v-if="item.prop === 'des'">
             <el-input
-              v-model="formData[item.prop]"
-              type="textarea"
-              placeholder="说明"
-              show-word-limit
-              maxlength="100"
+                    v-model="formData[item.prop]"
+                    type="textarea"
+                    placeholder="说明"
+                    show-word-limit
+                    maxlength="100"
             />
           </template>
           <template v-else>
             <el-input
-              v-model="formData[item.prop]"
-              :placeholder="item.placeholder"
+                    v-model="formData[item.prop]"
+                    :placeholder="item.placeholder"
             ></el-input>
           </template>
+
+
+
         </el-form-item>
       </el-form>
     </template>
@@ -65,18 +70,18 @@ const direction = ref<DrawerProps["direction"]>("rtl");
 const emits = defineEmits(["getDictionaryData"]);
 
 const rules = {
-  key: [
-    { required: true, message: "请输入配置的Key", trigger: "blur" },
-    { min: 1, max: 20, message: "长度在 1 到 20 个字符", trigger: "blur" },
-  ],
-  value: [
-    { required: true, message: "请输入配置的值", trigger: "blur" },
-    { min: 1, max: 512, message: "长度在 1 到 512 个字符", trigger: "blur" },
-  ],
-  des: [
-    { required: false, message: "说明", trigger: "blur" },
-    { min: 1, max: 512, message: "长度在 1 到 512 个字符", trigger: "blur" },
-  ],
+          key: [
+            { required: true, message: "请输入配置的Key", trigger: "blur" },
+            { min: 1, max: 20, message: "长度在 1 到 20 个字符", trigger: "blur" },
+          ],
+          value: [
+            { required: true, message: "请输入配置的值", trigger: "blur" },
+            { min: 1, max: 512, message: "长度在 1 到 512 个字符", trigger: "blur" },
+          ],
+          des: [
+            { required: false, message: "说明", trigger: "blur" },
+            { min: 1, max: 512, message: "长度在 1 到 512 个字符", trigger: "blur" },
+          ],
 };
 
 const fromCol = [
@@ -120,6 +125,8 @@ const cancelClick = () => {
 
 //提交
 const submitForm = () => {
+  console.log(formData.value);
+
   formRef.value.validate((valid: boolean) => {
     if (valid) {
       let data = { ...formData.value };

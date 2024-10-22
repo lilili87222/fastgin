@@ -59,6 +59,7 @@ func InitConfig() {
 	viper.SetConfigType("yml")
 	viper.AddConfigPath(workDir)
 	viper.AddConfigPath("..")
+	viper.AddConfigPath("./generator")
 	// 读取配置信息
 	err = viper.ReadInConfig()
 

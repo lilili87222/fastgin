@@ -58,7 +58,7 @@ database:
 # casbin配置
 casbin:
   # 模型配置文件, config.yml相对路径
-  model-path: 'rbac_model.conf'
+  model-path: 'conf/rbac_model.conf'
 
 # jwt配置
 jwt:
@@ -78,4 +78,4 @@ rate-limit:
   # 桶容量
   capacity: 200
 
-storage: "storage.yml"
+storage: "conf/storage.yml"

@@ -16,7 +16,7 @@ database:
   init-data: true
   sqlite:
     # 数据库文件路径(config.yml相对路径, 也可以填绝对路径)
-    file-path: go_web_mini.db
+    file-path: fastgin.db
   mysql:
     # 用户名
     username: root
