@@ -1,44 +1,44 @@
 import { requestApi } from "../type";
-import type { T{{.ModelName}}Form, T{{.ModelName}}Query } from "@/types/app/{{.LowModelName}}";
+import type { T{{{.ModelName}}}Form, T{{{.ModelName}}}Query } from "@/types/app/{{{.LowModelName}}}";
 
 // 获取字典列表
-export function get{{.ModelName}}(params: T{{.ModelName}}Query) {
-  return requestApi<T{{.ModelName}}Query>(
-    "/api/auth/{{.LowModelName}}/index",
+export function get{{{.ModelName}}}(params: T{{{.ModelName}}}Query) {
+  return requestApi<T{{{.ModelName}}}Query>(
+    "/api/auth/{{{.LowModelName}}}/index",
     "get",
     params
   );
 }
 
 // 获取字典列表详情
-export function get{{.ModelName}}Detail(Id: number) {
-  return requestApi<any>(`/api/auth/{{.LowModelName}}/index/${Id}`, "get");
+export function get{{{.ModelName}}}Detail(Id: number) {
+  return requestApi<any>(`/api/auth/{{{.LowModelName}}}/index/${Id}`, "get");
 }
 
 // 新增字典列表
-export function create{{.ModelName}}(data: T{{.ModelName}}Form) {
-  return requestApi<T{{.ModelName}}Form>(
-    "/api/auth/{{.LowModelName}}/index",
+export function create{{{.ModelName}}}(data: T{{{.ModelName}}}Form) {
+  return requestApi<T{{{.ModelName}}}Form>(
+    "/api/auth/{{{.LowModelName}}}/index",
     "post",
     data
   );
 }
 
 // 更新字典
-export function update{{.ModelName}}ById(Id: number, data: T{{.ModelName}}Form) {
-  return requestApi<T{{.ModelName}}Form>(
-    `/api/auth/{{.LowModelName}}/index/${Id}`,
+export function update{{{.ModelName}}}ById(Id: number, data: T{{{.ModelName}}}Form) {
+  return requestApi<T{{{.ModelName}}}Form>(
+    `/api/auth/{{{.LowModelName}}}/index/${Id}`,
     "patch",
     data
   );
 }
 
 // 批量删除字典
-export function batchDelete{{.ModelName}}ByIds(data: any) {
-  return requestApi<any>("/api/auth/{{.LowModelName}}/index", "delete", data);
+export function batchDelete{{{.ModelName}}}ByIds(data: any) {
+  return requestApi<any>("/api/auth/{{{.LowModelName}}}/index", "delete", data);
 }
 
 // 单个删除字典
-export function batchDelete{{.ModelName}}ById(Id: number) {
-  return requestApi<any>(`/api/auth/{{.LowModelName}}/index/${Id}`, "delete");
+export function batchDelete{{{.ModelName}}}ById(Id: number) {
+  return requestApi<any>(`/api/auth/{{{.LowModelName}}}/index/${Id}`, "delete");
 }

@@ -6,7 +6,7 @@
     @close="drawerClose"
   >
     <template #header>
-      <h4>{ dialogType === "create" ? "新增字典" : "编辑字典" }</h4>
+      <h4>{{ dialogType === "create" ? "新增字典" : "编辑字典" }}</h4>
     </template>
     <template #default>
       <el-form
@@ -41,12 +41,12 @@
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import type { DrawerProps } from "element-plus";
-import type { T{{.ModelName}}Form } from "@/types/app/{{.LowModelName}}";
+import type { T{{{.ModelName}}}Form } from "@/types/app/{{{.LowModelName}}}";
 import {
-  create{{.ModelName}},
-  get{{.ModelName}}Detail,
-  update{{.ModelName}}ById,
-} from "@/api/app/{{.LowModelName}}";
+  create{{{.ModelName}}},
+  get{{{.ModelName}}}Detail,
+  update{{{.ModelName}}}ById,
+} from "@/api/app/{{{.LowModelName}}}";
 
 const drawer = ref(false);
 const direction = ref<DrawerProps["direction"]>("rtl");
@@ -54,26 +54,26 @@ const direction = ref<DrawerProps["direction"]>("rtl");
 const emits = defineEmits(["getDictionaryData"]);
 
 const rules = {
-{{- range .Columns }}
-    {{- if ne .Name "id" }}
-          {{ .Name }}: [
-            {{- if .IsNullable }}
-            { required: false, message: "{{ .Comment }}", trigger: "blur" },
-            {{- else }}
-            { required: true, message: "请输入{{ .Comment }}", trigger: "blur" },
-            {{- end }}
-            { min: 1, max: {{ .TypeSize }}, message: "长度在 1 到 {{ .TypeSize }} 个字符", trigger: "blur" },
+{{{- range .Columns }}}
+    {{{- if ne .Name "id" }}}
+          {{{ .Name }}}: [
+            {{{- if .IsNullable }}}
+            { required: false, message: "{{{ .Comment }}}", trigger: "blur" },
+            {{{- else }}}
+            { required: true, message: "请输入{{{ .Comment }}}", trigger: "blur" },
+            {{{- end }}}
+            { min: 1, max: {{{ .TypeSize }}}, message: "长度在 1 到 {{{ .TypeSize }}} 个字符", trigger: "blur" },
           ],
-    {{- end }}
-{{- end }}
+    {{{- end }}}
+{{{- end }}}
 };
 
 const fromCol = [
-  {{- range .Columns }}
-  {{- if ne .Name "id" }}
-  { prop: "{{ .Name }}", label: "{{ .Comment }}", placeholder: "{{ .Comment }}" },
-  {{- end }}
-  {{- end }}
+  {{{- range .Columns }}}
+  {{{- if ne .Name "id" }}}
+  { prop: "{{{ .Name }}}", label: "{{{ .Comment }}}", placeholder: "{{{ .Comment }}}" },
+  {{{- end }}}
+  {{{- end }}}
 ];
 
 const dialogType = ref("");
@@ -81,7 +81,7 @@ const dialogType = ref("");
 const openDrawer = (type: string, Id?: number) => {
   dialogType.value = type;
   if (type === "update" && Id) {
-    get{{.ModelName}}Detail(Id).then((res) => {
+    get{{{.ModelName}}}Detail(Id).then((res) => {
       formData.value = res.data;
     });
   }
@@ -92,7 +92,7 @@ defineExpose({
   openDrawer,
 });
 
-const formData = ref<T{{.ModelName}}Form>({
+const formData = ref<T{{{.ModelName}}}Form>({
   value: "",
   key: "",
   des: "",
@@ -117,18 +117,18 @@ const submitForm = () => {
     if (valid) {
       let data = { ...formData.value };
       if (dialogType.value === "create") {
-        create{{.ModelName}}(data).then((res) => {
+        create{{{.ModelName}}}(data).then((res) => {
           ElMessage.success(res.message);
           formRef.value.resetFields();
-          emits("get{{.ModelName}}Data");
+          emits("get{{{.ModelName}}}Data");
           drawer.value = false;
         });
       } else {
         if (!data.id) return;
-        update{{.ModelName}}ById(data.id, data).then((res) => {
+        update{{{.ModelName}}}ById(data.id, data).then((res) => {
           ElMessage.success(res.message);
           formRef.value.resetFields();
-          emits("get{{.ModelName}}Data");
+          emits("get{{{.ModelName}}}Data");
           drawer.value = false;
         });
       }

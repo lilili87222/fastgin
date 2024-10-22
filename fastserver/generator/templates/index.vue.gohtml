@@ -31,10 +31,10 @@
             <template
               v-else-if="['created_at', 'updated_at'].includes(item.prop)"
             >
-              { parseGoTime(scope.row[item.prop]) }
+              {{ parseGoTime(scope.row[item.prop]) }}
             </template>
             <template v-else>
-              { scope.row[item.prop] }
+              {{ scope.row[item.prop] }}
             </template>
           </template>
         </el-table-column>
@@ -79,39 +79,39 @@
 import { computed, onMounted, ref } from "vue";
 
 import {
-  batchDelete{{.ModelName}}ById,
-  batchDelete{{.ModelName}}ByIds,
-  get{{.ModelName}},
-} from "@/api/app/{{.LowModelName}}";
+  batchDelete{{{.ModelName}}}ById,
+  batchDelete{{{.ModelName}}}ByIds,
+  get{{{.ModelName}}},
+} from "@/api/app/{{{.LowModelName}}}";
 import SearchForm from "@/components/SearchForm/index.vue";
 import Pagination from "@/components/Pagination/index.vue";
 import type {
-  T{{.ModelName}}Table,
-  T{{.ModelName}}Query,
-} from "@/types/app/{{.LowModelName}}";
+  T{{{.ModelName}}}Table,
+  T{{{.ModelName}}}Query,
+} from "@/types/app/{{{.LowModelName}}}";
 import { parseGoTime } from "@/utils/index";
 
 import Dialog from "./dialog.vue";
 
 const searchColumn = [
-  {{- range .Columns }}
-  { prop: "{{ .Name }}", label: "{{ .Comment }}", placeholder: "{{ .Comment }}" },
-  {{- end }}
+  {{{- range .Columns }}}
+  { prop: "{{{ .Name }}}", label: "{{{ .Comment }}}", placeholder: "{{{ .Comment }}}" },
+  {{{- end }}}
 ];
 
 const tableColumn = [
-  {{- range .Columns }}
-  { prop: "{{ .Name }}", label: "{{ .Comment }}", minWidth: 110 },
-  {{- end }}
+  {{{- range .Columns }}}
+  { prop: "{{{ .Name }}}", label: "{{{ .Comment }}}", minWidth: 110 },
+  {{{- end }}}
 ];
 
 // 查询参数
-const params = ref<T{{.ModelName}}Query>({
+const params = ref<T{{{.ModelName}}}Query>({
   page_num: 1,
   page_size: 10,
 });
 // 表格数据
-const tableData = ref<T{{.ModelName}}Table[]>([]);
+const tableData = ref<T{{{.ModelName}}}Table[]>([]);
 const total = ref(0);
 const loading = ref(false);
 
@@ -122,7 +122,7 @@ onMounted(() => {
 // 获取表格数据
 const getTableData = () => {
   loading.value = true;
-  get{{.ModelName}}(params.value)
+  get{{{.ModelName}}}(params.value)
     .then((res) => {
       tableData.value = res.data.data;
       total.value = res.data.total;
@@ -143,7 +143,7 @@ const update = (Id: number) => {
 };
 
 //清空
-const onClear = (form: T{{.ModelName}}Query) => {
+const onClear = (form: T{{{.ModelName}}}Query) => {
   params.value = form;
   params.value.page_num = 1;
   params.value.page_size = 10;
@@ -155,7 +155,7 @@ const getDictionaryData = () => {
 };
 
 // 表格多选
-const multipleSelection = ref<T{{.ModelName}}Table[]>([]);
+const multipleSelection = ref<T{{{.ModelName}}}Table[]>([]);
 const searchAction = computed(() => [
   { label: "查询", event: "search", type: "primary" },
   { label: "新增", event: "add", type: "warning" },
@@ -175,7 +175,7 @@ const onPaginaion = (val: any) => {
 };
 
 //搜索
-const onSearch = (form: T{{.ModelName}}Query) => {
+const onSearch = (form: T{{{.ModelName}}}Query) => {
   params.value = form;
   params.value.page_num = 1;
   params.value.page_size = 10;
@@ -195,7 +195,7 @@ const onDelete = () => {
       multipleSelection.value.forEach((x: any) => {
         Ids.push(x.id);
       });
-      batchDelete{{.ModelName}}ByIds({
+      batchDelete{{{.ModelName}}}ByIds({
         Ids,
       })
         .then((res) => {
@@ -212,14 +212,14 @@ const onDelete = () => {
 };
 
 // 表格多选
-const handleSelectionChange = (val: T{{.ModelName}}Table[]) => {
+const handleSelectionChange = (val: T{{{.ModelName}}}Table[]) => {
   multipleSelection.value = val;
 };
 
 // 单个删除
 const singleDelete = (Id) => {
   loading.value = true;
-  batchDelete{{.ModelName}}ById(Id)
+  batchDelete{{{.ModelName}}}ById(Id)
     .then((res) => {
       getTableData();
       ElMessage.success(res.message);

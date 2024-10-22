@@ -1,17 +1,17 @@
-export interface T{{.ModelName}}Table {
-  {{- range .Columns }}
-    {{ .Name }}: {{ .Type }};
-  {{- end }}
+export interface T{{{.ModelName}}}Table {
+  {{{- range .Columns }}}
+    {{{ .Name }}}: {{{ .Type }}};
+  {{{- end }}}
 }
-export interface T{{.ModelName}}Query {
+export interface T{{{.ModelName}}}Query {
     page_num: number;
     page_size: number;
-  {{- range .Columns }}
-    {{ .Name }}?: {{ .Type }};
-  {{- end }}
+  {{{- range .Columns }}}
+    {{{ .Name }}}?: {{{ .Type }}};
+  {{{- end }}}
 }
-export interface T{{.ModelName}}Form {
-  {{- range .Columns }}
-    {{ .Name }}{{ if .IsPriKey }}?{{ end }}: {{ .Type }};
-  {{- end }}
+export interface T{{{.ModelName}}}Form {
+  {{{- range .Columns }}}
+    {{{ .Name }}}{{{ if .IsPriKey }}}?{{{ end }}}: {{{ .Type }}};
+  {{{- end }}}
 }

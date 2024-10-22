@@ -73,16 +73,16 @@ func GenerateAll() {
 
 func Generate(tc TableConfig) error {
 	GenerateModel(tc)
-	if err := GenerateFromTemplate(tc, "dao"); err != nil {
+	if err := GenerateGoFromTemplate(tc, "dao"); err != nil {
 		return err
 	}
-	if err := GenerateFromTemplate(tc, "service"); err != nil {
+	if err := GenerateGoFromTemplate(tc, "service"); err != nil {
 		return err
 	}
-	if err := GenerateFromTemplate(tc, "controller"); err != nil {
+	if err := GenerateGoFromTemplate(tc, "controller"); err != nil {
 		return err
 	}
-	if err := GenerateFromTemplate(tc, "route"); err != nil {
+	if err := GenerateGoFromTemplate(tc, "route"); err != nil {
 		return err
 	}
 	return nil
@@ -96,7 +96,7 @@ func GenerateModel(tc TableConfig) {
 	g.GenerateModelAs(tc.PrefixTableName, tc.ModelName)
 	g.Execute()
 }
-func GenerateFromTemplate(tc TableConfig, templateName string) error {
+func GenerateGoFromTemplate(tc TableConfig, templateName string) error {
 	tmpl, err := template.New(templateName + ".tpl").Funcs(template.FuncMap{
 		"ToCamelCase": ToCamelCase,
 		"ToLower":     strings.ToLower,
@@ -130,10 +130,10 @@ func GenerateViewFromTemplate(tc TableConfig, templateName string, outputDir str
 	outputPath := filepath.Join(tc.OutDirFront, outputDir, templateName)
 	os.MkdirAll(filepath.Dir(outputPath), os.ModePerm)
 
-	tmpl, err := template.New(templateName + ".gohtml").Funcs(template.FuncMap{
+	tmpl, err := template.New(templateName+".gohtml").Funcs(template.FuncMap{
 		"ToCamelCase": ToCamelCase,
 		"ToLower":     strings.ToLower,
-	}).ParseFiles("generator/templates/" + templateName + ".gohtml")
+	}).Delims("{{{", "}}}").ParseFiles("generator/templates/" + templateName + ".gohtml")
 	if err != nil {
 		return err
 	}
