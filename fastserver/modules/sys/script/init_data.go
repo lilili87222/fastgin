@@ -12,7 +12,7 @@ import (
 
 // 初始化mysql数据
 func InitSysModuleDatabase() {
-	tableNames, e := database.GetTableNames(database.DB, config2.Instance.Database.MysqlConfig.Database)
+	tableNames, e := database.GetTableNames(database.DB, config2.Configs.Database.MysqlConfig.Database)
 	if e != nil {
 		config2.Log.Errorf("获取数据库表名失败：%v", e)
 		panic(e)

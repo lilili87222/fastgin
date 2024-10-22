@@ -13,19 +13,19 @@ import (
 var DB *gorm.DB
 
 func InitDatabaseConnection() {
-	config2.Log.Infof("选中的数据库类型" + config2.Instance.Database.Type)
-	if config2.Instance.Database.Type == "mysql" {
+	config2.Log.Infof("选中的数据库类型" + config2.Configs.Database.Type)
+	if config2.Configs.Database.Type == "mysql" {
 		initMysql()
-	} else if config2.Instance.Database.Type == "sqlite" {
+	} else if config2.Configs.Database.Type == "sqlite" {
 		initSqlLite()
 	} else {
-		panic(fmt.Errorf("mysql and sqllite support by default,不支持的数据库类型: %s", config2.Instance.Database.Type))
+		panic(fmt.Errorf("mysql and sqllite support by default,不支持的数据库类型: %s", config2.Configs.Database.Type))
 	}
 }
 
 // 初始化mysql数据库
 func initMysql() {
-	mysqlConfig := config2.Instance.Database.MysqlConfig
+	mysqlConfig := config2.Configs.Database.MysqlConfig
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&collation=%s&%s",
 		mysqlConfig.Username,
 		mysqlConfig.Password,
@@ -60,7 +60,7 @@ func initMysql() {
 
 // 初始化sqllite数据库
 func initSqlLite() {
-	var sqlConfig = config2.Instance.Database.SqlLiteConfig
+	var sqlConfig = config2.Configs.Database.SqlLiteConfig
 	db, err := gorm.Open(sqlite.Open(sqlConfig.FilePath), &gorm.Config{
 		// 禁用外键(指定外键时不会在sqlite创建真实的外键约束)
 		DisableForeignKeyConstraintWhenMigrating: true,

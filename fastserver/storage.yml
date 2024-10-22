@@ -1,0 +1,56 @@
+storage_type: local
+
+local:
+  path: uploads/file
+  store-path: uploads/file
+
+aliyun-oss:
+  endpoint: yourEndpoint
+  access-key-id: yourAccessKeyId
+  access-key-secret: yourAccessKeySecret
+  bucket-name: yourBucketName
+  bucket-url: yourBucketUrl
+  base-path: yourBasePath
+
+qiniu:
+  zone: ZoneHuaDong
+  bucket: "bucket"
+  img-path: "imgpath"
+  access-key: "accesskey"
+  secret-key: "secretkey"
+  use-https: false
+  use-cdn-domains: false
+
+aws-s3:
+    bucket: xxxxx-10005608
+    region: ap-shanghai
+    endpoint: ""
+    secret-id: your-secret-id
+    secret-key: your-secret-key
+    base-url: https://fastgin.com
+    path-prefix: fastgin
+    s3-force-path-style: false
+    disable-ssl: false
+
+cloudflare-r2:
+  bucket: xxxx0bucket
+  base-url: https://fastgin.com
+  path: uploads
+  account-id: xxx_account_id
+  access-key-id: xxx_key_id
+  secret-access-key: xxx_secret_key
+
+hua-wei-obs:
+  path: you-path
+  bucket: you-bucket
+  endpoint: you-endpoint
+  access-key: you-access-key
+  secret-key: you-secret-key
+
+tencent-cos:
+  bucket: xxxxx-10005608
+  region: ap-shanghai
+  secret-id: your-secret-id
+  secret-key: your-secret-key
+  base-url: https://fastgin.com
+  path-prefix: fastgin

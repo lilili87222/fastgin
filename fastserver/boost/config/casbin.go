@@ -14,7 +14,7 @@ func InitCasbinEnforcer(db *gorm.DB) (*casbin.Enforcer, error) {
 	if err != nil {
 		return nil, err
 	}
-	CasbinEnforcer, err = casbin.NewEnforcer(Instance.Casbin.ModelPath, a)
+	CasbinEnforcer, err = casbin.NewEnforcer(Configs.Casbin.ModelPath, a)
 	if err != nil {
 		return nil, err
 	}

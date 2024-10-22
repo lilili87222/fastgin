@@ -77,3 +77,5 @@ rate-limit:
   fill-interval: 50
   # 桶容量
   capacity: 200
+
+storage: "storage.yml"

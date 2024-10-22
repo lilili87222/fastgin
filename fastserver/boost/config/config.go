@@ -14,7 +14,7 @@ import (
 const AppVersion = "v1.0.0"
 
 // 全局配置变量
-var Instance = new(config)
+var Configs = new(config)
 
 type config struct {
 	System *SystemConfig `mapstructure:"system" json:"system"`
@@ -30,6 +30,7 @@ type config struct {
 		MysqlConfig   *MysqlConfig   `mapstructure:"mysql" json:"mysql"`
 		SqlLiteConfig *SqlLiteConfig `mapstructure:"sqlite" json:"sqlite"`
 	} `mapstructure:"database" json:"database"`
+	Storage string `mapstructure:"storage" json:"storage"`
 }
 
 type SystemConfig struct {
@@ -102,23 +103,23 @@ func InitConfig() {
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		// 将读取的配置信息保存至全局变量Conf
-		if err := viper.Unmarshal(Instance); err != nil {
+		if err := viper.Unmarshal(Configs); err != nil {
 			panic(fmt.Errorf("初始化配置文件失败:%s \n", err))
 		}
 		// 读取rsa key
-		Instance.System.RSAPublicBytes = util.RSAReadKeyFromFile(Instance.System.RSAPublicKey)
-		Instance.System.RSAPrivateBytes = util.RSAReadKeyFromFile(Instance.System.RSAPrivateKey)
+		Configs.System.RSAPublicBytes = util.RSAReadKeyFromFile(Configs.System.RSAPublicKey)
+		Configs.System.RSAPrivateBytes = util.RSAReadKeyFromFile(Configs.System.RSAPrivateKey)
 	})
 
 	if err != nil {
 		panic(fmt.Errorf("读取配置文件失败:%s \n", err))
 	}
 	// 将读取的配置信息保存至全局变量Conf
-	if err := viper.Unmarshal(Instance); err != nil {
+	if err := viper.Unmarshal(Configs); err != nil {
 		panic(fmt.Errorf("初始化配置文件失败:%s \n", err))
 	}
 	// 读取rsa key
-	Instance.System.RSAPublicBytes = util.RSAReadKeyFromFile(Instance.System.RSAPublicKey)
-	Instance.System.RSAPrivateBytes = util.RSAReadKeyFromFile(Instance.System.RSAPrivateKey)
+	Configs.System.RSAPublicBytes = util.RSAReadKeyFromFile(Configs.System.RSAPublicKey)
+	Configs.System.RSAPrivateBytes = util.RSAReadKeyFromFile(Configs.System.RSAPrivateKey)
 
 }
