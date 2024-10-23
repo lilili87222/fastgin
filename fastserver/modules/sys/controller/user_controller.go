@@ -155,7 +155,7 @@ func (uc *UserController) ChangePwd(c *gin.Context) {
 		return
 	}
 	// 更新密码
-	err = uc.userService.ChangePwd(user.UserName, util.GenPasswd(req.NewPassword))
+	err = uc.userService.ChangePwd(user.UserName, req.NewPassword)
 	if err != nil {
 		httpz.ServerError(c, "更新密码失败: "+err.Error())
 		return
@@ -242,8 +242,8 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 		req.Password = "123456"
 	}
 	user := model.User{
-		UserName: req.Username,
-		Password: util.GenPasswd(req.Password),
+		UserName: req.UserName,
+		Password: req.Password,
 		Mobile:   req.Mobile,
 		Avatar:   req.Avatar,
 		NickName: req.NickName,
@@ -344,7 +344,7 @@ func (uc *UserController) Update(c *gin.Context) {
 	user := model.User{
 		ID:        oldUser.ID,
 		CreatedAt: oldUser.CreatedAt,
-		UserName:  req.Username,
+		UserName:  req.UserName,
 		Password:  oldUser.Password,
 		Mobile:    req.Mobile,
 		Avatar:    req.Avatar,

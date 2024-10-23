@@ -2,13 +2,15 @@ package dto
 
 // 用户登录结构体
 type RegisterAndLoginRequest struct {
-	UserName string `form:"user_name" json:"user_name" binding:"required"`
-	Password string `form:"password" json:"password" binding:"required"`
+	UserName    string `form:"user_name" json:"user_name" binding:"required"`
+	Password    string `form:"password" json:"password" binding:"required"`
+	CaptchaId   string `form:"captcha_id" json:"captcha_id" binding:"required"`
+	CaptchaCode string `form:"captcha_code" json:"captcha_code" binding:"required"`
 }
 
 // 创建用户结构体
 type CreateUserRequest struct {
-	Username string   `form:"user_name" json:"user_name" validate:"required,min=2,max=20"`
+	UserName string   `form:"user_name" json:"user_name" validate:"required,min=2,max=20"`
 	Password string   `form:"password" json:"password"`
 	Mobile   string   `form:"mobile" json:"mobile" validate:"required,checkMobile"`
 	Avatar   string   `form:"avatar" json:"avatar"`
@@ -32,4 +34,21 @@ type UserListRequest struct {
 type ChangePwdRequest struct {
 	OldPassword string `json:"old_password" form:"old_password" validate:"required"`
 	NewPassword string `json:"new_password" form:"new_password" validate:"required"`
+}
+
+// 注册用户和重置密码
+type RegisterRequest struct {
+	UserName     string `form:"user_name" json:"user_name" binding:"required"`
+	Password     string `form:"password" json:"password" binding:"required"`
+	Repassword   string `form:"repassword" json:"repassword" binding:"required"`
+	VerifyCodeId string `form:"verify_code_id" json:"verify_code_id" binding:"required"`
+	VerifyCode   string `form:"verify_code" json:"verify_code" binding:"required"`
+	Action       string `form:"action" json:"action" binding:"required"`
+	//CaptchaId    string `form:"captcha_id" json:"captcha_id" binding:"required"`
+	//CaptchaCode  string `form:"captcha_code" json:"captcha_code" binding:"required"`
+}
+type SendVerifyCodeRequest struct {
+	UserName    string `form:"user_name" json:"user_name" binding:"required"`
+	CaptchaId   string `form:"captcha_id" json:"captcha_id" binding:"required"`
+	CaptchaCode string `form:"captcha_code" json:"captcha_code" binding:"required"`
 }

@@ -6,21 +6,19 @@ package model
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 const TableNameDictionary = "sys_dictionary"
 
 // Dictionary 字典表
 type Dictionary struct {
-	ID        int32          `gorm:"column:id;type:int(10) unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"`             // ID
-	CreatedAt time.Time      `gorm:"column:created_at;type:datetime(3);default:CURRENT_TIMESTAMP(3);comment:创建时间" json:"created_at"` // 创建时间
-	UpdatedAt time.Time      `gorm:"column:updated_at;type:datetime(3);default:CURRENT_TIMESTAMP(3);comment:更新时间" json:"updated_at"` // 更新时间
-	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;type:datetime(3);comment:删除时间" json:"deleted_at"`                              // 删除时间
-	Key       string         `gorm:"column:key;type:varchar(20);not null;comment:配置的Key" json:"key"`                                 // 配置的Key
-	Value     string         `gorm:"column:value;type:varchar(512);not null;comment:配置的值" json:"value"`                              // 配置的值
-	Des       string         `gorm:"column:des;type:varchar(512);comment:说明" json:"des"`                                             // 说明
+	ID        int32     `gorm:"column:id;type:int(10) unsigned;primaryKey;autoIncrement:true;comment:ID" json:"id"`             // ID
+	CreatedAt time.Time `gorm:"column:created_at;type:datetime(3);default:CURRENT_TIMESTAMP(3);comment:创建时间" json:"created_at"` // 创建时间
+	UpdatedAt time.Time `gorm:"column:updated_at;type:datetime(3);default:CURRENT_TIMESTAMP(3);comment:更新时间" json:"updated_at"` // 更新时间
+	DeletedAt time.Time `gorm:"column:deleted_at;type:datetime(3);comment:删除时间" json:"deleted_at"`                              // 删除时间
+	Key       string    `gorm:"column:key;type:varchar(20);not null;comment:配置的Key" json:"key"`                                 // 配置的Key
+	Value     string    `gorm:"column:value;type:varchar(512);not null;comment:配置的值" json:"value"`                              // 配置的值
+	Des       string    `gorm:"column:des;type:varchar(512);comment:说明" json:"des"`                                             // 说明
 }
 
 // TableName Dictionary's table name

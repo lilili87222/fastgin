@@ -10,6 +10,7 @@ import (
 	"fastgin/modules/sys/service"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/mojocn/base64Captcha"
 	"time"
 )
 
@@ -76,7 +77,10 @@ func login(c *gin.Context) (interface{}, error) {
 	if err := c.ShouldBind(&req); err != nil {
 		return "", err
 	}
-
+	verifyOK := base64Captcha.DefaultMemStore.Verify(req.CaptchaId, req.CaptchaCode, true)
+	if !verifyOK {
+		return nil, fmt.Errorf("验证码错误")
+	}
 	// 密码通过RSA解密
 	//decodeData, err := util.RSADecrypt([]byte(req.Password), config.Configs.System.RSAPrivateBytes)
 	//if err != nil {

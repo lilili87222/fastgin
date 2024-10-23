@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"fastgin/common/cache"
 	"fastgin/common/httpz"
 	"fastgin/common/util"
 	"fastgin/database"
@@ -10,16 +11,12 @@ import (
 	"fastgin/modules/sys/model"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
-	"github.com/patrickmn/go-cache"
 	"slices"
-	"time"
 )
 
 type UserService struct {
 	userDao *dao.UserDao
 }
-
-var userInfoCache = cache.New(24*time.Hour, 48*time.Hour)
 
 func NewUserService() *UserService {
 	return &UserService{userDao: dao.NewUserDao()}
@@ -62,17 +59,16 @@ func (us *UserService) GetCurrentUser(c *gin.Context) (model.User, error) {
 		return model.User{}, errors.New("用户未登录")
 	}
 	u, _ := ctxUser.(model.User)
-
-	cacheUser, found := userInfoCache.Get(u.UserName)
+	cacheUser, found := cache.Cache.Get(u.UserName)
 	if found {
 		return cacheUser.(model.User), nil
 	}
 
 	user, err := us.userDao.GetUserWithRoles(u.ID)
 	if err != nil {
-		userInfoCache.Delete(u.UserName)
+		cache.Cache.Delete(u.UserName)
 	} else {
-		userInfoCache.Set(u.UserName, user, cache.DefaultExpiration)
+		cache.Cache.Set(u.UserName, user, 0)
 	}
 	return user, err
 }
@@ -124,17 +120,18 @@ func (us *UserService) GetUsersWithRoleIds(req *httpz.SearchRequest) ([]dto.User
 }
 
 // 更新密码
-func (us *UserService) ChangePwd(username string, hashNewPasswd string) error {
+func (us *UserService) ChangePwd(username string, newPasswd string) error {
+	hashNewPasswd := util.GenPasswd(newPasswd)
 	err := us.userDao.ChangePwd(username, hashNewPasswd)
 	if err == nil {
-		cacheUser, found := userInfoCache.Get(username)
+		cacheUser, found := cache.Cache.Get(username)
 		if found {
 			user := cacheUser.(model.User)
 			user.Password = hashNewPasswd
-			userInfoCache.Set(username, user, cache.DefaultExpiration)
+			cache.Cache.Set(username, user, 0)
 		} else {
 			user, _ := us.userDao.GetUserByUsername(username)
-			userInfoCache.Set(username, user, cache.DefaultExpiration)
+			cache.Cache.Set(username, user, 0)
 		}
 	}
 	return err
@@ -142,15 +139,15 @@ func (us *UserService) ChangePwd(username string, hashNewPasswd string) error {
 
 // 创建用户
 func (us *UserService) CreateUser(user *model.User) error {
+	user.Password = util.GenPasswd(user.Password)
 	return database.Create(user)
-	//return us.userDao.CreateUser(user)
 }
 
 // 更新用户
 func (us *UserService) UpdateUser(user *model.User) error {
 	err := us.userDao.UpdateUser(user)
 	if err == nil {
-		userInfoCache.Set(user.UserName, *user, cache.DefaultExpiration)
+		cache.Cache.Set(user.UserName, *user, 0)
 	}
 	return err
 }
@@ -165,7 +162,7 @@ func (us *UserService) BatchDeleteUserByIds(ids []uint64) error {
 	err = us.userDao.BatchDeleteUserByIds(ids)
 	if err == nil {
 		for _, user := range users {
-			userInfoCache.Delete(user.UserName)
+			cache.Cache.Delete(user.UserName)
 		}
 	}
 	return err
@@ -195,7 +192,7 @@ func (us *UserService) GetUserMinRoleSortsByIds(ids []uint64) ([]int, error) {
 
 // 设置用户信息缓存
 func (us *UserService) SetUserInfoCache(username string, user model.User) {
-	userInfoCache.Set(username, user, cache.DefaultExpiration)
+	cache.Cache.Set(username, user, 0)
 }
 
 // 根据角色ID更新拥有该角色的用户信息缓存
@@ -207,9 +204,9 @@ func (us *UserService) UpdateUserInfoCacheByRoleId(roleId uint64) error {
 	}
 
 	for _, user := range role.Users {
-		_, found := userInfoCache.Get(user.UserName)
+		_, found := cache.Cache.Get(user.UserName)
 		if found {
-			userInfoCache.Set(user.UserName, *user, cache.DefaultExpiration)
+			cache.Cache.Set(user.UserName, *user, 0)
 		}
 	}
 	return nil
@@ -217,5 +214,5 @@ func (us *UserService) UpdateUserInfoCacheByRoleId(roleId uint64) error {
 
 // 清理所有用户信息缓存
 func (us *UserService) ClearUserInfoCache() {
-	userInfoCache.Flush()
+	cache.Cache.Flush()
 }
