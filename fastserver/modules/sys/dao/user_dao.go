@@ -11,10 +11,10 @@ func NewUserDao() *UserDao {
 	return &UserDao{}
 }
 
-func (ur *UserDao) GetUserByUsername(username string) (model.User, error) {
+func (ur *UserDao) GetUserByUsername(username string) (*model.User, error) {
 	var user model.User
 	err := database.DB.Where("user_name = ?", username).Preload("Roles").First(&user).Error
-	return user, err
+	return &user, err
 }
 
 func (ur *UserDao) GetUserWithRoles(id uint64) (model.User, error) {

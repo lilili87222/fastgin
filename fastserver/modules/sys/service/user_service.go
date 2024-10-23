@@ -47,9 +47,9 @@ func (us *UserService) Login(user *model.User) (*model.User, error) {
 
 	err = util.ComparePasswd(firstUser.Password, user.Password)
 	if err != nil {
-		return &firstUser, errors.New("密码错误")
+		return firstUser, errors.New("密码错误")
 	}
-	return &firstUser, nil
+	return firstUser, nil
 }
 
 // 获取当前登录用户信息
@@ -141,6 +141,9 @@ func (us *UserService) ChangePwd(username string, newPasswd string) error {
 func (us *UserService) CreateUser(user *model.User) error {
 	user.Password = util.GenPasswd(user.Password)
 	return database.Create(user)
+}
+func (us *UserService) GetUserByUsername(username string) (*model.User, error) {
+	return us.userDao.GetUserByUsername(username)
 }
 
 // 更新用户

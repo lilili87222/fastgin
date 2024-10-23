@@ -68,24 +68,27 @@ func (b *BaseController) Register(c *gin.Context) {
 		httpz.BadRequest(c, "验证码错误")
 		return
 	}
-	if req.Action == "register" {
+	userService := service.NewUserService()
+	u, _ := userService.GetUserByUsername(req.UserName)
+	//registor:=u==nil
+	if u == nil {
 		user := model.User{
 			UserName: req.UserName,
 			Password: req.Password,
 			Status:   1,
 			Creator:  "register",
-			Roles:    []model.Role{{ID: 1}},
+			Roles:    []model.Role{{ID: 2}},
 		}
 		if util.IsPhoneNumber(req.UserName) {
 			user.Mobile = req.UserName
 		}
-		err := service.NewUserService().CreateUser(&user)
+		err := userService.CreateUser(&user)
 		if err != nil {
 			httpz.ServerError(c, "注册失败: "+err.Error())
 			return
 		}
 	} else {
-		err := service.NewUserService().ChangePwd(req.UserName, req.Password)
+		err := userService.ChangePwd(req.UserName, req.Password)
 		if err != nil {
 			httpz.ServerError(c, "更新密码失败: "+err.Error())
 			return
