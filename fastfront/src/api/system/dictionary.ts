@@ -1,5 +1,8 @@
 import { requestApi } from "../type";
-import type { TDictionaryForm, TDictionaryQuery } from "@/types/app/dictionary";
+import type {
+  TDictionaryForm,
+  TDictionaryQuery,
+} from "@/types/system/dictionary";
 
 // 获取字典列表
 export function getDictionary(params: TDictionaryQuery) {

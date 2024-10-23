@@ -102,7 +102,7 @@
 import { reactive, ref } from "vue";
 import type { DrawerProps, FormRules } from "element-plus";
 
-import { createRole, updateRoleById } from "@/api/system/role";
+import { createMenu, updateMenuById } from "@/api/system/menu";
 import IconSelect from "@/components/IconSelect/index.vue";
 import type { TMenuForm } from "@/types/system/menu";
 
@@ -212,14 +212,14 @@ const submitForm = () => {
       let data = { ...formData.value };
 
       if (dialogType.value === "create") {
-        createRole(data).then((res) => {
+        createMenu(data).then((res) => {
           ElMessage.success(res.message);
           formRef.value.resetFields();
           emits("getMenuData");
           drawer.value = false;
         });
       } else {
-        updateRoleById(data.id, data).then((res) => {
+        updateMenuById(data.id, data).then((res) => {
           ElMessage.success(res.message);
           formRef.value.resetFields();
           emits("getMenuData");
