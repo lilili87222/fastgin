@@ -4,7 +4,7 @@
     <el-form-item prop="username">
       <el-input
         v-model="loginForm.username"
-        placeholder="用户名"
+        placeholder="邮箱/手机号"
         size="large"
         class="input-field"
       >
@@ -31,7 +31,12 @@
     <el-form-item>
       <div class="checkbox-container">
         <el-checkbox v-model="rememberMe">记住我</el-checkbox>
-        <el-button type="primary" link @click="toForget"> 忘记密码? </el-button>
+        <el-button type="primary" link @click="changeShowForm('forget')">
+          忘记密码?
+        </el-button>
+        <el-button type="primary" link @click="changeShowForm('sign')">
+          立即注册
+        </el-button>
       </div>
     </el-form-item>
     <el-form-item>
@@ -43,31 +48,55 @@
         >登 录</el-button
       >
     </el-form-item>
-    <el-form-item>
-      <div class="button-container">
-        <el-button @click="changeShowForm">注 册</el-button>
-      </div>
-    </el-form-item>
   </el-form>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watch } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { ElForm } from "element-plus";
 import store from "@/store";
+import Cookies from "js-cookie";
 
 const loginForm = reactive({
-  username: "admin",
-  password: "123456",
+  username: "",
+  password: "",
 });
 
 const rememberMe = ref(false);
 
+// 验证手机号或邮箱的规则
+const validateUsername = (rule, value, callback) => {
+  const phoneReg = /^1[3-9][0-9]\d{8}$/; // 手机号正则表达式
+  const emailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // 邮箱正则表达式
+
+  if (!value) {
+    return callback(new Error("请输入用户名/邮箱"));
+  } else if (
+    phoneReg.test(value) ||
+    emailReg.test(value) ||
+    value === "admin"
+  ) {
+    callback();
+  } else {
+    return callback(new Error("请输入有效的用户名或邮箱"));
+  }
+};
+
+onMounted(() => {
+  const rememberMeCookie = Cookies.get("rememberMe");
+  if (rememberMeCookie) {
+    const rememberMeData = JSON.parse(rememberMeCookie);
+    loginForm.username = rememberMeData.username;
+    loginForm.password = rememberMeData.password;
+  }
+});
+
 const loginRules = {
-  username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+  username: [{ required: true, validator: validateUsername, trigger: "blur" }],
   password: [{ required: true, message: "请输入密码", trigger: "blur" }],
 };
+
 const redirect = ref();
 const otherQuery = ref({});
 const router = useRouter();
@@ -83,6 +112,9 @@ const submitSignIn = () => {
         .user()
         .login(loginForm)
         .then(() => {
+          rememberMe.value
+            ? Cookies.set("rememberMe", JSON.stringify(loginForm))
+            : Cookies.remove("rememberMe");
           router.push({
             path: redirect.value || "/",
             query: otherQuery.value,
@@ -119,12 +151,8 @@ watch(
 );
 
 const emits = defineEmits(["changeShowForm"]);
-const changeShowForm = () => {
-  emits("changeShowForm", "sign");
-};
-
-const toForget = () => {
-  emits("changeShowForm", "forget");
+const changeShowForm = (value: string) => {
+  emits("changeShowForm", value);
 };
 </script>
 
