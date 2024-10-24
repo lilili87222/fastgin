@@ -15,7 +15,7 @@ func getSmtpClient() (*mail.SMTPClient, error) {
 	server.Port = viper.GetInt("email.port")
 	server.Username = viper.GetString("email.account")
 	server.Password = viper.GetString("email.password")
-	if viper.GetBool("email.is_ssl") {
+	if viper.GetBool("email.is-ssl") {
 		server.Encryption = mail.EncryptionSTARTTLS
 	}
 	client, e := server.Connect()

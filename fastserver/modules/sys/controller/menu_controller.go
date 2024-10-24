@@ -1,14 +1,10 @@
 package controller
 
 import (
-	"fastgin/boost/config"
 	"fastgin/common/httpz"
-	"fastgin/modules/sys/dto"
 	"fastgin/modules/sys/model"
 	"fastgin/modules/sys/service"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
-	"github.com/jinzhu/copier"
 	"strconv"
 )
 
@@ -75,45 +71,14 @@ func (mc *MenuController) GetMenuTree(c *gin.Context) {
 // @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/menu/index [post]
 func (mc *MenuController) Create(c *gin.Context) {
-	var req dto.CreateMenuRequest
-	if err := c.ShouldBind(&req); err != nil {
+	var menu model.Menu
+	if err := c.ShouldBind(&menu); err != nil {
 		httpz.BadRequest(c, err.Error())
 		return
 	}
-	if err := config.Validate.Struct(&req); err != nil {
-		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		httpz.BadRequest(c, errStr)
-		return
-	}
-	ctxUser, err := mc.userService.GetCurrentUser(c)
-	if err != nil {
-		httpz.ServerError(c, "获取当前用户信息失败")
-		return
-	}
-	menu := model.Menu{
-		//Name:       req.Name,
-		//Title:      req.Title,
-		//Icon:       &req.Icon,
-		//Path:       req.Path,
-		//Redirect:   &req.Redirect,
-		//Component:  req.Component,
-		//Sort:       req.Sort,
-		//Status:     req.Status,
-		//Hidden:     req.Hidden,
-		//NoCache:    req.NoCache,
-		//AlwaysShow: req.AlwaysShow,
-		//Breadcrumb: req.Breadcrumb,
-		//ActiveMenu: &req.ActiveMenu,
-		//ParentId:   &req.ParentId,
-		Creator: ctxUser.UserName,
-	}
-	e := copier.Copy(&menu, &req)
-
-	if e != nil {
-		httpz.ServerError(c, "创建菜单失败: "+e.Error())
-		return
-	}
-	err = mc.menuService.CreateMenu(&menu)
+	ctxUser := service.GetCurrentUser(c)
+	menu.Creator = ctxUser.UserName
+	err := mc.menuService.CreateMenu(&menu)
 	if err != nil {
 		httpz.ServerError(c, "创建菜单失败: "+err.Error())
 		return
@@ -134,51 +99,24 @@ func (mc *MenuController) Create(c *gin.Context) {
 // @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/menu/index/{menuId} [put]
 func (mc *MenuController) Update(c *gin.Context) {
-	var req dto.CreateMenuRequest
-	if err := c.ShouldBind(&req); err != nil {
+	//var req dto.CreateMenuRequest
+	var menu model.Menu
+	if err := c.ShouldBind(&menu); err != nil {
 		httpz.BadRequest(c, err.Error())
 		return
 	}
-	if err := config.Validate.Struct(&req); err != nil {
-		errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
-		httpz.BadRequest(c, errStr)
-		return
-	}
+	//if err := config.Validate.Struct(&req); err != nil {
+	//	errStr := err.(validator.ValidationErrors)[0].Translate(config.Trans)
+	//	httpz.BadRequest(c, errStr)
+	//	return
+	//}
 	menuId, _ := strconv.Atoi(c.Param("menuId"))
 	if menuId <= 0 {
 		httpz.BadRequest(c, "菜单ID不正确")
 		return
 	}
-	//ur := service.NewUserService()
-	ctxUser, err := mc.userService.GetCurrentUser(c)
-	if err != nil {
-		httpz.ServerError(c, "获取当前用户信息失败")
-		return
-	}
-	menu := model.Menu{
-		//Name:       req.Name,
-		//Title:      req.Title,
-		//Icon:       &req.Icon,
-		//Path:       req.Path,
-		//Redirect:   &req.Redirect,
-		//Component:  req.Component,
-		//Sort:       req.Sort,
-		//Status:     req.Status,
-		//Hidden:     req.Hidden,
-		//NoCache:    req.NoCache,
-		//AlwaysShow: req.AlwaysShow,
-		//Breadcrumb: req.Breadcrumb,
-		//ActiveMenu: &req.ActiveMenu,
-		//ParentId:   &req.ParentId,
-		Creator: ctxUser.UserName,
-	}
-	e := copier.Copy(&menu, &req)
-	if e != nil {
-		httpz.ServerError(c, "更新菜单失败: "+e.Error())
-		return
-	}
 	menu.ID = uint64(menuId)
-	err = mc.menuService.UpdateMenuById(&menu)
+	err := mc.menuService.UpdateMenuById(&menu)
 	if err != nil {
 		httpz.ServerError(c, "更新菜单失败: "+err.Error())
 		return

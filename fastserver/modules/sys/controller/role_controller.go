@@ -2,6 +2,7 @@ package controller
 
 import (
 	config2 "fastgin/boost/config"
+	"fastgin/common/cache"
 	"fastgin/common/httpz"
 	"fastgin/database"
 	"fastgin/modules/sys/dto"
@@ -77,7 +78,7 @@ func (rc *RoleController) CreateRole(c *gin.Context) {
 		return
 	}
 	//uc := service.NewUserService()
-	sort, ctxUser, err := rc.userService.GetCurrentUserMinRoleSort(c)
+	sort, ctxUser, err := service.GetCurrentUserMinRoleSort(c)
 	if err != nil {
 		httpz.ServerError(c, "获取当前用户最高角色等级失败: "+err.Error())
 		return
@@ -131,7 +132,7 @@ func (rc *RoleController) Update(c *gin.Context) {
 		return
 	}
 	//ur := service.NewUserService()
-	minSort, ctxUser, err := rc.userService.GetCurrentUserMinRoleSort(c)
+	minSort, ctxUser, err := service.GetCurrentUserMinRoleSort(c)
 	if err != nil {
 		httpz.ServerError(c, err.Error())
 		return
@@ -200,7 +201,8 @@ func (rc *RoleController) Update(c *gin.Context) {
 			return
 		}
 	}
-	rc.userService.ClearUserInfoCache()
+	cache.UserCache.Flush()
+	//rc.userService.ClearUserInfoCache()
 	httpz.Success(c, nil)
 }
 
@@ -273,7 +275,7 @@ func (rc *RoleController) UpdateRoleMenusById(c *gin.Context) {
 
 	// 当前用户角色排序最小值（最高等级角色）以及当前用户
 	//ur := service.NewUserService()
-	minSort, ctxUser, err := rc.userService.GetCurrentUserMinRoleSort(c)
+	minSort, ctxUser, err := service.GetCurrentUserMinRoleSort(c)
 	if err != nil {
 		httpz.ServerError(c, err.Error())
 		return
@@ -426,7 +428,7 @@ func (rc *RoleController) UpdateRoleApisById(c *gin.Context) {
 		return
 	}
 	//ur := service.NewUserService()
-	minSort, ctxUser, err := rc.userService.GetCurrentUserMinRoleSort(c)
+	minSort, ctxUser, err := service.GetCurrentUserMinRoleSort(c)
 	if err != nil {
 		httpz.ServerError(c, err.Error())
 		return
@@ -496,7 +498,7 @@ func (rc *RoleController) BatchDeleteRoleByIds(c *gin.Context) {
 		httpz.BadRequest(c, err.Error())
 		return
 	}
-	minSort, _, err := rc.userService.GetCurrentUserMinRoleSort(c)
+	minSort, _, err := service.GetCurrentUserMinRoleSort(c)
 	if err != nil {
 		httpz.ServerError(c, err.Error())
 		return
@@ -522,6 +524,6 @@ func (rc *RoleController) BatchDeleteRoleByIds(c *gin.Context) {
 		httpz.ServerError(c, "删除角色失败")
 		return
 	}
-	rc.userService.ClearUserInfoCache()
+	cache.UserCache.Flush()
 	httpz.Success(c, nil)
 }

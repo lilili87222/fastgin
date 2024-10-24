@@ -96,11 +96,7 @@ func (ac *ApiController) Create(c *gin.Context) {
 		return
 	}
 	//ur := service.NewUserService()
-	ctxUser, err := ac.userService.GetCurrentUser(c)
-	if err != nil {
-		httpz.ServerError(c, "获取当前用户信息失败")
-		return
-	}
+	ctxUser := service.GetCurrentUser(c)
 	api := model.Api{
 		//Method:   req.Method,
 		//Path:     req.Path,
@@ -110,9 +106,9 @@ func (ac *ApiController) Create(c *gin.Context) {
 	}
 	copier.Copy(&api, &req)
 	//api.Creator = ctxUser.UserName
-	err = ac.apiService.CreateApi(&api)
-	if err != nil {
-		httpz.ServerError(c, "创建接口失败: "+err.Error())
+	e := ac.apiService.CreateApi(&api)
+	if e != nil {
+		httpz.ServerError(c, "创建接口失败: "+e.Error())
 		return
 	}
 	httpz.Success(c, nil)
@@ -152,11 +148,11 @@ func (ac *ApiController) Update(c *gin.Context) {
 		httpz.BadRequest(c, "接口ID不正确")
 		return
 	}
-	ctxUser, err := ac.userService.GetCurrentUser(c)
-	if err != nil {
-		httpz.ServerError(c, "获取当前用户信息失败")
-		return
-	}
+	ctxUser := service.GetCurrentUser(c)
+	//if !err {
+	//	httpz.ServerError(c, "获取当前用户信息失败")
+	//	return
+	//}
 	api := model.Api{
 		//Method:   req.Method,
 		//Path:     req.Path,
@@ -166,7 +162,7 @@ func (ac *ApiController) Update(c *gin.Context) {
 	}
 	copier.Copy(&api, &req)
 	api.ID = uint64(apiId)
-	err = ac.apiService.UpdateApiById(&api)
+	err := ac.apiService.UpdateApiById(&api)
 	if err != nil {
 		httpz.ServerError(c, "更新接口失败: "+err.Error())
 		return

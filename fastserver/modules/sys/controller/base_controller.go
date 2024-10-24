@@ -7,6 +7,7 @@ import (
 	"fastgin/common/httpz"
 	"fastgin/common/util"
 	"fastgin/modules/sys/dto"
+	"fastgin/modules/sys/middleware"
 	"fastgin/modules/sys/model"
 	"fastgin/modules/sys/service"
 	"fmt"
@@ -21,6 +22,54 @@ import (
 //var store = base64Captcha.DefaultMemStore
 
 type BaseController struct{}
+
+// @Summary 用户登录
+// @Description 用户登录获取JWT Token {"UserName": "testlog", "Password": "123456"}
+// @Tags 公开接口
+// @Accept json
+// @Produce json
+// @Param login body dto.LoginRequest true "登录信息" default({"username": "testlog", "password": "123456"})
+// @Success 200 {object} map[string]interface{} "{"code":200,"token":"xxx","expire":"xxx"}"
+// @Failure 401 {object} map[string]interface{} "{"code":401,"message":"Unauthorized"}"
+// @Router /api/public/login [post]
+// LoginHandler can be used by clients to get a jwt token.
+// Payload needs to be json in the form of {"username": "USERNAME", "password": "PASSWORD"}.
+// Reply will be of the form {"token": "TOKEN"}.
+func (b *BaseController) Login(c *gin.Context) {
+	var req dto.LoginRequest
+	// 请求json绑定
+	if err := c.ShouldBind(&req); err != nil {
+		httpz.BadRequest(c, err.Error())
+		return
+	}
+	cid, found := cache.Cache.Get(req.CaptchaId)
+	if !found {
+		httpz.BadRequest(c, "验证码已过期")
+		return
+	}
+	if !util.EqualCaptcha(cid.(float64), req.CaptchaCode) {
+		httpz.BadRequest(c, "验证码错误")
+		return
+	}
+	u := &model.User{
+		UserName: req.UserName,
+		Password: req.Password,
+	}
+	// 密码校验
+	userService := service.NewUserService()
+	user, err := userService.Login(u)
+	if err != nil {
+		httpz.BadRequest(c, err.Error())
+		return
+	}
+	token, err := middleware.GenerateJWTToken(user.ID)
+	if err != nil {
+		httpz.ServerError(c, "生成token失败")
+		return
+	}
+	cache.SetUser(user)
+	httpz.Success(c, gin.H{"token": token})
+}
 
 // 注册用户
 // @Summary 注册用户
@@ -52,10 +101,10 @@ func (b *BaseController) Register(c *gin.Context) {
 		return
 	}
 	userService := service.NewUserService()
-	u, _ := userService.GetUserByUsername(req.UserName)
+	user := userService.GetUserByUsername(req.UserName)
 	//registor:=u==nil
-	if u == nil {
-		user := model.User{
+	if user == nil {
+		user = &model.User{
 			UserName: req.UserName,
 			Password: req.Password,
 			Status:   1,
@@ -65,7 +114,7 @@ func (b *BaseController) Register(c *gin.Context) {
 		if util.IsPhoneNumber(req.UserName) {
 			user.Mobile = req.UserName
 		}
-		err := userService.CreateUser(&user)
+		err := userService.CreateUser(user)
 		if err != nil {
 			httpz.ServerError(c, "注册失败: "+err.Error())
 			return
@@ -77,7 +126,16 @@ func (b *BaseController) Register(c *gin.Context) {
 			return
 		}
 	}
-	httpz.Success(c, nil)
+
+	token, err := middleware.GenerateJWTToken(user.ID)
+	if err != nil {
+		httpz.ServerError(c, "生成token失败")
+		return
+	}
+	cache.SetUser(user)
+	httpz.Success(c, gin.H{"token": token})
+
+	//httpz.Success(c, nil)
 
 }
 

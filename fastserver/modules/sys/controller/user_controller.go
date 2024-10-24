@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fastgin/boost/config"
+	"fastgin/common/cache"
 	"fastgin/common/httpz"
 	"fastgin/common/util"
 	"fastgin/modules/sys/dto"
@@ -34,20 +35,18 @@ func NewUserController() *UserController {
 // @Failure 400 {object} httpz.ResponseBody
 // @Router /api/auth/user/info [get]
 func (uc *UserController) GetUserInfo(c *gin.Context) {
-	user, err := uc.userService.GetCurrentUser(c)
-	if err != nil {
-		httpz.ServerError(c, "获取当前用户信息失败: "+err.Error())
+	u, found := c.Get("user")
+	if !found {
+		httpz.ServerError(c, "获取用户信息异常，请重新登录 ")
 		return
 	}
-	//userMap, e := util.StructToMap(user, true, "ID", "UserName", "Mobile", "Avatar", "NickName", "Des", "Roles")
-	//if e != nil {
-	//	fmt.Println(e.Error())
-	//}
-	//fmt.Println(util.Struct2Json(userMap))
-	//fmt.Println(util.Struct2Json(user))
-	//userInfoDto := dto.UserInfoDto{}
-	//copier.Copy(&userInfoDto, &user)
-	httpz.Success(c, user)
+	httpz.Success(c, u)
+}
+func (uc *UserController) Logout(c *gin.Context) {
+	// 退出登录
+	u := service.GetCurrentUser(c)
+	cache.UserCache.Delete(u.GetUidString())
+	httpz.Success(c, nil)
 }
 
 // 获取用户列表
@@ -141,15 +140,12 @@ func (uc *UserController) ChangePwd(c *gin.Context) {
 	//req.NewPassword = string(decodeNewPassword)
 
 	// 获取当前用户
-	user, err := uc.userService.GetCurrentUser(c)
-	if err != nil {
-		httpz.ServerError(c, err.Error())
-		return
-	}
+	user := service.GetCurrentUser(c)
+
 	// 获取用户的真实正确密码
 	correctPasswd := user.Password
 	// 判断前端请求的密码是否等于真实密码
-	err = util.ComparePasswd(correctPasswd, req.OldPassword)
+	err := util.ComparePasswd(correctPasswd, req.OldPassword)
 	if err != nil {
 		httpz.ServerError(c, "原密码有误")
 		return
@@ -204,7 +200,7 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 	//}
 
 	// 当前用户角色排序最小值（最高等级角色）以及当前用户
-	currentRoleSortMin, ctxUser, err := uc.userService.GetCurrentUserMinRoleSort(c)
+	currentRoleSortMin, ctxUser, err := service.GetCurrentUserMinRoleSort(c)
 	if err != nil {
 		httpz.ServerError(c, err.Error())
 		return
@@ -303,11 +299,7 @@ func (uc *UserController) Update(c *gin.Context) {
 	}
 
 	// 获取当前用户
-	ctxUser, err := uc.userService.GetCurrentUser(c)
-	if err != nil {
-		httpz.ServerError(c, err.Error())
-		return
-	}
+	ctxUser := service.GetCurrentUser(c)
 	// 获取当前用户的所有角色
 	currentRoles := ctxUser.Roles
 	// 获取当前用户角色的排序，和前端传来的角色排序做比较
@@ -458,7 +450,7 @@ func (uc *UserController) BatchDeleteUserByIds(c *gin.Context) {
 	}
 
 	// 当前用户角色排序最小值（最高等级角色）以及当前用户
-	minSort, ctxUser, err := uc.userService.GetCurrentUserMinRoleSort(c)
+	minSort, ctxUser, err := service.GetCurrentUserMinRoleSort(c)
 	if err != nil {
 		httpz.ServerError(c, err.Error())
 		return

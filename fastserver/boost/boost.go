@@ -97,8 +97,8 @@ func initMiddlewares(engine *gin.Engine) (*gin.RouterGroup, *gin.RouterGroup) {
 	AuthGroup := engine.Group(config.Configs.System.UrlPathPrefix)
 	AuthGroup.Use(middleware.OperationLogMiddleware())
 	AuthGroup.Use(middleware.RateLimitMiddleware(time.Millisecond*time.Duration(config.Configs.RateLimit.FillInterval), config.Configs.RateLimit.Capacity))
-	AuthGroup.Use(middleware.GetJwtMiddleware().MiddlewareFunc()) // jwt认证中间件
-	AuthGroup.Use(middleware.CasbinMiddleware())                  //// 开启casbin鉴权中间件
+	AuthGroup.Use(middleware.AuthMiddleware())   // jwt认证中间件
+	AuthGroup.Use(middleware.CasbinMiddleware()) //// 开启casbin鉴权中间件
 	config.Log.Info("初始化Middleware完成！")
 	return PublicGroup, AuthGroup
 }

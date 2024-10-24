@@ -3,7 +3,7 @@ package middleware
 import (
 	config2 "fastgin/boost/config"
 	"fastgin/common/httpz"
-	"fastgin/modules/sys/service"
+	"fastgin/modules/sys/model"
 	"github.com/gin-gonic/gin"
 	"strings"
 	"sync"
@@ -14,13 +14,16 @@ var checkLock sync.Mutex
 // Casbin中间件, 基于RBAC的权限访问控制模型
 func CasbinMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		ur := service.NewUserService()
-		user, err := ur.GetCurrentUser(c)
-		if err != nil {
+		//ur := service.NewUserService()
+		uo, err := c.Get("user")
+		//return u.(*model.User), nil
+		//user, err := service.GetCurrentUser(c)
+		if !err {
 			httpz.Response(c, 401, nil, "用户未登录")
 			c.Abort()
 			return
 		}
+		user := uo.(*model.User)
 		if user.Status != 1 {
 			httpz.Response(c, 401, nil, "当前用户已被禁用")
 			c.Abort()

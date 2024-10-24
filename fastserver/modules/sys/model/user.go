@@ -5,6 +5,7 @@
 package model
 
 import (
+	"fmt"
 	"time"
 
 	"gorm.io/gorm"
@@ -27,6 +28,10 @@ type User struct {
 	Status    uint           `gorm:"column:status;type:tinyint(1);default:1;comment:'1正常, 2禁用'" json:"status"` // '1正常, 2禁用'
 	Creator   string         `gorm:"column:creator;type:varchar(20)" json:"creator"`
 	Roles     []Role         `gorm:"many2many:sys_user_role" json:"roles"`
+}
+
+func (u *User) GetUidString() string {
+	return fmt.Sprintf("%d", u.ID)
 }
 
 // TableName User's table name

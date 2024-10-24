@@ -7,8 +7,8 @@ import (
 	"mime/multipart"
 	"time"
 
-	"github.com/qiniu/api.v7/v7/auth/qbox"
-	"github.com/qiniu/api.v7/v7/storage"
+	"github.com/qiniu/go-sdk/v7/auth"
+	"github.com/qiniu/go-sdk/v7/storage"
 )
 
 type QiniuConfig struct {
@@ -28,7 +28,7 @@ type QiniuCloud struct {
 
 func (q *QiniuCloud) UploadFile(file *multipart.FileHeader) (string, string, error) {
 	putPolicy := storage.PutPolicy{Scope: q.Config.Bucket}
-	mac := qbox.NewMac(q.Config.AccessKey, q.Config.SecretKey)
+	mac := auth.New(q.Config.AccessKey, q.Config.SecretKey)
 	upToken := putPolicy.UploadToken(mac)
 	formUploader := storage.NewFormUploader(q.qiConfig)
 	ret := storage.PutRet{}
@@ -48,7 +48,7 @@ func (q *QiniuCloud) UploadFile(file *multipart.FileHeader) (string, string, err
 }
 
 func (q *QiniuCloud) DeleteFile(key string) error {
-	mac := qbox.NewMac(q.Config.AccessKey, q.Config.SecretKey)
+	mac := auth.New(q.Config.AccessKey, q.Config.SecretKey)
 	bucketManager := storage.NewBucketManager(mac, q.qiConfig)
 	if err := bucketManager.Delete(q.Config.Bucket, key); err != nil {
 		return errors.New("function bucketManager.Delete() failed, err:" + err.Error())

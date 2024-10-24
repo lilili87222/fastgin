@@ -2,7 +2,6 @@ package route
 
 import (
 	"fastgin/modules/sys/controller"
-	"fastgin/modules/sys/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,8 +17,8 @@ func InitUserRoutes(r *gin.RouterGroup) gin.IRoutes {
 
 		router.GET("/info", userController.GetUserInfo)
 		router.PUT("/changePwd", userController.ChangePwd)
-		router.POST("/logout", middleware.GetJwtMiddleware().LogoutHandler)
-		router.POST("/refreshToken", middleware.GetJwtMiddleware().RefreshHandler)
+		router.POST("/logout", userController.Logout)
+		//router.POST("/refreshToken", middleware.GetJwtMiddleware().RefreshHandler)
 	}
 	return r
 }
