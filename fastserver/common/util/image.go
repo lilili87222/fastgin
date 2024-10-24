@@ -3,17 +3,48 @@ package util
 import (
 	"bytes"
 	"encoding/base64"
+	"fmt"
 	_ "golang.org/x/image/bmp"
 	"image"
 	"image/color"
 	_ "image/gif"
-	"image/jpeg"
+	"image/png"
 	_ "image/png"
 	"math"
 	"os"
 )
 
 func RotateImage(img image.Image, angle float64) (image.Image, error) {
+	radians := angle * math.Pi / 180
+	width := img.Bounds().Dx()
+	height := img.Bounds().Dy()
+	newWidth := int(math.Abs(float64(width)*math.Cos(radians)) + math.Abs(float64(height)*math.Sin(radians)))
+	newHeight := int(math.Abs(float64(width)*math.Sin(radians)) + math.Abs(float64(height)*math.Cos(radians)))
+
+	if newWidth == 0 || newHeight == 0 {
+		return nil, fmt.Errorf("invalid image size: %dx%d", newWidth, newHeight)
+	}
+
+	newImg := image.NewRGBA(image.Rect(0, 0, newWidth, newHeight))
+	centerX, centerY := float64(width)/2, float64(height)/2
+	newCenterX, newCenterY := float64(newWidth)/2, float64(newHeight)/2
+
+	for x := 0; x < newWidth; x++ {
+		for y := 0; y < newHeight; y++ {
+			originalX := int(centerX + (float64(x)-newCenterX)*math.Cos(-radians) - (float64(y)-newCenterY)*math.Sin(-radians))
+			originalY := int(centerY + (float64(x)-newCenterX)*math.Sin(-radians) + (float64(y)-newCenterY)*math.Cos(-radians))
+
+			if originalX >= 0 && originalX < width && originalY >= 0 && originalY < height {
+				newImg.Set(x, y, img.At(originalX, originalY))
+			} else {
+				newImg.Set(x, y, color.Transparent)
+			}
+		}
+	}
+
+	return newImg, nil
+}
+func RotateImage1(img image.Image, angle float64) (image.Image, error) {
 	// 计算旋转后的图像的尺寸
 	radians := angle * math.Pi / 180
 	width := img.Bounds().Dx()
@@ -81,26 +112,28 @@ func Base64ImageFile(filePath string, angle float64) (string, error) {
 	defer file.Close()
 
 	// Decode the image
-	img, _, err := image.Decode(file)
+	img, imgtype, err := image.Decode(file)
 	if err != nil {
 		return "", err
 	}
-	img, err = DistortImage(img, 20)
-	if err != nil {
-		return "", err
-	}
+	//img, err = DistortImage(img, 20)
+	//if err != nil {
+	//	return "", err
+	//}
 	// Rotate the image
-	rotatedImg, err := RotateImage(img, angle)
+	img, err = RotateImage(img, angle)
 	if err != nil {
 		return "", err
 	}
+	fmt.Printf(imgtype)
 
 	// Encode the rotated image to JPEG
 	var buf bytes.Buffer
-	err = jpeg.Encode(&buf, rotatedImg, nil)
+	err = png.Encode(&buf, img)
 	if err != nil {
 		return "", err
 	}
+	os.WriteFile("test.png", buf.Bytes(), os.ModePerm)
 
 	// Convert the JPEG to base64
 	base64Img := base64.StdEncoding.EncodeToString(buf.Bytes())

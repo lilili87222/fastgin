@@ -11,8 +11,6 @@ import (
 	"fastgin/modules/sys/service"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"math"
-	"math/rand"
 	"time"
 )
 
@@ -21,7 +19,6 @@ import (
 
 type BaseController struct{}
 
-const AngleSpin = 20 //角度偏差
 // 获取验证码
 // @Summary 获取验证码
 // @Description 获取验证码
@@ -32,8 +29,8 @@ const AngleSpin = 20 //角度偏差
 // @Failure 400 {object} httpz.ResponseBody
 // @Router /api/public/captcha [get]
 func (b *BaseController) Captcha(c *gin.Context) {
-	angle := AngleSpin + rand.Float64()*(340-AngleSpin) // Generates a random float number between 20 and 340
-	filePath := "conf/captcha/2.png"
+	angle := util.RandCaptchaAngle() // Generates a random float number between 20 and 340
+	filePath := "conf/captcha/0.png"
 	base64Img, err := util.Base64ImageFile(filePath, angle)
 	if err != nil {
 		httpz.BadRequest(c, "验证码获取失败"+err.Error())
@@ -41,7 +38,7 @@ func (b *BaseController) Captcha(c *gin.Context) {
 	}
 	udidString := uuid.New().String()
 	cache.Cache.Set(udidString, angle, 180*time.Second)
-	httpz.Success(c, gin.H{"captchaId": udidString, "image": base64Img})
+	httpz.Success(c, gin.H{"captcha_id": udidString, "image": base64Img, "expect": angle})
 }
 
 // 注册用户
@@ -124,8 +121,7 @@ func (b *BaseController) SendVerifyCode(c *gin.Context) {
 		httpz.BadRequest(c, "验证码过期")
 		return
 	}
-	angle := cid.(float64)
-	if math.Abs(angle-req.CaptchaCode) > AngleSpin {
+	if !util.EqualCaptcha(cid.(float64), req.CaptchaCode) {
 		httpz.BadRequest(c, "验证码错误")
 		return
 	}
@@ -139,5 +135,5 @@ func (b *BaseController) SendVerifyCode(c *gin.Context) {
 		return
 	}
 	cache.Cache.Set(codeID, code, 1800*time.Second)
-	httpz.Success(c, gin.H{"verify_code_id": codeID, "captchaLength": 6})
+	httpz.Success(c, gin.H{"verify_code_id": codeID, "code_length": 6})
 }

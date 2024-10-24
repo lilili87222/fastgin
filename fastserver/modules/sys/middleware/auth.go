@@ -11,7 +11,6 @@ import (
 	"fastgin/modules/sys/service"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"math"
 	"time"
 )
 
@@ -82,9 +81,8 @@ func login(c *gin.Context) (interface{}, error) {
 	if !found {
 		return nil, fmt.Errorf("验证码已过期")
 	}
-	angle := cid.(float64)
-	if math.Abs(angle-req.CaptchaCode) > 20 {
-		return nil, fmt.Errorf("验证码错误")
+	if !util.EqualCaptcha(cid.(float64), req.CaptchaCode) {
+		return nil, fmt.Errorf("验证码错误,期望%v 得到%v", cid, req.CaptchaCode)
 	}
 	u := &model.User{
 		UserName: req.UserName,
