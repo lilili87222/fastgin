@@ -6,14 +6,13 @@ import (
 )
 
 const AngleSpin = 20 //角度偏差
-func EqualCaptcha(input, expect float64) bool {
-
-	//if math.Abs(float64(int(input+expect)%360)) > AngleSpin {
+func EqualCaptcha(input, myAngle float64) bool {
+	expect := 360 - myAngle
 	if math.Abs(input-expect) > AngleSpin {
 		return false
 	}
 	return true
 }
 func RandCaptchaAngle() float64 {
-	return AngleSpin + rand.Float64()*(340-AngleSpin)
+	return 5 + rand.Float64()*350
 }

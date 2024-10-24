@@ -192,7 +192,7 @@ func Base64ImageFile(filePath string, angle float64) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	os.WriteFile("test.png", buf.Bytes(), os.ModePerm)
+	//os.WriteFile("test.png", buf.Bytes(), os.ModePerm)
 
 	// Convert the JPEG to base64
 	base64Img := base64.StdEncoding.EncodeToString(buf.Bytes())

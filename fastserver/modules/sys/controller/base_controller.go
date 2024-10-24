@@ -9,8 +9,11 @@ import (
 	"fastgin/modules/sys/dto"
 	"fastgin/modules/sys/model"
 	"fastgin/modules/sys/service"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"math/rand"
+	"os"
 	"time"
 )
 
@@ -116,6 +119,8 @@ func (b *BaseController) SendVerifyCode(c *gin.Context) {
 	httpz.Success(c, gin.H{"verify_code_id": codeID, "code_length": 6})
 }
 
+var imageFileList []string
+
 // 获取验证码
 // @Summary 获取验证码
 // @Description 获取验证码
@@ -126,8 +131,18 @@ func (b *BaseController) SendVerifyCode(c *gin.Context) {
 // @Failure 400 {object} httpz.ResponseBody
 // @Router /api/public/captcha [get]
 func (b *BaseController) Captcha(c *gin.Context) {
+	if len(imageFileList) == 0 {
+		imgEnt, _ := os.ReadDir("conf/captcha")
+		for _, v := range imgEnt {
+			imageFileList = append(imageFileList, v.Name())
+		}
+	}
+	seed := rand.NewSource(time.Now().UnixNano())
+	r := rand.New(seed)
+	index := r.Intn(len(imageFileList))
 	angle := util.RandCaptchaAngle() // Generates a random float number between 20 and 340
-	filePath := "conf/captcha/4.png"
+	filePath := fmt.Sprintf("conf/captcha/%s", imageFileList[index])
+
 	base64Img, err := util.Base64ImageFile(filePath, angle)
 	if err != nil {
 		httpz.BadRequest(c, "验证码获取失败"+err.Error())
@@ -135,5 +150,5 @@ func (b *BaseController) Captcha(c *gin.Context) {
 	}
 	udidString := uuid.New().String()
 	cache.Cache.Set(udidString, angle, 180*time.Second)
-	httpz.Success(c, gin.H{"captcha_id": udidString, "image": base64Img, "expect": angle})
+	httpz.Success(c, gin.H{"captcha_id": udidString, "image": base64Img})
 }

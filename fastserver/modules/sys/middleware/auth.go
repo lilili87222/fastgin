@@ -79,10 +79,10 @@ func login(c *gin.Context) (interface{}, error) {
 	}
 	cid, found := cache.Cache.Get(req.CaptchaId)
 	if !found {
-		return nil, fmt.Errorf("验证码已过期")
+		return "CodeExpired", fmt.Errorf("验证码已过期")
 	}
 	if !util.EqualCaptcha(cid.(float64), req.CaptchaCode) {
-		return nil, fmt.Errorf("验证码错误,期望%v 得到%v", cid, req.CaptchaCode)
+		return "CodeError", fmt.Errorf("验证码错误")
 	}
 	u := &model.User{
 		UserName: req.UserName,
@@ -117,7 +117,7 @@ func authorizator(data interface{}, c *gin.Context) bool {
 // 用户登录校验失败处理
 func unauthorized(c *gin.Context, code int, message string) {
 	config2.Log.Debugf("JWT认证失败, 错误码: %d, 错误信息: %s", code, message)
-	httpz.Response(c, code, nil, fmt.Sprintf("JWT认证失败, 错误码: %d, 错误信息: %s", code, message))
+	httpz.Response(c, code, "CodeError", message)
 }
 
 // 登录成功后的响应
