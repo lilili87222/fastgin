@@ -496,7 +496,7 @@ func (mw *GinJWTMiddleware) GetClaimsFromJWT(c *gin.Context) (MapClaims, error) 
 // @Tags 公开接口
 // @Accept json
 // @Produce json
-// @Param login body dto.RegisterAndLoginRequest true "登录信息" default({"username": "testlog", "password": "123456"})
+// @Param login body dto.LoginRequest true "登录信息" default({"username": "testlog", "password": "123456"})
 // @Success 200 {object} map[string]interface{} "{"code":200,"token":"xxx","expire":"xxx"}"
 // @Failure 401 {object} map[string]interface{} "{"code":401,"message":"Unauthorized"}"
 // @Router /api/public/login [post]

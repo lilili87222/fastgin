@@ -2,6 +2,7 @@ package middleware
 
 import (
 	config2 "fastgin/boost/config"
+	"fastgin/common/cache"
 	"fastgin/common/httpz"
 	"fastgin/common/util"
 	"fastgin/modules/sys/dto"
@@ -10,7 +11,7 @@ import (
 	"fastgin/modules/sys/service"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/mojocn/base64Captcha"
+	"math"
 	"time"
 )
 
@@ -72,27 +73,23 @@ func identityHandler(c *gin.Context) interface{} {
 
 // 校验token的正确性, 处理登录逻辑
 func login(c *gin.Context) (interface{}, error) {
-	var req dto.RegisterAndLoginRequest
+	var req dto.LoginRequest
 	// 请求json绑定
 	if err := c.ShouldBind(&req); err != nil {
 		return "", err
 	}
-	verifyOK := base64Captcha.DefaultMemStore.Verify(req.CaptchaId, req.CaptchaCode, true)
-	if !verifyOK {
+	cid, found := cache.Cache.Get(req.CaptchaId)
+	if !found {
+		return nil, fmt.Errorf("验证码已过期")
+	}
+	angle := cid.(float64)
+	if math.Abs(angle-req.CaptchaCode) > 20 {
 		return nil, fmt.Errorf("验证码错误")
 	}
-	// 密码通过RSA解密
-	//decodeData, err := util.RSADecrypt([]byte(req.Password), config.Configs.System.RSAPrivateBytes)
-	//if err != nil {
-	//	return nil, err
-	//}
-	//decodeData := []byte(req.Password)
-
 	u := &model.User{
 		UserName: req.UserName,
 		Password: req.Password,
 	}
-
 	// 密码校验
 	userService := service.NewUserService()
 	user, err := userService.Login(u)

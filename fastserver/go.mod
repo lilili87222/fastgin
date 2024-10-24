@@ -6,7 +6,6 @@ toolchain go1.22.7
 
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v3.0.2+incompatible
-	github.com/allegro/bigcache/v3 v3.1.0
 	github.com/aws/aws-sdk-go v1.55.5
 	github.com/casbin/casbin/v2 v2.100.0
 	github.com/casbin/gorm-adapter/v3 v3.28.0

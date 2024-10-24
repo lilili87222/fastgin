@@ -1,8 +1,6 @@
 package cache
 
 import (
-	//"context"
-	//"github.com/allegro/bigcache/v3"
 	"github.com/patrickmn/go-cache"
 	"time"
 )
@@ -16,7 +14,4 @@ func GetString(key string) string {
 		return ""
 	}
 	return v.(string)
-}
-func SetString(key string, value string) {
-	Cache.Set(key, value, 30*time.Minute)
 }

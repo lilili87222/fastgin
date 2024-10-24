@@ -1,11 +1,11 @@
 package dto
 
 // 用户登录结构体
-type RegisterAndLoginRequest struct {
-	UserName    string `form:"user_name" json:"user_name" binding:"required"`
-	Password    string `form:"password" json:"password" binding:"required"`
-	CaptchaId   string `form:"captcha_id" json:"captcha_id" binding:"required"`
-	CaptchaCode string `form:"captcha_code" json:"captcha_code" binding:"required"`
+type LoginRequest struct {
+	UserName    string  `form:"user_name" json:"user_name" binding:"required"`
+	Password    string  `form:"password" json:"password" binding:"required"`
+	CaptchaId   string  `form:"captcha_id" json:"captcha_id" binding:"required"`
+	CaptchaCode float64 `form:"captcha_code" json:"captcha_code" binding:"required"`
 }
 
 // 创建用户结构体
@@ -44,11 +44,9 @@ type RegisterRequest struct {
 	VerifyCodeId string `form:"verify_code_id" json:"verify_code_id" binding:"required"`
 	VerifyCode   string `form:"verify_code" json:"verify_code" binding:"required"`
 	Action       string `form:"action" json:"action" binding:"required"`
-	//CaptchaId    string `form:"captcha_id" json:"captcha_id" binding:"required"`
-	//CaptchaCode  string `form:"captcha_code" json:"captcha_code" binding:"required"`
 }
 type SendVerifyCodeRequest struct {
-	UserName    string `form:"user_name" json:"user_name" binding:"required"`
-	CaptchaId   string `form:"captcha_id" json:"captcha_id" binding:"required"`
-	CaptchaCode string `form:"captcha_code" json:"captcha_code" binding:"required"`
+	UserName    string  `form:"user_name" json:"user_name" binding:"required"`
+	CaptchaId   string  `form:"captcha_id" json:"captcha_id" binding:"required"`
+	CaptchaCode float64 `form:"captcha_code" json:"captcha_code" binding:"required"`
 }

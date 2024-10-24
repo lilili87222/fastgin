@@ -10,7 +10,11 @@ import (
 	"fastgin/modules/sys/model"
 	"fastgin/modules/sys/service"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/mojocn/base64Captcha"
+	"math"
+	"math/rand"
+	"time"
 )
 
 // 当开启多服务器部署时，替换下面的配置，使用redis共享存储验证码
@@ -18,37 +22,39 @@ var store = base64Captcha.DefaultMemStore
 
 type BaseController struct{}
 
+const AngleSpin = 20 //角度偏差
 // 获取验证码
 // @Summary 获取验证码
 // @Description 获取验证码
-// @Tags Base
+// @Tags 公开接口
 // @Accept json
 // @Produce json
 // @Success 200 {object} httpz.ResponseBody
 // @Failure 400 {object} httpz.ResponseBody
-// @Router /api/auth/captcha [get]
+// @Router /api/public/captcha [get]
 func (b *BaseController) Captcha(c *gin.Context) {
-	capConfig := config.Configs.Captcha
-	driver := base64Captcha.NewDriverDigit(capConfig.ImgHeight, capConfig.ImgWidth, capConfig.KeyLong, 0.7, 80)
-	cp := base64Captcha.NewCaptcha(driver, store)
-	id, b64s, _, err := cp.Generate()
+	angle := AngleSpin + rand.Float64()*(340-AngleSpin) // Generates a random float number between 20 and 340
+	filePath := "static/img/captcha.jpg"
+	base64Img, err := util.Base64ImageFile(filePath, angle)
 	if err != nil {
 		httpz.BadRequest(c, "验证码获取失败")
 		return
 	}
-	httpz.Success(c, gin.H{"captchaId": id, "image": b64s, "captchaLength": capConfig.KeyLong})
+	udidString := uuid.New().String()
+	cache.Cache.Set(udidString, angle, 180*time.Second)
+	httpz.Success(c, gin.H{"captchaId": udidString, "image": base64Img})
 }
 
 // 注册用户
 // @Summary 注册用户
 // @Description 注册用户
-// @Tags Base
+// @Tags 公开接口
 // @Accept json
 // @Produce json
 // @Param RegisterRequest body dto.RegisterRequest true "Register user request"
 // @Success 200 {object} httpz.ResponseBody
 // @Failure 400 {object} httpz.ResponseBody
-// @Router /api/auth/register [post]
+// @Router /api/public/register [post]
 func (b *BaseController) Register(c *gin.Context) {
 	var req dto.RegisterRequest
 	if err := c.ShouldBind(&req); err != nil {
@@ -101,25 +107,31 @@ func (b *BaseController) Register(c *gin.Context) {
 // 发送验证码
 // @Summary 发送验证码
 // @Description 发送验证码
-// @Tags Base
+// @Tags 公开接口
 // @Accept json
 // @Produce json
 // @Param SendVerifyCodeRequest body dto.SendVerifyCodeRequest true "Send verify code request"
 // @Success 200 {object} httpz.ResponseBody
 // @Failure 400 {object} httpz.ResponseBody
-// @Router /api/auth/verifycode [get]
+// @Router /api/public/verifycode [get]
 func (b *BaseController) SendVerifyCode(c *gin.Context) {
 	var req dto.SendVerifyCodeRequest
 	if err := c.ShouldBind(&req); err != nil {
 		httpz.BadRequest(c, err.Error())
 		return
 	}
-	if !store.Verify(req.CaptchaId, req.CaptchaCode, true) {
+	cid, found := cache.Cache.Get(req.CaptchaId)
+	if !found {
+		httpz.BadRequest(c, "验证码过期")
+		return
+	}
+	angle := cid.(float64)
+	if math.Abs(angle-req.CaptchaCode) > AngleSpin {
 		httpz.BadRequest(c, "验证码错误")
 		return
 	}
 	code := util.RandomString(6)
-	codeID := util.RandomString(24)
+	codeID := uuid.New().String()
 
 	e := email.SendRegisterEmail(req.UserName, "kxapp 验证码", code)
 	if e != nil {
@@ -127,6 +139,6 @@ func (b *BaseController) SendVerifyCode(c *gin.Context) {
 		httpz.BadRequest(c, "验证码发送失败:"+e.Error())
 		return
 	}
-	cache.SetString(codeID, code)
+	cache.Cache.Set(codeID, code, 1800*time.Second)
 	httpz.Success(c, gin.H{"verify_code_id": codeID, "captchaLength": 6})
 }
