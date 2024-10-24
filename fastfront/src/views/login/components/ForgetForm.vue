@@ -1,9 +1,9 @@
 <template>
   <el-form ref="registerFormRef" :model="resetForm" :rules="registerRules">
     <h1>重 置</h1>
-    <el-form-item prop="username">
+    <el-form-item prop="user_name">
       <el-input
-        v-model="resetForm.username"
+        v-model="resetForm.user_name"
         placeholder="邮箱/手机号"
         size="large"
         class="input-field"
@@ -13,9 +13,9 @@
         </template>
       </el-input>
     </el-form-item>
-    <el-form-item prop="code">
+    <el-form-item prop="verify_code">
       <el-input
-        v-model="resetForm.code"
+        v-model="resetForm.verify_code"
         placeholder="验证码"
         size="large"
         @keypress="onlyNumbers"
@@ -48,9 +48,9 @@
         </template>
       </el-input>
     </el-form-item>
-    <el-form-item prop="confirmPassword">
+    <el-form-item prop="repassword">
       <el-input
-        v-model="resetForm.confirmPassword"
+        v-model="resetForm.repassword"
         placeholder="确认密码"
         type="password"
         show-password
@@ -83,13 +83,16 @@
 </template>
 
 <script setup lang="ts">
+import { register, sendCode } from "@/api/system/base";
 import { onMounted, reactive, ref } from "vue";
 
 const resetForm = reactive({
-  username: "",
-  code: "",
+  user_name: "",
   password: "",
-  confirmPassword: "",
+  repassword: "",
+  action: "reset",
+  verify_code: "",
+  verify_code_id: "",
 });
 
 const isButtonDisabled = ref(true);
@@ -107,17 +110,21 @@ const onlyNumbers = (event: KeyboardEvent) => {
 // 验证手机号或邮箱的规则
 const validateUsername = (rule, value, callback) => {
   const phoneReg = /^1[3-9][0-9]\d{8}$/; // 手机号正则表达式
-  const emailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
+  const emailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // 邮箱正则表达式
+  const regex = /@admin\.com$/;
   if (!value) {
     isButtonDisabled.value = true;
-    return callback(new Error("请输入邮箱或手机号"));
-  } else if (phoneReg.test(value) || emailReg.test(value)) {
+    return callback(new Error("请输入手机号/邮箱"));
+  } else if (
+    phoneReg.test(value) ||
+    emailReg.test(value) ||
+    regex.test(value)
+  ) {
     isButtonDisabled.value = false;
     callback();
   } else {
     isButtonDisabled.value = true;
-    return callback(new Error("请输入有效的邮箱或手机号"));
+    return callback(new Error("请输入有效的手机号或邮箱"));
   }
 };
 
@@ -136,12 +143,12 @@ const validatePasswordComplexity = (rule, value, callback) => {
 };
 
 const registerRules = {
-  username: [{ required: true, validator: validateUsername, trigger: "blur" }],
+  user_name: [{ required: true, validator: validateUsername, trigger: "blur" }],
   password: [
     { required: true, validator: validatePasswordComplexity, trigger: "blur" },
   ],
-  code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
-  confirmPassword: [
+  verify_code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
+  repassword: [
     { required: true, message: "请确认密码", trigger: "blur" },
     {
       validator: (rule, value, callback) => {
@@ -156,44 +163,66 @@ const registerRules = {
   ],
 };
 
+const emits = defineEmits(["openDia", "changeShowForm", "clear", "closeDia"]);
+
 const registerFormRef = ref();
 const submitRegister = () => {
   registerFormRef.value?.validate((valid) => {
     if (valid) {
-      console.log("注册", resetForm);
+      console.log(resetForm);
+
+      // register(resetForm).then((res) => {
+      //   ElMessage.success(res.message);
+      // });
     }
   });
 };
 
+const handle = (captcha) => {
+  console.log(captcha);
+  let params = { ...captcha, user_name: resetForm.user_name };
+  console.log(params);
+
+  sendCode(params)
+    .then((res) => {
+      resetForm.verify_code_id = res.data.verify_code_id;
+
+      isCounting.value = true;
+      countdownText.value = `${countdownTime.value}秒`;
+      localStorage.setItem("resetCountdownTime", String(countdownTime.value));
+      localStorage.setItem("isResetCounting", "true");
+
+      const timer = setInterval(() => {
+        countdownTime.value -= 1;
+        countdownText.value = `${countdownTime.value}秒`;
+
+        if (countdownTime.value <= 0) {
+          clearInterval(timer);
+          isCounting.value = false;
+          isButtonDisabled.value = false;
+          countdownText.value = "获取验证码";
+          localStorage.removeItem("resetCountdownTime");
+          localStorage.removeItem("isResetCounting");
+        } else {
+          localStorage.setItem(
+            "resetCountdownTime",
+            String(countdownTime.value)
+          );
+        }
+      }, 1000);
+      emits("closeDia");
+    })
+    .catch(() => {
+      emits("clear");
+    });
+};
+defineExpose({ handle });
+
 // 获取验证码
 const getCode = () => {
-  registerFormRef.value?.validateField("username", (valid) => {
-    if (valid) {
-      if (!isButtonDisabled.value && !isCounting.value) {
-        isCounting.value = true;
-        countdownText.value = `${countdownTime.value}秒`;
-        localStorage.setItem("resetCountdownTime", String(countdownTime.value));
-        localStorage.setItem("isResetCounting", "true");
-
-        const timer = setInterval(() => {
-          countdownTime.value -= 1;
-          countdownText.value = `${countdownTime.value}秒`;
-
-          if (countdownTime.value <= 0) {
-            clearInterval(timer);
-            isCounting.value = false;
-            isButtonDisabled.value = false;
-            countdownText.value = "获取验证码";
-            localStorage.removeItem("resetCountdownTime");
-            localStorage.removeItem("isResetCounting");
-          } else {
-            localStorage.setItem(
-              "resetCountdownTime",
-              String(countdownTime.value)
-            );
-          }
-        }, 1000);
-      }
+  registerFormRef.value?.validateField("user_name", (valid) => {
+    if (valid && !isButtonDisabled.value && !isCounting.value) {
+      emits("openDia", "reset");
     }
   });
 };
@@ -223,8 +252,6 @@ onMounted(() => {
     }, 1000);
   }
 });
-
-const emits = defineEmits(["changeShowForm"]);
 
 const changeShowForm = (type: string) => {
   emits("changeShowForm", type);

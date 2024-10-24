@@ -15,10 +15,15 @@
         <component
           :is="showFormComponent"
           @changeShowForm="changeShowForm"
+          @clear="clear"
+          @closeDia="closeDia"
+          @openDia="openDia"
           :key="showForm"
+          ref="showRef"
         />
       </transition>
     </div>
+    <Code style="border-radius: 20px" ref="codeRef" @handle="handle"></Code>
   </div>
 </template>
 
@@ -26,6 +31,7 @@
 import { computed, reactive, ref } from "vue";
 import BgSvg from "@/assets/login/login-box-bg.svg";
 
+import Code from "./components/Code.vue";
 import LoginForm from "./components/LoginForm.vue";
 import SignForm from "./components/SignForm.vue";
 import ForgetForm from "./components/ForgetForm.vue";
@@ -41,6 +47,22 @@ const showFormComponent = computed(() => {
       return LoginForm;
   }
 });
+
+const codeRef = ref();
+const openDia = (type: string) => {
+  codeRef.value.open(type);
+};
+const closeDia = () => {
+  codeRef.value.closeDia();
+};
+const clear = () => {
+  codeRef.value.clear();
+};
+
+const showRef = ref();
+const handle = (captcha: any) => {
+  showRef.value.handle(captcha);
+};
 const changeShowForm = (value: string) => {
   showForm.value = value;
 };

@@ -37,4 +37,6 @@ export type TUserForm = {
 export interface TLogin {
   user_name: string;
   password: string;
+  captcha_id: string;
+  captcha_code: number;
 }

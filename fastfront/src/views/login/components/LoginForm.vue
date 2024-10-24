@@ -59,8 +59,8 @@ import store from "@/store";
 import Cookies from "js-cookie";
 
 const loginForm = reactive({
-  username: "",
-  password: "",
+  username: "admin@admin.com",
+  password: "123456",
 });
 
 const rememberMe = ref(false);
@@ -69,17 +69,17 @@ const rememberMe = ref(false);
 const validateUsername = (rule, value, callback) => {
   const phoneReg = /^1[3-9][0-9]\d{8}$/; // 手机号正则表达式
   const emailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // 邮箱正则表达式
-
+  const regex = /@admin\.com$/;
   if (!value) {
-    return callback(new Error("请输入用户名/邮箱"));
+    return callback(new Error("请输入手机号/邮箱"));
   } else if (
     phoneReg.test(value) ||
     emailReg.test(value) ||
-    value === "admin"
+    regex.test(value)
   ) {
     callback();
   } else {
-    return callback(new Error("请输入有效的用户名或邮箱"));
+    return callback(new Error("请输入有效的手机号或邮箱"));
   }
 };
 
@@ -107,26 +107,34 @@ const loginFormRef = ref<InstanceType<typeof ElForm> | null>(null);
 const submitSignIn = () => {
   loginFormRef.value?.validate((valid: boolean) => {
     if (valid) {
-      loading.value = true;
-      store
-        .user()
-        .login(loginForm)
-        .then(() => {
-          rememberMe.value
-            ? Cookies.set("rememberMe", JSON.stringify(loginForm))
-            : Cookies.remove("rememberMe");
-          router.push({
-            path: redirect.value || "/",
-            query: otherQuery.value,
-          });
-        })
-        .finally(() => {
-          loading.value = false;
-        });
+      emits("openDia", "login");
     }
   });
 };
 
+const handle = (captcha) => {
+  loading.value = true;
+  let params = { ...loginForm, ...captcha };
+  store
+    .user()
+    .login(params)
+    .then(() => {
+      rememberMe.value
+        ? Cookies.set("rememberMe", JSON.stringify(loginForm))
+        : Cookies.remove("rememberMe");
+      router.push({
+        path: redirect.value || "/",
+        query: otherQuery.value,
+      });
+    })
+    .catch(() => {
+      emits("clear");
+    })
+    .finally(() => {
+      loading.value = false;
+    });
+};
+defineExpose({ handle });
 interface QueryType {
   [propname: string]: string;
 }
@@ -150,7 +158,7 @@ watch(
   { immediate: true }
 );
 
-const emits = defineEmits(["changeShowForm"]);
+const emits = defineEmits(["changeShowForm", "openDia", "clear"]);
 const changeShowForm = (value: string) => {
   emits("changeShowForm", value);
 };
