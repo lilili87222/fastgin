@@ -19,28 +19,6 @@ import (
 
 type BaseController struct{}
 
-// 获取验证码
-// @Summary 获取验证码
-// @Description 获取验证码
-// @Tags 公开接口
-// @Accept json
-// @Produce json
-// @Success 200 {object} httpz.ResponseBody
-// @Failure 400 {object} httpz.ResponseBody
-// @Router /api/public/captcha [get]
-func (b *BaseController) Captcha(c *gin.Context) {
-	angle := util.RandCaptchaAngle() // Generates a random float number between 20 and 340
-	filePath := "conf/captcha/0.png"
-	base64Img, err := util.Base64ImageFile(filePath, angle)
-	if err != nil {
-		httpz.BadRequest(c, "验证码获取失败"+err.Error())
-		return
-	}
-	udidString := uuid.New().String()
-	cache.Cache.Set(udidString, angle, 180*time.Second)
-	httpz.Success(c, gin.H{"captcha_id": udidString, "image": base64Img, "expect": angle})
-}
-
 // 注册用户
 // @Summary 注册用户
 // @Description 注册用户
@@ -136,4 +114,26 @@ func (b *BaseController) SendVerifyCode(c *gin.Context) {
 	}
 	cache.Cache.Set(codeID, code, 1800*time.Second)
 	httpz.Success(c, gin.H{"verify_code_id": codeID, "code_length": 6})
+}
+
+// 获取验证码
+// @Summary 获取验证码
+// @Description 获取验证码
+// @Tags 公开接口
+// @Accept json
+// @Produce json
+// @Success 200 {object} httpz.ResponseBody
+// @Failure 400 {object} httpz.ResponseBody
+// @Router /api/public/captcha [get]
+func (b *BaseController) Captcha(c *gin.Context) {
+	angle := util.RandCaptchaAngle() // Generates a random float number between 20 and 340
+	filePath := "conf/captcha/4.png"
+	base64Img, err := util.Base64ImageFile(filePath, angle)
+	if err != nil {
+		httpz.BadRequest(c, "验证码获取失败"+err.Error())
+		return
+	}
+	udidString := uuid.New().String()
+	cache.Cache.Set(udidString, angle, 180*time.Second)
+	httpz.Success(c, gin.H{"captcha_id": udidString, "image": base64Img, "expect": angle})
 }

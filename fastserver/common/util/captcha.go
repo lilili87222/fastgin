@@ -7,7 +7,9 @@ import (
 
 const AngleSpin = 20 //角度偏差
 func EqualCaptcha(input, expect float64) bool {
-	if math.Abs(float64(int(input+expect)%360)) > AngleSpin {
+
+	//if math.Abs(float64(int(input+expect)%360)) > AngleSpin {
+	if math.Abs(input-expect) > AngleSpin {
 		return false
 	}
 	return true
