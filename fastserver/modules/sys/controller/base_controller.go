@@ -11,14 +11,13 @@ import (
 	"fastgin/modules/sys/service"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/mojocn/base64Captcha"
 	"math"
 	"math/rand"
 	"time"
 )
 
 // 当开启多服务器部署时，替换下面的配置，使用redis共享存储验证码
-var store = base64Captcha.DefaultMemStore
+//var store = base64Captcha.DefaultMemStore
 
 type BaseController struct{}
 
@@ -34,10 +33,10 @@ const AngleSpin = 20 //角度偏差
 // @Router /api/public/captcha [get]
 func (b *BaseController) Captcha(c *gin.Context) {
 	angle := AngleSpin + rand.Float64()*(340-AngleSpin) // Generates a random float number between 20 and 340
-	filePath := "static/img/captcha.jpg"
+	filePath := "conf/captcha/2.png"
 	base64Img, err := util.Base64ImageFile(filePath, angle)
 	if err != nil {
-		httpz.BadRequest(c, "验证码获取失败")
+		httpz.BadRequest(c, "验证码获取失败"+err.Error())
 		return
 	}
 	udidString := uuid.New().String()

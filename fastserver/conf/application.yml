@@ -90,7 +90,7 @@ captcha:
 email:
   host: smtp.qq.com
   port: 587
-  account: 2462611616@qq.com
+  account: 1234567848@qq.com
   password: oztajemlxoagebhc
   is-ssl: true
   from: fastgin

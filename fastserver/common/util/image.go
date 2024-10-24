@@ -3,8 +3,12 @@ package util
 import (
 	"bytes"
 	"encoding/base64"
+	_ "golang.org/x/image/bmp"
 	"image"
+	"image/color"
+	_ "image/gif"
 	"image/jpeg"
+	_ "image/png"
 	"math"
 	"os"
 )
@@ -41,6 +45,32 @@ func RotateImage(img image.Image, angle float64) (image.Image, error) {
 	return newImg, nil
 }
 
+// 扭曲函数
+func DistortImage(img image.Image, strength float64) (image.Image, error) {
+	width := img.Bounds().Dx()
+	height := img.Bounds().Dy()
+	newImage := image.NewRGBA(image.Rect(0, 0, width, height))
+
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			// 计算扭曲后的坐标
+			offsetX := int(strength * math.Sin(float64(y)/20))
+			offsetY := int(strength * math.Cos(float64(x)/20))
+			srcX := x + offsetX
+			srcY := y + offsetY
+
+			// 确保坐标在有效范围内
+			if srcX >= 0 && srcX < width && srcY >= 0 && srcY < height {
+				newImage.Set(x, y, img.At(srcX, srcY))
+			} else {
+				newImage.Set(x, y, color.Transparent)
+			}
+		}
+	}
+
+	return newImage, nil
+}
+
 // Base64ImageFile reads an image from a file, rotates it by the given angle, and returns the base64 encoded image.
 func Base64ImageFile(filePath string, angle float64) (string, error) {
 	// Open the image file
@@ -55,7 +85,10 @@ func Base64ImageFile(filePath string, angle float64) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
+	img, err = DistortImage(img, 20)
+	if err != nil {
+		return "", err
+	}
 	// Rotate the image
 	rotatedImg, err := RotateImage(img, angle)
 	if err != nil {
